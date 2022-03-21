@@ -1,0 +1,14 @@
+#import "../../fragments/subsection_fields.graphql"
+mutation ChangeSubsection($input: ChangeSubsectionMutationInput!) {
+  changeSubsection(input: $input) {
+    success
+    errors {
+      field
+      messages
+      __typename
+    }
+    subsection {
+      ...SubsectionFields
+    }
+  }
+}

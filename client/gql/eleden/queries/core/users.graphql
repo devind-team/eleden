@@ -1,0 +1,20 @@
+#import "../../../core/fragments/user_team_fields.graphql"
+
+query EledenUsers($first: Int, $offset: Int, $search: String) {
+  users(
+    first: $first,
+    offset: $offset,
+    username_Icontains: $search,
+    email_Icontains: $search,
+    lastName_Icontains: $search,
+    firstName_Icontains: $search,
+    sirName_Icontains: $search
+  ) {
+    totalCount
+    edges {
+      node {
+        ...UserTeamFields
+      }
+    }
+  }
+}

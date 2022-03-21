@@ -1,0 +1,14 @@
+query WorkKinds {
+  workKinds {
+    id
+    name
+    shortName
+    order
+    workForm {
+      id
+      name
+      __typename
+    }
+    __typename
+  }
+}

@@ -1,0 +1,4 @@
+fragment PermissionsInterfaceFields on PermissionsInterface {
+  canChange
+  canDelete
+}

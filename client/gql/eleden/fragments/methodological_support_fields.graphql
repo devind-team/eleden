@@ -1,0 +1,9 @@
+fragment MethodologicalSupportFields on MethodologicalSupportType {
+  id
+  name
+  src
+  srcSign
+  createdAt
+  updatedAt
+  __typename
+}

@@ -1,0 +1,22 @@
+#import "../../core/fragments/user_fields.graphql"
+
+fragment HandoutFields on HandoutType {
+  id
+  description
+  user {
+    ...UserFields
+  }
+  file {
+    id
+    name
+    src
+    __typename
+  }
+  period {
+    id
+    name
+    __typename
+  }
+  createdAt
+  __typename
+}

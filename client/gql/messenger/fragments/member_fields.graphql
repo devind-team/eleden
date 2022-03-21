@@ -1,0 +1,8 @@
+fragment Members on MemberType {
+  id
+  role
+  notification
+  createdAt
+  updatedAt
+  __typename
+}

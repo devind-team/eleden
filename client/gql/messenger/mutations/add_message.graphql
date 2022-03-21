@@ -1,0 +1,11 @@
+mutation AddMessage($chatId: ID!, $text: String, $files: [Upload!], $forwardedIds: [ID!]) {
+  addMessage(input: { chatId: $chatId, text: $text, files: $files, forwardedIds: $forwardedIds }) {
+    success
+    errors {
+      field
+      messages
+      __typename
+    }
+    __typename
+  }
+}

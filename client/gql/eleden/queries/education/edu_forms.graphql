@@ -1,0 +1,8 @@
+query EduForms {
+  eduForms {
+    id
+    name
+    shortName
+    __typename
+  }
+}

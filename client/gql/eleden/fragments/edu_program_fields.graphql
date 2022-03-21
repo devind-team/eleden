@@ -1,0 +1,33 @@
+fragment EduProgramFields on EduProgramType {
+  id
+  name
+  adaptive
+  admission
+  expedited
+  description
+  descriptionSign
+  calendar
+  calendarSign
+  syllabus
+  syllabusSign
+  createdAt
+  updatedAt
+  eduForm {
+    id
+    name
+    shortName
+    __typename
+  }
+  direction {
+    id
+    name
+    code
+    eduService {
+      id
+      name
+      __typename
+    }
+    __typename
+  }
+  __typename
+}

@@ -1,0 +1,10 @@
+mutation DeleteSubsection($input: DeleteSubsectionMutationInput!) {
+  deleteSubsection(input: $input) {
+    success
+    errors {
+      messages
+      field
+      __typename
+    }
+  }
+}

@@ -1,0 +1,23 @@
+#import "../../core/fragments/user_fields.graphql"
+
+fragment MessageFields on MessageType {
+  id
+  text
+  pinned
+  createdAt
+  updatedAt
+  forwarded {
+    id
+    __typename
+  }
+  attachedFiles {
+    id
+    src
+    createdAt
+    user {
+      ...UserFields
+    }
+    __typename
+  }
+  __typename
+}

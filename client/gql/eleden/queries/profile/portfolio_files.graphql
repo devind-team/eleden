@@ -1,0 +1,30 @@
+#import "../../fragments/portfolio_file_fields.graphql"
+
+query PortfolioFiles(
+  $first: Int,
+  $offset: Int,
+  $usersId: [ID!],
+  $disciplineId: ID,
+  $kindId: Float,
+  $isConfirmed: Boolean,
+  $search: String
+) {
+  portfolioFiles(
+    first: $first,
+    offset: $offset,
+    disciplineId: $disciplineId,
+    file_UserId_In: $usersId,
+    kindId: $kindId,
+    isConfirmed: $isConfirmed,
+    describe_Icontains: $search
+  ) {
+    totalCount
+    edges {
+      node {
+        ...PortfolioFileFields
+      }
+      __typename
+    }
+    __typename
+  }
+}

@@ -1,0 +1,6 @@
+fragment ArticleIndexFields on ArticleIndexType {
+  id
+  name
+  coefficient
+  __typename
+}

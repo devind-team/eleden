@@ -1,0 +1,8 @@
+fragment ChildItemPropFields on ChildItemPropType {
+  id
+  itemProp
+  header
+  showPosition
+  valuePosition
+  __typename
+}

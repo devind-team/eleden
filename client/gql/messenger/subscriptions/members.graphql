@@ -1,0 +1,37 @@
+#import "../../core/fragments/user_fields.graphql"
+#import "../fragments/chat_fields.graphql"
+
+subscription MembersSubscription {
+  members {
+    action
+    id
+    member {
+      id
+      role
+      notification
+      favorite
+      excluded
+      createdAt
+      updatedAt
+      chat {
+        ...ChatFields
+        users {
+          ...UserFields
+        }
+        lastMessage {
+          id
+          text
+          user {
+            id
+            lastName
+            firstName
+            __typename
+          }
+          __typename
+        }
+      }
+    }
+    update
+    __typename
+  }
+}

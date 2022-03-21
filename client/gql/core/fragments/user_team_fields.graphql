@@ -1,0 +1,9 @@
+#import "./user_fields.graphql"
+#import "../../eleden/fragments/team_fields.graphql"
+
+fragment UserTeamFields on UserType {
+  ...UserFields
+  teams {
+    ...TeamFields
+  }
+}

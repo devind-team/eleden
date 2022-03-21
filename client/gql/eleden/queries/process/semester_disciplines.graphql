@@ -1,0 +1,12 @@
+#import "../../fragments/discipline_fields.graphql"
+
+query SemesterDisciplines($teamId: ID!, $courseNumber: Int!, $semesterNumber: Int!, $hasCourses: Boolean!) {
+  semesterDisciplines(
+    teamId: $teamId,
+    courseNumber: $courseNumber,
+    semesterNumber: $semesterNumber,
+    hasCourses: $hasCourses
+  ) {
+    ...DisciplineFields
+  }
+}

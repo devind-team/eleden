@@ -1,0 +1,12 @@
+mutation UnloadEduPrograms($extension: String!) {
+  unloadEduPrograms(input: { extension: $extension }) {
+    success
+    errors {
+      field
+      messages
+      __typename
+    }
+    src
+    __typename
+  }
+}

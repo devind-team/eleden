@@ -1,0 +1,10 @@
+mutation DeleteMessages($messageIds: [ID!]!, $chatId: ID!, $forEveryone: Boolean!) {
+  deleteMessages(input: { messageIds: $messageIds, chatId: $chatId, forEveryone: $forEveryone }) {
+    success
+    errors {
+      field
+      messages
+    }
+    __typename
+  }
+}

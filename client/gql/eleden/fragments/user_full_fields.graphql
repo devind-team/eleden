@@ -1,0 +1,36 @@
+#import "../../core/fragments/user_fields.graphql"
+#import "./edu_program_fields.graphql"
+
+fragment UserFullFields on UserType {
+  ...UserFields
+  change
+  responsibleTeams {
+    id
+    name
+    shortName
+    admission
+  }
+  jobs {
+    id
+    jobPosts {
+      id
+      rate
+      kind
+      post {
+        id
+        name
+        __typename
+      }
+    }
+    team {
+      id
+      name
+      shortName
+      eduProgram {
+        ...EduProgramFields
+      }
+      __typename
+    }
+    __typename
+  }
+}

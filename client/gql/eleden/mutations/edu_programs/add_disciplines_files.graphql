@@ -1,0 +1,17 @@
+#import "../../fragments/discipline_fields.graphql"
+
+mutation AddDisciplinesFiles($eduProgramId: ID!, $file: Upload!) {
+  addDisciplinesFiles(input: {
+    eduProgramId: $eduProgramId,
+    file: $file
+  }) {
+    success
+    errors {
+      field
+      messages
+    }
+    disciplines {
+      ...DisciplineFields
+    }
+  }
+}

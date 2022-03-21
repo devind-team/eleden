@@ -1,0 +1,14 @@
+#import "../../fragments/methodological_support_fields.graphql"
+
+mutation AddEduProgramMethodologicalSupports($eduProgramId: ID!, $file: Upload!) {
+  addEduProgramMethodologicalSupports(input: { eduProgramId: $eduProgramId, file: $file }) {
+    success
+    errors {
+      field
+      messages
+    }
+    methodologicalSupports {
+      ...MethodologicalSupportFields
+    }
+  }
+}

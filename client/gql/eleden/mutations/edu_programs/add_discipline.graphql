@@ -1,0 +1,39 @@
+#import "../../fragments/discipline_fields.graphql"
+#import "../../fragments/edu_program_fields.graphql"
+
+mutation AddDiscipline(
+  $code: String!,
+  $name: String!,
+  $eduProgramId: ID!,
+  $userIds: [ID!]!,
+  $viewId: ID,
+  $parentId: ID,
+  $annotation: Upload,
+  $workProgram: Upload,
+  $methodologicalSupport: [MethodologicalSupportInputType]
+) {
+  addDiscipline(input: {
+    code: $code,
+    name: $name,
+    eduProgramId: $eduProgramId,
+    userIds: $userIds,
+    viewId: $viewId,
+    parentId: $parentId,
+    annotation: $annotation,
+    workProgram: $workProgram,
+    methodologicalSupport: $methodologicalSupport
+  }) {
+    success
+    errors {
+      field
+      messages
+    }
+    discipline {
+      ...DisciplineFields
+      eduProgram {
+        ...EduProgramFields
+      }
+    }
+    __typename
+  }
+}

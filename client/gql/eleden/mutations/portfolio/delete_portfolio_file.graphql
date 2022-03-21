@@ -1,0 +1,5 @@
+mutation DeletePortfolioFile($portfolioFileId:ID!){
+  deletePortfolioFile(input: { portfolioFileId: $portfolioFileId }) {
+    success
+  }
+}

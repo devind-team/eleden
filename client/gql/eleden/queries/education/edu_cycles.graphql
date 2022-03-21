@@ -1,0 +1,21 @@
+query EduCycles {
+  eduCycles {
+    id
+    name
+    code
+    order
+    blockKind {
+      id
+      name
+      order
+      __typename
+    }
+    disciplineKind {
+      id
+      name
+      order
+      __typename
+    }
+    __typename
+  }
+}

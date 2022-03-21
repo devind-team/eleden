@@ -1,0 +1,17 @@
+query EduProgramStatistics($directions: [ID!]!, $admissions: [String!]!, $eduForms: [String!]!) {
+  eduProgramsStatistics(directions: $directions, admissions: $admissions, eduForms: $eduForms) {
+    id
+    directionCode
+    directionName
+    eduForm
+    name
+    admission
+    points {
+      name
+      value
+      total
+      __typename
+    }
+    __typename
+  }
+}

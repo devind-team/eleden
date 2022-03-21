@@ -1,0 +1,9 @@
+query Competence($disciplineId: ID!){
+  disciplineCompetences(disciplineId: $disciplineId) {
+    id
+    name
+    code
+    category
+    __typename
+  }
+}

@@ -1,0 +1,16 @@
+#import "../../fragments/discipline_fields.graphql"
+#import "../../fragments/edu_program_fields.graphql"
+
+query Disciplines($eduProgramId: ID!, $viewId: Float, $search: String) {
+  disciplines(eduProgram_Id: $eduProgramId, view_Id: $viewId, code_Icontains: $search, name_Icontains: $search) {
+     edges {
+       node {
+         ...DisciplineFields
+         eduProgram {
+           ...EduProgramFields
+         }
+       }
+    }
+    __typename
+  }
+}

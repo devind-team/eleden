@@ -1,0 +1,5 @@
+mutation DeleteJobPost($jobPostId: ID!) {
+  deleteJobPost(input: { jobPostId: $jobPostId }) {
+    success
+  }
+}

@@ -1,0 +1,14 @@
+#import "../../fragments/methodological_support_fields.graphql"
+
+mutation ChangeMethodologicalSupport($methodologicalSupportId: ID!, $name: String!) {
+  changeMethodologicalSupport(input: { methodologicalSupportId: $methodologicalSupportId, name: $name }) {
+    methodologicalSupport {
+      ...MethodologicalSupportFields
+    }
+    success
+    errors {
+      field
+      messages
+    }
+  }
+}

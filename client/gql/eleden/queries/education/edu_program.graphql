@@ -1,0 +1,7 @@
+#import "../../fragments/edu_program_fields.graphql"
+
+query EduProgram($eduProgramId: ID!) {
+  eduProgram(eduProgramId: $eduProgramId) {
+    ...EduProgramFields
+  }
+}

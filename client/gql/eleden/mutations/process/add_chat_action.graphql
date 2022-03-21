@@ -1,0 +1,12 @@
+#mutation AddChatAction($courseId: ID!, $action: ConsumerActionType!) {
+#  addChatAction(input: {
+#    courseId: $courseId,
+#    action: $action
+#  }) {
+#    success
+#    errors {
+#      field
+#      messages
+#    }
+#  }
+#}

@@ -1,0 +1,5 @@
+fragment ArticleKindFields on ArticleKindType {
+  id
+  name
+  __typename
+}

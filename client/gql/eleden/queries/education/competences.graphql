@@ -1,0 +1,15 @@
+query Competences($first: Int, $search: String, $excludeDisciplineId: ID){
+  competences(first: $first, name_Icontains: $search, excludeDisciplineId: $excludeDisciplineId) {
+    edges {
+      node {
+        id
+        name
+        code
+        category
+        __typename
+      }
+      __typename
+    }
+    __typename
+  }
+}

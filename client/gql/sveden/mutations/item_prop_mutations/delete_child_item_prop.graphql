@@ -1,0 +1,11 @@
+mutation DeleteChildItemProp($input: DeleteChildItemPropMutationInput!) {
+  deleteChildItemProp(input: $input) {
+    success
+    errors {
+      field
+      messages
+      __typename
+    }
+    __typename
+  }
+}

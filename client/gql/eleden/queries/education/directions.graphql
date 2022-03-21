@@ -1,0 +1,15 @@
+query Directions {
+  directions {
+    id
+    code
+    name
+    secret
+    delete
+    eduService {
+      id
+      name
+      __typename
+    }
+    __typename
+  }
+}

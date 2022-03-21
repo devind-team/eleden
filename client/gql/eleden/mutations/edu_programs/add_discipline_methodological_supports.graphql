@@ -1,0 +1,14 @@
+#import "../../fragments/methodological_support_fields.graphql"
+
+mutation AddDisciplineMethodologicalSupports($disciplineId: ID!, $file: Upload!) {
+  addDisciplineMethodologicalSupports(input: { disciplineId: $disciplineId, file: $file }) {
+    success
+    errors {
+      field
+      messages
+    }
+    methodologicalSupports {
+      ...MethodologicalSupportFields
+    }
+  }
+}

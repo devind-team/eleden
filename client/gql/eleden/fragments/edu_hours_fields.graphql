@@ -1,0 +1,17 @@
+#import "./work_kind_fields.graphql"
+
+fragment EduHoursFields on EduHoursType {
+  id
+  courseNumber
+  semesterNumber
+  value
+  discipline {
+    id
+    name
+    __typename
+  }
+  workKind {
+    ...WorkKindFields
+  }
+  __typename
+}

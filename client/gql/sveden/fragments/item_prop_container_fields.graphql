@@ -1,0 +1,10 @@
+#import "./item_prop_fields.graphql"
+fragment ItemPropContainerFields on ItemPropContainerType {
+  id
+  header
+  isGenerated
+  values
+  schema {
+    ...ItemPropFields
+  }
+}

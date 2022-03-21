@@ -1,0 +1,52 @@
+#import "../../core/fragments/user_fields.graphql"
+#import "../fragments/chat_fields.graphql"
+
+query Members($chat: ID, $chatNameIcontains: String, $userId: ID, $first: Int, $after: String, $excluded: Boolean = false) {
+  members(
+    chat: $chat,
+    chat_Name_Icontains: $chatNameIcontains,
+    user: $userId,
+    first: $first,
+    after: $after,
+    excluded: $excluded
+  ) {
+    totalCount
+    pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
+      hasPreviousPage
+      __typename
+    }
+    edges {
+      node {
+        id
+        role
+        notification
+        favorite
+        excluded
+        createdAt
+        updatedAt
+        chat {
+          ...ChatFields
+          users {
+            ...UserFields
+          }
+          lastMessage {
+            id
+            text
+            user {
+              id
+              lastName
+              firstName
+              __typename
+            }
+            __typename
+          }
+        }
+        __typename
+      }
+      __typename
+    }
+  }
+}

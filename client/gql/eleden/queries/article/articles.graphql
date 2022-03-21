@@ -1,0 +1,28 @@
+#import "../../fragments/article_fields.graphql"
+#import "../../fragments/article_index_fields.graphql"
+#import "../../fragments/article_kind_fields.graphql"
+#import "../../fragments/article_author_fields.graphql"
+#import "../../../core/fragments/user_fields.graphql"
+
+query Articles($first: Int, $after: String,  $offset: Int, $search: String, $users: [ID], $years: [Int!]) {
+  articles(first: $first, offset: $offset, name_Icontains: $search, users: $users, year_In: $years, after: $after) {
+    totalCount
+    edges {
+      node {
+        ...ArticleFields
+        kind { ...ArticleKindFields }
+        index { ...ArticleIndexFields }
+        user { ...UserFields }
+        users { ...UserFields }
+        authors { ...ArticleAuthorFields
+          user {
+            ...UserFields
+            __typename
+          }
+        }
+        __typename
+      }
+      __typename
+    }
+  }
+}

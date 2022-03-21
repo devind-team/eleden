@@ -1,0 +1,20 @@
+#import '../../fragments/process_team_fields.graphql'
+
+query CourseTeams($first: Int, $offset: Int, $search: String, $courseCount: Float, $courseCountGt: Float) {
+  teams(
+    first: $first,
+    offset: $offset,
+    name_Icontains: $search,
+    shortName_Icontains: $search,
+    admission_Icontains: $search,
+    courseCount: $courseCount,
+    courseCount_Gt: $courseCountGt
+  ) {
+    totalCount
+    edges {
+      node {
+        ...ProcessTeamFields
+      }
+    }
+  }
+}

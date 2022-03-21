@@ -1,0 +1,13 @@
+#import "../../core/fragments/user_fields.graphql"
+
+query AttachedFiles($chatId: ID!, $userId: ID) {
+  attachedFiles(chatId: $chatId, userId: $userId) {
+    id
+    src
+    user {
+      ...UserFields
+    }
+    createdAt
+    __typename
+  }
+}

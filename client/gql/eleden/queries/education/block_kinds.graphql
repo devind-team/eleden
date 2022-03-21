@@ -1,0 +1,8 @@
+query BlockKinds {
+  blockKinds {
+    id
+    name
+    order
+    __typename
+  }
+}

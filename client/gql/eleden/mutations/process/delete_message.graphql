@@ -1,0 +1,9 @@
+#mutation DeleteMessage($messageId: ID!) {
+#  deleteMessage(input: { messageId: $messageId }) {
+#    success
+#    errors {
+#      field
+#      messages
+#    }
+#  }
+#}

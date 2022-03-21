@@ -1,0 +1,14 @@
+#import "../../fragments/portfolio_file_fields.graphql"
+
+mutation ConfirmPortfolioFile($portfolioFileId: ID!) {
+  confirmPortfolioFile(input: { portfolioFileId: $portfolioFileId }) {
+    success
+    errors {
+      field
+      messages
+    }
+    portfolioFile {
+      ...PortfolioFileFields
+    }
+  }
+}

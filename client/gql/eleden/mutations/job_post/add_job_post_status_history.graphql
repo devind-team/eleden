@@ -1,0 +1,32 @@
+#import "../../fragments/job_post_status_history_fields.graphql"
+
+mutation AddJobPostStatusHistory(
+  $jobPostId: ID!,
+  $statusId: ID!,
+  $statusCreatedAt: Date!,
+  $generateDocx: Boolean!,
+  $generatePdf: Boolean!,
+  $completePrevious: Boolean
+) {
+  addJobPostStatusHistory(input: {
+    jobPostId: $jobPostId
+    statusId: $statusId,
+    statusCreatedAt: $statusCreatedAt,
+    generateDocx: $generateDocx,
+    generatePdf: $generatePdf
+    completePrevious: $completePrevious
+  }) {
+    success
+    errors {
+      field
+      messages
+    }
+    newJobPostStatusHistory {
+      ...JobPostStatusHistoryFields
+    }
+    completedJobPostStatusHistory {
+      ...JobPostStatusHistoryFields
+    }
+    src
+  }
+}

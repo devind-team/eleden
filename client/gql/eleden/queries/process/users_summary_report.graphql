@@ -1,0 +1,7 @@
+#import '../../fragments/team_summary_report_fields.graphql'
+
+query UsersSummaryReport($userIds: [ID!]!) {
+  usersSummaryReport(userIds: $userIds) {
+    ...TeamSummaryReportFields
+  }
+}

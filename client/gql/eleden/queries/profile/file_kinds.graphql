@@ -1,0 +1,10 @@
+query FileKinds {
+  fileKinds {
+    id
+    name
+    accept
+    createdAt
+    updatedAt
+    __typename
+  }
+}

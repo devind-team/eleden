@@ -1,0 +1,30 @@
+#import "../../fragments/attachment_fields.graphql"
+
+mutation AddFileAttachments(
+  $courseId: ID!,
+  $periodId: ID!,
+  $userId: ID!,
+  $files: [Upload!]!,
+  $describe: String!,
+  $fileKindId: ID!,
+  $confirmedById: ID
+) {
+  addFileAttachments(input: {
+    courseId: $courseId,
+    periodId: $periodId,
+    userId: $userId,
+    files: $files,
+    describe: $describe,
+    fileKindId: $fileKindId,
+    confirmedById: $confirmedById
+  }) {
+    success
+    errors {
+      field
+      messages
+    }
+    attachments {
+      ...AttachmentFields
+    }
+  }
+}

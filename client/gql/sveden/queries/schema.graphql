@@ -1,0 +1,26 @@
+query Schema {
+  subsections {
+    id
+    url
+    header
+    itemPropContainers {
+      id
+      header
+      isGenerated
+      schema {
+        id
+        children {
+          id
+          itemProp
+          header
+          showPosition
+          __typename
+        }
+        itemProp
+        __typename
+      }
+      values
+    }
+    __typename
+  }
+}

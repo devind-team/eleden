@@ -1,0 +1,28 @@
+#import "../../fragments/portfolio_file_fields.graphql"
+
+mutation AddPortfolioFiles(
+  $teamId: ID!,
+  $describe: String!,
+  $typeId: ID!,
+  $file: Upload!,
+  $disciplineId: ID,
+  $confirm: Boolean
+) {
+  addPortfolioFiles(input: {
+    teamId: $teamId,
+    describe: $describe,
+    kindId: $typeId,
+    file: $file,
+    disciplineId: $disciplineId,
+    confirm: $confirm
+  }) {
+    success
+    errors {
+      field
+      messages
+    }
+    portfolioFiles {
+      ...PortfolioFileFields
+    }
+  }
+}

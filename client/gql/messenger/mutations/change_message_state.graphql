@@ -1,0 +1,11 @@
+mutation ChangeMessageState($messageIds: [ID!]!, $state: String!) {
+  changeMessageState(input: {messageIds: $messageIds, state: $state}) {
+    success
+    errors {
+      field
+      messages
+      __typename
+    }
+    __typename
+  }
+}

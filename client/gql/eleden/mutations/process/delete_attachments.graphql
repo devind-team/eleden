@@ -1,0 +1,9 @@
+mutation DeleteAttachments($attachmentIds: [ID!]!) {
+  deleteAttachments(input: { attachmentIds: $attachmentIds }) {
+    success
+    errors {
+      field
+      messages
+    }
+  }
+}

@@ -1,0 +1,10 @@
+#import "./item_prop_container_fields.graphql"
+fragment SubsectionFields on SubsectionType {
+  id
+  url
+  header
+  itemPropContainers {
+    ...ItemPropContainerFields
+  }
+  __typename
+}

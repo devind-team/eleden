@@ -1,0 +1,15 @@
+#import '../../fragments/team_groups_user_fields.graphql'
+#import '../../fragments/job_fields.graphql'
+#import "../../fragments/edu_program_fields.graphql"
+
+query Team($teamId: ID!) {
+  team(teamId: $teamId) {
+    ...TeamGroupsUserFields
+    jobs {
+      ...JobFields
+    }
+    eduProgram {
+      ...EduProgramFields
+    }
+  }
+}

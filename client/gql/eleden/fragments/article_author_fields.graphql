@@ -1,0 +1,9 @@
+fragment ArticleAuthorFields on AuthorType {
+  id
+  name
+  weight
+  order
+  createdAt
+  updatedAt
+  __typename
+}

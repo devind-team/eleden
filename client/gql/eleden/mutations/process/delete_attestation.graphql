@@ -1,0 +1,9 @@
+mutation DeleteAttestation($attestationId: ID!) {
+  deleteAttestation(input: { attestationId: $attestationId }) {
+    success
+    errors {
+      field
+      messages
+    }
+  }
+}

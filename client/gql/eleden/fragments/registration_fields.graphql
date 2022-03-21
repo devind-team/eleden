@@ -1,0 +1,8 @@
+fragment RegistrationFields on RegistrationType {
+  id
+  name
+  shortName
+  kind
+  order
+  __typename
+}

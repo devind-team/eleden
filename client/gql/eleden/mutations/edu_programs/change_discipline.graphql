@@ -1,0 +1,36 @@
+#import "../../fragments/discipline_fields.graphql"
+
+mutation ChangeDiscipline(
+  $disciplineId: ID!,
+  $viewId: ID!,
+  $userIds: [ID!]!,
+  $deleteAnnotation: Boolean!,
+  $deleteWorkProgram: Boolean!,
+  $code: String,
+  $name: String,
+  $annotation: Upload,
+  $workProgram: Upload,
+  $parentId: ID
+) {
+  changeDiscipline(input: {
+    disciplineId: $disciplineId,
+    viewId: $viewId,
+    userIds: $userIds,
+    deleteAnnotation: $deleteAnnotation,
+    deleteWorkProgram: $deleteWorkProgram,
+    code: $code,
+    name: $name,
+    annotation: $annotation,
+    workProgram: $workProgram,
+    parentId: $parentId
+  }) {
+    success
+    errors {
+      field
+      messages
+    }
+    discipline {
+      ...DisciplineFields
+    }
+  }
+}

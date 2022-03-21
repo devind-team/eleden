@@ -1,0 +1,3 @@
+query EduProgramCoursesNumbers($eduProgramId: ID!) {
+  eduProgramCoursesNumbers(eduProgramId: $eduProgramId)
+}

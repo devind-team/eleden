@@ -1,0 +1,11 @@
+#import "../../../core/fragments/user_fields.graphql"
+query ArticlesYears {
+  articlesYears
+  articlesUsers {
+    edges {
+      node {
+        ...UserFields
+      }
+    }
+  }
+}

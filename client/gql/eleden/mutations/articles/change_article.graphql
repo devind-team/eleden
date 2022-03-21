@@ -1,0 +1,46 @@
+#import "../../fragments/article_fields.graphql"
+#import "../../fragments/article_index_fields.graphql"
+#import "../../fragments/article_author_fields.graphql"
+#import "../../../core/fragments/user_fields.graphql"
+#import "../../fragments/article_kind_fields.graphql"
+
+
+mutation ChangeArticle(
+  $articleId: ID!,
+  $name: String!,
+  $year: Int!,
+  $indexId: ID!,
+  $kindId: ID!,
+  $workload: Float,
+  $authors: [AuthorInputType!]!,
+  $additional: String!
+) {
+  changeArticle(input: {
+    articleId: $articleId
+    name: $name,
+    year: $year,
+    indexId: $indexId,
+    kindId: $kindId,
+    workload: $workload,
+    authors: $authors,
+    additional: $additional
+  }) {
+    success
+    errors {
+      messages
+      __typename
+    }
+    article {
+      ...ArticleFields
+      kind { ...ArticleKindFields }
+      index { ...ArticleIndexFields }
+      user { ...UserFields }
+      users { ...UserFields }
+      authors { ...ArticleAuthorFields
+        user {
+            ...UserFields
+        }}
+    }
+    __typename
+  }
+}

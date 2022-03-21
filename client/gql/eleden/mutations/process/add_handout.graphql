@@ -1,0 +1,14 @@
+#import "../../fragments/handout_fields.graphql"
+
+mutation AddHandout($description: String!, $file: Upload!, $courseId: ID!, $periodId: ID!) {
+  addHandout(input: { description: $description, file: $file, courseId: $courseId, periodId: $periodId }) {
+    success
+    errors {
+      field
+      messages
+    }
+    handout {
+      ...HandoutFields
+    }
+  }
+}

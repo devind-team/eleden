@@ -1,0 +1,32 @@
+#import "../../core/fragments/user_fields.graphql"
+#import "../../core/fragments/permissions_interface_fields.graphql"
+
+fragment TeamGroupsUserFields on TeamType {
+  id
+  name
+  shortName
+  admission
+  delete
+  createdAt
+  updatedAt
+  group {
+    id
+    name
+    __typename
+  }
+  responsibleUsers {
+    ...UserFields
+  }
+  parent {
+    id
+    name
+    shortName
+    admission
+    __typename
+  }
+  permissions {
+    ...PermissionsInterfaceFields
+    canViewTeamMembers
+  }
+  __typename
+}

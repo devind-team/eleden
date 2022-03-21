@@ -1,0 +1,12 @@
+mutation UnloadUsers ($extension: String!, $usersId: [ID!]!, $teamId: ID!) {
+  unloadUsers(input: { extension: $extension, usersId: $usersId, teamId: $teamId }) {
+    success
+    errors {
+      field
+      messages
+      __typename
+    }
+    src
+    __typename
+  }
+}

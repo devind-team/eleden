@@ -1,0 +1,39 @@
+#import "../../core/fragments/user_fields.graphql"
+
+fragment PortfolioFileFields on PortfolioFileType {
+  id
+  describe
+  updatedAt
+  createdAt
+  file {
+    id
+    name
+    src
+    user {
+      id
+      avatar
+      lastName
+      firstName
+      sirName
+      change
+      __typename
+    }
+    __typename
+  }
+  kind {
+    id
+    name
+    __typename
+  }
+  discipline {
+    id
+    code
+    name
+    __typename
+  }
+  user {
+    ...UserFields
+    change
+  }
+  __typename
+}

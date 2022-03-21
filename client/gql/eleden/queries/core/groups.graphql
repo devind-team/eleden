@@ -1,0 +1,6 @@
+query RawGroups {
+  groups {
+    id
+    name
+  }
+}

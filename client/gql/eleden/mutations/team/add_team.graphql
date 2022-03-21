@@ -1,0 +1,26 @@
+#import '../../fragments/team_groups_user_fields.graphql'
+
+mutation AddTeam(
+  $name: String!,
+  $shortName: String!,
+  $admission: Int!,
+  $groupId: ID,
+  $parentId: ID
+) {
+  addTeam(input: {
+    name: $name,
+    shortName: $shortName,
+    admission: $admission,
+    groupId: $groupId,
+    parentId: $parentId
+  }) {
+    success
+    errors {
+      field
+      messages
+    }
+    team {
+      ...TeamGroupsUserFields
+    }
+  }
+}

@@ -1,0 +1,15 @@
+[
+  {
+    "name": "Обновление образовательных программ",
+    "description": "Обновляет образовательные программы в sveden",
+    "task": "apps.sveden.tasks.sveden_tasks.fill_edu_programs",
+    "args": "[\"https://eleden.sbmpei.ru/\"]",
+    "interval": 1
+  },
+  {
+    "name": "Обновление пользователей",
+    "description": "Обновляет пользователей в sveden",
+    "task": "apps.sveden.tasks.sveden_tasks.fill_users",
+    "interval": 1
+  }
+]

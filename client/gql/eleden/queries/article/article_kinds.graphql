@@ -1,0 +1,7 @@
+query ArticleKinds {
+  articleKinds {
+    id
+    name
+    __typename
+  }
+}

@@ -1,0 +1,24 @@
+#import "../../fragments/article_fields.graphql"
+#import "../../fragments/article_index_fields.graphql"
+#import "../../../core/fragments/user_fields.graphql"
+#import "../../fragments/article_kind_fields.graphql"
+
+mutation AddArticleFromBibtex(
+  $file: Upload,
+) {
+  addArticleFromBibtex(input: { file: $file }) {
+    success
+    errors {
+      messages
+      __typename
+    }
+    articles {
+      ...ArticleFields
+      kind { ...ArticleKindFields }
+      index { ...ArticleIndexFields }
+      user { ...UserFields }
+      users { ...UserFields }
+    }
+    __typename
+  }
+}

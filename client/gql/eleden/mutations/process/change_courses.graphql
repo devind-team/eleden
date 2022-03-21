@@ -1,0 +1,19 @@
+#import "../../fragments/course_fields.graphql"
+
+mutation ChangeCourses($disciplineId: ID! $teamId: ID!, $courses: [CourseInputType!]) {
+  changeCourses(input: {
+    teamId: $teamId,
+    courses: $courses,
+    disciplineId: $disciplineId
+  }) {
+    success
+    errors {
+      field
+      messages
+    }
+    courses {
+      ...CourseFields
+    }
+    hasCourses
+  }
+}

@@ -1,0 +1,11 @@
+mutation DeleteDiscipline($disciplineId: ID!) {
+  deleteDiscipline(input: { disciplineId: $disciplineId }) {
+    success
+    errors {
+      field
+      messages
+    }
+    id
+    __typename
+  }
+}

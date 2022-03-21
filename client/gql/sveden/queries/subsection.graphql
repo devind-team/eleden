@@ -1,0 +1,6 @@
+#import "../fragments/subsection_fields.graphql"
+query Subsection($url: String!) {
+  subsection(url: $url) {
+    ...SubsectionFields
+  }
+}

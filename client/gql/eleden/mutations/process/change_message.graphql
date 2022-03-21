@@ -1,0 +1,17 @@
+##import "../../fragments/message_fields.graphql"
+#
+#mutation ChangeMessage($messageId: ID!, $text: String!) {
+#  changeMessage(input: {
+#    messageId: $messageId,
+#    text: $text
+#  }) {
+#    success
+#    errors {
+#      field
+#      messages
+#    }
+#    message {
+#      ...MessageFields
+#    }
+#  }
+#}

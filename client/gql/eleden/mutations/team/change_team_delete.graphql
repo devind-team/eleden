@@ -1,0 +1,22 @@
+#import '../../fragments/team_groups_user_fields.graphql'
+#import '../../fragments/job_fields.graphql'
+#import "../../fragments/edu_program_fields.graphql"
+
+mutation ChangeTeamDelete($teamId: ID!, $delete: Boolean!) {
+  changeTeamDelete(input: { teamId: $teamId, delete: $delete }) {
+    success
+    errors {
+      field
+      messages
+    }
+    team {
+      ...TeamGroupsUserFields
+      jobs {
+        ...JobFields
+      }
+      eduProgram {
+        ...EduProgramFields
+      }
+    }
+  }
+}

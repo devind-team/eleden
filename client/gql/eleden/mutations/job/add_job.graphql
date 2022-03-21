@@ -1,0 +1,35 @@
+#import "../../fragments/job_fields.graphql"
+
+mutation AddJob(
+  $rate: Float!,
+  $kind: String!,
+  $teamId: ID!,
+  $userId: ID!,
+  $postId: ID!,
+  $statusId: ID!,
+  $statusCreatedAt: Date!,
+  $generateDocx: Boolean!,
+  $generatePdf: Boolean!
+) {
+  addJob(input: {
+    rate: $rate,
+    kind: $kind,
+    teamId: $teamId,
+    userId: $userId,
+    postId: $postId,
+    statusId: $statusId,
+    statusCreatedAt: $statusCreatedAt,
+    generateDocx: $generateDocx,
+    generatePdf: $generatePdf
+  }) {
+    success
+    errors {
+      field
+      messages
+    }
+    job {
+      ...JobFields
+    }
+    src
+  }
+}

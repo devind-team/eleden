@@ -1,0 +1,30 @@
+#import '../../fragments/team_groups_user_fields.graphql'
+
+mutation UploadTeams($file: Upload!) {
+  uploadTeams(input: { file: $file }) {
+    success
+    errors {
+      row
+      errors {
+        field
+        messages
+      }
+    }
+    table {
+      headers
+      rows {
+        index
+        cells {
+          header
+          value
+        }
+      }
+    }
+    teams {
+      ...TeamGroupsUserFields,
+      parent {
+        ...TeamGroupsUserFields
+      }
+    }
+  }
+}

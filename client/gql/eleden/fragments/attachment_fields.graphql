@@ -1,0 +1,14 @@
+#import "./portfolio_file_fields.graphql"
+
+fragment AttachmentFields on AttachmentType {
+  id
+  createdAt
+  period {
+    id
+    __typename
+  }
+  portfolioFile {
+    ...PortfolioFileFields
+  }
+  __typename
+}

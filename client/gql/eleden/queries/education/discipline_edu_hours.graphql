@@ -1,0 +1,7 @@
+#import "../../fragments/edu_hour_fields.graphql"
+
+query DisciplineEduHours($disciplineId: ID!){
+  disciplineEduHours(disciplineId: $disciplineId) {
+    ...EduHourFields
+  }
+}

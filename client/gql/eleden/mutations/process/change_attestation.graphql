@@ -1,0 +1,26 @@
+#import "../../fragments/attestation_fields.graphql"
+
+mutation ChangeAttestation (
+  $attestationId: ID!,
+  $description: String,
+  $registrationId: ID,
+  $setById: ID,
+  $confirmedById: ID
+) {
+  changeAttestation(input: {
+    attestationId: $attestationId,
+    description: $description,
+    registrationId: $registrationId,
+    setById: $setById,
+    confirmedById: $confirmedById
+  }) {
+    success
+    errors {
+      field
+      messages
+    }
+    attestation {
+      ...AttestationFields
+    }
+  }
+}

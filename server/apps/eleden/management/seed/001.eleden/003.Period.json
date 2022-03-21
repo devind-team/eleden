@@ -1,0 +1,161 @@
+[
+  {
+    "name": "1 неделя",
+    "short_name": "1",
+    "order": 1,
+    "registrations": [1, 2, 6, 7, 8, 9]
+  },
+  {
+    "name": "2 неделя",
+    "short_name": "2",
+    "order": 2,
+    "registrations": [1, 2, 6, 7, 8, 9]
+  },
+  {
+    "name": "3 неделя",
+    "short_name": "3",
+    "order": 3,
+    "registrations": [1, 2, 6, 7, 8, 9]
+  },
+  {
+    "name": "4 неделя",
+    "short_name": "4",
+    "order": 4,
+    "registrations": [1, 2, 6, 7, 8, 9]
+  },
+  {
+    "name": "5 неделя",
+    "short_name": "5",
+    "order": 5,
+    "registrations": [1, 2, 6, 7, 8, 9]
+  },
+  {
+    "name": "6 неделя",
+    "short_name": "6",
+    "order": 6,
+    "registrations": [1, 2, 6, 7, 8, 9]
+  },
+  {
+    "name": "Контрольная неделя 1",
+    "short_name": "кн1",
+    "order": 7,
+    "registrations": [3, 4, 5]
+  },
+  {
+    "name": "7 неделя",
+    "short_name": "7",
+    "order": 8,
+    "registrations": [1, 2, 6, 7, 8, 9]
+  },
+  {
+    "name": "8 неделя",
+    "short_name": "8",
+    "order": 9,
+    "registrations": [1, 2, 6, 7, 8, 9]
+  },
+  {
+    "name": "9 неделя",
+    "short_name": "9",
+    "order": 10,
+    "registrations": [1, 2, 6, 7, 8, 9]
+  },
+  {
+    "name": "10 неделя",
+    "short_name": "10",
+    "order": 11,
+    "registrations": [1, 2, 6, 7, 8, 9]
+  },
+  {
+    "name": "11 неделя",
+    "short_name": "11",
+    "order": 12,
+    "registrations": [1, 2, 6, 7, 8, 9]
+  },
+  {
+    "name": "12 неделя",
+    "short_name": "12",
+    "order": 13,
+    "registrations": [1, 2, 6, 7, 8, 9]
+  },
+  {
+    "name": "Контрольная неделя 2",
+    "short_name": "кн2",
+    "order": 14,
+    "registrations": [3, 4, 5]
+  },
+  {
+    "name": "13 неделя",
+    "short_name": "13",
+    "order": 15,
+    "registrations": [1, 2, 6, 7, 8, 9]
+  },
+  {
+    "name": "14 неделя",
+    "short_name": "14",
+    "order": 16,
+    "registrations": [1, 2, 6, 7, 8, 9]
+  },
+  {
+    "name": "15 неделя",
+    "short_name": "15",
+    "order": 17,
+    "registrations": [1, 2, 6, 7, 8, 9]
+  },
+  {
+    "name": "16 неделя",
+    "short_name": "16",
+    "order": 18,
+    "registrations": [1, 2, 6, 7, 8, 9]
+  },
+  {
+    "name": "17 неделя",
+    "short_name": "17",
+    "order": 19,
+    "registrations": [1, 2, 6, 7, 8, 9]
+  },
+  {
+    "name": "18 неделя",
+    "short_name": "18",
+    "order": 20,
+    "registrations": [1, 2, 6, 7, 8, 9]
+  },
+  {
+    "name": "Допуск",
+    "short_name": "д",
+    "order": 21,
+    "registrations": [10]
+  },
+  {
+    "name": "Экзамен",
+    "short_name": "э",
+    "is_final": true,
+    "order": 22,
+    "registrations": [1, 2, 6, 7, 8, 9]
+  },
+  {
+    "name": "Зачет",
+    "short_name": "з",
+    "is_final": true,
+    "order": 23,
+    "registrations": [11]
+  },
+  {
+    "name": "Зачет с оценкой",
+    "short_name": "зо",
+    "is_final": true,
+    "order": 24,
+    "registrations": [6, 7, 8, 9]
+  },
+  {
+    "name": "Курсовая работа",
+    "short_name": "кр",
+    "order": 25,
+    "registrations": [6, 7, 8, 9]
+  },
+  {
+    "name": "Курсовой проект",
+    "short_name": "кп",
+    "order": 26,
+    "registrations": [6, 7, 8, 9]
+  }
+]

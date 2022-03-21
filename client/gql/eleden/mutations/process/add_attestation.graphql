@@ -1,0 +1,30 @@
+#import "../../fragments/attestation_fields.graphql"
+
+mutation AddAttestation (
+  $description: String!,
+  $registrationId: ID!,
+  $courseId: ID!,
+  $periodId: ID!,
+  $setById: ID!,
+  $userId: ID!,
+  $confirmedById: ID
+) {
+  addAttestation(input: {
+    description: $description,
+    registrationId: $registrationId,
+    courseId: $courseId,
+    periodId: $periodId,
+    setById: $setById,
+    userId: $userId,
+    confirmedById: $confirmedById
+  }) {
+    success
+    errors {
+      field
+      messages
+    }
+    attestation {
+      ...AttestationFields
+    }
+  }
+}

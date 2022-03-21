@@ -1,0 +1,13 @@
+mutation DeleteArticle(
+  $articleId: ID!,
+  $userId: ID!
+) {
+  deleteArticle(input: {userId: $userId, articleId: $articleId}) {
+    success
+    errors {
+      messages
+      __typename
+    }
+    __typename
+  }
+}

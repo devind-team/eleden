@@ -1,0 +1,19 @@
+#import "../../fragments/handout_fields.graphql"
+
+query CourseHandouts($courseId: ID!, $periodIds: [ID!], $search: String, $offset: Int, $first: Int) {
+  courseHandouts(
+    courseId: $courseId,
+    periodId_In: $periodIds,
+    description_Icontains: $search,
+    offset: $offset,
+    first: $first
+  ) {
+    totalCount
+    edges {
+      node {
+        ...HandoutFields
+      }
+    }
+    __typename
+  }
+}

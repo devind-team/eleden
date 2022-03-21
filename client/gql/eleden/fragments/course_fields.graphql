@@ -1,0 +1,24 @@
+#import "./edu_hours_fields.graphql"
+#import './process_team_fields.graphql'
+#import "../../core/fragments/user_fields.graphql"
+
+fragment CourseFields on CourseType {
+  id
+  semester
+  eduHours {
+    ...EduHoursFields
+  }
+  team {
+    ...ProcessTeamFields
+  }
+  teachers {
+    ...UserFields
+  }
+  periods {
+    id
+    name
+    shortName
+    __typename
+  }
+  __typename
+}

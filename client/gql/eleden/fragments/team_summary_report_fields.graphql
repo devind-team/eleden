@@ -1,0 +1,46 @@
+#import "../../core/fragments/user_fields.graphql"
+#import "./registration_fields.graphql"
+
+fragment TeamSummaryReportFields on TeamSummaryReportType {
+  team {
+    id
+    name
+    __typename
+  }
+  eduHours {
+    id
+    courseNumber
+    semesterNumber
+    discipline {
+      id
+      name
+      __typename
+    }
+    workKind {
+      id
+      name
+      shortName
+      __typename
+    }
+    __typename
+  }
+  attestations {
+    id
+    course {
+      id
+      eduHours {
+        id
+        __typename
+      }
+      __typename
+    }
+    registration {
+      ...RegistrationFields
+    }
+    user {
+      ...UserFields
+    }
+    __typename
+  }
+  __typename
+}

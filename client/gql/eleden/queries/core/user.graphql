@@ -1,0 +1,7 @@
+#import "../../fragments/user_full_fields.graphql"
+
+query User($userId: ID!) {
+  user(userId: $userId) {
+    ...UserFullFields
+  }
+}

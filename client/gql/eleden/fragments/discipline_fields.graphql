@@ -1,0 +1,33 @@
+#import "../../core/fragments/user_fields.graphql"
+#import "./methodological_support_fields.graphql"
+
+fragment DisciplineFields on DisciplineType {
+  id
+  code
+  name
+  annotation
+  annotationSign
+  workProgram
+  workProgramSign
+  updatedAt
+  view {
+    id
+    name
+    order
+    __typename
+  }
+  users {
+    ...UserFields
+  }
+  parent {
+    id
+    code
+    name
+    __typename
+  }
+  order
+  methodologicalSupport {
+    ...MethodologicalSupportFields
+  }
+  __typename
+}

@@ -1,0 +1,34 @@
+#import "../../fragments/course_fields.graphql"
+
+query Courses(
+  $teamId: ID,
+  $semester: Float,
+  $disciplineIds: [ID!],
+  $workKindIds: [ID!],
+  $teachersIds: [ID!],
+  $search: String,
+  $offset: Int,
+  $first: Int
+) {
+  courses(
+    teamId: $teamId,
+    semester: $semester,
+    disciplineId_In: $disciplineIds,
+    workKindId_In: $workKindIds,
+    teacherId_In: $teachersIds,
+    semester_Icontains: $search,
+    disciplineName_Icontains: $search,
+    workKindName_Icontains: $search,
+    teachersNames_Icontains: $search,
+    offset: $offset,
+    first: $first
+  ) {
+    totalCount
+    edges {
+      node {
+        ...CourseFields
+      }
+    }
+    __typename
+  }
+}

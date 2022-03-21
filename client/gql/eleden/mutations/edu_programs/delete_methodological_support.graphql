@@ -1,0 +1,9 @@
+mutation DeleteMethodologicalSupport($methodologicalSupportId: ID!) {
+  deleteMethodologicalSupport(input: { methodologicalSupportId: $methodologicalSupportId }) {
+    success
+    errors {
+      field
+      messages
+    }
+  }
+}

@@ -1,0 +1,111 @@
+{% load user_tag %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Список пользователей</title>
+      <style>
+        table {
+          border: 1px solid black;
+          border-collapse: collapse;
+        }
+        table thead tr td, table tbody tr td {
+          font-size: 10px;
+          padding: 3px;
+          border: 1px solid black;
+        }
+        table thead tr:nth-child(1) {
+          font-weight: bold;
+          background-color: lightgrey;
+        }
+        table thead tr {
+          text-align: center;
+        }
+        img {
+          border-radius: 50%;
+          padding: 6px;
+        }
+        .avatar {
+          align-items: center;
+          border-radius: 50%;
+          background-color: #1976D2;
+          width: 80px;
+          height: 80px;
+          display: inline-flex;
+          justify-content: center;
+        }
+        .headline {
+          color: white;
+          font-size: 1.5rem;
+          font-family: Roboto, sans-serif;
+        }
+    </style>
+</head>
+<body>
+<table>
+  <thead>
+    <tr>
+      <td>Аватар пользователя</td>
+      <td>Ф.И.О. преподавателя, реализующего программу</td>
+      <td>Должность преподавателя </td>
+      <td>Перечень преподаваемых дисциплин </td>
+      <td>Уровень образования </td>
+      <td>Квалификация </td>
+      <td>Учёная степень педагогического работника (при наличии)</td>
+      <td>Учёное звание педагогического работника (при наличии)</td>
+      <td>Наименование направления подготовки и (или) специальности педагогического работника</td>
+      <td>Сведения о повышении квалификации и (или) профессиональной переподготовке педагогического работника (при наличии) </td>
+      <td>Общий стаж работы</td>
+      <td>Стаж работы педагогического работника по специальности</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+      <td>7</td>
+      <td>8</td>
+      <td>9</td>
+      <td>10</td>
+      <td>11</td>
+      <td>12</td>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in users %}
+      <tr itemprop="teachingStaff">
+        {% if user.avatar %}
+        <td itemprop="avatar">
+          <img src="{{ host }}/{{ user.avatar }}" alt="Аватар {{ user.last_name }} {{ user.first_name }} {{ user.sir_name }}" width="80">
+        </td>
+        {% else %}
+        {% get_short_name user.id as short_name %}
+        <td itemprop="avatar">
+          <div class="avatar">
+            <div class="headline">{{ short_name }}</div>
+          </div>
+        </td>
+        {% endif %}
+        <td itemprop="fio">{{ user.last_name }} {{ user.first_name }} {{ user.sir_name }}</td>
+        <td itemprop="post">{{ user.post }}</td>
+        <td itemprop="teachingDiscipline">{{ user.disciplines }}</td>
+        {% for pv in user.profile_values %}
+          <td itemprop="teachingLevel">{{ pv.education_level }}</td>
+          <td itemprop="teachingQual">{{ pv.qualification }}</td>
+          <td itemprop="degree">{{ pv.degree }}</td>
+          <td itemprop="academStat">{{ pv.rank }}</td>
+          <td itemprop="employeeQualification">{{ pv.speciality }}</td>
+          <td itemprop="profDevelopment">{{ pv.internship }}</td>
+          {% get_experience pv.general_experience as general_experience %}
+            <td itemprop="genExperience">{{ general_experience }}</td>
+          {% get_experience pv.specialty_experience as specialty_experience %}
+            <td itemprop="specExperience">{{ specialty_experience }}</td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,19 @@
+#import "../../../core/fragments/user_fields.graphql"
+
+query ArticlesUsers($first: Int, $offset: Int, $search: String) {
+  articlesUsers(
+    first: $first,
+    offset: $offset,
+    email_Icontains: $search,
+    username_Icontains: $search,
+    lastName_Icontains: $search,
+    firstName_Icontains: $search,
+    sirName_Icontains: $search
+  ) {
+    edges {
+      node {
+        ...UserFields
+      }
+    }
+  }
+}

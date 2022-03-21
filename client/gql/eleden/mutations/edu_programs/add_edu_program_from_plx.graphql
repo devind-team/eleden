@@ -1,0 +1,14 @@
+#import "../../fragments/edu_program_fields.graphql"
+
+mutation AddEduProgramFromPlx($file: Upload!) {
+  addEduProgramFromPlx(input: { file: $file }) {
+    success
+    errors {
+      field
+      messages
+    }
+    eduProgram {
+      ...EduProgramFields
+    }
+  }
+}

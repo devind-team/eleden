@@ -1,0 +1,12 @@
+mutation UnloadArticles($extension: String!) {
+  unloadArticles(input: { extension: $extension }) {
+    success
+    errors {
+      field
+      messages
+      __typename
+    }
+    src
+    __typename
+  }
+}

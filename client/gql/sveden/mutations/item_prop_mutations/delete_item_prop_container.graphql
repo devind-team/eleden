@@ -1,0 +1,9 @@
+mutation DeleteItemPropContainer($input: DeleteItemPropContainerMutationInput!) {
+  deleteItemPropContainer(input: $input) {
+    errors {
+      field
+      messages
+    }
+    success
+  }
+}

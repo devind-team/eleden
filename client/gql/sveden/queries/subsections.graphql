@@ -1,0 +1,8 @@
+query Subsections {
+  subsections {
+    id
+    url
+    header
+    __typename
+  }
+}

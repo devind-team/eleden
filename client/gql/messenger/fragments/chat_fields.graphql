@@ -1,0 +1,8 @@
+fragment ChatFields on ChatType {
+  id
+  name
+  avatar
+  createdAt
+  updatedAt
+  __typename
+}

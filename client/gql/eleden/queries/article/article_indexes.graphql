@@ -1,0 +1,8 @@
+query ArticleIndexes {
+  articleIndexes {
+    id
+    name
+    coefficient
+    __typename
+  }
+}

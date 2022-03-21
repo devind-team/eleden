@@ -1,0 +1,27 @@
+#import "../../fragments/edu_program_fields.graphql"
+
+mutation AddEduPrograms($file: Upload!) {
+  addEduPrograms(input: { file: $file }){
+    success
+    errors{
+      row
+      errors {
+        field
+        messages
+      }
+    }
+    table {
+      headers
+      rows {
+        index
+        cells {
+          header
+          value
+        }
+      }
+    }
+    eduPrograms {
+      ...EduProgramFields
+    }
+  }
+}

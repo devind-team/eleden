@@ -1,0 +1,9 @@
+#import "./child_item_prop_fields.graphql"
+fragment ItemPropFields on ItemPropType {
+  id
+  itemProp
+  children {
+    ...ChildItemPropFields
+  }
+  __typename
+}

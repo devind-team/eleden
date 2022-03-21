@@ -1,0 +1,18 @@
+mutation AddCompetences($disciplineId: ID!, $competenceIds: [ID!]!){
+  addCompetences (input: { disciplineId: $disciplineId, competenceIds: $competenceIds }) {
+    success
+    errors {
+      field
+      messages
+      __typename
+    }
+    competences {
+      id
+      name
+      code
+      category
+      __typename
+    }
+    __typename
+  }
+}

@@ -1,0 +1,28 @@
+#import "../../fragments/edu_hour_fields.graphql"
+
+mutation AddEduHours(
+  $disciplineId: ID!,
+  $workKindId: ID!,
+  $courseNumber: Int!,
+  $semesterNumber: Int!,
+  $value: Int!,
+  $hoursKindId: ID!
+){
+  addEduHours(input: {
+    disciplineId: $disciplineId,
+    workKindId: $workKindId,
+    courseNumber: $courseNumber,
+    semesterNumber: $semesterNumber,
+    value: $value,
+    hoursKindId: $hoursKindId
+  }){
+    success
+    errors {
+      field
+      messages
+    }
+    eduHour {
+      ...EduHourFields
+    }
+  }
+}

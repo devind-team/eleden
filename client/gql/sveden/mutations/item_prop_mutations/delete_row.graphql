@@ -1,0 +1,15 @@
+mutation DeleteRow($input: DeleteRowMutationInput!) {
+  deleteRow(input: $input) {
+    itemPropContainer{
+      id
+      values
+      __typename
+    }
+    success
+    errors {
+      field
+      messages
+    }
+    __typename
+  }
+}

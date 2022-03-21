@@ -1,0 +1,9 @@
+mutation DeleteEduHour($eduHourId: ID!){
+  deleteEduHour(input: { eduHourId: $eduHourId }){
+    success
+    errors {
+      field
+      messages
+    }
+  }
+}

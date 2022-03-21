@@ -1,0 +1,21 @@
+#import "../../fragments/edu_program_fields.graphql"
+
+query EduPrograms($first: Int, $offset: Int, $search: String) {
+  eduPrograms(
+    first: $first,
+    offset: $offset,
+    name_Icontains: $search,
+    admission_Icontains: $search,
+    direction_Code_Icontains: $search,
+    direction_Name_Icontains: $search
+  ) {
+    totalCount
+    edges {
+      node {
+        ...EduProgramFields
+      }
+      __typename
+    }
+    __typename
+  }
+}

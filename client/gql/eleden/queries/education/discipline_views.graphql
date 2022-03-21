@@ -1,0 +1,8 @@
+query DisciplineViews {
+  disciplineViews {
+    id
+    name
+    order
+    __typename
+  }
+}

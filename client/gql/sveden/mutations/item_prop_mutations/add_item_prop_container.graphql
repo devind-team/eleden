@@ -1,0 +1,13 @@
+#import "../../fragments/item_prop_container_fields.graphql"
+mutation AddItemPropContainer($input: AddItemPropContainerMutationInput!) {
+  addItemPropContainer(input: $input) {
+    errors {
+      field
+      messages
+    }
+    success
+    itemPropContainer {
+      ...ItemPropContainerFields
+    }
+  }
+}

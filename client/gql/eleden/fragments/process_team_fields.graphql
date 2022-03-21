@@ -1,0 +1,19 @@
+#import "../../core/fragments/user_fields.graphql"
+
+fragment ProcessTeamFields on TeamType {
+  id
+  name
+  shortName
+  admission
+  users {
+    ...UserFields
+  }
+  responsibleUsers {
+    ...UserFields
+  }
+  eduProgram {
+    id
+    __typename
+  }
+  __typename
+}

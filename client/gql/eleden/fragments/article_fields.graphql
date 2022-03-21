@@ -1,0 +1,10 @@
+fragment ArticleFields on ArticleType {
+  id
+  name
+  year
+  src
+  workload
+  createdAt
+  additionalText
+  __typename
+}

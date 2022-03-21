@@ -1,0 +1,13 @@
+mutation AddChat($userIds: [ID!]!, $avatar: Upload, $name: String) {
+  addChat(input: { userIds: $userIds, avatar: $avatar, name: $name }) {
+    success
+    errors {
+      field
+      messages
+    }
+    member {
+      id
+    }
+    __typename
+  }
+}

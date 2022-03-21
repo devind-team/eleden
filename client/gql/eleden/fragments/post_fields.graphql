@@ -1,0 +1,13 @@
+fragment PostFields on PostType {
+  id
+  name
+  statuses {
+    id
+    name
+    active
+    templateDocx
+    templateXml
+    __typename
+  }
+  __typename
+}

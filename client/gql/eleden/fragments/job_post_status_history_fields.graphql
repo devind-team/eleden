@@ -1,0 +1,16 @@
+fragment JobPostStatusHistoryFields on JobPostStatusHistoryType {
+  id
+  decreeDocx
+  decreePdf
+  createdAt
+  endAt
+  status {
+    id
+    name
+    active
+    templateDocx
+    templateXml
+    __typename
+  }
+  __typename
+}

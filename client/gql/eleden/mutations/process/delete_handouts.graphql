@@ -1,0 +1,9 @@
+mutation DeleteHandouts($handoutIds: [ID!]!) {
+  deleteHandouts(input: { handoutIds: $handoutIds }) {
+    success
+    errors {
+      field
+      messages
+    }
+  }
+}

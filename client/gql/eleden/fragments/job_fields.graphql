@@ -1,0 +1,13 @@
+#import "../../core/fragments/user_fields.graphql"
+#import "./job_post_fields.graphql"
+
+fragment JobFields on JobType {
+  id
+  user {
+    ...UserFields
+  }
+  jobPosts {
+    ...JobPostFields
+  }
+  __typename
+}

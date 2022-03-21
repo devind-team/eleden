@@ -1,0 +1,42 @@
+#import "../../fragments/edu_program_fields.graphql"
+
+mutation ChangeEduProgram(
+  $eduProgramId: ID!,
+  $deleteDescription: Boolean!,
+  $deleteSyllabus: Boolean!,
+  $deleteCalendar: Boolean!,
+  $name: String,
+  $adaptive: Boolean,
+  $admission: Int,
+  $expedited: Boolean,
+  $description: Upload,
+  $syllabus: Upload,
+  $calendar: Upload,
+  $eduFormId: Int,
+  $directionId: ID
+) {
+  changeEduProgram(input: {
+    eduProgramId: $eduProgramId,
+    deleteDescription: $deleteDescription,
+    deleteSyllabus: $deleteSyllabus,
+    deleteCalendar: $deleteCalendar,
+    name: $name,
+    adaptive: $adaptive,
+    admission: $admission,
+    expedited: $expedited
+    description: $description,
+    syllabus: $syllabus,
+    calendar: $calendar,
+    eduFormId: $eduFormId,
+    directionId: $directionId
+  }) {
+    success
+    errors {
+      field
+      messages
+    }
+    eduProgram {
+      ...EduProgramFields
+    }
+  }
+}

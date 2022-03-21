@@ -1,0 +1,11 @@
+mutation DeleteMember($memberId: ID!) {
+  deleteMember(input: { memberId: $memberId }) {
+    success
+    errors {
+      field
+      messages
+      __typename
+    }
+    __typename
+  }
+}

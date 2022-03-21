@@ -1,0 +1,7 @@
+#import "../../fragments/post_fields.graphql"
+
+query Posts {
+  posts {
+    ...PostFields
+  }
+}

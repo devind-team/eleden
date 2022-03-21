@@ -1,0 +1,16 @@
+#import "../../fragments/work_kind_fields.graphql"
+
+query DisciplineSemesterEduHours($disciplineId: ID!, $courseNumber: Int!, $semesterNumber: Int!) {
+  disciplineSemesterEduHours(
+    disciplineId: $disciplineId,
+    courseNumber: $courseNumber,
+    semesterNumber: $semesterNumber
+  ) {
+    id
+    value
+    workKind {
+      ...WorkKindFields
+    }
+    __typename
+  }
+}

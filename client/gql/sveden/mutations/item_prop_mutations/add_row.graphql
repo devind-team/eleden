@@ -1,0 +1,15 @@
+mutation AddRow($input: AddRowMutationInput!) {
+  addRow(input: $input) {
+    itemPropContainer {
+      id
+      values
+      __typename
+    }
+    success
+    errors {
+      field
+      messages
+    }
+    __typename
+  }
+}

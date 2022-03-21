@@ -1,0 +1,25 @@
+#import "../../core/fragments/user_fields.graphql"
+#import "./registration_fields.graphql"
+
+fragment AttestationFields on AttestationType {
+  id
+  description
+  updatedAt
+  registration {
+    ...RegistrationFields
+  }
+  period {
+    id
+    __typename
+  }
+  setBy {
+    ...UserFields
+  }
+  confirmedBy {
+    ...UserFields
+  }
+  user {
+    ...UserFields
+  }
+  __typename
+}

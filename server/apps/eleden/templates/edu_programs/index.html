@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Описание образовательных программ</title>
+  <style>
+    table.edu_programs {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+    table.edu_programs thead tr td, table tbody tr td {
+        font-size: 10px;
+        padding: 3px;
+        border: 1px solid black;
+    }
+    table.edu_programs thead tr:nth-child(1) {
+        font-weight: bold;
+    }
+    table.edu_programs thead tr {
+        text-align: center;
+    }
+  </style>
+</head>
+<body>
+<table class="edu_programs">
+  <thead>
+    <tr>
+      <td>Код</td>
+      <td>Наименование профессии, специальности, направления подготовки</td>
+      <td>Уровень образования</td>
+      <td>Форма обучения</td>
+      <td>Описание образовательной программы. РПД образовательной программы.</td>
+      <td>Учебный план</td>
+      <td>Аннотации</td>
+      <td>Календарный учебный график</td>
+      <td>Методические и иные документы, разработанные образовательной организацией для обеспечения образовательного процесса</td>
+      <td>Рабочие программы практик, предусмотренных соответствующей образовательной программой</td>
+      <td>ЭОиДОТ</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+      <td>7</td>
+      <td>8</td>
+      <td>9</td>
+      <td>10</td>
+      <td>11</td>
+    </tr>
+  </thead>
+  <tbody>
+    {% for edu_program in edu_programs %}
+      {% if edu_program.adaptive %}
+        <tr itemprop="eduAdOp">
+      {% else %}
+        <tr itemprop="eduOp">
+      {% endif %}
+        <td itemprop="eduCode">{{ edu_program.direction__code }}</td>
+        <td itemprop="eduName">{{ edu_program.name }} ({{ edu_program.admission }})</td>
+        <td itemprop="eduLevel">{{ edu_program.direction__edu_service__name }}</td>
+        <td itemprop="eduForm">{{ edu_program.edu_form__name }}</td>
+        <td>
+          {% if edu_program.description %}
+            <a href="{{ host }}{{ edu_program.description }}" class="sign-tooltip" data-date-sign="{{ date_sign }}" target="_blank" itemprop="opMain">Описание образовательной программы</a>
+          {% endif %}
+          {% for discipline in edu_program.disciplines %}
+            {% if discipline.kind_id != 2 and discipline.work_program %}
+              <br>
+              <a target="_blank" href="{{ host }}{{ discipline.work_program }}" class="sign-tooltip" data-date-sign="{{ date_sign }}" itemprop=”opMain”>{{ discipline.code }} {{ discipline.name }}</a>
+            {% endif %}
+          {% endfor %}
+        </td>
+        <td itemprop="educationPlan">
+          {% if edu_program.syllabus %}
+            <a href="{{ host }}{{ edu_program.syllabus }}" class="sign-tooltip" data-date-sign="{{ date_sign }}" target="_blank">Учебный план</a>
+          {% endif %}
+        </td>
+        <td>
+          {% for discipline in edu_program.disciplines %}
+            {% if discipline.annotation %}
+              <br>
+              <a href="{{ host }}{{ discipline.annotation }}" class="sign-tooltip" data-date-sign="{{ date_sign }}" itemprop="educationAnnotation" target="_blank">{{ discipline.code }} {{ discipline.name }}</a>
+            {% endif %}
+          {% endfor %}
+        </td>
+        <td>
+          {% if edu_program.calendar  %}
+            <a href="{{ host }}{{ edu_program.calendar }}" class="sign-tooltip" data-date-sign="{{ date_sign }}" itemprop="educationShedule" target="_blank">Календарный учебный график</a>
+          {% endif %}
+        </td>
+        <td>
+          {% for m in edu_program.methodological_support %}
+            <br/>
+            <a href="{{ host }}{{ m.src }}" class="sign-tooltip" data-date-sign="{{ date_sign }}" itemprop="methodology" target="_blank">
+              {{ m.name }}
+            </a>
+          {% endfor %}
+        </td>
+        <td>
+          {% for discipline in edu_program.disciplines %}
+            {% if discipline.kind_id == 2 and discipline.work_program %}
+              <br>
+              <a href="{{ host }}{{ discipline.work_program }}" class="sign-tooltip" data-date-sign="{{ date_sign }}" itemprop="educationAnnotation" target="_blank">{{ discipline.code }} {{ discipline.name }}</a>
+            {% endif %}
+          {% endfor %}
+        </td>
+        <td itemprop="eduEl">-</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</body>
+</html>

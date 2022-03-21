@@ -1,0 +1,31 @@
+#import '../../fragments/team_groups_user_fields.graphql'
+#import '../../fragments/job_fields.graphql'
+#import "../../fragments/edu_program_fields.graphql"
+
+mutation ChangeTeam(
+  $teamId: ID!,
+  $name: String,
+  $shortName: String,
+  $admission: Int,
+  $groupId: ID,
+  $parentId: ID
+) {
+  changeTeam(input: {
+    teamId: $teamId, name: $name, shortName: $shortName, admission: $admission, groupId: $groupId, parentId: $parentId
+  }) {
+    success
+    errors {
+      field
+      messages
+    }
+    team {
+      ...TeamGroupsUserFields
+      jobs {
+        ...JobFields
+      }
+      eduProgram {
+        ...EduProgramFields
+      }
+    }
+  }
+}

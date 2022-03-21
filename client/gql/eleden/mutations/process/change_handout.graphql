@@ -1,0 +1,14 @@
+#import "../../fragments/handout_fields.graphql"
+
+mutation ChangeHandout($handoutId: ID!, $description: String, $periodId: ID) {
+  changeHandout(input: { handoutId: $handoutId, description: $description, periodId: $periodId }) {
+    success
+    errors {
+      field
+      messages
+    }
+    handout {
+      ...HandoutFields
+    }
+  }
+}

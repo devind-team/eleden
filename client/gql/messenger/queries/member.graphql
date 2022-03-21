@@ -1,0 +1,20 @@
+#import "../../core/fragments/user_fields.graphql"
+#import "../fragments/chat_fields.graphql"
+
+query Member($memberId: ID!) {
+  member(memberId: $memberId) {
+    id
+    role
+    notification
+    favorite
+    createdAt
+    updatedAt
+    chat {
+      ...ChatFields
+      users {
+        ...UserFields
+      }
+    }
+    __typename
+  }
+}

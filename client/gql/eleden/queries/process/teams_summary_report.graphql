@@ -1,0 +1,7 @@
+#import '../../fragments/team_summary_report_fields.graphql'
+
+query TeamsSummaryReport($teamIds: [ID!]!) {
+  teamsSummaryReport(teamIds: $teamIds) {
+    ...TeamSummaryReportFields
+  }
+}

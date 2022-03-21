@@ -1,0 +1,50 @@
+#import "../fragments/message_fields.graphql"
+#import "../../core/fragments/user_fields.graphql"
+
+query ChatMessages(
+  $chat: ID,
+  $user: ID,
+  $deleted: Boolean,
+  $favorite: Boolean,
+  $messageTextIcontains: String,
+  $first: Int,
+  $after: String,
+  $before: String
+) {
+  chatMessages(
+    chat: $chat,
+    user: $user,
+    deleted: $deleted,
+    favorite: $favorite,
+    message_Text_Icontains: $messageTextIcontains,
+    first: $first,
+    after: $after,
+    before: $before
+  ) {
+    totalCount
+    pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
+      hasPreviousPage
+      __typename
+    }
+    edges {
+      node {
+        id
+        delivered
+        read
+        favorite
+        deleted
+        createdAt
+        message {
+          ...MessageFields
+          user {
+            ...UserFields
+          }
+        }
+        __typename
+      }
+    }
+  }
+}

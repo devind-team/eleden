@@ -1,0 +1,7 @@
+#import "../../fragments/registration_fields.graphql"
+
+query Registrations {
+  registrations {
+    ...RegistrationFields
+  }
+}

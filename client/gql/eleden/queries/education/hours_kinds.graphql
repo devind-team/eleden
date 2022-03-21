@@ -1,0 +1,7 @@
+query HoursKinds {
+  hoursKinds {
+    id
+    name
+    __typename
+  }
+}

@@ -1,0 +1,13 @@
+fragment WorkKindFields on WorkKindType {
+  id
+  name
+  shortName
+  order
+  workForm {
+    id
+    name
+    order
+    __typename
+  }
+  __typename
+}

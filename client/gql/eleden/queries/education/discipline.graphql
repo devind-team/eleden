@@ -1,0 +1,11 @@
+#import "../../fragments/discipline_fields.graphql"
+#import "../../fragments/edu_program_fields.graphql"
+
+query Discipline($disciplineId: ID!) {
+  discipline(disciplineId: $disciplineId) {
+    ...DisciplineFields
+    eduProgram {
+      ...EduProgramFields
+    }
+  }
+}

@@ -1,0 +1,13 @@
+#import "../../fragments/methodological_support_fields.graphql"
+
+query MethodologicalSupports($disciplineId: ID!) {
+  methodologicalSupports(discipline_Id: $disciplineId) {
+    edges {
+      node {
+        ...MethodologicalSupportFields
+      }
+      __typename
+    }
+    __typename
+  }
+}

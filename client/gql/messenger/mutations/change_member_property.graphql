@@ -1,0 +1,11 @@
+mutation ChangeMemberPropertyMutation($memberId: ID!, $field: String!, $value: Boolean!) {
+  changeMemberProperty(input: { memberId: $memberId, field: $field, value: $value }) {
+    success
+    errors {
+      field
+      messages
+      __typename
+    }
+    __typename
+  }
+}

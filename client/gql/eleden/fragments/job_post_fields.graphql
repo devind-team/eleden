@@ -1,0 +1,15 @@
+#import "./job_post_status_history_fields.graphql"
+#import "./post_fields.graphql"
+
+fragment JobPostFields on JobPostType {
+  id
+  rate
+  kind
+  post {
+    ...PostFields
+  }
+  statusHistory {
+    ...JobPostStatusHistoryFields
+  }
+  __typename
+}

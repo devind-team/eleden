@@ -1,0 +1,8 @@
+query DisciplineKinds {
+  disciplineKinds {
+    id
+    name
+    order
+    __typename
+  }
+}

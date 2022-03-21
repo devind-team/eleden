@@ -1,0 +1,11 @@
+mutation DeleteCompetence($disciplineId: ID!, $competenceId: ID!) {
+  deleteCompetence(input: { disciplineId: $disciplineId, competenceId: $competenceId }) {
+    success
+    errors {
+      field
+      messages
+    }
+    id
+    __typename
+  }
+}

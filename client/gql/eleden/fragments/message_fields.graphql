@@ -1,0 +1,22 @@
+##import "../../core/fragments/user_fields.graphql"
+#
+#fragment MessageFields on MessageType {
+#  id
+#  text
+#  changed
+#  createdAt
+#  user {
+#    ...UserFields
+#  }
+#  files {
+#    id
+#    src
+#    size
+#    __typename
+#  }
+#  messages {
+#    id
+#    __typename
+#  }
+#  __typename
+#}

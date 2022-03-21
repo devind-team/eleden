@@ -1,0 +1,15 @@
+#import "../../fragments/child_item_prop_fields.graphql"
+mutation AddChildItemProp($input: AddChildItemPropMutationInput!) {
+  addChildItemProp(input: $input) {
+    childItemProp {
+      ...ChildItemPropFields
+    }
+    success
+    errors {
+      field
+      messages
+      __typename
+    }
+    __typename
+  }
+}

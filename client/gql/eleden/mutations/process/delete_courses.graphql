@@ -1,0 +1,9 @@
+mutation DeleteCourses($teamId: ID!) {
+  deleteCourses(input: { teamId: $teamId }) {
+    success
+    errors {
+      field
+      messages
+    }
+  }
+}

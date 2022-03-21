@@ -1,0 +1,14 @@
+#import "../../core/fragments/user_fields.graphql"
+
+fragment TeamFields on TeamType {
+  id
+  name
+  shortName
+  admission
+  createdAt
+  updatedAt
+  responsibleUsers {
+    ...UserFields
+  }
+  __typename
+}

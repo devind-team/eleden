@@ -28,22 +28,22 @@
         template(#activator="{ on }")
           v-btn(v-on="on" :href="`/${item.annotation}`" target="_blank" color="success" icon)
             v-icon mdi-download
-        span {{ t('open') }}
+        span {{ $t('eduPrograms.disciplines.open') }}
       strong(v-else) &mdash;
     template(#item.workProgram="{ item }")
       v-tooltip(v-if="item.workProgram" bottom)
         template(#activator="{ on }")
           v-btn(v-on="on" :href="`/${item.workProgram}`" target="_blank" color="success" icon)
             v-icon mdi-download
-        span {{ t('open') }}
+        span {{ $t('eduPrograms.disciplines.open') }}
       strong(v-else) &mdash;
     template(#item.actions="{ item }")
       mutation-modal-form(
-        :header="t('changeForm.header')"
-        :subheader="t('changeForm.subheader', { updatedAt: $filters.dateTimeHM(item.updatedAt) })"
+        :header="$t('eduPrograms.disciplines.changeForm.header')"
+        :subheader="$t('eduPrograms.disciplines.changeForm.subheader', { updatedAt: dateTimeHM(item.updatedAt) })"
         :mutation="require('~/gql/eleden/mutations/edu_programs/change_discipline.graphql')"
         :variables="changeVariables"
-        :button-text="t('changeForm.buttonText')"
+        :button-text="$t('eduPrograms.disciplines.changeForm.buttonText')"
         mutation-name="changeDiscipline"
       )
         template(#form)
@@ -61,13 +61,12 @@
                 icon
               )
                 v-icon mdi-pencil
-            span {{ t('tooltips.change') }}
+            span {{ $t('eduPrograms.disciplines.tooltips.change') }}
 </template>
 
 <script lang="ts">
-import { PropType } from 'vue'
-import { Vue, Component, Prop } from 'vue-property-decorator'
-import { mapGetters } from 'vuex'
+import type { PropType, Ref, ComputedRef } from '#app'
+import { defineComponent, ref, computed, useNuxtApp } from '#app'
 import { DataTableHeader } from 'vuetify'
 import {
   UserType,
@@ -75,6 +74,8 @@ import {
   DisciplineType,
   ChangeDisciplineMutationVariables
 } from '~/types/graphql'
+import { useAuthStore } from '~/store'
+import { useI18n, useFilters } from '~/composables'
 import TreeDataTable, { ItemWithProps } from '~/components/common/tables/TreeDataTable.vue'
 import UserLink from '~/components/eleden/user/UserLink.vue'
 import MutationModalForm from '~/components/common/forms/MutationModalForm.vue'
@@ -82,63 +83,111 @@ import DisciplineForm, { InputDiscipline } from '~/components/eleden/edu_program
 
 type DisciplineNode = DisciplineType & { children: DisciplineType[], isChild: boolean }
 
-@Component<DisciplinesTable>({
+export default defineComponent({
   components: { TreeDataTable, UserLink, MutationModalForm, DisciplineForm },
-  computed: {
-    ...mapGetters({ hasPerm: 'auth/hasPerm' }),
-    sortedDisciplines (): DisciplineType[] {
-      return this.disciplines ? this.disciplines.sort((d1, d2) => d1.order - d2.order) : []
-    },
-    disciplinesTree (): DisciplineNode[] {
-      const tree: DisciplineNode[] = this.sortedDisciplines
+  props: {
+    eduProgram: { type: Object as PropType<EduProgramType>, required: true },
+    loading: { type: Boolean, default: false },
+    disciplines: { type: Array as PropType<DisciplineType[]>, default: () => ([]) },
+    search: { type: String, default: '' }
+  },
+  setup (props, { emit }) {
+    const { t, localePath } = useI18n()
+    const { hasPerm } = useAuthStore()
+    const { dateTimeHM } = useFilters()
+
+    const discipline: Ref<DisciplineType | undefined> = ref<DisciplineType | undefined>(undefined)
+    const sortBy: Ref<string | string[]> = ref<string | string[]>([])
+
+    const getInputDiscipline = (): InputDiscipline => {
+      if (discipline.value === undefined) {
+        return {
+          id: '',
+          code: '',
+          name: '',
+          annotation: null,
+          workProgram: null,
+          existingAnnotation: undefined,
+          existingWorkProgram: undefined,
+          view: undefined,
+          parent: undefined,
+          users: [],
+          methodologicalSupport: undefined
+        }
+      } else {
+        return {
+          id: discipline.value.id,
+          code: discipline.value.code,
+          name: discipline.value.name,
+          annotation: null,
+          workProgram: null,
+          existingAnnotation: discipline.value.annotation ? { src: discipline.value.annotation } : undefined,
+          existingWorkProgram: discipline.value.workProgram ? { src: discipline.value.workProgram } : undefined,
+          view: discipline.value.view,
+          parent: discipline.value.parent,
+          users: discipline.value.users,
+          methodologicalSupport: undefined
+        }
+      }
+    }
+
+    const inputDiscipline: Ref<InputDiscipline> = ref<InputDiscipline>(getInputDiscipline())
+
+    const sortedDisciplines: ComputedRef<DisciplineType[]> = computed<DisciplineType[]>(() => {
+      return props.disciplines ? props.disciplines!.sort((d1, d2) => d1.order - d2.order) : []
+    })
+
+    const disciplinesTree: ComputedRef<DisciplineNode[]> = computed<DisciplineNode[]>(() => {
+      const tree: DisciplineNode[] = sortedDisciplines.value
         .map((discipline: DisciplineType) => ({ ...discipline, children: [], isChild: false }))
       tree.forEach((disciplineNode: DisciplineNode, _, disciplines) => {
-        const children = this.getDisciplineChildren(disciplines, disciplineNode)
+        const children = getDisciplineChildren(disciplines, disciplineNode)
         children.forEach((child: DisciplineNode) => {
           child.isChild = true
         })
         disciplineNode.children = children
       })
       return tree.filter((disciplineNode: DisciplineNode) => !disciplineNode.isChild)
-    },
-    headers (): DataTableHeader[] {
+    })
+
+    const headers: ComputedRef<DataTableHeader[]> = computed<DataTableHeader[]>(() => {
       const headers: DataTableHeader[] = [
         {
-          text: this.t('tableHeaders.code'),
+          text: t('eduPrograms.disciplines.tableHeaders.code') as string,
           value: 'code',
           width: 200
         },
         {
-          text: this.t('tableHeaders.name'),
+          text: t('eduPrograms.disciplines.tableHeaders.name') as string,
           value: 'name'
         },
         {
-          text: this.t('tableHeaders.view'),
+          text: t('eduPrograms.disciplines.tableHeaders.view') as string,
           value: 'view.name'
         },
         {
-          text: this.t('tableHeaders.users'),
+          text: t('eduPrograms.disciplines.tableHeaders.users') as string,
           value: 'users',
           align: 'center'
         },
         {
-          text: this.t('tableHeaders.annotation'),
+          text: t('eduPrograms.disciplines.tableHeaders.annotation') as string,
           value: 'annotation',
           align: 'center',
           filterable: false,
           sortable: false
         },
         {
-          text: this.t('tableHeaders.workProgram'),
+          text: t('eduPrograms.disciplines.tableHeaders.workProgram') as string,
           value: 'workProgram',
           align: 'center',
           filterable: false,
           sortable: false
         }
       ]
-      if (this.hasPerm('eleden.change_discipline')) {
+      if (hasPerm('eleden.change_discipline')) {
         headers.push({
-          text: this.t('tableHeaders.actions'),
+          text: t('eduPrograms.disciplines.tableHeaders.actions') as string,
           value: 'actions',
           align: 'center',
           sortable: false,
@@ -146,149 +195,77 @@ type DisciplineNode = DisciplineType & { children: DisciplineType[], isChild: bo
         })
       }
       return headers.filter((header: DataTableHeader) =>
-        !['view.name'].includes(header.value) || this.hasPerm('eleden.view_discipline_additional_fields')
+        !['view.name'].includes(header.value) || hasPerm('eleden.view_discipline_additional_fields')
       )
-    },
-    changeVariables (): ChangeDisciplineMutationVariables {
-      return {
-        disciplineId: this.inputDiscipline.id,
-        viewId: this.inputDiscipline.view ? this.inputDiscipline.view.id : '',
-        userIds: this.inputDiscipline.users.map(user => user.id),
-        deleteAnnotation: !this.inputDiscipline.annotation && !this.inputDiscipline.existingAnnotation,
-        deleteWorkProgram: !this.inputDiscipline.workProgram && !this.inputDiscipline.existingWorkProgram,
-        code: this.inputDiscipline.code,
-        name: this.inputDiscipline.name,
-        annotation: this.inputDiscipline.annotation,
-        workProgram: this.inputDiscipline.workProgram,
-        parentId: this.inputDiscipline.parent ? this.inputDiscipline.parent.id : undefined
+    })
+
+    const changeVariables: ComputedRef<ChangeDisciplineMutationVariables> =
+      computed<ChangeDisciplineMutationVariables>(() => {
+        return {
+          disciplineId: inputDiscipline.value.id,
+          viewId: inputDiscipline.value.view ? inputDiscipline.value.view.id : '',
+          userIds: inputDiscipline.value.users.map(user => user.id),
+          deleteAnnotation: !inputDiscipline.value.annotation && !inputDiscipline.value.existingAnnotation,
+          deleteWorkProgram: !inputDiscipline.value.workProgram && !inputDiscipline.value.existingWorkProgram,
+          code: inputDiscipline.value.code,
+          name: inputDiscipline.value.name,
+          annotation: inputDiscipline.value.annotation,
+          workProgram: inputDiscipline.value.workProgram,
+          parentId: inputDiscipline.value.parent ? inputDiscipline.value.parent.id : undefined
+        }
+      })
+
+    const itemsHandler = (items: ItemWithProps[], _: any, allItems: ItemWithProps[]): void => {
+      emit('count-change', {
+        count: items.reduce((acc, item) => item.children.length ? acc : acc + 1, 0),
+        totalCount: allItems.reduce((acc, item) => item.children.length ? acc : acc + 1, 0)
+      })
+    }
+
+    const toDiscipline = (discipline: DisciplineType): string => {
+      return localePath({
+        name: 'eleden-edu_programs-discipline-discipline_id',
+        params: { edu_program_id: props.eduProgram.id, discipline_id: discipline.id }
+      })
+    }
+
+    const getDisciplineChildren = (disciplines: DisciplineNode[], disciplineNode: DisciplineNode): DisciplineNode[] => {
+      return disciplines.filter((filterDiscipline: DisciplineType) =>
+        filterDiscipline.parent && filterDiscipline.parent.id === disciplineNode.id)
+    }
+
+    const filter = (value: string | UserType[] | null, search: string | null): boolean => {
+      if (!search) {
+        return true
       }
+      if (!value) {
+        return false
+      }
+      if (typeof value === 'string') {
+        return value.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+      } else {
+        return value.some((user: UserType) => [useNuxtApp().$getUserName(user), useNuxtApp().$getUserFullName(user)].some(
+          v => v.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+        ))
+      }
+    }
+
+    return {
+      hasPerm,
+      dateTimeHM,
+      getInputDiscipline,
+      inputDiscipline,
+      discipline,
+      sortBy,
+      sortedDisciplines,
+      disciplinesTree,
+      headers,
+      changeVariables,
+      itemsHandler,
+      toDiscipline,
+      getDisciplineChildren,
+      filter
     }
   }
 })
-export default class DisciplinesTable extends Vue {
-  @Prop({ type: Object as PropType<EduProgramType>, required: true }) readonly eduProgram!: EduProgramType
-  @Prop({ type: Boolean, default: false }) readonly loading!: boolean
-  @Prop({ type: Array as PropType<DisciplineType[]> }) readonly disciplines!: DisciplineType[] | undefined
-  @Prop({ type: String }) readonly search!: string | undefined
-
-  readonly hasPerm!: (perm: string | string[], or?: boolean) => boolean
-  readonly sortedDisciplines!: DisciplineType[]
-  readonly disciplinesTree!: DisciplineNode[]
-  readonly headers!: DataTableHeader[]
-  readonly changeVariables!: ChangeDisciplineMutationVariables
-
-  sortBy: string | string[] = []
-
-  discipline: DisciplineType | undefined = undefined
-  inputDiscipline: InputDiscipline
-
-  data () {
-    return {
-      inputDiscipline: this.getInputDiscipline()
-    }
-  }
-
-  /**
-   * Получение текущей дисциплины
-   * @return
-   */
-  getInputDiscipline (): InputDiscipline {
-    if (this.discipline === undefined) {
-      return {
-        id: '',
-        code: '',
-        name: '',
-        annotation: null,
-        workProgram: null,
-        existingAnnotation: undefined,
-        existingWorkProgram: undefined,
-        view: undefined,
-        parent: undefined,
-        users: [],
-        methodologicalSupport: undefined
-      }
-    } else {
-      return {
-        id: this.discipline.id,
-        code: this.discipline.code,
-        name: this.discipline.name,
-        annotation: null,
-        workProgram: null,
-        existingAnnotation: this.discipline.annotation ? { src: this.discipline.annotation } : undefined,
-        existingWorkProgram: this.discipline.workProgram ? { src: this.discipline.workProgram } : undefined,
-        view: this.discipline.view,
-        parent: this.discipline.parent,
-        users: this.discipline.users,
-        methodologicalSupport: undefined
-      }
-    }
-  }
-
-  /**
-   * Получение перевода относильно локального пути
-   * @param path
-   * @param values
-   * @return
-   */
-  t (path: string, values: any = undefined): string {
-    return this.$t(`eduPrograms.disciplines.${path}`, values) as string
-  }
-
-  /**
-   * Обработчик изменения количества показываемых дисциплин
-   * @param items
-   * @param _
-   * @param allItems
-   */
-  itemsHandler (items: ItemWithProps[], _: any, allItems: ItemWithProps[]): void {
-    this.$emit('count-change', {
-      count: items.reduce((acc, item) => item.children.length ? acc : acc + 1, 0),
-      totalCount: allItems.reduce((acc, item) => item.children.length ? acc : acc + 1, 0)
-    })
-  }
-
-  /**
-   * Получение пути к дисциплине
-   * @param discipline
-   * @return
-   */
-  toDiscipline (discipline: DisciplineType): string {
-    return this.localePath({
-      name: 'eleden-edu_programs-discipline-discipline_id',
-      params: { edu_program_id: this.eduProgram.id, discipline_id: discipline.id }
-    })
-  }
-
-  /**
-   * Получение дочерних дисциплин дисциплины
-   * @param disciplines
-   * @param disciplineNode
-   */
-  getDisciplineChildren (disciplines: DisciplineNode[], disciplineNode: DisciplineNode): DisciplineNode[] {
-    return disciplines.filter((filterDiscipline: DisciplineType) =>
-      filterDiscipline.parent && filterDiscipline.parent.id === disciplineNode.id)
-  }
-
-  /**
-   * Фильтрация дисциплин
-   * @param value
-   * @param search
-   * @return
-   */
-  filter (value: string | UserType[] | null, search: string | null): boolean {
-    if (!search) {
-      return true
-    }
-    if (!value) {
-      return false
-    }
-    if (typeof value === 'string') {
-      return value.toLocaleLowerCase().includes(search.toLocaleLowerCase())
-    } else {
-      return value.some((user: UserType) => [this.$getUserName(user), this.$getUserFullName(user)].some(
-        v => v.toLocaleLowerCase().includes(search.toLocaleLowerCase())
-      ))
-    }
-  }
-}
 </script>

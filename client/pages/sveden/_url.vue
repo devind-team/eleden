@@ -20,12 +20,12 @@
         v-card
           v-card-title {{table.header}}
           v-card-text
-            v-menu(v-if="hasPerm('sveden.change_itempropcontainer')")
+            v-menu(v-if="hasPerm('sveden.change_itempropcontainer') && !table.schema.itemProp")
               template(#activator="{ on }")
                 v-btn(v-on="on" absolute top right icon)
                   v-icon mdi-dots-horizontal
-              v-list(v-if="hasPerm('sveden.change_itempropcontainer')")
-                v-list-item(v-if="!table.schema.itemProp" @click="onEditClick(0, table)")
+              v-list
+                v-list-item(@click="onEditClick(0, table)")
                   v-list-item-icon
                     v-icon mdi-pencil
                   v-list-item-content

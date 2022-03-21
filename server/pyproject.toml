@@ -45,7 +45,7 @@ inflection = "^0.5.1"
 devind-helpers = "^0.3.0"
 devind-core = "^0.3.0"
 devind-notifications = "^0.2.0"
-Scrapy = "2.5.1"
+Scrapy = "2.6.1"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"

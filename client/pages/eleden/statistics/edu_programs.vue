@@ -20,8 +20,8 @@ import type { ComputedRef, PropType, Ref } from '#app'
 import { computed, defineComponent, useNuxt2Meta, ref } from '#app'
 import { BreadCrumbsItem } from '~/types/devind'
 import {
-  EduProgramStatisticsQuery,
-  EduProgramStatisticsQueryVariables,
+  EduProgramsStatisticsQuery,
+  EduProgramsStatisticsQueryVariables,
   DirectionType,
   EduFormType
 } from '~/types/graphql'
@@ -31,7 +31,7 @@ import EduProgramStatisticsChartArc from '~/components/eleden/statistics/EduProg
 import EduProgramStatisticsTable from '~/components/eleden/statistics/EduProgramStatisticsTable.vue'
 import EduProgramFilter, { Year, View } from '~/components/eleden/statistics/EduProgramFilter.vue'
 import { useCommonQuery, useI18n } from '~/composables'
-import EduProgramsStatisticsQuery from '~/gql/eleden/queries/statistics/edu_programs_statistics.graphql'
+import eduProgramsStatisticsQuery from '~/gql/eleden/queries/statistics/edu_programs_statistics.graphql'
 
 export default defineComponent({
   components: {
@@ -66,11 +66,11 @@ export default defineComponent({
     const {
       data: eduProgramsStatistics,
       loading
-    } = useCommonQuery<EduProgramStatisticsQuery, EduProgramStatisticsQueryVariables>({
-      document: EduProgramsStatisticsQuery,
+    } = useCommonQuery<EduProgramsStatisticsQuery, EduProgramsStatisticsQueryVariables>({
+      document: eduProgramsStatisticsQuery,
       variables: () => ({
         directions: directionsFilter.value.map(direction => direction.id),
-        admissions: yearsFilter.value.map(year => year.id),
+        admissions: yearsFilter.value.map(year => year.id.toString()),
         eduForms: eduFormsFilter.value.map(eduForm => eduForm.id)
       })
     })

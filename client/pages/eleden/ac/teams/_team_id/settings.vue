@@ -55,9 +55,9 @@ export default defineComponent({
     const { t, localePath } = useI18n()
 
     const eduProgramWarning: ComputedRef<string> = computed<string>(() => {
-      return props.team.eduProgram
+      return (props.team.eduProgram
         ? t('ac.teams.settings.changeTeamEduProgram.changeWarning')
-        : t('ac.teams.settings.changeTeamEduProgram.setWarning')
+        : t('ac.teams.settings.changeTeamEduProgram.setWarning')) as string
     })
 
     const eduProgramPath: ComputedRef<string | null> = computed<string | null>(() => {

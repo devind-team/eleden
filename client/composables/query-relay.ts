@@ -47,7 +47,7 @@ export type QueryRelayResult<TResult = any, TVariables = any, TNode extends { id
   fetchMoreAvailable: ComputedRef<boolean>
   fetchMoreData: () => void
   update: <TResultMutation>(cache: DataProxy, result: Omit<FetchResult<TResultMutation>, 'context'>, transform: TransformUpdate<TResult, TResultMutation>) => void
-  addUpdate: <TResultMutation>(cache: DataProxy, result: Omit<FetchResult<TResultMutation>, 'context'>, key: string | null) => void
+  addUpdate: <TResultMutation>(cache: DataProxy, result: Omit<FetchResult<TResultMutation>, 'context'>, key?: string | null) => void
   changeUpdate: <TResultMutation>(cache: DataProxy, result: Omit<FetchResult<TResultMutation>, 'context'>, key: string | null) => void
   deleteUpdate: <TResultMutation>(cache: DataProxy, result: Omit<FetchResult<TResultMutation>, 'context'>) => void
 }

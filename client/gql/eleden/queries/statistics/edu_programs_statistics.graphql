@@ -1,4 +1,4 @@
-query EduProgramStatistics($directions: [ID!]!, $admissions: [String!]!, $eduForms: [String!]!) {
+query EduProgramsStatistics($directions: [ID!]!, $admissions: [String!]!, $eduForms: [String!]!) {
   eduProgramsStatistics(directions: $directions, admissions: $admissions, eduForms: $eduForms) {
     id
     directionCode

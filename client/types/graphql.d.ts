@@ -2527,11 +2527,15 @@ export type ChildItemPropInputType = {
 
 export type ChildItemPropType = Node & {
   __typename?: 'ChildItemPropType';
+  /** Подпись к единице информации */
   header: Scalars['String'];
   /** The ID of the object. */
   id: Scalars['ID'];
+  /** Дочерний тег */
   itemProp: Scalars['String'];
+  /** Позиция дочернего тега при выводе */
   showPosition: Scalars['Int'];
+  /** Индекс под которым хранится данные с тегом */
   valuePosition: Scalars['Int'];
 };
 
@@ -2833,7 +2837,7 @@ export type DeleteCategoryMutationPayload = {
 };
 
 export type DeleteChildItemPropMutationInput = {
-  /** Идентификатор модели "ChildItemProp(id, header, item_prop, show_position, value_position, parent)" */
+  /** Идентификатор модели "Дочерний тег" */
   childItemPropId: Scalars['ID'];
   clientMutationId?: InputMaybe<Scalars['String']>;
 };
@@ -2862,6 +2866,8 @@ export type DeleteCompetenceMutationPayload = {
   clientMutationId?: Maybe<Scalars['String']>;
   /** Ошибки мутации */
   errors: Array<ErrorFieldType>;
+  /** Идентификатор компетенции */
+  id: Scalars['ID'];
   /** Успех мутации */
   success: Scalars['Boolean'];
 };
@@ -2926,6 +2932,8 @@ export type DeleteDisciplineMutationPayload = {
   clientMutationId?: Maybe<Scalars['String']>;
   /** Ошибки мутации */
   errors: Array<ErrorFieldType>;
+  /** Идентификатор дисциплины */
+  id: Scalars['ID'];
   /** Успех мутации */
   success: Scalars['Boolean'];
 };
@@ -3048,7 +3056,7 @@ export type DeleteHandoutsMutationPayload = {
 
 export type DeleteItemPropContainerMutationInput = {
   clientMutationId?: InputMaybe<Scalars['String']>;
-  /** Идентификатор модели "ItemPropContainer(id, header, values, is_generated, subsection)" */
+  /** Идентификатор модели "Контейнер с данными и структурой" */
   itemPropContainerId: Scalars['ID'];
 };
 
@@ -3290,7 +3298,7 @@ export type DeleteSessionsMutationPayload = {
 
 export type DeleteSubsectionMutationInput = {
   clientMutationId?: InputMaybe<Scalars['String']>;
-  /** Идентификатор модели "Subsection(id, header, url)" */
+  /** Идентификатор модели "Подраздел" */
   subsectionId: Scalars['ID'];
 };
 
@@ -3826,9 +3834,11 @@ export type ItemPropContainerInputType = {
 
 export type ItemPropContainerType = Node & {
   __typename?: 'ItemPropContainerType';
+  /** Подпись к данным */
   header: Scalars['String'];
   /** The ID of the object. */
   id: Scalars['ID'];
+  /** Флаг, что данные заполняются автоматически */
   isGenerated: Scalars['Boolean'];
   schema?: Maybe<ItemPropType>;
   values: Array<Maybe<Array<Maybe<Scalars['String']>>>>;
@@ -3846,6 +3856,7 @@ export type ItemPropType = Node & {
   children?: Maybe<Array<ChildItemPropType>>;
   /** The ID of the object. */
   id: Scalars['ID'];
+  /** Главный тег */
   itemProp: Scalars['String'];
 };
 
@@ -6646,10 +6657,12 @@ export type SubscriptionChatMessagesArgs = {
 
 export type SubsectionType = Node & {
   __typename?: 'SubsectionType';
+  /** Название подраздела */
   header: Scalars['String'];
   /** The ID of the object. */
   id: Scalars['ID'];
   itemPropContainers: Array<ItemPropContainerType>;
+  /** Адрес подраздела */
   url: Scalars['String'];
 };
 
@@ -7513,7 +7526,7 @@ export type AddCompetencesMutationVariables = Exact<{
   competenceIds: Array<Scalars['ID']> | Scalars['ID'];
 }>;
 
-export type AddCompetencesMutation = { __typename?: 'Mutation', addCompetences: { __typename?: 'AddCompetencesMutationPayload', success: boolean, errors: Array<{ __typename?: 'ErrorFieldType', field: string, messages: Array<string> }>, competences?: Array<{ __typename: 'CompetenceType', id: string, name: string, code: string, category: string }> | null } };
+export type AddCompetencesMutation = { __typename?: 'Mutation', addCompetences: { __typename: 'AddCompetencesMutationPayload', success: boolean, errors: Array<{ __typename: 'ErrorFieldType', field: string, messages: Array<string> }>, competences?: Array<{ __typename: 'CompetenceType', id: string, name: string, code: string, category: string }> | null } };
 
 export type AddDisciplineMutationVariables = Exact<{
   code: Scalars['String'];
@@ -7527,7 +7540,7 @@ export type AddDisciplineMutationVariables = Exact<{
   methodologicalSupport?: InputMaybe<Array<InputMaybe<MethodologicalSupportInputType>> | InputMaybe<MethodologicalSupportInputType>>;
 }>;
 
-export type AddDisciplineMutation = { __typename?: 'Mutation', addDiscipline: { __typename?: 'AddDisciplineMutationPayload', success: boolean, errors: Array<{ __typename?: 'ErrorFieldType', field: string, messages: Array<string> }>, discipline?: { __typename: 'DisciplineType', id: string, code: string, name: string, annotation?: string | null, annotationSign?: string | null, workProgram?: string | null, workProgramSign?: string | null, updatedAt: any, order: number, view: { __typename: 'DisciplineViewType', id: string, name: string, order: number }, users: Array<{ __typename: 'UserType', id: string, username: string, avatar?: string | null, email: string, firstName: string, lastName: string, sirName?: string | null, isActive: boolean, createdAt: any }>, parent?: { __typename: 'DisciplineType', id: string, code: string, name: string } | null, methodologicalSupport: Array<{ __typename: 'MethodologicalSupportType', id: string, name: string, src?: string | null, srcSign?: string | null, createdAt: any, updatedAt: any }> } | null } };
+export type AddDisciplineMutation = { __typename?: 'Mutation', addDiscipline: { __typename: 'AddDisciplineMutationPayload', success: boolean, errors: Array<{ __typename?: 'ErrorFieldType', field: string, messages: Array<string> }>, discipline?: { __typename: 'DisciplineType', id: string, code: string, name: string, annotation?: string | null, annotationSign?: string | null, workProgram?: string | null, workProgramSign?: string | null, updatedAt: any, order: number, eduProgram: { __typename: 'EduProgramType', id: string, name: string, adaptive: boolean, admission: number, expedited: boolean, description?: string | null, descriptionSign?: string | null, calendar?: string | null, calendarSign?: string | null, syllabus?: string | null, syllabusSign?: string | null, createdAt: any, updatedAt: any, eduForm: { __typename: 'EduFormType', id: string, name: string, shortName: string }, direction: { __typename: 'DirectionType', id: string, name: string, code: string, eduService: { __typename: 'EduServiceType', id: string, name: string } } }, view: { __typename: 'DisciplineViewType', id: string, name: string, order: number }, users: Array<{ __typename: 'UserType', id: string, username: string, avatar?: string | null, email: string, firstName: string, lastName: string, sirName?: string | null, isActive: boolean, createdAt: any }>, parent?: { __typename: 'DisciplineType', id: string, code: string, name: string } | null, methodologicalSupport: Array<{ __typename: 'MethodologicalSupportType', id: string, name: string, src?: string | null, srcSign?: string | null, createdAt: any, updatedAt: any }> } | null } };
 
 export type AddDisciplineMethodologicalSupportsMutationVariables = Exact<{
   disciplineId: Scalars['ID'];
@@ -7641,13 +7654,13 @@ export type DeleteCompetenceMutationVariables = Exact<{
   competenceId: Scalars['ID'];
 }>;
 
-export type DeleteCompetenceMutation = { __typename?: 'Mutation', deleteCompetence: { __typename?: 'DeleteCompetenceMutationPayload', success: boolean, errors: Array<{ __typename?: 'ErrorFieldType', field: string, messages: Array<string> }> } };
+export type DeleteCompetenceMutation = { __typename?: 'Mutation', deleteCompetence: { __typename: 'DeleteCompetenceMutationPayload', success: boolean, id: string, errors: Array<{ __typename?: 'ErrorFieldType', field: string, messages: Array<string> }> } };
 
 export type DeleteDisciplineMutationVariables = Exact<{
   disciplineId: Scalars['ID'];
 }>;
 
-export type DeleteDisciplineMutation = { __typename?: 'Mutation', deleteDiscipline: { __typename?: 'DeleteDisciplineMutationPayload', success: boolean, errors: Array<{ __typename?: 'ErrorFieldType', field: string, messages: Array<string> }> } };
+export type DeleteDisciplineMutation = { __typename?: 'Mutation', deleteDiscipline: { __typename: 'DeleteDisciplineMutationPayload', success: boolean, id: string, errors: Array<{ __typename?: 'ErrorFieldType', field: string, messages: Array<string> }> } };
 
 export type DeleteEduHourMutationVariables = Exact<{
   eduHourId: Scalars['ID'];
@@ -8064,7 +8077,7 @@ export type DisciplinesQueryVariables = Exact<{
   search?: InputMaybe<Scalars['String']>;
 }>;
 
-export type DisciplinesQuery = { __typename?: 'Query', disciplines: { __typename: 'DisciplineTypeConnection', edges: Array<{ __typename?: 'DisciplineTypeEdge', node?: { __typename: 'DisciplineType', id: string, code: string, name: string, annotation?: string | null, annotationSign?: string | null, workProgram?: string | null, workProgramSign?: string | null, updatedAt: any, order: number, view: { __typename: 'DisciplineViewType', id: string, name: string, order: number }, users: Array<{ __typename: 'UserType', id: string, username: string, avatar?: string | null, email: string, firstName: string, lastName: string, sirName?: string | null, isActive: boolean, createdAt: any }>, parent?: { __typename: 'DisciplineType', id: string, code: string, name: string } | null, methodologicalSupport: Array<{ __typename: 'MethodologicalSupportType', id: string, name: string, src?: string | null, srcSign?: string | null, createdAt: any, updatedAt: any }> } | null } | null> } };
+export type DisciplinesQuery = { __typename?: 'Query', disciplines: { __typename: 'DisciplineTypeConnection', edges: Array<{ __typename?: 'DisciplineTypeEdge', node?: { __typename: 'DisciplineType', id: string, code: string, name: string, annotation?: string | null, annotationSign?: string | null, workProgram?: string | null, workProgramSign?: string | null, updatedAt: any, order: number, eduProgram: { __typename: 'EduProgramType', id: string, name: string, adaptive: boolean, admission: number, expedited: boolean, description?: string | null, descriptionSign?: string | null, calendar?: string | null, calendarSign?: string | null, syllabus?: string | null, syllabusSign?: string | null, createdAt: any, updatedAt: any, eduForm: { __typename: 'EduFormType', id: string, name: string, shortName: string }, direction: { __typename: 'DirectionType', id: string, name: string, code: string, eduService: { __typename: 'EduServiceType', id: string, name: string } } }, view: { __typename: 'DisciplineViewType', id: string, name: string, order: number }, users: Array<{ __typename: 'UserType', id: string, username: string, avatar?: string | null, email: string, firstName: string, lastName: string, sirName?: string | null, isActive: boolean, createdAt: any }>, parent?: { __typename: 'DisciplineType', id: string, code: string, name: string } | null, methodologicalSupport: Array<{ __typename: 'MethodologicalSupportType', id: string, name: string, src?: string | null, srcSign?: string | null, createdAt: any, updatedAt: any }> } | null } | null> } };
 
 export type EduCyclesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -8214,13 +8227,13 @@ export type PortfolioFilesQueryVariables = Exact<{
 
 export type PortfolioFilesQuery = { __typename?: 'Query', portfolioFiles: { __typename: 'PortfolioFileTypeConnection', totalCount: number, edges: Array<{ __typename: 'PortfolioFileTypeEdge', node?: { __typename: 'PortfolioFileType', id: string, describe: string, updatedAt: any, createdAt: any, file: { __typename: 'FileType', id: string, name: string, src: string, user?: { __typename: 'UserType', id: string, avatar?: string | null, lastName: string, firstName: string, sirName?: string | null, change: boolean } | null }, kind?: { __typename: 'FileKindType', id: string, name: string } | null, discipline?: { __typename: 'DisciplineType', id: string, code: string, name: string } | null, user?: { __typename: 'UserType', change: boolean, id: string, username: string, avatar?: string | null, email: string, firstName: string, lastName: string, sirName?: string | null, isActive: boolean, createdAt: any } | null } | null } | null> } };
 
-export type EduProgramStatisticsQueryVariables = Exact<{
+export type EduProgramsStatisticsQueryVariables = Exact<{
   directions: Array<Scalars['ID']> | Scalars['ID'];
   admissions: Array<Scalars['String']> | Scalars['String'];
   eduForms: Array<Scalars['String']> | Scalars['String'];
 }>;
 
-export type EduProgramStatisticsQuery = { __typename?: 'Query', eduProgramsStatistics: Array<{ __typename: 'EduProgramStatisticsType', id: string, directionCode: string, directionName: string, eduForm: string, name: string, admission: number, points: Array<{ __typename: 'PointTotalStatisticsType', name: string, value: number, total: number } | null> } | null> };
+export type EduProgramsStatisticsQuery = { __typename?: 'Query', eduProgramsStatistics: Array<{ __typename: 'EduProgramStatisticsType', id: string, directionCode: string, directionName: string, eduForm: string, name: string, admission: number, points: Array<{ __typename: 'PointTotalStatisticsType', name: string, value: number, total: number } | null> } | null> };
 
 export type PostsQueryVariables = Exact<{ [key: string]: never; }>;
 

@@ -18,7 +18,7 @@
 import type { ComputedRef, PropType, Ref } from '#app'
 import { computed, defineComponent, useNuxt2Meta, useRoute, ref } from '#app'
 import { BreadCrumbsItem, LinksType } from '~/types/devind'
-import { UserType, TeamQuery, TeamQueryVariables } from '~/types/graphql'
+import { TeamQuery, TeamQueryVariables } from '~/types/graphql'
 import { useAuthStore } from '~/store'
 import { useI18n, useCommonQuery } from '~/composables'
 import teamQuery from '~/gql/eleden/queries/team/team.graphql'
@@ -26,6 +26,7 @@ import BreadCrumbs from '~/components/common/BreadCrumbs.vue'
 import TwoColumns from '~/components/common/grid/TwoColumns.vue'
 
 export type JobKind = { [key: string]: string }
+type JobUser = TeamQuery['team']['jobs'][number]['user']
 
 export default defineComponent({
   components: { TwoColumns, BreadCrumbs },
@@ -50,7 +51,7 @@ export default defineComponent({
       })
     })
 
-    const users: ComputedRef<UserType[]> = computed<UserType[]>(() => {
+    const users: ComputedRef<JobUser[]> = computed<JobUser[]>(() => {
       if (!team.value) {
         return []
       }

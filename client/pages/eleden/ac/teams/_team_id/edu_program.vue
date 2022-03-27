@@ -25,9 +25,9 @@
 <script lang="ts">
 import type { ComputedRef, PropType, Ref } from '#app'
 import { defineComponent, computed, ref } from '#app'
-import { TeamType, DisciplineQuery, DisciplineQueryVariables } from '~/types/graphql'
+import { TeamType, DisciplinesQuery, DisciplinesQueryVariables } from '~/types/graphql'
 import { useQueryRelay, useI18n } from '~/composables'
-import disciplineQuery from '~/gql/eleden/queries/education/disciplines.graphql'
+import disciplinesQuery from '~/gql/eleden/queries/education/disciplines.graphql'
 import DisciplinesTable from '~/components/eleden/edu_programs/DisciplinesTable.vue'
 
 export default defineComponent({
@@ -55,8 +55,8 @@ export default defineComponent({
         `(${props.team.eduProgram!.admission}, ${props.team.eduProgram!.eduForm.name})`
     ))
 
-    const { data: disciplines, loading } = useQueryRelay<DisciplineQuery, DisciplineQueryVariables>({
-      document: disciplineQuery,
+    const { data: disciplines, loading } = useQueryRelay<DisciplinesQuery, DisciplinesQueryVariables>({
+      document: disciplinesQuery,
       variables: () => ({ eduProgramId: props.team.eduProgram!.id }),
       options: {
         enabled: props.team.eduProgram !== null

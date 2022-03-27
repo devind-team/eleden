@@ -40,7 +40,7 @@ import { ApolloError } from 'apollo-client'
 import { ValidationObserver } from 'vee-validate'
 import type { Ref, ComputedRef } from '#app'
 import { defineComponent, computed, getCurrentInstance, ref, nextTick } from '#app'
-import { useFilters, useI18n } from '~/composables'
+import { useConvertors, useI18n } from '~/composables'
 import { ErrorFieldType } from '~/types/graphql'
 import { ErrorType } from '~/types/devind'
 import MutationResultAlert, { TableErrors } from '~/components/common/MutationResultAlert.vue'
@@ -63,7 +63,7 @@ export default defineComponent({
   },
   setup (props, { emit }) {
     const { t } = useI18n()
-    const { snakeToCamel } = useFilters()
+    const { snakeToCamel } = useConvertors()
 
     const instance = getCurrentInstance()
     const vm = instance?.proxy || instance as unknown as InstanceType<VueConstructor>

@@ -10,13 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
-import sentry_sdk
-from os.path import join, dirname, exists
-from pathlib import Path
-from sentry_sdk.integrations.django import DjangoIntegration
-from dotenv import load_dotenv
 from datetime import timedelta
+from os.path import dirname, exists, join
+from pathlib import Path
 
+import sentry_sdk
+from dotenv import load_dotenv
+from sentry_sdk.integrations.django import DjangoIntegration
 
 # Настройки базовой директории приложения
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,7 +31,7 @@ load_dotenv(dotenv_path=ENV_PATH)
 # Вспомогательные настройки
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY', None)
-assert SECRET_KEY,  'Не установлен SECRET_KEY в переменную окружения.'
+assert SECRET_KEY, 'Не установлен SECRET_KEY в переменную окружения.'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG: bool = os.getenv('DEBUG', 'True') == 'True'
 
@@ -63,7 +63,8 @@ INSTALLED_APPS = [
     'apps.dashboard',
     'push_notifications',
     'apps.messenger',
-    'apps.sveden'
+    'apps.sveden',
+    'apps.cms',
 ]
 
 

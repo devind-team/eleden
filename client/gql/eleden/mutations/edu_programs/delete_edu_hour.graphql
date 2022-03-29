@@ -5,5 +5,7 @@ mutation DeleteEduHour($eduHourId: ID!){
       field
       messages
     }
+    id
+    __typename
   }
 }

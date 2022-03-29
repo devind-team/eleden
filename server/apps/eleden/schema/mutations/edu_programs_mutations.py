@@ -759,6 +759,8 @@ class DeleteMethodologicalSupportMutation(BaseMutation):
     class Input:
         methodological_support_id = graphene.ID(required=True, description='Идентификатор методического обеспечения')
 
+    id = graphene.ID(required=True, description='Идентификатор методического обеспечения')
+
     @staticmethod
     @permission_classes([IsAuthenticated, DeleteMethodologicalSupport])
     def mutate_and_get_payload(root, info: ResolveInfo, methodological_support_id, **kwargs):
@@ -767,7 +769,7 @@ class DeleteMethodologicalSupportMutation(BaseMutation):
         if methodological_support is not None:
             info.context.check_object_permissions(info.context, methodological_support.discipline)
             methodological_support.delete()
-            return DeleteMethodologicalSupportMutation()
+            return DeleteMethodologicalSupportMutation(id=methodological_support_id)
         else:
             return DeleteMethodologicalSupportMutation(success=False)
 
@@ -840,10 +842,12 @@ class DeleteEduHourMutation(BaseMutation):
     class Input:
         edu_hour_id = graphene.ID(required=True, description='Идентификатор вида работ')
 
+    id = graphene.ID(required=True, description='Идентификатор вида работ')
+
     @staticmethod
     @permission_classes([IsAuthenticated, DeleteEduHours])
     def mutate_and_get_payload(root, info: ResolveInfo, edu_hour_id: str,  **kwargs):
-        return DeleteEduHourMutation(success=EduHours.objects.get(pk=edu_hour_id).delete()[0] > 0)
+        return DeleteEduHourMutation(success=EduHours.objects.get(pk=edu_hour_id).delete()[0] > 0, id=edu_hour_id)
 
 
 class EduProgramsMutations(graphene.ObjectType):

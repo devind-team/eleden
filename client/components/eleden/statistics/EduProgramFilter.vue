@@ -94,13 +94,13 @@ type DirectionFilter = {
 })
 export default class EduProgramFilter extends Vue {
   @PropSync('directionsFilter', { type: Array as PropType<DirectionType[]>, required: true })
-  syncedDirectionsFilter!: DirectionType[]
+    syncedDirectionsFilter!: DirectionType[]
 
   @PropSync('yearsFilter', { type: Array as PropType<Year[]>, required: true })
-  syncedYearsFilter!: Year[]
+    syncedYearsFilter!: Year[]
 
   @PropSync('eduFormsFilter', { type: Array as PropType<EduFormType[]>, required: true })
-  syncedEduFormsFilter!: EduFormType[]
+    syncedEduFormsFilter!: EduFormType[]
 
   @PropSync('view', { type: String, required: true }) syncedView!: View
 

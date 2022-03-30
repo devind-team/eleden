@@ -18,9 +18,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, PropType } from '#app'
-import type { Ref, ComputedRef } from '#app'
-import { useI18n } from '~/composables'
+import type { Ref } from '#app'
+import { defineComponent, ref, PropType } from '#app'
 import MutationForm from '~/components/common/forms/MutationForm.vue'
 import { ItemPropContainerType } from '~/types/graphql'
 
@@ -35,10 +34,7 @@ export default defineComponent({
   setup (props, { emit }) {
     const onClose = () => emit('close')
     const ipc: Ref<ItemPropContainerType> = ref({ ...props.itemPropContainer })
-    return {
-      ipc,
-      onClose
-    }
+    return { ipc, onClose }
   }
 })
 </script>

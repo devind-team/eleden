@@ -90,12 +90,15 @@
                 :success="valid"
                 clearable
               )
+            v-checkbox(v-model="addText" :label="$t('pages.page.add.text')")
+            rich-text-editor(v-if="addText" v-model="input.text")
             v-card-actions
               v-spacer
               v-btn(:disabled="invalid" :loading="loading" type="submit" color="primary") {{ $t('pages.page.add.add') }}
 </template>
 
 <script lang="ts">
+import { camelCase } from 'scule'
 import { Component, Prop, Ref, Vue } from 'vue-property-decorator'
 import { ValidationObserver } from 'vee-validate'
 import { Subject } from 'rxjs'
@@ -109,8 +112,10 @@ import {
   CategoryType,
   ErrorFieldType
 } from '~/types/graphql'
+import RichTextEditor from '~/components/common/editor/RichTextEditor.vue'
 
 @Component<AddPage>({
+  components: { RichTextEditor },
   computed: {
     pageKindList () {
       return [
@@ -190,7 +195,8 @@ export default class AddPage extends Vue {
         hide: false,
         priority: false,
         categoryId: this.category.id,
-        tagNames: []
+        tagNames: [],
+        text: ''
       }
     }
   }
@@ -271,7 +277,7 @@ export default class AddPage extends Vue {
     } else {
       this.addPage.setErrors(errors.reduce(
         (a: { [key: string]: string[] }, c: ErrorFieldType) => {
-          return { ...a, [this.$t(`pages.page.add.${this.$snakeToCamel(c.field)}`) as string]: c.messages }
+          return { ...a, [this.$t(`pages.page.add.${camelCase(c.field)}`) as string]: c.messages }
         }, {}))
     }
   }

@@ -69,7 +69,7 @@ export default Vue.extend<any, any, any, any>({
       const ua: string = userAgent
       let m = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || []
       if (/trident/i.test(m[1])) {
-        const tem: never[] | RegExpExecArray = /\brv[ :]+(\d+)/g.exec(ua) || []
+        const tem: [] | RegExpExecArray = /\brv[ :]+(\d+)/g.exec(ua) || []
         return { name: 'IE', version: (tem[1] || '') }
       }
       if (m[1] === 'Chrome') {

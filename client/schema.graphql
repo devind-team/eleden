@@ -2373,11 +2373,15 @@ input ChildItemPropInputType {
 }
 
 type ChildItemPropType implements Node {
+  """Подпись к единице информации"""
   header: String!
   """The ID of the object."""
   id: ID!
+  """Дочерний тег"""
   itemProp: String!
+  """Позиция дочернего тега при выводе"""
   showPosition: Int!
+  """Индекс под которым хранится данные с тегом"""
   valuePosition: Int!
 }
 
@@ -2662,7 +2666,7 @@ type DeleteCategoryMutationPayload {
 
 input DeleteChildItemPropMutationInput {
   """
-  Идентификатор модели "ChildItemProp(id, header, item_prop, show_position, value_position, parent)"
+  Идентификатор модели "Дочерний тег"
   """
   childItemPropId: ID!
   clientMutationId: String
@@ -2692,6 +2696,8 @@ type DeleteCompetenceMutationPayload {
   clientMutationId: String
   """Ошибки мутации"""
   errors: [ErrorFieldType!]!
+  """Идентификатор компетенции"""
+  id: ID!
   """Успех мутации"""
   success: Boolean!
 }
@@ -2756,6 +2762,8 @@ type DeleteDisciplineMutationPayload {
   clientMutationId: String
   """Ошибки мутации"""
   errors: [ErrorFieldType!]!
+  """Идентификатор дисциплины"""
+  id: ID!
   """Успех мутации"""
   success: Boolean!
 }
@@ -2880,7 +2888,7 @@ type DeleteHandoutsMutationPayload {
 input DeleteItemPropContainerMutationInput {
   clientMutationId: String
   """
-  Идентификатор модели "ItemPropContainer(id, header, values, is_generated, subsection)"
+  Идентификатор модели "Контейнер с данными и структурой"
   """
   itemPropContainerId: ID!
 }
@@ -3123,7 +3131,7 @@ type DeleteSessionsMutationPayload {
 input DeleteSubsectionMutationInput {
   clientMutationId: String
   """
-  Идентификатор модели "Subsection(id, header, url)"
+  Идентификатор модели "Подраздел"
   """
   subsectionId: ID!
 }
@@ -3606,9 +3614,11 @@ input ItemPropContainerInputType {
 }
 
 type ItemPropContainerType implements Node {
+  """Подпись к данным"""
   header: String!
   """The ID of the object."""
   id: ID!
+  """Флаг, что данные заполняются автоматически"""
   isGenerated: Boolean!
   schema: ItemPropType
   values: [[String]]!
@@ -3625,6 +3635,7 @@ type ItemPropType implements Node {
   children: [ChildItemPropType!]
   """The ID of the object."""
   id: ID!
+  """Главный тег"""
   itemProp: String!
 }
 
@@ -5236,10 +5247,12 @@ type Subscription {
 }
 
 type SubsectionType implements Node {
+  """Название подраздела"""
   header: String!
   """The ID of the object."""
   id: ID!
   itemPropContainers: [ItemPropContainerType!]!
+  """Адрес подраздела"""
   url: String!
 }
 

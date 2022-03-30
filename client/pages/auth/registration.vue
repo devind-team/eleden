@@ -11,151 +11,151 @@
         )
           ValidationObserver(v-slot="{ handleSubmit, invalid }" ref="registerForm")
             form(@submit.prevent="handleSubmit(mutate)")
-                v-card
-                  v-card-title {{ t('register') }}
-                  v-card-text
-                    v-alert(v-if="error" type="error") {{ t('mutationBusinessLogicError', error) }}
-                    //- Логин (номер зачетки) и Email
-                    ValidationProvider(
-                      :name="t('username')"
-                      rules="required|min:2|max:50"
-                      v-slot="{ errors, valid }"
-                      tag="div"
+              v-card
+                v-card-title {{ t('register') }}
+                v-card-text
+                  v-alert(v-if="error" type="error") {{ t('mutationBusinessLogicError', error) }}
+                  //- Логин (номер зачетки) и Email
+                  ValidationProvider(
+                    :name="t('username')"
+                    rules="required|min:2|max:50"
+                    v-slot="{ errors, valid }"
+                    tag="div"
+                  )
+                    v-text-field(
+                      v-model="username"
+                      :label="t('username')"
+                      :error-messages="errors"
+                      :success="valid"
+                      autocomplete="of"
+                    )
+                  ValidationProvider(
+                    :name="t('email')"
+                    rules="required|email"
+                    v-slot="{ errors, valid }"
+                    tag="div"
+                  )
+                    v-text-field(
+                      v-model="email"
+                      :label="t('email')"
+                      :error-messages="errors"
+                      :success="valid"
+                      autocomplete="of"
+                    )
+                  //- ФИО
+                  ValidationProvider(
+                    :name="t('lastName')"
+                    rules="required|min:2|max:50"
+                    v-slot="{ errors, valid }"
+                    tag="div"
+                  )
+                    v-text-field(
+                      v-model="lastName"
+                      :label="t('lastName')"
+                      :error-messages="errors"
+                      :success="valid"
+                      autocomplete="of"
+                    )
+                  ValidationProvider(
+                    :name="t('firstName')"
+                    rules="required|min:2|max:50"
+                    v-slot="{ errors, valid }"
+                    tag="div"
+                  )
+                    v-text-field(
+                      v-model="firstName"
+                      :label="t('firstName')"
+                      :error-messages="errors"
+                      :success="valid"
+                      autocomplete="of"
+                    )
+                  ValidationProvider(
+                    :name="t('sirName')"
+                    rules="min:2|max:50"
+                    v-slot="{ errors, valid }"
+                    tag="div"
+                  )
+                    v-text-field(
+                      v-model="sirName"
+                      :label="t('sirName')"
+                      :error-messages="errors"
+                      :success="valid"
+                      autocomplete="of"
+                    )
+                  //- Дата рождения
+                  v-menu(
+                    v-model="birthdayMenu"
+                    :close-on-content-click="false"
+                    bottom max-width="290px"
+                    transition="scale-transition"
+                    min-width="290px"
+                  )
+                    template(v-slot:activator="{ on }")
+                      ValidationProvider(
+                        :name="t('birthday')"
+                        rules="required"
+                        v-slot="{ errors, valid }"
+                        tag="div"
                       )
-                      v-text-field(
-                        v-model="username"
-                        :label="t('username')"
-                        :error-messages="errors"
-                        :success="valid"
-                        autocomplete="of"
-                        )
-                    ValidationProvider(
-                      :name="t('email')"
-                      rules="required|email"
-                      v-slot="{ errors, valid }"
-                      tag="div"
-                      )
-                      v-text-field(
-                        v-model="email"
-                        :label="t('email')"
-                        :error-messages="errors"
-                        :success="valid"
-                        autocomplete="of"
-                        )
-                    //- ФИО
-                    ValidationProvider(
-                      :name="t('lastName')"
-                      rules="required|min:2|max:50"
-                      v-slot="{ errors, valid }"
-                      tag="div"
-                      )
-                      v-text-field(
-                        v-model="lastName"
-                        :label="t('lastName')"
-                        :error-messages="errors"
-                        :success="valid"
-                        autocomplete="of"
-                        )
-                    ValidationProvider(
-                      :name="t('firstName')"
-                      rules="required|min:2|max:50"
-                      v-slot="{ errors, valid }"
-                      tag="div"
-                      )
-                      v-text-field(
-                        v-model="firstName"
-                        :label="t('firstName')"
-                        :error-messages="errors"
-                        :success="valid"
-                        autocomplete="of"
-                        )
-                    ValidationProvider(
-                      :name="t('sirName')"
-                      rules="min:2|max:50"
-                      v-slot="{ errors, valid }"
-                      tag="div"
-                      )
-                      v-text-field(
-                        v-model="sirName"
-                        :label="t('sirName')"
-                        :error-messages="errors"
-                        :success="valid"
-                        autocomplete="of"
-                        )
-                    //- Дата рождения
-                    v-menu(
-                      v-model="birthdayMenu"
-                      :close-on-content-click="false"
-                      bottom max-width="290px"
-                      transition="scale-transition"
-                      min-width="290px"
-                      )
-                      template(v-slot:activator="{ on }")
-                        ValidationProvider(
-                          :name="t('birthday')"
-                          rules="required"
-                          v-slot="{ errors, valid }"
-                          tag="div"
-                          )
-                          v-text-field(
-                            v-on="on"
-                            v-model="birthday"
-                            :error-messages="errors"
-                            :success="valid"
-                            prepend-icon="mdi-calendar"
-                            :label="t('birthday')"
-                            readonly)
-                      v-date-picker(v-model="birthday" @input="birthdayMenu = false")
-                    //- Пароль
-                    ValidationProvider(
-                      :name="t('password')"
-                      rules="required|min:8|confirmed:confirmation"
-                      v-slot="{ errors, valid }"
-                      tag="div"
-                      )
-                      v-text-field(
-                        v-model="password"
-                        :label="t('password')"
-                        type="password"
-                        :error-messages="errors"
-                        :success="valid"
-                        autocomplete="of"
-                        )
-                    ValidationProvider(
-                      :name="t('passwordConfirm')"
-                      rules="required|min:8" v-slot="{ errors, valid }"
-                      vid="confirmation"
-                      tag="div"
-                      )
-                      v-text-field(
-                        v-model="passwordConfirm"
-                        :label="t('passwordConfirm')"
-                        type="password"
-                        :error-messages="errors"
-                        :success="valid"
-                        autocomplete="of"
-                        )
-                    //- Согласие на обработку персональных данных
-                    ValidationProvider(
-                      :name="t('agreement')"
-                      rules="agreement"
-                      v-slot="{ errors, valid}"
-                      tag="div"
-                      )
-                      v-checkbox(
-                        v-model="agreement"
-                        :error-messages="errors"
-                        :success="valid"
-                        :label="t('agreement')"
-                        )
-                  v-card-actions.justify-center
-                    v-btn(
-                      type="submit"
-                      :disabled="invalid"
-                      color="success"
-                      :loading="loading"
-                      ) {{ $t('auth.doRegister') }}
-                  v-card-text {{ $t('auth.registrationOption') }}
+                        v-text-field(
+                          v-on="on"
+                          v-model="birthday"
+                          :error-messages="errors"
+                          :success="valid"
+                          prepend-icon="mdi-calendar"
+                          :label="t('birthday')"
+                          readonly)
+                    v-date-picker(v-model="birthday" @input="birthdayMenu = false")
+                  //- Пароль
+                  ValidationProvider(
+                    :name="t('password')"
+                    rules="required|min:8|confirmed:confirmation"
+                    v-slot="{ errors, valid }"
+                    tag="div"
+                  )
+                    v-text-field(
+                      v-model="password"
+                      :label="t('password')"
+                      type="password"
+                      :error-messages="errors"
+                      :success="valid"
+                      autocomplete="of"
+                    )
+                  ValidationProvider(
+                    :name="t('passwordConfirm')"
+                    rules="required|min:8" v-slot="{ errors, valid }"
+                    vid="confirmation"
+                    tag="div"
+                  )
+                    v-text-field(
+                      v-model="passwordConfirm"
+                      :label="t('passwordConfirm')"
+                      type="password"
+                      :error-messages="errors"
+                      :success="valid"
+                      autocomplete="of"
+                    )
+                  //- Согласие на обработку персональных данных
+                  ValidationProvider(
+                    :name="t('agreement')"
+                    rules="agreement"
+                    v-slot="{ errors, valid}"
+                    tag="div"
+                  )
+                    v-checkbox(
+                      v-model="agreement"
+                      :error-messages="errors"
+                      :success="valid"
+                      :label="t('agreement')"
+                    )
+                v-card-actions.justify-center
+                  v-btn(
+                    type="submit"
+                    :disabled="invalid"
+                    color="success"
+                    :loading="loading"
+                  ) {{ $t('auth.doRegister') }}
+                v-card-text {{ $t('auth.registrationOption') }}
       v-col.mx-auto(v-else lg="6" md="8" cols="12")
         v-card
           v-card-title {{ $t('auth.successRegister') }}
@@ -167,6 +167,7 @@
 </template>
 
 <script lang="ts">
+import { camelCase } from 'scule'
 import { Vue, Component } from 'vue-property-decorator'
 import { MetaInfo } from 'vue-meta'
 import { ValidationObserver } from 'vee-validate'
@@ -214,7 +215,7 @@ export default class AuthRegistration extends Vue {
     } else {
       this.$refs.registerForm.setErrors(register.errors.reduce(
         (a: { [key: string]: string[] }, c: ErrorFieldType) => {
-          return { ...a, [this.$t(`auth.registration.${this.$snakeToCamel(c.field)}`) as string]: c.messages }
+          return { ...a, [this.$t(`auth.registration.${camelCase(c.field)}`) as string]: c.messages }
         }, {}))
     }
   }

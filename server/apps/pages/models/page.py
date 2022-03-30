@@ -1,7 +1,7 @@
+from devind_helpers.resolve_model import ResolveModel
 from django.conf import settings
 from django.db import models
 
-from devind_helpers.resolve_model import ResolveModel
 from .category import Category
 from .page_kind import PageKind
 from .tag import Tag
@@ -21,7 +21,13 @@ class Page(models.Model, ResolveModel):
     created_at = models.DateTimeField(auto_now_add=True, help_text='Дата создания')
     updated_at = models.DateTimeField(auto_now=True, help_text='Дата обновления')
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL, help_text='Пользователь')
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name='pages_page_user',
+        help_text='Пользователь'
+    )
     category = models.ForeignKey(Category, on_delete=models.CASCADE, help_text='Категория')
     kind = models.ForeignKey(PageKind, null=True, on_delete=models.SET_NULL, help_text='Тип')
 

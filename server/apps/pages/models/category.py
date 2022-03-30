@@ -1,7 +1,6 @@
+from devind_helpers.resolve_model import ResolveModel
 from django.conf import settings
 from django.db import models
-
-from devind_helpers.resolve_model import ResolveModel
 
 
 class Category(models.Model, ResolveModel):
@@ -15,7 +14,13 @@ class Category(models.Model, ResolveModel):
     updated_at = models.DateTimeField(auto_now=True, help_text='Дата обновления')
 
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, help_text='Родительская категория')
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, help_text='Пользователь, создавший категорию')
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='pages_category_user',
+        help_text='Пользователь, создавший категорию'
+    )
 
     class Meta:
         ordering = ('position',)

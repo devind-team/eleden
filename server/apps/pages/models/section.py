@@ -1,7 +1,7 @@
+from devind_helpers.resolve_model import ResolveModel
 from django.conf import settings
 from django.db import models
 
-from devind_helpers.resolve_model import ResolveModel
 from .page import Page
 
 
@@ -34,7 +34,13 @@ class Section(models.Model, ResolveModel):
     position = models.PositiveIntegerField(default=0, help_text='Позиция')
 
     page = models.ForeignKey(Page, on_delete=models.CASCADE, help_text='Страница, на которой находится секция')
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, help_text='Пользователь, создавший секцию')
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='pages_section_user',
+        help_text='Пользователь, создавший секцию'
+    )
 
     class Meta:
         ordering = ('position',)

@@ -42,7 +42,7 @@
     v-autocomplete(
       v-if="hasPerm('eleden.change_discipline_additional_fields')"
       v-model="discipline.parent"
-      :search-input="parentDisciplinesSearch"
+      :search-input.sync="parentDisciplinesSearch"
       :loading="parentDisciplinesLoading"
       :label="$t('eduPrograms.discipline.form.parentId')"
       :items="parentDisciplines"

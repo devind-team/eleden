@@ -87,7 +87,7 @@
       clearable
       success
     )
-    div(v-if="eduProgram.id")
+    div(v-if="!eduProgram.id")
       v-autocomplete(
         v-model="eduProgram.donor"
         :search-input.sync="eduProgramsSearch"

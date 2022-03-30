@@ -82,13 +82,12 @@
 </template>
 
 <script lang="ts">
-import Vue,{ PropType } from 'vue'
+import Vue, { PropType } from 'vue'
 
 import { ApolloError } from 'apollo-client'
 import { Subject } from 'rxjs'
 import { debounceTime, filter, pluck, startWith } from 'rxjs/operators'
 import {
-  GroupType,
   TeamType,
   ChangeTeamMutationVariables,
   ChangeTeamMutationPayload
@@ -98,7 +97,6 @@ import MutationModalForm from '~/components/common/forms/MutationModalForm.vue'
 import MutationResultAlert from '~/components/common/MutationResultAlert.vue'
 
 type ChangeTeamData = { data: { changeTeam: ChangeTeamMutationPayload } }
-type TmpTeam = Pick<TeamType, 'name' | 'shortName' | 'admission' | 'group' | 'parent'>
 
 export default Vue.extend<any, any, any, any>({
   components: { MutationModalForm, MutationResultAlert },

@@ -1,7 +1,7 @@
 <template lang="pug">
-  page-container(:bread-crumbs="bc" :category="page && page.category" :loading="loading")
+  page-container(v-if="!loading" :bread-crumbs="bc" :category="page && page.category")
     template(#header)
-      .text-h4.text-md-h2 {{ page.title }}
+      .text-h4.text-md-h2 {{ loading ? $t('loading') : page.title }}
     category-pages(v-if="!loading" :category="page.category")
       v-card.pa-3
         page-sections(:page="page")
@@ -10,12 +10,14 @@
               v-if="hasPerm(['pages.add_section', 'pages.change_page', 'pages.delete_page'], true)"
               :page="page"
             )
+  v-row(v-else)
+    v-col.text-center #[v-progress-circular(color="primary" indeterminate)]
 </template>
 
 <script lang="ts">
 import { ApolloQueryResult } from '@apollo/client'
-import type { ComputedRef, Ref } from '#app'
-import { computed, defineComponent, onUnmounted, toRef, useNuxt2Meta, useRoute } from '#app'
+import type { ComputedRef } from '#app'
+import { Ref, computed, defineComponent, onUnmounted, toRef, useNuxt2Meta, useRoute } from '#app'
 import { useCommonQuery, useI18n, usePage } from '~/composables'
 import { HasPermissionFnType, useAuthStore, usePageStore } from '~/store'
 import { PageQuery, PageQueryVariables } from '~/types/graphql'
@@ -30,10 +32,11 @@ export default defineComponent({
   components: { PageActions, PageSections, CategoryPages, PageContainer },
   setup () {
     const route = useRoute()
-    const authStore = useAuthStore()
     const { t, localePath } = useI18n()
+    const authStore = useAuthStore()
     const { setActiveCategories } = usePageStore()
     const { flatCategories } = usePage()
+
     const hasPerm: Ref<HasPermissionFnType> = toRef(authStore, 'hasPerm')
 
     const { data: page, loading, onResult } = useCommonQuery<PageQuery, PageQueryVariables>({
@@ -48,7 +51,9 @@ export default defineComponent({
         setActiveCategories(flatCategories.value, activeCategories)
       }
     })
-    useNuxt2Meta(() => ({ title: !loading.value ? page.value.title : t('loading') as string }))
+
+    useNuxt2Meta(() => ({ title: loading.value ? t('loading') as string : page.value.title }))
+
     const bc: ComputedRef<BreadCrumbsItem[]> = computed<BreadCrumbsItem[]>(() => {
       const breadCrumbs: BreadCrumbsItem[] = []
       if (!loading.value) {

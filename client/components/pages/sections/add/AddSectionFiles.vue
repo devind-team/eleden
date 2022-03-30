@@ -1,36 +1,37 @@
 <template lang="pug">
-apollo-mutation(
-  v-slot="{ mutate, loading, error }"
-  :mutation="require('~/gql/pages/mutations/section/add_section_files.graphql')"
-  :variables="{ pageId: page.id, text, files }"
-  :update="addSectionDone"
-)
-  validation-observer(v-slot="{ handleSubmit, invalid }" ref="addSection" tag="div")
-    v-card
-      v-card-text
-        v-alert(:value="!!error" type="error" dismissible) {{ error }}
-        validation-provider(:name="$t('pages.section.names.text')" rules="min:10" v-slot="{ errors }" tag="div")
-         v-text-field(v-model="text" :label="$t('pages.section.names.text')" :error-messages="errors")
-        drop-file-upload(@files-selected="onFilesSelected")
-        v-simple-table(v-show="files.length")
-          template(#default)
-            thead
-              tr
-                th {{$t('pages.section.names.files')}}
-                th.text-right {{$t('pages.components.sectionGallery.actions')}}
-            tbody
-              tr(v-for="(file, i) in files" :key="i")
-                td {{file.name}}
-                td
-                  v-btn(@click="onFileRemove(i)" icon)
-                    v-icon mdi-delete
-      v-card-actions
-        v-checkbox(v-model="toPage" :label="$t('pages.section.toPage')")
-        v-spacer
-        v-btn(@click="mutate" :loading="loading" :disabled="invalid || !files.length" color="primary") {{ $t('pages.section.add') }}
+  apollo-mutation(
+    v-slot="{ mutate, loading, error }"
+    :mutation="require('~/gql/pages/mutations/section/add_section_files.graphql')"
+    :variables="{ pageId: page.id, text, files }"
+    :update="addSectionDone"
+  )
+    validation-observer(v-slot="{ handleSubmit, invalid }" ref="addSection" tag="div")
+      v-card
+        v-card-text
+          v-alert(:value="!!error" type="error" dismissible) {{ error }}
+          validation-provider(:name="$t('pages.section.names.text')" rules="min:10" v-slot="{ errors }" tag="div")
+            v-text-field(v-model="text" :label="$t('pages.section.names.text')" :error-messages="errors")
+          drop-file-upload(@files-selected="onFilesSelected")
+          v-simple-table(v-show="files.length")
+            template(#default)
+              thead
+                tr
+                  th {{$t('pages.section.names.files')}}
+                  th.text-right {{$t('pages.components.sectionGallery.actions')}}
+              tbody
+                tr(v-for="(file, i) in files" :key="i")
+                  td {{file.name}}
+                  td
+                    v-btn(@click="onFileRemove(i)" icon)
+                      v-icon mdi-delete
+        v-card-actions
+          v-checkbox(v-model="toPage" :label="$t('pages.section.toPage')")
+          v-spacer
+          v-btn(@click="mutate" :loading="loading" :disabled="invalid || !files.length" color="primary") {{ $t('pages.section.add') }}
 </template>
 
 <script lang="ts">
+import { camelCase } from 'scule'
 import { Vue, Component, Prop, Ref } from 'vue-property-decorator'
 import { ValidationObserver } from 'vee-validate'
 import { DataProxy } from 'apollo-cache'
@@ -80,7 +81,7 @@ export default class AddSectionFiles extends Vue {
     } else {
       this.addSection.setErrors(errors.reduce(
         (a: { [key: string]: string[] }, c: ErrorFieldType) => {
-          return { ...a, [this.$t(`pages.section.names.${this.$snakeToCamel(c.field)}`) as string]: c.messages }
+          return { ...a, [this.$t(`pages.section.names.${camelCase(c.field)}`) as string]: c.messages }
         }, {}))
     }
   }

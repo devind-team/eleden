@@ -6,12 +6,12 @@
     :variables="{ input: { urlId, itemPropContainer: ipc } }"
     :update="update"
     mutation-name="addItemPropContainer"
-    @done="onClose"
+    @done="$emit('close')"
   )
     template(#header="{ header }")
       span {{ header }}
       v-spacer
-      v-btn(@click="onClose" icon)
+      v-btn(@click="$emit('close')" icon)
         v-icon mdi-close
     template(#form)
       v-select(v-model="isTable" :label="$t('sveden.presentMode')" :items="items" @input="onIsTableChanged")
@@ -35,16 +35,10 @@ import MutationForm from '~/components/common/forms/MutationForm.vue'
 export default defineComponent({
   components: { MutationForm },
   props: {
-    urlId: {
-      type: String,
-      required: true
-    },
-    update: {
-      type: Function,
-      required: true
-    }
+    urlId: { type: String, required: true },
+    update: { type: Function, required: true }
   },
-  setup (_, { emit }) {
+  setup () {
     const { t } = useI18n()
     const isTable: Ref<boolean> = ref<boolean>(true)
     const colsCnt: Ref<number> = ref<number>(1)
@@ -69,15 +63,13 @@ export default defineComponent({
         cip.length = colsCnt.value
       }
     }
-    const onClose = () => emit('close')
     return {
       isTable,
       colsCnt,
       ipc,
       items,
       onIsTableChanged,
-      onColsCntChanged,
-      onClose
+      onColsCntChanged
     }
   }
 })

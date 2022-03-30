@@ -58,9 +58,9 @@ export default defineComponent({
     const { data: disciplines, loading } = useQueryRelay<DisciplinesQuery, DisciplinesQueryVariables>({
       document: disciplinesQuery,
       variables: () => ({ eduProgramId: props.team.eduProgram!.id }),
-      options: {
-        enabled: props.team.eduProgram !== null
-      }
+      options: () => ({
+        enabled: props.team.eduProgram === null
+      })
     })
 
     /**

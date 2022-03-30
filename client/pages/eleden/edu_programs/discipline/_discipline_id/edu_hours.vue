@@ -137,7 +137,7 @@
 
 <script lang="ts">
 import type { PropType, Ref, ComputedRef } from '#app'
-import { defineComponent, ref, computed } from '#app'
+import { defineComponent, ref, computed, toRef } from '#app'
 import { DataTableHeader } from 'vuetify'
 import {
   DisciplineType,
@@ -166,7 +166,8 @@ export default defineComponent({
   },
   setup (props) {
     const { t } = useI18n()
-    const { hasPerm } = useAuthStore()
+    const authStore = useAuthStore()
+    const hasPerm = toRef(authStore, 'hasPerm')
 
     const search: Ref<string> = ref<string>('')
     const courses: Ref<number[]> = ref<number[]>([1, 2, 3, 4, 5, 6])
@@ -204,7 +205,7 @@ export default defineComponent({
           value: 'hoursKind.name'
         }
       ]
-      if (hasPerm('eleden.delete_eduhours')) {
+      if (hasPerm.value('eleden.delete_eduhours')) {
         headers.push({
           text: t('eduPrograms.discipline.eduHours.tableHeaders.actions') as string,
           value: 'actions',

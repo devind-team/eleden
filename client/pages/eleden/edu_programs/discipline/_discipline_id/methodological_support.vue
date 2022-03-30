@@ -147,7 +147,7 @@ c.<template lang="pug">
 
 <script lang="ts">
 import type { PropType, Ref, ComputedRef } from '#app'
-import { defineComponent, ref, computed } from '#app'
+import { defineComponent, ref, computed, toRef } from '#app'
 import { DataTableHeader } from 'vuetify'
 import {
   DisciplineType,
@@ -172,7 +172,8 @@ export default defineComponent({
   },
   setup (props) {
     const { t } = useI18n()
-    const { hasPerm } = useAuthStore()
+    const authStore = useAuthStore()
+    const hasPerm = toRef(authStore, 'hasPerm')
     const { dateTimeHM } = useFilters()
 
     const search: Ref<string> = ref<string>('')
@@ -205,13 +206,14 @@ export default defineComponent({
       const headers: DataTableHeader[] = [
         { text: t('eduPrograms.discipline.methodologicalSupport.tableHeaders.name') as string, value: 'name' }
       ]
-      if (hasPerm('eleden.view_methodologicalsupport')) {
+      if (hasPerm.value('eleden.view_methodologicalsupport')) {
         headers.push({
           text: t('eduPrograms.discipline.methodologicalSupport.tableHeaders.updatedAt') as string,
           value: 'updatedAt'
         })
       }
-      if (hasPerm('eleden.change_methodologicalsupport') || hasPerm('eleden.delete_methodologicalsupport')) {
+      if (hasPerm.value('eleden.change_methodologicalsupport') ||
+        hasPerm.value('eleden.delete_methodologicalsupport')) {
         headers.push({
           text: t('eduPrograms.discipline.methodologicalSupport.tableHeaders.actions') as string,
           value: 'actions',

@@ -66,7 +66,7 @@
 
 <script lang="ts">
 import type { PropType, Ref, ComputedRef } from '#app'
-import { defineComponent, ref, computed, useNuxtApp } from '#app'
+import { defineComponent, ref, computed, useNuxtApp, toRef } from '#app'
 import { DataTableHeader } from 'vuetify'
 import {
   UserType,
@@ -93,7 +93,8 @@ export default defineComponent({
   },
   setup (props, { emit }) {
     const { t, localePath } = useI18n()
-    const { hasPerm } = useAuthStore()
+    const authStore = useAuthStore()
+    const hasPerm = toRef(authStore, 'hasPerm')
     const { dateTimeHM } = useFilters()
 
     const discipline: Ref<DisciplineType | undefined> = ref<DisciplineType | undefined>(undefined)
@@ -185,7 +186,7 @@ export default defineComponent({
           sortable: false
         }
       ]
-      if (hasPerm('eleden.change_discipline')) {
+      if (hasPerm.value('eleden.change_discipline')) {
         headers.push({
           text: t('eduPrograms.disciplines.tableHeaders.actions') as string,
           value: 'actions',
@@ -195,7 +196,7 @@ export default defineComponent({
         })
       }
       return headers.filter((header: DataTableHeader) =>
-        !['view.name'].includes(header.value) || hasPerm('eleden.view_discipline_additional_fields')
+        !['view.name'].includes(header.value) || hasPerm.value('eleden.view_discipline_additional_fields')
       )
     })
 

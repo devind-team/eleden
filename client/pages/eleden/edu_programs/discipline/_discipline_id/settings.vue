@@ -35,7 +35,7 @@
 
 <script lang="ts">
 import type { PropType, ComputedRef, Ref } from '#app'
-import { defineComponent, computed, ref, useRouter } from '#app'
+import { defineComponent, computed, ref, useRouter, toRef } from '#app'
 import {
   DisciplineType,
   ChangeDisciplineMutationVariables,
@@ -62,7 +62,8 @@ export default defineComponent({
   },
   setup (props) {
     const { localePath } = useI18n()
-    const { hasPerm } = useAuthStore()
+    const authStore = useAuthStore()
+    const hasPerm = toRef(authStore, 'hasPerm')
     const { dateTimeHM } = useFilters()
     const router = useRouter()
 

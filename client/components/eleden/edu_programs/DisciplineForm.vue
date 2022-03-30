@@ -2,37 +2,37 @@
   div
     validation-provider(
       v-slot="{ errors, valid }"
-      :name="t('code')"
+      :name="$t('eduPrograms.discipline.form.code')"
       rules="required|min:4|max:1024"
     )
       v-text-field(
         v-model="discipline.code"
-        :label="t('code')"
+        :label="$t('eduPrograms.discipline.form.code')"
         :error-messages="errors"
         :success="valid"
       )
     validation-provider(
       v-slot="{ errors, valid }"
-      :name="t('name')"
+      :name="$t('eduPrograms.discipline.form.name')"
       rules="required|min:4|max:1024"
     )
       v-text-field(
         v-model="discipline.name"
-        :label="t('name')"
+        :label="$t('eduPrograms.discipline.form.name')"
         :error-messages="errors"
         :success="valid"
       )
     validation-provider(
       v-if="hasPerm('eleden.change_discipline_additional_fields')"
       v-slot="{ errors, valid }"
-      :name="t('viewId')"
+      :name="$t('eduPrograms.discipline.form.viewId')"
       rules="required"
     )
       v-select(
         v-model="discipline.view"
-        :loading="$apollo.queries.disciplineViews.loading"
+        :loading="disciplineViewsLoading"
         :items="disciplineViews"
-        :label="t('viewId')"
+        :label="$t('eduPrograms.discipline.form.viewId')"
         :error-messages="errors"
         :success="valid"
         item-text="name"
@@ -42,9 +42,9 @@
     v-autocomplete(
       v-if="hasPerm('eleden.change_discipline_additional_fields')"
       v-model="discipline.parent"
-      v-stream:update:search-input="searchStreamParentDisciplines$"
-      :loading="$apollo.queries.parentDisciplines.loading"
-      :label="t('parentId')"
+      :search-input="parentDisciplinesSearch"
+      :loading="parentDisciplinesLoading"
+      :label="$t('eduPrograms.discipline.form.parentId')"
       :items="parentDisciplines"
       :filter="filterParentDisciplines"
       item-value="id"
@@ -58,9 +58,9 @@
       template(#item="{ item }") {{ item.code }} {{ item.name }}
     v-autocomplete(
       v-model="discipline.users"
-      v-stream:update:search-input="searchStreamUsers$"
-      :loading="$apollo.queries.users.loading"
-      :label="t('userIds')"
+      :search-input.sync="usersSearch"
+      :loading="usersLoading"
+      :label="$t('eduPrograms.discipline.form.userIds')"
       :items="users"
       :filter="filterUsers"
       item-value="id"
@@ -75,42 +75,49 @@
     )
       template(#selection="{ item }")
         v-chip(close @click:close="discipline.users = discipline.users.filter(user => user !== item)")
-          | {{ $getUserFullName(item) }}
+          | {{ getUserFullName(item) }}
       template(#item="{ item }")
         v-list-item-avatar
           avatar-dialog(:item="item")
         v-list-item-content
-          v-list-item-title {{ $getUserFullName(item) }}
+          v-list-item-title {{ getUserFullName(item) }}
           v-list-item-subtitle {{ item.username }}
     file-field(
       v-model="discipline.workProgram"
-      :existing-file.sync="discipline.existingWorkProgram"
-      :label="t('workProgram')"
+      :existing-file="discipline.existingWorkProgram"
+      :label="$t('eduPrograms.discipline.form.workProgram')"
       success
       clearable
     )
     file-field(
       v-model="discipline.annotation"
-      :existing-file.sync="discipline.existingAnnotation"
-      :label="t('annotation')"
+      :existing-file="discipline.existingAnnotation"
+      :label="$t('eduPrograms.discipline.form.annotation')"
       success
       clearable
     )
 </template>
 
 <script lang="ts">
-import { PropType } from 'vue'
-import { Vue, Component, Prop } from 'vue-property-decorator'
-import { mapGetters } from 'vuex'
-import { debounceTime, filter, pluck, startWith } from 'rxjs/operators'
-import { Subject } from 'rxjs'
+import type { PropType } from '#app'
+import { computed, defineComponent, toRef } from '#app'
 import {
   DisciplineType,
   UserType,
   DisciplineViewType,
   EduProgramType,
-  DisciplinesQueryVariables
+  DisciplineViewsQuery,
+  DisciplineViewsQueryVariables,
+  DisciplinesQuery,
+  DisciplinesQueryVariables,
+  SearchUsersQuery,
+  SearchUsersQueryVariables
 } from '~/types/graphql'
+import { useAuthStore } from '~/store'
+import { useCommonQuery, useDebounceSearch, useQueryRelay, useFilters } from '~/composables'
+import disciplineViewsQuery from '~/gql/eleden/queries/education/discipline_views.graphql'
+import disciplinesQuery from '~/gql/eleden/queries/education/disciplines.graphql'
+import searchUsersQuery from '~/gql/eleden/queries/core/search_users.graphql'
 import AvatarDialog from '~/components/users/AvatarDialog.vue'
 import FileField, { ExistingFile } from '~/components/common/FileField.vue'
 
@@ -128,116 +135,89 @@ export type InputDiscipline = {
   methodologicalSupport?: File[]
 }
 
-@Component<DisciplineForm>({
+export default defineComponent({
   components: { AvatarDialog, FileField },
-  computed: {
-    ...mapGetters({ hasPerm: 'auth/hasPerm' })
+  props: {
+    eduProgram: { type: Object as PropType<EduProgramType>, required: true },
+    discipline: { type: Object as PropType<InputDiscipline>, default: undefined }
   },
-  domStreams: ['searchStreamParentDisciplines$', 'searchStreamUsers$'],
-  subscriptions () {
-    const searchParentDisciplines$ = this.searchStreamParentDisciplines$.pipe(
-      pluck('event', 'msg'),
-      filter((e: any) => e !== null),
-      debounceTime(700),
-      startWith('')
-    )
-    const searchUsers$ = this.searchStreamUsers$.pipe(
-      pluck('event', 'msg'),
-      filter((e: any) => e !== null),
-      debounceTime(700),
-      startWith('')
-    )
-    return { searchParentDisciplines$, searchUsers$ }
-  },
-  apollo: {
-    disciplineViews: {
-      query: require('~/gql/eleden/queries/education/discipline_views.graphql'),
-      skip () {
-        return !this.hasPerm('eleden.change_discipline_additional_fields')
-      }
-    },
-    parentDisciplines: {
-      query: require('~/gql/eleden/queries/education/disciplines.graphql'),
-      fetchPolicy: 'cache-and-network',
-      variables (): DisciplinesQueryVariables {
-        return {
-          eduProgramId: this.eduProgram.id,
-          search: this.searchParentDisciplines$
-        }
-      },
-      update ({ disciplines }): DisciplineType[] {
-        const allDisciplines = disciplines.edges.map((e: { node?: DisciplineType }) => e.node)
-        return this.discipline!.id
-          ? allDisciplines.filter((discipline: DisciplineType) => discipline.id !== this.discipline!.id)
-          : allDisciplines
-      },
-      skip () {
-        return !this.hasPerm('eleden.change_discipline_additional_fields')
-      }
-    },
-    users: {
-      query: require('~/gql/eleden/queries/core/search_users.graphql'),
-      variables () { return { first: 10, search: this.searchUsers$ } },
-      update ({ users }): UserType[] {
-        return [...this.discipline!.users, ...users.edges
-          .map((e: { node?: UserType }) => e.node)
-          .filter((user: UserType) => !this.discipline!.users.find(disciplineUser => user.id === disciplineUser.id))]
-      }
+  setup (props) {
+    const authStore = useAuthStore()
+    const hasPerm = toRef(authStore, 'hasPerm')
+    const { getUserFullName } = useFilters()
+
+    const {
+      data: disciplineViews,
+      loading: disciplineViewsLoading
+    } = useCommonQuery<DisciplineViewsQuery, DisciplineViewsQueryVariables>({
+      document: disciplineViewsQuery,
+      options: () => ({
+        enabled: hasPerm.value('eleden.change_discipline_additional_fields')
+      })
+    })
+
+    const { search: parentDisciplinesSearch, debounceSearch: parentDisciplinesDebounceSearch } = useDebounceSearch()
+    const {
+      data: parentDisciplinesData,
+      loading: parentDisciplinesLoading
+    } = useQueryRelay<DisciplinesQuery, DisciplinesQueryVariables, DisciplineType>({
+      document: disciplinesQuery,
+      variables: () => ({
+        eduProgramId: props.eduProgram.id,
+        search: parentDisciplinesDebounceSearch.value
+      }),
+      options: () => ({
+        fetchPolicy: 'cache-and-network',
+        enabled: hasPerm.value('eleden.change_discipline_additional_fields')
+      })
+    })
+    const parentDisciplines = computed<DisciplineType[]>(() => (
+      props.discipline
+        ? parentDisciplinesData.value.filter(discipline => discipline.id !== props.discipline!.id)
+        : parentDisciplinesData.value
+    ))
+
+    const { search: usersSearch, debounceSearch: usersDebounceSearch } = useDebounceSearch()
+    const {
+      data: usersData,
+      loading: usersLoading
+    } = useQueryRelay<SearchUsersQuery, SearchUsersQueryVariables, UserType>({
+      document: searchUsersQuery,
+      variables: () => ({ search: usersDebounceSearch.value })
+    })
+    const users = computed<UserType[]>(() => ([...props.discipline.users, ...usersData.value]))
+
+    const filterParentDisciplines = (item: DisciplineType, queryText: string): boolean => {
+      const qt: string = queryText.toLocaleLowerCase()
+      const code: string = item.code.toLocaleLowerCase()
+      const name: string = item.name.toLocaleLowerCase()
+      return code.includes(qt) || name.includes(qt)
+    }
+
+    const filterUsers = (item: UserType, queryText: string): boolean => {
+      const qt: string = queryText.toLocaleLowerCase()
+      const ln: string = item.lastName.toLocaleLowerCase()
+      const fn: string = item.firstName.toLocaleLowerCase()
+      const sn: string = item.sirName!.toLocaleLowerCase()
+      const un: string = item.username.toLocaleLowerCase()
+      const em: string = item.email.toLocaleLowerCase()
+      return ln.includes(qt) || fn.includes(qt) || un.includes(qt) || em.includes(qt) || sn.includes(qt)
+    }
+
+    return {
+      hasPerm,
+      disciplineViews,
+      disciplineViewsLoading,
+      parentDisciplines,
+      parentDisciplinesLoading,
+      parentDisciplinesSearch,
+      users,
+      usersLoading,
+      usersSearch,
+      filterParentDisciplines,
+      filterUsers,
+      getUserFullName
     }
   }
 })
-
-export default class DisciplineForm extends Vue {
-  @Prop({ type: Object as PropType<EduProgramType>, required: true }) readonly eduProgram!: EduProgramType
-  @Prop({ type: Object as PropType<InputDiscipline> }) readonly discipline!: InputDiscipline | undefined
-
-  readonly hasPerm!: (permissions: string | string[], or?: boolean) => boolean
-  readonly disciplineViews!: DisciplineViewType[]
-  readonly parentDisciplines!: DisciplineType[]
-  readonly users!: UserType[]
-
-  searchParentDisciplines$: string = ''
-  searchStreamParentDisciplines$: Subject<any> = new Subject()
-  searchUsers$: string = ''
-  searchStreamUsers$: Subject<any> = new Subject()
-
-  /**
-   * Получение перевода относильно локального пути
-   * @param path
-   * @param values
-   * @return
-   */
-  t (path: string, values: any = undefined): string {
-    return this.$t(`eduPrograms.discipline.form.${path}`, values) as string
-  }
-
-  /**
-   * Фильтрация родительских дисциплин
-   * @param item
-   * @param queryText
-   * @return
-   */
-  filterParentDisciplines (item: DisciplineType, queryText: string): boolean {
-    const qt: string = queryText.toLocaleLowerCase()
-    const code: string = item.code.toLocaleLowerCase()
-    const name: string = item.name.toLocaleLowerCase()
-    return code.includes(qt) || name.includes(qt)
-  }
-
-  /**
-   * Фильтрация пользователей
-   * @param item
-   * @param queryText
-   * @return
-   */
-  filterUsers (item: UserType, queryText: string): boolean {
-    const qt: string = queryText.toLocaleLowerCase()
-    const ln: string = item.lastName.toLocaleLowerCase()
-    const fn: string = item.firstName.toLocaleLowerCase()
-    const sn: string = item.sirName!.toLocaleLowerCase()
-    const un: string = item.username.toLocaleLowerCase()
-    const em: string = item.email.toLocaleLowerCase()
-    return ln.includes(qt) || fn.includes(qt) || un.includes(qt) || em.includes(qt) || sn.includes(qt)
-  }
-}
 </script>

@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import type { PropType, Ref } from '#app'
-import { defineComponent, ref } from '#app'
+import { defineComponent, ref, toRef } from '#app'
 import { useAuthStore } from '~/store'
 import { useQueryRelay } from '~/composables'
 import { EduProgramType, DisciplinesQuery, DisciplinesQueryVariables } from '~/types/graphql'
@@ -43,7 +43,8 @@ export default defineComponent({
     eduProgram: { type: Object as PropType<EduProgramType>, required: true }
   },
   setup (props) {
-    const { hasPerm } = useAuthStore()
+    const authStore = useAuthStore()
+    const hasPerm = toRef(authStore, 'hasPerm')
 
     const search: Ref<string> = ref<string>('')
     const count: Ref<number> = ref<number>(0)

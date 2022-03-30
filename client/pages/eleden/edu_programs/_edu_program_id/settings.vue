@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import type { PropType, Ref, ComputedRef } from '#app'
-import { defineComponent, ref, computed, useRouter } from '#app'
+import { defineComponent, ref, computed, useRouter, toRef } from '#app'
 import { EduProgramType, ChangeEduProgramMutationPayload, ChangeEduProgramMutationVariables } from '~/types/graphql'
 import { useAuthStore } from '~/store'
 import { useFilters, useI18n } from '~/composables'
@@ -47,7 +47,8 @@ export default defineComponent({
     eduProgram: { type: Object as PropType<EduProgramType>, required: true }
   },
   setup (props) {
-    const { hasPerm } = useAuthStore()
+    const authStore = useAuthStore()
+    const hasPerm = toRef(authStore, 'hasPerm')
     const { dateTimeHM } = useFilters()
     const { localePath } = useI18n()
     const router = useRouter()

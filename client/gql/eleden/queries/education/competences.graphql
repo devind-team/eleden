@@ -1,5 +1,5 @@
-query Competences($first: Int, $search: String, $excludeDisciplineId: ID){
-  competences(first: $first, name_Icontains: $search, excludeDisciplineId: $excludeDisciplineId) {
+query Competences($first: Int, $offset: Int, $search: String, $excludeDisciplineId: ID){
+  competences(first: $first, offset: $offset, name_Icontains: $search, excludeDisciplineId: $excludeDisciplineId) {
     edges {
       node {
         id

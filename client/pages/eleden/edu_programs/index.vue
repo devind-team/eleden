@@ -43,7 +43,7 @@
 
 <script lang="ts">
 import type { PropType, ComputedRef } from '#app'
-import { defineComponent, computed, useNuxt2Meta } from '#app'
+import { defineComponent, computed, useNuxt2Meta, toRef } from '#app'
 import { DataTableHeader } from 'vuetify/types'
 import { BreadCrumbsItem } from '~/types/devind'
 import { EduProgramsQuery, EduProgramsQueryVariables } from '~/types/graphql'
@@ -61,7 +61,8 @@ export default defineComponent({
     breadCrumbs: { type: Array as PropType<BreadCrumbsItem[]>, required: true }
   },
   setup (props) {
-    const { hasPerm } = useAuthStore()
+    const authStore = useAuthStore()
+    const hasPerm = toRef(authStore, 'hasPerm')
     const { t, localePath } = useI18n()
     useNuxt2Meta({ title: t('eduPrograms.name') as string })
 

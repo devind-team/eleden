@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import type { PropType, ComputedRef } from '#app'
+import type { PropType } from '#app'
 import { defineComponent, computed, useRoute, useNuxt2Meta } from '#app'
 import { BreadCrumbsItem, LinksType } from '~/types/devind'
 import { DisciplineQuery, DisciplineQueryVariables } from '~/types/graphql'
@@ -36,7 +36,7 @@ export default defineComponent({
       variables: () => ({ disciplineId: route.params.discipline_id })
     })
 
-    const links: ComputedRef<LinksType[]> = computed<LinksType[]>(() => ([
+    const links = computed<LinksType[]>(() => ([
       {
         title: t('eduPrograms.discipline.menu.description') as string,
         to: 'eleden-edu_programs-discipline-discipline_id-description',
@@ -70,7 +70,7 @@ export default defineComponent({
       }
     ]))
 
-    const bc: ComputedRef<BreadCrumbsItem[]> = computed<BreadCrumbsItem[]>(() => ([
+    const bc = computed<BreadCrumbsItem[]>(() => ([
       ...props.breadCrumbs,
       {
         text: t('eduPrograms.discipline.eduPrograms') as string,

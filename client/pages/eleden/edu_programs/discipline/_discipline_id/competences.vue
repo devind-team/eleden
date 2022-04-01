@@ -40,8 +40,8 @@
 <script lang="ts">
 import { DataTableHeader } from 'vuetify'
 import { useMutation } from '@vue/apollo-composable'
-import type { PropType, ComputedRef, Ref } from '#app'
-import { defineComponent, computed, ref } from '#app'
+import type { PropType } from '#app'
+import { defineComponent, computed, ref, toRef } from '#app'
 import {
   DisciplineType,
   CompetenceQuery,
@@ -63,18 +63,19 @@ export default defineComponent({
   },
   setup (props) {
     const { t } = useI18n()
-    const { hasPerm } = useAuthStore()
+    const authStore = useAuthStore()
+    const hasPerm = toRef(authStore, 'hasPerm')
 
-    const search: Ref<string> = ref<string>('')
-    const competencesCount: Ref<number> = ref<number>(0)
+    const search = ref<string>('')
+    const competencesCount = ref<number>(0)
 
-    const headers: ComputedRef<DataTableHeader[]> = computed<DataTableHeader[]>(() => {
+    const headers = computed<DataTableHeader[]>(() => {
       const headers: DataTableHeader[] = [
         { text: t('eduPrograms.discipline.competences.tableHeaders.name') as string, value: 'name' },
         { text: t('eduPrograms.discipline.competences.tableHeaders.code') as string, value: 'code' },
         { text: t('eduPrograms.discipline.competences.tableHeaders.category') as string, value: 'category' }
       ]
-      if (hasPerm('eleden.delete_competence')) {
+      if (hasPerm.value('eleden.delete_competence')) {
         headers.push({
           text: t('eduPrograms.discipline.competences.tableHeaders.actions') as string,
           value: 'actions',
@@ -86,7 +87,7 @@ export default defineComponent({
       return headers
     })
 
-    const totalCount: ComputedRef<number> = computed<number>(() => (
+    const totalCount = computed<number>(() => (
       disciplineCompetences.value ? disciplineCompetences.value.length : 0
     ))
 

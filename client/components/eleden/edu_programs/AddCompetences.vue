@@ -3,11 +3,11 @@
     template(#activator="{ on }")
       v-btn(v-on="on" color="primary")
         v-icon(left) mdi-plus
-        | {{ t('buttons.add') }}
+        | {{ $t('eduPrograms.discipline.competences.buttons.add') }}
     v-list
       mutation-modal-form(
-        :header="t('addForm.header')"
-        :button-text="t('addForm.buttonText')"
+        :header="$t('eduPrograms.discipline.competences.addForm.header')"
+        :button-text="$t('eduPrograms.discipline.competences.addForm.buttonText')"
         :mutation="require('~/gql/eleden/mutations/edu_programs/add_competences.graphql')"
         :variables="variables"
         :update="update"
@@ -19,15 +19,19 @@
           v-list-item(v-on="on")
             v-list-item-icon
               v-icon mdi-form-select
-            v-list-item-content {{ t('buttons.fillForm') }}
+            v-list-item-content {{ $t('eduPrograms.discipline.competences.buttons.fillForm') }}
         template(#form)
-          validation-provider(v-slot="{ errors, valid }" :name="t('addForm.name')" rules="required")
+          validation-provider(
+            v-slot="{ errors, valid }"
+            :name="$t('eduPrograms.discipline.competences.addForm.name')"
+            rules="required"
+          )
             v-autocomplete(
               v-model="newCompetences"
-              v-stream:update:search-input="searchStreamCompetences$"
-              :label="t('addForm.name')"
+              :search-input.sync="search"
+              :label="$t('eduPrograms.discipline.competences.addForm.name')"
               :items="competences"
-              :loading="$apollo.queries.competences.loading"
+              :loading="loading"
               item-text="name"
               return-object
               multiple
@@ -43,87 +47,63 @@
                       small
                       close
                       @click:close="removeCompetence(item)"
-                    ) {{ $filters.textLength(item.name, 20) }}
+                    ) {{ textLength(item.name, 20) }}
                   span {{ item.name }}
 </template>
 
 <script lang="ts">
-import { PropType } from 'vue'
-import { Vue, Component, Prop } from 'vue-property-decorator'
-import { debounceTime, filter, pluck, startWith } from 'rxjs/operators'
-import { Subject } from 'rxjs'
-import { CompetenceType, CompetenceTypeEdge, AddCompetencesMutationVariables, DisciplineType } from '~/types/graphql'
+import type { PropType } from '#app'
+import { defineComponent, ref, computed } from '#app'
+import {
+  CompetenceType,
+  AddCompetencesMutationVariables,
+  DisciplineType,
+  CompetencesQuery,
+  CompetencesQueryVariables
+} from '~/types/graphql'
+import { useDebounceSearch, useFilters, useQueryRelay, useOffsetPagination } from '~/composables'
+import competencesQuery from '~/gql/eleden/queries/education/competences.graphql'
 import MutationModalForm from '~/components/common/forms/MutationModalForm.vue'
 
-type Update = (store: any, result: any) => void
+type UpdateType = (store: any, result: any) => void
 
-@Component<AddCompetences>({
+export default defineComponent({
   components: { MutationModalForm },
-  computed: {
-    variables (): AddCompetencesMutationVariables {
-      return {
-        disciplineId: this.discipline.id,
-        competenceIds: this.newCompetences.map((competence: CompetenceType) => competence.id)
-      }
-    }
+  props: {
+    discipline: { type: Object as PropType<DisciplineType>, required: true },
+    update: { type: Function as PropType<UpdateType>, required: true }
   },
-  domStreams: ['searchStreamCompetences$'],
-  subscriptions () {
-    const searchCompetences$ = this.searchStreamCompetences$.pipe(
-      pluck('event', 'msg'),
-      filter((e: string | null) => e !== null),
-      debounceTime(700),
-      startWith('')
-    )
-    return { searchCompetences$ }
-  },
-  apollo: {
-    competences: {
-      query: require('~/gql/eleden/queries/education/competences.graphql'),
-      variables () {
-        return {
-          first: 5,
-          search: this.searchCompetences$,
-          excludeDisciplineId: this.discipline.id
-        }
-      },
-      skip () { return !this.active },
-      update ({ competences }): CompetenceType[] {
-        return [...competences.edges.map((e: CompetenceTypeEdge) => e.node), ...this.newCompetences]
-      }
+  setup (props) {
+    const { textLength } = useFilters()
+
+    const active = ref<boolean>(false)
+    const newCompetences = ref<CompetenceType[]>([])
+
+    const variables = computed<AddCompetencesMutationVariables>(() => ({
+      disciplineId: props.discipline.id,
+      competenceIds: newCompetences.value.map((competence: CompetenceType) => competence.id)
+    }))
+
+    const { search, debounceSearch } = useDebounceSearch()
+    const { data: competences, loading } = useQueryRelay<CompetencesQuery, CompetencesQueryVariables>({
+      document: competencesQuery,
+      variables: () => ({
+        search: debounceSearch.value,
+        excludeDisciplineId: props.discipline.id
+      }),
+      options: () => ({
+        enabled: active.value
+      })
+    },
+    {
+      pagination: useOffsetPagination({ pageSize: 20 })
+    })
+
+    const removeCompetence = (competence: CompetenceType): void => {
+      newCompetences.value = newCompetences.value
+        .filter((newCompetence: CompetenceType) => competence.id !== newCompetence.id)
     }
+    return { textLength, active, newCompetences, variables, competences, loading, search, removeCompetence }
   }
 })
-export default class AddCompetences extends Vue {
-  @Prop({ type: Object as PropType<DisciplineType>, required: true }) readonly discipline!: DisciplineType
-  @Prop({ type: Function as PropType<Update>, required: true }) readonly update!: Update
-
-  readonly variables!: AddCompetencesMutationVariables
-  readonly competences!: CompetenceType[] | undefined
-
-  searchStreamCompetences$: Subject<any> = new Subject<any>()
-  searchCompetences$: string = ''
-
-  active: boolean = false
-  newCompetences: CompetenceType[] = []
-
-  /**
-   * Получение перевода относильно локального пути
-   * @param path
-   * @param values
-   * @return
-   */
-  t (path: string, values: any = undefined): string {
-    return this.$t(`eduPrograms.discipline.competences.${path}`, values) as string
-  }
-
-  /**
-   * Удаление компетенции из списка на добавление
-   * @param competence
-   */
-  removeCompetence (competence: CompetenceType): void {
-    this.newCompetences = this.newCompetences
-      .filter((newCompetence: CompetenceType) => competence.id !== newCompetence.id)
-  }
-}
 </script>

@@ -4,8 +4,8 @@
       slot(:on="on")
     v-list
       mutation-modal-form(
-        :header="t('addForm.header')"
-        :button-text="t('addForm.buttonText')"
+        :header="$t('eduPrograms.discipline.addMenu.addForm.header')"
+        :button-text="$t('eduPrograms.discipline.addMenu.addForm.buttonText')"
         :mutation="require('~/gql/eleden/mutations/edu_programs/add_discipline.graphql')"
         :variables="formVariables"
         :update="addDisciplineUpdate"
@@ -17,15 +17,15 @@
           v-list-item(v-on="on")
             v-list-item-icon
               v-icon mdi-form-select
-            v-list-item-content {{ t('buttons.fillForm') }}
+            v-list-item-content {{ $t('eduPrograms.discipline.addMenu.buttons.fillForm') }}
         template(#form)
           discipline-form(
             :edu-program="eduProgram"
             :discipline="inputDiscipline"
           )
       mutation-modal-form(
-        :header="t('filesForm.header')"
-        :button-text="t('filesForm.buttonText')"
+        :header="$t('eduPrograms.discipline.addMenu.filesForm.header')"
+        :button-text="$t('eduPrograms.discipline.addMenu.filesForm.buttonText')"
         :mutation="require('~/gql/eleden/mutations/edu_programs/add_disciplines_files.graphql')"
         :variables="disciplinesFilesArchiveVariables"
         :errors-in-alert="true"
@@ -36,35 +36,35 @@
           v-list-item(v-on="on")
             v-list-item-icon
               v-icon mdi-archive-outline
-            v-list-item-content {{ t('buttons.addDisciplinesFilesFromArchive') }}
+            v-list-item-content {{ $t('eduPrograms.discipline.addMenu.buttons.addDisciplinesFilesFromArchive') }}
             v-list-item-action
               help-dialog(
                 v-slot="{ on: onHelper }"
-                :text="t('helpDialog.helpInstruction')"
+                :text="$t('eduPrograms.discipline.addMenu.helpDialog.helpInstruction')"
                 doc="help/add_disciplines_files"
               )
                 v-tooltip(bottom)
                   template(#activator="{ on: onTooltip}")
                     v-btn(v-on="{ ...onTooltip, ...onHelper}" icon)
                       v-icon mdi-help-circle-outline
-                  span {{ t('buttons.helpInstruction') }}
+                  span {{ $t('eduPrograms.discipline.addMenu.buttons.helpInstruction') }}
         template(#form)
           validation-provider(
             v-slot="{ errors, valid }"
-            :name="t('filesForm.archive')"
+            :name="$t('eduPrograms.discipline.addMenu.filesForm.archive')"
             rules="required"
           )
             v-file-input(
               v-model="disciplinesFilesArchive"
-              :label="t('filesForm.archive')"
+              :label="$t('eduPrograms.discipline.addMenu.filesForm.archive')"
               :error-messages="errors"
               :success="valid"
               accept=".zip"
               clearable
             )
       mutation-modal-form(
-        :header="t('methodologicalSupportForm.header')"
-        :button-text="t('methodologicalSupportForm.buttonText')"
+        :header="$t('eduPrograms.discipline.addMenu.methodologicalSupportForm.header')"
+        :button-text="$t('eduPrograms.discipline.addMenu.methodologicalSupportForm.buttonText')"
         :mutation="require('~/gql/eleden/mutations/edu_programs/add_edu_program_methodological_supports.graphql')"
         :variables="methodologicalSupportsArchiveVariables"
         :errors-in-alert="true"
@@ -75,27 +75,27 @@
           v-list-item(v-on="on")
             v-list-item-icon
               v-icon mdi-archive-outline
-            v-list-item-content {{ t('buttons.addMethodologicalSupportFromArchive') }}
+            v-list-item-content {{ $t('eduPrograms.discipline.addMenu.buttons.addMethodologicalSupportFromArchive') }}
             v-list-item-action
               help-dialog(
                 v-slot="{ on: onHelper }"
-                :text="t('helpDialog.helpInstruction')"
+                :text="$t('eduPrograms.discipline.addMenu.helpDialog.helpInstruction')"
                 doc="help/add_edu_program_methodological_supports"
               )
                 v-tooltip(bottom)
                   template(#activator="{ on: onTooltip}")
                     v-btn(v-on="{ ...onTooltip, ...onHelper}" icon)
                       v-icon mdi-help-circle-outline
-                  span {{ t('buttons.helpInstruction') }}
+                  span {{ $t('eduPrograms.discipline.addMenu.buttons.helpInstruction') }}
         template(#form)
           validation-provider(
             v-slot="{ errors, valid }"
-            :name="t('methodologicalSupportForm.archive')"
+            :name="$t('eduPrograms.discipline.addMenu.methodologicalSupportForm.archive')"
             rules="required"
           )
             v-file-input(
               v-model="methodologicalSupportsArchive"
-              :label="t('methodologicalSupportForm.archive')"
+              :label="$t('eduPrograms.discipline.addMenu.methodologicalSupportForm.archive')"
               :error-messages="errors"
               :success="valid"
               accept=".zip"
@@ -104,8 +104,8 @@
 </template>
 
 <script lang="ts">
-import { PropType } from 'vue'
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import type { PropType } from '#app'
+import { defineComponent, ref, computed } from '#app'
 import {
   EduProgramType,
   AddDisciplineMutationVariables,
@@ -116,93 +116,70 @@ import MutationModalForm from '~/components/common/forms/MutationModalForm.vue'
 import DisciplineForm, { InputDiscipline } from '~/components/eleden/edu_programs/DisciplineForm.vue'
 import HelpDialog from '~/components/common/dialogs/HelpDialog.vue'
 
-type AddDisciplineUpdate = (store: any, result: any) => void
+type AddDisciplineUpdateType = (store: any, result: any) => void
 
-@Component<AddDisciplines>({
+export default defineComponent({
   components: { MutationModalForm, DisciplineForm, HelpDialog },
-  computed: {
-    formVariables (): AddDisciplineMutationVariables {
+  props: {
+    eduProgram: { type: Object as PropType<EduProgramType>, required: true },
+    addDisciplineUpdate: { type: Function as PropType<AddDisciplineUpdateType>, required: true }
+  },
+  setup (props) {
+    const getInputDiscipline = (): InputDiscipline => {
       return {
-        code: this.inputDiscipline.code,
-        name: this.inputDiscipline.name,
-        eduProgramId: this.eduProgram.id,
-        userIds: this.inputDiscipline.users.map(user => user.id),
-        viewId: this.inputDiscipline.view ? this.inputDiscipline.view.id : undefined,
-        parentId: this.inputDiscipline.parent ? this.inputDiscipline.parent.id : undefined,
-        annotation: this.inputDiscipline.annotation,
-        workProgram: this.inputDiscipline.workProgram,
-        methodologicalSupport: this.inputDiscipline.methodologicalSupport
-          ? this.inputDiscipline.methodologicalSupport.map((file: File) => ({ name: file.name, src: file }))
-          : []
+        code: '',
+        name: '',
+        annotation: null,
+        workProgram: null,
+        view: null,
+        parent: null,
+        users: [],
+        methodologicalSupport: []
       }
-    },
-    disciplinesFilesArchiveVariables (): AddDisciplinesFilesMutationVariables {
-      return {
-        eduProgramId: this.eduProgram.id,
-        file: this.disciplinesFilesArchive
-      }
-    },
-    methodologicalSupportsArchiveVariables (): AddEduProgramMethodologicalSupportsMutationVariables {
-      return {
-        eduProgramId: this.eduProgram.id,
-        file: this.methodologicalSupportsArchive
-      }
+    }
+
+    const inputDiscipline = ref<InputDiscipline>(getInputDiscipline())
+    const disciplinesFilesArchive = ref<File | null>(null)
+    const methodologicalSupportsArchive = ref<File | null>(null)
+
+    const formVariables = computed<AddDisciplineMutationVariables>(() => ({
+      code: inputDiscipline.value.code,
+      name: inputDiscipline.value.name,
+      eduProgramId: props.eduProgram.id,
+      userIds: inputDiscipline.value.users.map(user => user.id),
+      viewId: inputDiscipline.value.view ? inputDiscipline.value.view.id : undefined,
+      parentId: inputDiscipline.value.parent ? inputDiscipline.value.parent.id : undefined,
+      annotation: inputDiscipline.value.annotation,
+      workProgram: inputDiscipline.value.workProgram,
+      methodologicalSupport: inputDiscipline.value.methodologicalSupport
+        ? inputDiscipline.value.methodologicalSupport.map((file: File) => ({ name: file.name, src: file }))
+        : []
+    }))
+
+    const disciplinesFilesArchiveVariables = computed<AddDisciplinesFilesMutationVariables>(() => ({
+      eduProgramId: props.eduProgram.id,
+      file: disciplinesFilesArchive.value
+    }))
+
+    const methodologicalSupportsArchiveVariables =
+      computed<AddEduProgramMethodologicalSupportsMutationVariables>(() => ({
+        eduProgramId: props.eduProgram.id,
+        file: methodologicalSupportsArchive.value
+      }))
+
+    const close = (): void => {
+      inputDiscipline.value = getInputDiscipline()
+    }
+
+    return {
+      inputDiscipline,
+      disciplinesFilesArchive,
+      methodologicalSupportsArchive,
+      formVariables,
+      disciplinesFilesArchiveVariables,
+      methodologicalSupportsArchiveVariables,
+      close
     }
   }
 })
-export default class AddDisciplines extends Vue {
-  @Prop({ type: Object as PropType<EduProgramType>, required: true }) readonly eduProgram!: EduProgramType
-  @Prop({ type: Function as PropType<AddDisciplineUpdate>, required: true })
-  readonly addDisciplineUpdate!: AddDisciplineUpdate
-
-  readonly formVariables!: AddDisciplineMutationVariables
-  readonly disciplinesFilesArchiveVariables!: AddDisciplinesFilesMutationVariables
-  readonly methodologicalSupportsArchiveVariables!: AddEduProgramMethodologicalSupportsMutationVariables
-
-  inputDiscipline!: InputDiscipline
-  disciplinesFilesArchive!: File | null
-  methodologicalSupportsArchive!: File | null
-
-  data () {
-    return {
-      inputDiscipline: this.getInputDiscipline(),
-      disciplinesFilesArchive: null,
-      methodologicalSupportsArchive: null
-    }
-  }
-
-  /**
-   * Получение перевода относильно локального пути
-   * @param path
-   * @param values
-   * @return
-   */
-  t (path: string, values: any = undefined): string {
-    return this.$t(`eduPrograms.discipline.addMenu.${path}`, values) as string
-  }
-
-  /**
-   * Получение пустой дисциплины
-   * @return
-   */
-  getInputDiscipline (): InputDiscipline {
-    return {
-      code: '',
-      name: '',
-      annotation: null,
-      workProgram: null,
-      view: null,
-      parent: null,
-      users: [],
-      methodologicalSupport: []
-    }
-  }
-
-  /**
-   * Закрытие формы
-   */
-  close (): void {
-    this.inputDiscipline = this.getInputDiscipline()
-  }
-}
 </script>

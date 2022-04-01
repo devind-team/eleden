@@ -22,7 +22,6 @@
 </template>
 
 <script lang="ts">
-import type { Ref } from '#app'
 import { defineComponent, ref } from '#app'
 import { UnloadEduProgramsMutationPayload } from '~/types/graphql'
 
@@ -30,12 +29,12 @@ export type UnloadEduProgramsResultType = { data: { unloadEduPrograms : UnloadEd
 
 export default defineComponent({
   setup () {
-    const extensionIcons: { [k: string]: string } = {
+    const extensionIcons: Record<string, string> = {
       html: 'language-html5',
       excel: 'file-excel'
     }
 
-    const active: Ref<boolean> = ref<boolean>(false)
+    const active = ref<boolean>(false)
 
     const unloadEduProgramsDone = ({ data: { unloadEduPrograms: result } }: UnloadEduProgramsResultType): void => {
       if (result.success) {

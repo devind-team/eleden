@@ -104,7 +104,7 @@
 </template>
 
 <script lang="ts">
-import type { PropType, Ref, ComputedRef } from '#app'
+import type { PropType } from '#app'
 import { defineComponent, ref, computed } from '#app'
 import {
   EduProgramType,
@@ -116,13 +116,13 @@ import MutationModalForm from '~/components/common/forms/MutationModalForm.vue'
 import DisciplineForm, { InputDiscipline } from '~/components/eleden/edu_programs/DisciplineForm.vue'
 import HelpDialog from '~/components/common/dialogs/HelpDialog.vue'
 
-type AddDisciplineUpdate = (store: any, result: any) => void
+type AddDisciplineUpdateType = (store: any, result: any) => void
 
 export default defineComponent({
   components: { MutationModalForm, DisciplineForm, HelpDialog },
   props: {
     eduProgram: { type: Object as PropType<EduProgramType>, required: true },
-    addDisciplineUpdate: { type: Function as PropType<AddDisciplineUpdate>, required: true }
+    addDisciplineUpdate: { type: Function as PropType<AddDisciplineUpdateType>, required: true }
   },
   setup (props) {
     const getInputDiscipline = (): InputDiscipline => {
@@ -138,50 +138,40 @@ export default defineComponent({
       }
     }
 
-    const inputDiscipline: Ref<InputDiscipline> = ref<InputDiscipline>(getInputDiscipline())
-    const disciplinesFilesArchive: Ref<File | null> = ref<File | null>(null)
-    const methodologicalSupportsArchive: Ref<File | null> = ref<File | null>(null)
+    const inputDiscipline = ref<InputDiscipline>(getInputDiscipline())
+    const disciplinesFilesArchive = ref<File | null>(null)
+    const methodologicalSupportsArchive = ref<File | null>(null)
 
-    const formVariables: ComputedRef<AddDisciplineMutationVariables> =
-      computed<AddDisciplineMutationVariables>(() => {
-        return {
-          code: inputDiscipline.value.code,
-          name: inputDiscipline.value.name,
-          eduProgramId: props.eduProgram.id,
-          userIds: inputDiscipline.value.users.map(user => user.id),
-          viewId: inputDiscipline.value.view ? inputDiscipline.value.view.id : undefined,
-          parentId: inputDiscipline.value.parent ? inputDiscipline.value.parent.id : undefined,
-          annotation: inputDiscipline.value.annotation,
-          workProgram: inputDiscipline.value.workProgram,
-          methodologicalSupport: inputDiscipline.value.methodologicalSupport
-            ? inputDiscipline.value.methodologicalSupport.map((file: File) => ({ name: file.name, src: file }))
-            : []
-        }
-      })
+    const formVariables = computed<AddDisciplineMutationVariables>(() => ({
+      code: inputDiscipline.value.code,
+      name: inputDiscipline.value.name,
+      eduProgramId: props.eduProgram.id,
+      userIds: inputDiscipline.value.users.map(user => user.id),
+      viewId: inputDiscipline.value.view ? inputDiscipline.value.view.id : undefined,
+      parentId: inputDiscipline.value.parent ? inputDiscipline.value.parent.id : undefined,
+      annotation: inputDiscipline.value.annotation,
+      workProgram: inputDiscipline.value.workProgram,
+      methodologicalSupport: inputDiscipline.value.methodologicalSupport
+        ? inputDiscipline.value.methodologicalSupport.map((file: File) => ({ name: file.name, src: file }))
+        : []
+    }))
 
-    const disciplinesFilesArchiveVariables: ComputedRef<AddDisciplinesFilesMutationVariables> =
-      computed<AddDisciplinesFilesMutationVariables>(() => {
-        return {
-          eduProgramId: props.eduProgram.id,
-          file: disciplinesFilesArchive.value
-        }
-      })
+    const disciplinesFilesArchiveVariables = computed<AddDisciplinesFilesMutationVariables>(() => ({
+      eduProgramId: props.eduProgram.id,
+      file: disciplinesFilesArchive.value
+    }))
 
-    const methodologicalSupportsArchiveVariables:
-      ComputedRef<AddEduProgramMethodologicalSupportsMutationVariables> =
-      computed<AddEduProgramMethodologicalSupportsMutationVariables>(() => {
-        return {
-          eduProgramId: props.eduProgram.id,
-          file: methodologicalSupportsArchive.value
-        }
-      })
+    const methodologicalSupportsArchiveVariables =
+      computed<AddEduProgramMethodologicalSupportsMutationVariables>(() => ({
+        eduProgramId: props.eduProgram.id,
+        file: methodologicalSupportsArchive.value
+      }))
 
     const close = (): void => {
       inputDiscipline.value = getInputDiscipline()
     }
 
     return {
-      getInputDiscipline,
       inputDiscipline,
       disciplinesFilesArchive,
       methodologicalSupportsArchive,

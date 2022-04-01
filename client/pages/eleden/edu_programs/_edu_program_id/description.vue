@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import type { PropType, Ref } from '#app'
+import type { PropType } from '#app'
 import { defineComponent, ref } from '#app'
 import { DataTableHeader } from 'vuetify'
 import { EduProgramType } from '~/types/graphql'
@@ -38,7 +38,7 @@ export default defineComponent({
   setup (props) {
     const { dateTimeHM } = useFilters()
 
-    const active: Ref<boolean> = ref<boolean>(false)
+    const active = ref<boolean>(false)
 
     const headers: DataTableHeader[] = [
       { text: 'Поле', value: 'text' },

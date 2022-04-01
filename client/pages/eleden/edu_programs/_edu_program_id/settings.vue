@@ -11,7 +11,7 @@
   )
     template(#form)
       edu-program-form(:edu-program="inputEduProgram")
-    template(#actions="{ invalid, loading, buttonText, setError }")
+    template(#actions="{ invalid, loading, buttonText, setError, setSuccess }")
       apollo-mutation(
         v-if="hasPerm(['eleden.delete_eduprogram'])"
         v-slot="{ mutate }"
@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import type { PropType, Ref, ComputedRef } from '#app'
+import type { PropType } from '#app'
 import { defineComponent, ref, computed, useRouter, toRef } from '#app'
 import { EduProgramType, ChangeEduProgramMutationPayload, ChangeEduProgramMutationVariables } from '~/types/graphql'
 import { useAuthStore } from '~/store'
@@ -36,7 +36,7 @@ import MutationForm from '~/components/common/forms/MutationForm.vue'
 import EduProgramForm, { InputEduProgram } from '~/components/eleden/edu_programs/EduProgramForm.vue'
 import DeleteMenu from '~/components/common/menu/DeleteMenu.vue'
 
-type ChangeEduProgramData = {
+type ChangeEduProgramDataType = {
   data: { changeEduProgram: ChangeEduProgramMutationPayload }
 }
 
@@ -71,34 +71,31 @@ export default defineComponent({
       }
     }
 
-    const inputEduProgram: Ref<InputEduProgram> = ref<InputEduProgram>(getInputEduProgram())
+    const inputEduProgram = ref<InputEduProgram>(getInputEduProgram())
 
-    const changeVariables: ComputedRef<ChangeEduProgramMutationVariables> =
-      computed<ChangeEduProgramMutationVariables>(() => {
-        return {
-          eduProgramId: inputEduProgram.value.id!,
-          deleteDescription: !inputEduProgram.value.description && !inputEduProgram.value.existingDescription,
-          deleteSyllabus: !inputEduProgram.value.syllabus && !inputEduProgram.value.existingSyllabus,
-          deleteCalendar: !inputEduProgram.value.calendar && !inputEduProgram.value.existingCalendar,
-          name: inputEduProgram.value.name !== props.eduProgram.name ? inputEduProgram.value.name : undefined,
-          adaptive: inputEduProgram.value.adaptive !== props.eduProgram.adaptive
-            ? inputEduProgram.value.adaptive
-            : undefined,
-          admission: Number(inputEduProgram.value.admission) !== props.eduProgram.admission
-            ? Number(inputEduProgram.value.admission)
-            : undefined,
-          expedited: inputEduProgram.value.expedited !== props.eduProgram.expedited
-            ? inputEduProgram.value.expedited
-            : undefined,
-          description: inputEduProgram.value.description,
-          syllabus: inputEduProgram.value.syllabus,
-          calendar: inputEduProgram.value.calendar,
-          eduFormId: inputEduProgram.value.eduForm ? Number(inputEduProgram.value.eduForm.id) : undefined,
-          directionId: inputEduProgram.value.direction ? inputEduProgram.value.direction.id : undefined
-        }
-      })
+    const changeVariables = computed<ChangeEduProgramMutationVariables>(() => ({
+      eduProgramId: inputEduProgram.value.id!,
+      deleteDescription: !inputEduProgram.value.description && !inputEduProgram.value.existingDescription,
+      deleteSyllabus: !inputEduProgram.value.syllabus && !inputEduProgram.value.existingSyllabus,
+      deleteCalendar: !inputEduProgram.value.calendar && !inputEduProgram.value.existingCalendar,
+      name: inputEduProgram.value.name !== props.eduProgram.name ? inputEduProgram.value.name : undefined,
+      adaptive: inputEduProgram.value.adaptive !== props.eduProgram.adaptive
+        ? inputEduProgram.value.adaptive
+        : undefined,
+      admission: Number(inputEduProgram.value.admission) !== props.eduProgram.admission
+        ? Number(inputEduProgram.value.admission)
+        : undefined,
+      expedited: inputEduProgram.value.expedited !== props.eduProgram.expedited
+        ? inputEduProgram.value.expedited
+        : undefined,
+      description: inputEduProgram.value.description,
+      syllabus: inputEduProgram.value.syllabus,
+      calendar: inputEduProgram.value.calendar,
+      eduFormId: inputEduProgram.value.eduForm ? Number(inputEduProgram.value.eduForm.id) : undefined,
+      directionId: inputEduProgram.value.direction ? inputEduProgram.value.direction.id : undefined
+    }))
 
-    const changeEduProgramDone = ({ data: { changeEduProgram: { success } } }: ChangeEduProgramData):void => {
+    const changeEduProgramDone = ({ data: { changeEduProgram: { success } } }: ChangeEduProgramDataType):void => {
       if (success) {
         inputEduProgram.value = getInputEduProgram()
       }

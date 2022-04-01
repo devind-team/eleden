@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts">
-import type { PropType, Ref, ComputedRef } from '#app'
+import type { PropType } from '#app'
 import { defineComponent, ref, computed } from '#app'
 import {
   CompetenceType,
@@ -65,27 +65,24 @@ import { useDebounceSearch, useFilters, useQueryRelay, useOffsetPagination } fro
 import competencesQuery from '~/gql/eleden/queries/education/competences.graphql'
 import MutationModalForm from '~/components/common/forms/MutationModalForm.vue'
 
-type Update = (store: any, result: any) => void
+type UpdateType = (store: any, result: any) => void
 
 export default defineComponent({
   components: { MutationModalForm },
   props: {
     discipline: { type: Object as PropType<DisciplineType>, required: true },
-    update: { type: Function as PropType<Update>, required: true }
+    update: { type: Function as PropType<UpdateType>, required: true }
   },
   setup (props) {
     const { textLength } = useFilters()
 
-    const active: Ref<boolean> = ref<boolean>(false)
-    const newCompetences: Ref<CompetenceType[]> = ref<CompetenceType[]>([])
+    const active = ref<boolean>(false)
+    const newCompetences = ref<CompetenceType[]>([])
 
-    const variables: ComputedRef<AddCompetencesMutationVariables> =
-      computed<AddCompetencesMutationVariables>(() => {
-        return {
-          disciplineId: props.discipline.id,
-          competenceIds: newCompetences.value.map((competence: CompetenceType) => competence.id)
-        }
-      })
+    const variables = computed<AddCompetencesMutationVariables>(() => ({
+      disciplineId: props.discipline.id,
+      competenceIds: newCompetences.value.map((competence: CompetenceType) => competence.id)
+    }))
 
     const { search, debounceSearch } = useDebounceSearch()
     const { data: competences, loading } = useQueryRelay<CompetencesQuery, CompetencesQueryVariables>({

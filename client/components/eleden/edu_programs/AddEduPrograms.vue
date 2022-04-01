@@ -97,7 +97,7 @@
 </template>
 
 <script lang="ts">
-import type { PropType, Ref, ComputedRef } from '#app'
+import type { PropType } from '#app'
 import { defineComponent, ref, computed } from '#app'
 import { DataProxy } from 'apollo-cache'
 import { AddEduProgramMutationVariables } from '~/types/graphql'
@@ -105,16 +105,16 @@ import MutationModalForm from '~/components/common/forms/MutationModalForm.vue'
 import HelpDialog from '~/components/common/dialogs/HelpDialog.vue'
 import EduProgramForm, { InputEduProgram } from '~/components/eleden/edu_programs/EduProgramForm.vue'
 
-type AddEduProgramUpdate = (store: DataProxy, result: any) => void
-type AddEduProgramFromPlxUpdate = (store: DataProxy, result: any) => void
-type AddEduProgramsUpdate = (store: DataProxy, result: any) => void
+type AddEduProgramUpdateType = (store: DataProxy, result: any) => void
+type AddEduProgramFromPlxUpdateType = (store: DataProxy, result: any) => void
+type AddEduProgramsUpdateType = (store: DataProxy, result: any) => void
 
 export default defineComponent({
   components: { MutationModalForm, EduProgramForm, HelpDialog },
   props: {
-    addEduProgramUpdate: { type: Function as PropType<AddEduProgramUpdate>, required: true },
-    addEduProgramFromPlxUpdate: { type: Function as PropType<AddEduProgramFromPlxUpdate>, required: true },
-    addEduProgramsUpdate: { type: Function as PropType<AddEduProgramsUpdate>, required: true }
+    addEduProgramUpdate: { type: Function as PropType<AddEduProgramUpdateType>, required: true },
+    addEduProgramFromPlxUpdate: { type: Function as PropType<AddEduProgramFromPlxUpdateType>, required: true },
+    addEduProgramsUpdate: { type: Function as PropType<AddEduProgramsUpdateType>, required: true }
   },
   setup () {
     const getInputEduProgram = (): InputEduProgram => {
@@ -132,25 +132,22 @@ export default defineComponent({
       }
     }
 
-    const inputEduProgram: Ref<InputEduProgram> = ref<InputEduProgram>(getInputEduProgram())
-    const file: Ref<File | null> = ref<File | null>(null)
-    const plxFile: Ref<File | null> = ref<File | null>(null)
+    const inputEduProgram = ref<InputEduProgram>(getInputEduProgram())
+    const file = ref<File | null>(null)
+    const plxFile = ref<File | null>(null)
 
-    const formVariables: ComputedRef<AddEduProgramMutationVariables> =
-      computed<AddEduProgramMutationVariables>(() => {
-        return {
-          name: inputEduProgram.value.name,
-          adaptive: inputEduProgram.value.adaptive,
-          admission: Number(inputEduProgram.value.admission),
-          expedited: inputEduProgram.value.expedited,
-          eduFormId: inputEduProgram.value.eduForm ? Number(inputEduProgram.value.eduForm.id) : 0,
-          directionId: inputEduProgram.value.direction ? inputEduProgram.value.direction.id : '',
-          description: inputEduProgram.value.description,
-          syllabus: inputEduProgram.value.syllabus,
-          calendar: inputEduProgram.value.calendar,
-          eduProgramId: inputEduProgram.value.donor ? inputEduProgram.value.donor.id : undefined
-        }
-      })
+    const formVariables = computed<AddEduProgramMutationVariables>(() => ({
+      name: inputEduProgram.value.name,
+      adaptive: inputEduProgram.value.adaptive,
+      admission: Number(inputEduProgram.value.admission),
+      expedited: inputEduProgram.value.expedited,
+      eduFormId: inputEduProgram.value.eduForm ? Number(inputEduProgram.value.eduForm.id) : 0,
+      directionId: inputEduProgram.value.direction ? inputEduProgram.value.direction.id : '',
+      description: inputEduProgram.value.description,
+      syllabus: inputEduProgram.value.syllabus,
+      calendar: inputEduProgram.value.calendar,
+      eduProgramId: inputEduProgram.value.donor ? inputEduProgram.value.donor.id : undefined
+    }))
 
     const close = (): void => {
       inputEduProgram.value = getInputEduProgram()

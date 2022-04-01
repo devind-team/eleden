@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import type { PropType, Ref } from '#app'
+import type { PropType } from '#app'
 import { defineComponent, ref, toRef } from '#app'
 import { useAuthStore } from '~/store'
 import { useQueryRelay } from '~/composables'
@@ -46,9 +46,9 @@ export default defineComponent({
     const authStore = useAuthStore()
     const hasPerm = toRef(authStore, 'hasPerm')
 
-    const search: Ref<string> = ref<string>('')
-    const count: Ref<number> = ref<number>(0)
-    const totalCount: Ref<number> = ref<number>(0)
+    const search = ref<string>('')
+    const count = ref<number>(0)
+    const totalCount = ref<number>(0)
 
     const {
       data: disciplines,

@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import type { PropType, Ref, ComputedRef } from '#app'
+import type { PropType } from '#app'
 import { defineComponent, ref, computed, toRef } from '#app'
 import { DataTableHeader } from 'vuetify'
 import { DisciplineType } from '~/types/graphql'
@@ -46,14 +46,14 @@ export default defineComponent({
   setup (props) {
     const authStore = useAuthStore()
     const hasPerm = toRef(authStore, 'hasPerm')
-    const active: Ref<boolean> = ref<boolean>(false)
+    const active = ref<boolean>(false)
 
-    const headers: ComputedRef<DataTableHeader[]> = computed<DataTableHeader[]>(() => ([
+    const headers = computed<DataTableHeader[]>(() => ([
       { text: 'Поле', value: 'text' },
       { text: 'Значение', value: 'value' }
     ]))
 
-    const items: ComputedRef<{ text: string, value: any }[]> = computed<{ text: string, value: any }[]>(() => {
+    const items = computed<{ text: string, value: any }[]>(() => {
       const parent = hasPerm.value('eleden.change_discipline_additional_fields') ? ['parent'] : []
       return [
         'code', 'name', 'view',

@@ -243,7 +243,8 @@ class DeleteEduProgramMutation(BaseMutation):
     @permission_classes([IsAuthenticated, DeleteEduProgram])
     def mutate_and_get_payload(root, info: ResolveInfo, edu_program_id):
         edu_program_id = from_global_id(edu_program_id)[1]
-        return DeleteEduProgramMutation(success=EduProgram.objects.get(pk=edu_program_id).delete()[0] > 0)
+        count_delete, _ = EduProgram.objects.filter(pk=edu_program_id).delete()
+        return DeleteEduProgramMutation(success=count_delete > 0)
 
 
 class AddDisciplineMutation(BaseMutation):
@@ -520,7 +521,8 @@ class DeleteDisciplineMutation(BaseMutation):
     @permission_classes([IsAuthenticated, DeleteDiscipline])
     def mutate_and_get_payload(root, info: ResolveInfo, discipline_id: str):
         discipline_id = from_global_id(discipline_id)[1]
-        return DeleteDisciplineMutation(success=Discipline.objects.get(pk=discipline_id).delete()[0] > 0, id=discipline_id)
+        count_delete, _ = Discipline.objects.filter(pk=discipline_id).delete()
+        return DeleteDisciplineMutation(success=count_delete > 0, id=discipline_id)
 
 
 class AddMethodologicalSupportMutation(BaseMutation):
@@ -847,7 +849,8 @@ class DeleteEduHourMutation(BaseMutation):
     @staticmethod
     @permission_classes([IsAuthenticated, DeleteEduHours])
     def mutate_and_get_payload(root, info: ResolveInfo, edu_hour_id: str,  **kwargs):
-        return DeleteEduHourMutation(success=EduHours.objects.get(pk=edu_hour_id).delete()[0] > 0, id=edu_hour_id)
+        count_delete, _ = EduHours.objects.filter(pk=edu_hour_id).delete()
+        return DeleteEduHourMutation(success=count_delete > 0, id=edu_hour_id)
 
 
 class EduProgramsMutations(graphene.ObjectType):

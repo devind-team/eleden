@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import type { PropType, ComputedRef, Ref } from '#app'
+import type { PropType } from '#app'
 import { defineComponent, computed, ref, useRouter, toRef } from '#app'
 import {
   DisciplineType,
@@ -83,22 +83,20 @@ export default defineComponent({
       }
     }
 
-    const inputDiscipline: Ref<InputDiscipline> = ref<InputDiscipline>(getInputDiscipline())
+    const inputDiscipline = ref<InputDiscipline>(getInputDiscipline())
 
-    const changeVariables: ComputedRef<ChangeDisciplineMutationVariables> = computed<ChangeDisciplineMutationVariables>(() => (
-      {
-        disciplineId: props.discipline.id,
-        viewId: inputDiscipline.value.view ? inputDiscipline.value.view.id : '',
-        userIds: inputDiscipline.value.users.map(user => user.id),
-        deleteAnnotation: !inputDiscipline.value.annotation && !inputDiscipline.value.existingAnnotation,
-        deleteWorkProgram: !inputDiscipline.value.workProgram && !inputDiscipline.value.existingWorkProgram,
-        code: inputDiscipline.value.code !== props.discipline.code ? inputDiscipline.value.code : undefined,
-        name: inputDiscipline.value.name !== props.discipline.name ? inputDiscipline.value.name : undefined,
-        annotation: inputDiscipline.value.annotation,
-        workProgram: inputDiscipline.value.workProgram,
-        parentId: inputDiscipline.value.parent ? inputDiscipline.value.parent.id : undefined
-      }
-    ))
+    const changeVariables = computed<ChangeDisciplineMutationVariables>(() => ({
+      disciplineId: props.discipline.id,
+      viewId: inputDiscipline.value.view ? inputDiscipline.value.view.id : '',
+      userIds: inputDiscipline.value.users.map(user => user.id),
+      deleteAnnotation: !inputDiscipline.value.annotation && !inputDiscipline.value.existingAnnotation,
+      deleteWorkProgram: !inputDiscipline.value.workProgram && !inputDiscipline.value.existingWorkProgram,
+      code: inputDiscipline.value.code !== props.discipline.code ? inputDiscipline.value.code : undefined,
+      name: inputDiscipline.value.name !== props.discipline.name ? inputDiscipline.value.name : undefined,
+      annotation: inputDiscipline.value.annotation,
+      workProgram: inputDiscipline.value.workProgram,
+      parentId: inputDiscipline.value.parent ? inputDiscipline.value.parent.id : undefined
+    }))
 
     const changeDisciplineDone = ({ data: { changeDiscipline: { success } } }: ChangeDisciplineData): void => {
       if (success) {

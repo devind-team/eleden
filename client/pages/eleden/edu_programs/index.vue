@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import type { PropType, ComputedRef } from '#app'
+import type { PropType } from '#app'
 import { defineComponent, computed, useNuxt2Meta, toRef } from '#app'
 import { DataTableHeader } from 'vuetify/types'
 import { BreadCrumbsItem } from '~/types/devind'
@@ -66,7 +66,7 @@ export default defineComponent({
     const { t, localePath } = useI18n()
     useNuxt2Meta({ title: t('eduPrograms.name') as string })
 
-    const headers: ComputedRef<DataTableHeader[]> = computed<DataTableHeader[]>(() => ([
+    const headers = computed<DataTableHeader[]>(() => ([
       { text: t('eduPrograms.tableHeaders.directionCode') as string, value: 'direction.code' },
       { text: t('eduPrograms.tableHeaders.directionName') as string, value: 'direction.name' },
       { text: t('eduPrograms.tableHeaders.admission') as string, value: 'admission' },
@@ -74,7 +74,7 @@ export default defineComponent({
       { text: t('eduPrograms.tableHeaders.eduLevel') as string, value: 'direction.eduService.name' }
     ]))
 
-    const bc: ComputedRef<BreadCrumbsItem[]> = computed<BreadCrumbsItem[]>(() => ([
+    const bc = computed<BreadCrumbsItem[]>(() => ([
       ...props.breadCrumbs,
       {
         text: t('eduPrograms.name') as string,

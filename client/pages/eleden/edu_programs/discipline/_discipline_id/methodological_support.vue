@@ -146,7 +146,7 @@ c.<template lang="pug">
 </template>
 
 <script lang="ts">
-import type { PropType, Ref, ComputedRef } from '#app'
+import type { PropType } from '#app'
 import { defineComponent, ref, computed, toRef } from '#app'
 import { DataTableHeader } from 'vuetify'
 import {
@@ -176,19 +176,17 @@ export default defineComponent({
     const hasPerm = toRef(authStore, 'hasPerm')
     const { dateTimeHM } = useFilters()
 
-    const search: Ref<string> = ref<string>('')
-    const methodologicalSupportsArchive: Ref<File | null> = ref<File | null>(null)
-    const methodologicalSupportsCount: Ref<number> = ref<number>(0)
+    const search = ref<string>('')
+    const methodologicalSupportsArchive = ref<File | null>(null)
+    const methodologicalSupportsCount = ref<number>(0)
 
-    const getAddMethodologicalSupportVariables = (): AddMethodologicalSupportMutationVariables => {
-      return {
-        disciplineId: props.discipline.id,
-        name: '',
-        src: null
-      }
-    }
+    const getAddMethodologicalSupportVariables = (): AddMethodologicalSupportMutationVariables => ({
+      disciplineId: props.discipline.id,
+      name: '',
+      src: null
+    })
 
-    const addMethodologicalSupportVariables: Ref<AddMethodologicalSupportMutationVariables> =
+    const addMethodologicalSupportVariables =
       ref<AddMethodologicalSupportMutationVariables>(getAddMethodologicalSupportVariables())
 
     const {
@@ -202,7 +200,7 @@ export default defineComponent({
       options: { fetchPolicy: 'cache-and-network' }
     })
 
-    const headers: ComputedRef<DataTableHeader[]> = computed<DataTableHeader[]>(() => {
+    const headers = computed<DataTableHeader[]>(() => {
       const headers: DataTableHeader[] = [
         { text: t('eduPrograms.discipline.methodologicalSupport.tableHeaders.name') as string, value: 'name' }
       ]
@@ -225,16 +223,15 @@ export default defineComponent({
       return headers
     })
 
-    const methodologicalSupportsItems: ComputedRef<MethodologicalSupportItem[]> =
-      computed<MethodologicalSupportItem[]>(() => {
-        return methodologicalSupports.value
-          ? methodologicalSupports.value.map((methodologicalSupport: MethodologicalSupportType) => {
-            return { ...methodologicalSupport, newName: methodologicalSupport.name }
-          })
-          : []
-      })
+    const methodologicalSupportsItems = computed<MethodologicalSupportItem[]>(() => {
+      return methodologicalSupports.value
+        ? methodologicalSupports.value.map((methodologicalSupport: MethodologicalSupportType) => {
+          return { ...methodologicalSupport, newName: methodologicalSupport.name }
+        })
+        : []
+    })
 
-    const totalCount: ComputedRef<number> = computed<number>(() => (methodologicalSupportsItems.value.length))
+    const totalCount = computed<number>(() => (methodologicalSupportsItems.value.length))
 
     return {
       hasPerm,

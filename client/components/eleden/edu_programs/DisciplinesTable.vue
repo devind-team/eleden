@@ -65,7 +65,7 @@
 </template>
 
 <script lang="ts">
-import type { PropType, Ref, ComputedRef } from '#app'
+import type { PropType } from '#app'
 import { defineComponent, ref, computed, useNuxtApp, toRef } from '#app'
 import { DataTableHeader } from 'vuetify'
 import {
@@ -81,7 +81,7 @@ import UserLink from '~/components/eleden/user/UserLink.vue'
 import MutationModalForm from '~/components/common/forms/MutationModalForm.vue'
 import DisciplineForm, { InputDiscipline } from '~/components/eleden/edu_programs/DisciplineForm.vue'
 
-type DisciplineNode = DisciplineType & { children: DisciplineType[], isChild: boolean }
+type DisciplineNodeType = DisciplineType & { children: DisciplineType[], isChild: boolean }
 
 export default defineComponent({
   components: { TreeDataTable, UserLink, MutationModalForm, DisciplineForm },
@@ -97,61 +97,49 @@ export default defineComponent({
     const hasPerm = toRef(authStore, 'hasPerm')
     const { dateTimeHM } = useFilters()
 
-    const discipline: Ref<DisciplineType | undefined> = ref<DisciplineType | undefined>(undefined)
-    const sortBy: Ref<string | string[]> = ref<string | string[]>([])
+    const discipline = ref<DisciplineType | undefined>(undefined)
+    const sortBy = ref<string | string[]>([])
 
     const getInputDiscipline = (): InputDiscipline => {
-      if (discipline.value === undefined) {
-        return {
-          id: '',
-          code: '',
-          name: '',
-          annotation: null,
-          workProgram: null,
-          existingAnnotation: undefined,
-          existingWorkProgram: undefined,
-          view: undefined,
-          parent: undefined,
-          users: [],
-          methodologicalSupport: undefined
-        }
-      } else {
-        return {
-          id: discipline.value.id,
-          code: discipline.value.code,
-          name: discipline.value.name,
-          annotation: null,
-          workProgram: null,
-          existingAnnotation: discipline.value.annotation ? { src: discipline.value.annotation } : undefined,
-          existingWorkProgram: discipline.value.workProgram ? { src: discipline.value.workProgram } : undefined,
-          view: discipline.value.view,
-          parent: discipline.value.parent,
-          users: discipline.value.users,
-          methodologicalSupport: undefined
-        }
+      return {
+        id: discipline.value === undefined ? '' : discipline.value.id,
+        code: discipline.value === undefined ? '' : discipline.value.code,
+        name: discipline.value === undefined ? '' : discipline.value.name,
+        annotation: null,
+        workProgram: null,
+        existingAnnotation: discipline.value === undefined
+          ? undefined
+          : discipline.value.annotation ? { src: discipline.value.annotation } : undefined,
+        existingWorkProgram: discipline.value === undefined
+          ? undefined
+          : discipline.value.workProgram ? { src: discipline.value.workProgram } : undefined,
+        view: discipline.value === undefined ? undefined : discipline.value.view,
+        parent: discipline.value === undefined ? undefined : discipline.value.parent,
+        users: discipline.value === undefined ? [] : discipline.value.users,
+        methodologicalSupport: undefined
       }
     }
 
-    const inputDiscipline: Ref<InputDiscipline> = ref<InputDiscipline>(getInputDiscipline())
+    const inputDiscipline = ref<InputDiscipline>(getInputDiscipline())
 
-    const sortedDisciplines: ComputedRef<DisciplineType[]> = computed<DisciplineType[]>(() => {
+    const sortedDisciplines = computed<DisciplineType[]>(() => {
       return props.disciplines ? props.disciplines!.sort((d1, d2) => d1.order - d2.order) : []
     })
 
-    const disciplinesTree: ComputedRef<DisciplineNode[]> = computed<DisciplineNode[]>(() => {
-      const tree: DisciplineNode[] = sortedDisciplines.value
+    const disciplinesTree = computed<DisciplineNodeType[]>(() => {
+      const tree: DisciplineNodeType[] = sortedDisciplines.value
         .map((discipline: DisciplineType) => ({ ...discipline, children: [], isChild: false }))
-      tree.forEach((disciplineNode: DisciplineNode, _, disciplines) => {
+      tree.forEach((disciplineNode: DisciplineNodeType, _, disciplines) => {
         const children = getDisciplineChildren(disciplines, disciplineNode)
-        children.forEach((child: DisciplineNode) => {
+        children.forEach((child: DisciplineNodeType) => {
           child.isChild = true
         })
         disciplineNode.children = children
       })
-      return tree.filter((disciplineNode: DisciplineNode) => !disciplineNode.isChild)
+      return tree.filter((disciplineNode: DisciplineNodeType) => !disciplineNode.isChild)
     })
 
-    const headers: ComputedRef<DataTableHeader[]> = computed<DataTableHeader[]>(() => {
+    const headers = computed<DataTableHeader[]>(() => {
       const headers: DataTableHeader[] = [
         {
           text: t('eduPrograms.disciplines.tableHeaders.code') as string,
@@ -200,21 +188,18 @@ export default defineComponent({
       )
     })
 
-    const changeVariables: ComputedRef<ChangeDisciplineMutationVariables> =
-      computed<ChangeDisciplineMutationVariables>(() => {
-        return {
-          disciplineId: inputDiscipline.value.id,
-          viewId: inputDiscipline.value.view ? inputDiscipline.value.view.id : '',
-          userIds: inputDiscipline.value.users.map(user => user.id),
-          deleteAnnotation: !inputDiscipline.value.annotation && !inputDiscipline.value.existingAnnotation,
-          deleteWorkProgram: !inputDiscipline.value.workProgram && !inputDiscipline.value.existingWorkProgram,
-          code: inputDiscipline.value.code,
-          name: inputDiscipline.value.name,
-          annotation: inputDiscipline.value.annotation,
-          workProgram: inputDiscipline.value.workProgram,
-          parentId: inputDiscipline.value.parent ? inputDiscipline.value.parent.id : undefined
-        }
-      })
+    const changeVariables = computed<ChangeDisciplineMutationVariables>(() => ({
+      disciplineId: inputDiscipline.value.id,
+      viewId: inputDiscipline.value.view ? inputDiscipline.value.view.id : '',
+      userIds: inputDiscipline.value.users.map(user => user.id),
+      deleteAnnotation: !inputDiscipline.value.annotation && !inputDiscipline.value.existingAnnotation,
+      deleteWorkProgram: !inputDiscipline.value.workProgram && !inputDiscipline.value.existingWorkProgram,
+      code: inputDiscipline.value.code,
+      name: inputDiscipline.value.name,
+      annotation: inputDiscipline.value.annotation,
+      workProgram: inputDiscipline.value.workProgram,
+      parentId: inputDiscipline.value.parent ? inputDiscipline.value.parent.id : undefined
+    }))
 
     const itemsHandler = (items: ItemWithProps[], _: any, allItems: ItemWithProps[]): void => {
       emit('count-change', {
@@ -230,7 +215,7 @@ export default defineComponent({
       })
     }
 
-    const getDisciplineChildren = (disciplines: DisciplineNode[], disciplineNode: DisciplineNode): DisciplineNode[] => {
+    const getDisciplineChildren = (disciplines: DisciplineNodeType[], disciplineNode: DisciplineNodeType): DisciplineNodeType[] => {
       return disciplines.filter((filterDiscipline: DisciplineType) =>
         filterDiscipline.parent && filterDiscipline.parent.id === disciplineNode.id)
     }
@@ -264,7 +249,6 @@ export default defineComponent({
       changeVariables,
       itemsHandler,
       toDiscipline,
-      getDisciplineChildren,
       filter
     }
   }

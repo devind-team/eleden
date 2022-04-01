@@ -136,7 +136,7 @@
 </template>
 
 <script lang="ts">
-import type { PropType, Ref, ComputedRef } from '#app'
+import type { PropType } from '#app'
 import { defineComponent, ref, computed, toRef } from '#app'
 import { DataTableHeader } from 'vuetify'
 import {
@@ -169,17 +169,18 @@ export default defineComponent({
     const authStore = useAuthStore()
     const hasPerm = toRef(authStore, 'hasPerm')
 
-    const search: Ref<string> = ref<string>('')
-    const courses: Ref<number[]> = ref<number[]>([1, 2, 3, 4, 5, 6])
-    const course: Ref<number | null> = ref<number | null>(null)
-    const semesters: Ref<number[]> = ref<number[]>([1, 2])
-    const semester: Ref<number | null> = ref<number | null>(null)
-    const value: Ref<number | null> = ref<number | null>(null)
-    const hoursKind: Ref<HoursKindType | null> = ref<HoursKindType | null>(null)
-    const workKind: Ref<WorkKindType | null> = ref<WorkKindType | null>(null)
-    const eduHoursCount: Ref<number> = ref<number>(0)
+    const search = ref<string>('')
+    const course = ref<number | null>(null)
+    const semester = ref<number | null>(null)
+    const value = ref<number | null>(null)
+    const hoursKind = ref<HoursKindType | null>(null)
+    const workKind = ref<WorkKindType | null>(null)
+    const eduHoursCount = ref<number>(0)
 
-    const headers: ComputedRef<DataTableHeader[]> = computed<DataTableHeader[]>(() => {
+    const courses: number[] = [1, 2, 3, 4, 5, 6]
+    const semesters: number[] = [1, 2]
+
+    const headers = computed<DataTableHeader[]>(() => {
       const headers: DataTableHeader[] = [
         {
           text: t('eduPrograms.discipline.eduHours.tableHeaders.workKind.name') as string,
@@ -217,19 +218,16 @@ export default defineComponent({
       return headers
     })
 
-    const addEduHoursVariables: ComputedRef<AddEduHoursMutationVariables> =
-      computed<AddEduHoursMutationVariables>(() => {
-        return {
-          disciplineId: props.discipline.id,
-          workKindId: workKind.value ? workKind.value.id : '',
-          courseNumber: course.value!,
-          semesterNumber: semester.value!,
-          value: value.value!,
-          hoursKindId: hoursKind.value ? hoursKind.value.id : ''
-        }
-      })
+    const addEduHoursVariables = computed<AddEduHoursMutationVariables>(() => ({
+      disciplineId: props.discipline.id,
+      workKindId: workKind.value ? workKind.value.id : '',
+      courseNumber: course.value!,
+      semesterNumber: semester.value!,
+      value: value.value!,
+      hoursKindId: hoursKind.value ? hoursKind.value.id : ''
+    }))
 
-    const totalCount: ComputedRef<number> = computed<number>(() => (
+    const totalCount = computed<number>(() => (
       disciplineEduHours.value ? disciplineEduHours.value.length : 0
     ))
 

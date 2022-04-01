@@ -107,7 +107,7 @@
 </template>
 
 <script lang="ts">
-import type { PropType, Ref } from '#app'
+import type { PropType } from '#app'
 import { computed, defineComponent, ref } from '#app'
 import {
   EduProgramType,
@@ -153,7 +153,7 @@ export default defineComponent({
       document: eduFormsQuery
     })
 
-    const directionsSearch: Ref<string> = ref<string>('')
+    const directionsSearch = ref<string>('')
 
     const {
       data: directions,

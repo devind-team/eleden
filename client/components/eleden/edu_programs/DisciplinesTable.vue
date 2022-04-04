@@ -56,7 +56,7 @@
             template(#activator="{ on: onTooltip}")
               v-btn(
                 v-on="{ ...onChange, ...onTooltip }"
-                @click="discipline = item; inputDiscipline = getInputDiscipline()"
+                @click="discipline = item; inputDiscipline = getInputDiscipline(discipline ? discipline : undefined)"
                 color="success"
                 icon
               )
@@ -80,6 +80,7 @@ import TreeDataTable, { ItemWithProps } from '~/components/common/tables/TreeDat
 import UserLink from '~/components/eleden/user/UserLink.vue'
 import MutationModalForm from '~/components/common/forms/MutationModalForm.vue'
 import DisciplineForm, { InputDiscipline } from '~/components/eleden/edu_programs/DisciplineForm.vue'
+import { getInputDiscipline } from '~/services/eleden'
 
 type DisciplineNodeType = DisciplineType & { children: DisciplineType[], isChild: boolean }
 
@@ -100,27 +101,8 @@ export default defineComponent({
     const discipline = ref<DisciplineType | undefined>(undefined)
     const sortBy = ref<string | string[]>([])
 
-    const getInputDiscipline = (): InputDiscipline => {
-      return {
-        id: discipline.value === undefined ? '' : discipline.value.id,
-        code: discipline.value === undefined ? '' : discipline.value.code,
-        name: discipline.value === undefined ? '' : discipline.value.name,
-        annotation: null,
-        workProgram: null,
-        existingAnnotation: discipline.value === undefined
-          ? undefined
-          : discipline.value.annotation ? { src: discipline.value.annotation } : undefined,
-        existingWorkProgram: discipline.value === undefined
-          ? undefined
-          : discipline.value.workProgram ? { src: discipline.value.workProgram } : undefined,
-        view: discipline.value === undefined ? undefined : discipline.value.view,
-        parent: discipline.value === undefined ? undefined : discipline.value.parent,
-        users: discipline.value === undefined ? [] : discipline.value.users,
-        methodologicalSupport: undefined
-      }
-    }
-
-    const inputDiscipline = ref<InputDiscipline>(getInputDiscipline())
+    const inputDiscipline =
+      ref<InputDiscipline>(getInputDiscipline(discipline.value ? discipline.value : undefined))
 
     const sortedDisciplines = computed<DisciplineType[]>(() => {
       return props.disciplines ? props.disciplines!.sort((d1, d2) => d1.order - d2.order) : []

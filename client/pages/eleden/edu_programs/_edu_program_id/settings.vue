@@ -35,6 +35,7 @@ import { useFilters, useI18n } from '~/composables'
 import MutationForm from '~/components/common/forms/MutationForm.vue'
 import EduProgramForm, { InputEduProgram } from '~/components/eleden/edu_programs/EduProgramForm.vue'
 import DeleteMenu from '~/components/common/menu/DeleteMenu.vue'
+import { getInputEduProgram } from '~/services/eleden'
 
 type ChangeEduProgramDataType = {
   data: { changeEduProgram: ChangeEduProgramMutationPayload }
@@ -53,25 +54,7 @@ export default defineComponent({
     const { localePath } = useI18n()
     const router = useRouter()
 
-    const getInputEduProgram = (): InputEduProgram => {
-      return {
-        id: props.eduProgram.id,
-        name: props.eduProgram.name,
-        adaptive: props.eduProgram.adaptive,
-        admission: props.eduProgram.admission,
-        expedited: props.eduProgram.expedited,
-        eduForm: props.eduProgram.eduForm,
-        direction: props.eduProgram.direction,
-        description: null,
-        existingDescription: props.eduProgram.description ? { src: props.eduProgram.description } : undefined,
-        syllabus: null,
-        existingSyllabus: props.eduProgram.syllabus ? { src: props.eduProgram.syllabus } : undefined,
-        calendar: null,
-        existingCalendar: props.eduProgram.calendar ? { src: props.eduProgram.calendar } : undefined
-      }
-    }
-
-    const inputEduProgram = ref<InputEduProgram>(getInputEduProgram())
+    const inputEduProgram = ref<InputEduProgram>(getInputEduProgram(props.eduProgram))
 
     const changeVariables = computed<ChangeEduProgramMutationVariables>(() => ({
       eduProgramId: inputEduProgram.value.id!,
@@ -97,7 +80,7 @@ export default defineComponent({
 
     const changeEduProgramDone = ({ data: { changeEduProgram: { success } } }: ChangeEduProgramDataType):void => {
       if (success) {
-        inputEduProgram.value = getInputEduProgram()
+        inputEduProgram.value = getInputEduProgram(props.eduProgram)
       }
     }
 

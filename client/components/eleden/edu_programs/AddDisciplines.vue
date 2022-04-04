@@ -115,6 +115,7 @@ import {
 import MutationModalForm from '~/components/common/forms/MutationModalForm.vue'
 import DisciplineForm, { InputDiscipline } from '~/components/eleden/edu_programs/DisciplineForm.vue'
 import HelpDialog from '~/components/common/dialogs/HelpDialog.vue'
+import { getInputDiscipline } from '~/services/eleden'
 
 type AddDisciplineUpdateType = (store: any, result: any) => void
 
@@ -125,19 +126,6 @@ export default defineComponent({
     addDisciplineUpdate: { type: Function as PropType<AddDisciplineUpdateType>, required: true }
   },
   setup (props) {
-    const getInputDiscipline = (): InputDiscipline => {
-      return {
-        code: '',
-        name: '',
-        annotation: null,
-        workProgram: null,
-        view: null,
-        parent: null,
-        users: [],
-        methodologicalSupport: []
-      }
-    }
-
     const inputDiscipline = ref<InputDiscipline>(getInputDiscipline())
     const disciplinesFilesArchive = ref<File | null>(null)
     const methodologicalSupportsArchive = ref<File | null>(null)

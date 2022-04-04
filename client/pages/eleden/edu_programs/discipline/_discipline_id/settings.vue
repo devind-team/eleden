@@ -49,6 +49,7 @@ import disciplinesQuery from '~/gql/eleden/queries/education/disciplines.graphql
 import MutationForm from '~/components/common/forms/MutationForm.vue'
 import DisciplineForm, { InputDiscipline } from '~/components/eleden/edu_programs/DisciplineForm.vue'
 import DeleteMenu from '~/components/common/menu/DeleteMenu.vue'
+import { getInputDiscipline } from '~/services/eleden'
 
 type ChangeDisciplineData = {
   data: { changeDiscipline: ChangeDisciplineMutationPayload }
@@ -67,23 +68,7 @@ export default defineComponent({
     const { dateTimeHM } = useFilters()
     const router = useRouter()
 
-    const getInputDiscipline = (): InputDiscipline => {
-      return {
-        id: props.discipline.id,
-        code: props.discipline.code,
-        name: props.discipline.name,
-        annotation: null,
-        workProgram: null,
-        existingAnnotation: props.discipline.annotation ? { src: props.discipline.annotation } : undefined,
-        existingWorkProgram: props.discipline.workProgram ? { src: props.discipline.workProgram } : undefined,
-        view: props.discipline.view,
-        parent: props.discipline.parent,
-        users: props.discipline.users,
-        methodologicalSupport: undefined
-      }
-    }
-
-    const inputDiscipline = ref<InputDiscipline>(getInputDiscipline())
+    const inputDiscipline = ref<InputDiscipline>(getInputDiscipline(props.discipline))
 
     const changeVariables = computed<ChangeDisciplineMutationVariables>(() => ({
       disciplineId: props.discipline.id,
@@ -100,7 +85,7 @@ export default defineComponent({
 
     const changeDisciplineDone = ({ data: { changeDiscipline: { success } } }: ChangeDisciplineData): void => {
       if (success) {
-        inputDiscipline.value = getInputDiscipline()
+        inputDiscipline.value = getInputDiscipline(props.discipline)
       }
     }
 
@@ -121,7 +106,6 @@ export default defineComponent({
     return {
       hasPerm,
       dateTimeHM,
-      getInputDiscipline,
       inputDiscipline,
       changeVariables,
       changeDisciplineDone,

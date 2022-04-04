@@ -104,6 +104,7 @@ import { AddEduProgramMutationVariables } from '~/types/graphql'
 import MutationModalForm from '~/components/common/forms/MutationModalForm.vue'
 import HelpDialog from '~/components/common/dialogs/HelpDialog.vue'
 import EduProgramForm, { InputEduProgram } from '~/components/eleden/edu_programs/EduProgramForm.vue'
+import { getInputEduProgram } from '~/services/eleden'
 
 type AddEduProgramUpdateType = (store: DataProxy, result: any) => void
 type AddEduProgramFromPlxUpdateType = (store: DataProxy, result: any) => void
@@ -117,21 +118,6 @@ export default defineComponent({
     addEduProgramsUpdate: { type: Function as PropType<AddEduProgramsUpdateType>, required: true }
   },
   setup () {
-    const getInputEduProgram = (): InputEduProgram => {
-      return {
-        name: '',
-        adaptive: false,
-        admission: new Date().getFullYear(),
-        expedited: false,
-        eduForm: null,
-        direction: null,
-        description: null,
-        syllabus: null,
-        calendar: null,
-        donor: null
-      }
-    }
-
     const inputEduProgram = ref<InputEduProgram>(getInputEduProgram())
     const file = ref<File | null>(null)
     const plxFile = ref<File | null>(null)

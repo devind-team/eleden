@@ -106,7 +106,7 @@ import ChangeAttestations from '~/components/eleden/process/ChangeAttestations.v
 import ChangeHandouts from '~/components/eleden/process/ChangeHandouts.vue'
 import { Role } from '~/pages/eleden/process/courses/_course_id.vue'
 
-type PeriodDataTableHeader = DataTableHeader & {
+type PeriodDataTableHeaderType = DataTableHeader & {
   fullText: string
 }
 type StudentRow = {
@@ -152,7 +152,7 @@ export default defineComponent({
       }
     ]))
 
-    const periodTableHeaders = computed<PeriodDataTableHeader[]>(() => {
+    const periodTableHeaders = computed<PeriodDataTableHeaderType[]>(() => {
       return props.course.periods!.map((period: PeriodType) => ({
         text: period.shortName,
         fullText: period.name,
@@ -164,7 +164,7 @@ export default defineComponent({
       }))
     })
 
-    const tableHeaders = computed<(DataTableHeader | PeriodDataTableHeader)[]>(() => (
+    const tableHeaders = computed<(DataTableHeader | PeriodDataTableHeaderType)[]>(() => (
       [...baseTableHeaders.value, ...periodTableHeaders.value]
     ))
 

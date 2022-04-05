@@ -2,12 +2,12 @@
   v-card
     v-card-title
       v-app-bar-nav-icon(v-if="$vuetify.breakpoint.smAndDown" @click="$emit('update-drawer')")
-      span {{t('name')}}
+      span {{ $t('process.course.register.name') }}
     v-card-text.process-register
       v-row
         v-col(cols="12")
           template(v-if="course.teachers.length")
-            span {{ t('teachers') + ': ' }}
+            span {{ $t('process.course.register.teachers') + ': ' }}
             user-link(
               v-for="(teacher, index) in course.teachers"
               :key="teacher.id"
@@ -16,7 +16,7 @@
               chip
             )
           template(v-if="course.team.responsibleUsers.length")
-            span.ml-2 {{ t('responsibleUsers') + ': ' }}
+            span.ml-2 {{ $t('process.course.register.responsibleUsers') + ': ' }}
             user-link(
               v-for="(user, index) in course.team.responsibleUsers"
               :key="user.id"
@@ -79,7 +79,7 @@
                         | mdi-file-alert
                       strong(v-else) &mdash;
               tr(v-else :class="isMobile ? 'v-data-table__mobile-table-row' : null")
-                td(:class="isMobile ? 'v-data-table__mobile-row' : null") {{ t('handout') }}
+                td(:class="isMobile ? 'v-data-table__mobile-row' : null") {{ $t('process.course.register.handout') }}
                 td(
                   v-for="header in periodTableHeaders"
                   :class="`${header.cellClass} ${isMobile ? 'v-data-table__mobile-row': ''}`"
@@ -96,10 +96,11 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
-import { mapGetters } from 'vuex'
 import { DataTableHeader } from 'vuetify/types'
+import type { PropType } from '#app'
 import { UserType, CourseType, PeriodType, AttestationType, AttachmentType, HandoutType } from '~/types/graphql'
+import { useAuthStore } from '~/store'
+import { useI18n, useFilters } from '~/composables'
 import UserLink from '~/components/eleden/user/UserLink.vue'
 import ChangeAttestations from '~/components/eleden/process/ChangeAttestations.vue'
 import ChangeHandouts from '~/components/eleden/process/ChangeHandouts.vue'
@@ -125,21 +126,34 @@ enum DialogTypes {
   Handouts,
   Attestations
 }
-@Component<CourseIdRegister>({
+
+export default defineComponent({
   components: { UserLink, ChangeAttestations, ChangeHandouts },
-  computed: {
-    ...mapGetters({ user: 'auth/user' }),
-    baseTableHeaders (): DataTableHeader[] {
-      return [
-        {
-          text: this.t('baseTableHeaders.students'),
-          value: 'student',
-          sortable: false
-        }
-      ]
-    },
-    periodTableHeaders (): PeriodDataTableHeader[] {
-      return this.course.periods!.map((period: PeriodType) => ({
+  props: {
+    role: { type: Number, required: true },
+    course: { type: Object as PropType<CourseType>, required: true }
+  },
+  setup (props) {
+    const authStore = useAuthStore()
+    const user = toRef(authStore, 'user')
+    const { t } = useI18n()
+    const { getUserFullName } = useFilters()
+
+    const currentItemIndex = ref<number | null>(null)
+    const currentHeaderValue = ref<string>('')
+    const active = ref<boolean>(false)
+    const dialogType = ref<DialogTypes>(DialogTypes.Handouts)
+
+    const baseTableHeaders = computed<DataTableHeader[]>(() => ([
+      {
+        text: t('process.course.register.baseTableHeaders.students') as string,
+        value: 'student',
+        sortable: false
+      }
+    ]))
+
+    const periodTableHeaders = computed<PeriodDataTableHeader[]>(() => {
+      return props.course.periods!.map((period: PeriodType) => ({
         text: period.shortName,
         fullText: period.name,
         value: period.id,
@@ -148,109 +162,91 @@ enum DialogTypes {
         cellClass: 'period',
         align: 'center'
       }))
-    },
-    tableHeaders (): (DataTableHeader | PeriodDataTableHeader)[] {
-      return [...this.baseTableHeaders, ...this.periodTableHeaders]
-    },
-    studentRows (): StudentRow[] {
-      const students = [...this.course.team.users]
+    })
+
+    const tableHeaders = computed<(DataTableHeader | PeriodDataTableHeader)[]>(() => (
+      [...baseTableHeaders.value, ...periodTableHeaders.value]
+    ))
+
+    const studentRows = computed<StudentRow[]>(() => {
+      const students = [...props.course.team.users]
       students.sort((s1: UserType, s2: UserType) =>
-        this.$getUserFullName(s1).localeCompare(this.$getUserFullName(s2)))
+        getUserFullName(s1).localeCompare(getUserFullName(s2)))
       return students.map((student: UserType) => ({
         student,
-        attestations: Object.assign({}, ...this.course.periods!.map((period: PeriodType) => {
+        attestations: Object.assign({}, ...props.course.periods!.map((period: PeriodType) => {
           return {
-            [period.id]: (this.course.attestations as AttestationType[])
+            [period.id]: (props.course.attestations as AttestationType[])
               .filter((attestation: AttestationType) =>
                 attestation.period.id === period.id && attestation.user.id === student.id)
           }
         })),
-        attachments: Object.assign({}, ...this.course.periods!.map((period: PeriodType) => {
+        attachments: Object.assign({}, ...props.course.periods!.map((period: PeriodType) => {
           return {
-            [period.id]: (this.course.attachments as AttachmentType[])
+            [period.id]: (props.course.attachments as AttachmentType[])
               .filter((attachment: AttachmentType) =>
                 attachment.period.id === period.id && attachment.portfolioFile.file.user!.id === student.id)
           }
         }))
       }))
-    },
-    handoutRow (): HandoutRow {
-      return Object.assign({}, ...this.course.periods!.map((period: PeriodType) => {
+    })
+
+    const handoutRow = computed<HandoutRow>(() => {
+      return Object.assign({}, ...props.course.periods!.map((period: PeriodType) => {
         return {
-          [period.id]: (this.course.handouts as HandoutType[])
+          [period.id]: (props.course.handouts as HandoutType[])
             .filter((handout: HandoutType) =>
               handout.period && handout.period.id === period.id)
         }
       }))
-    },
-    rows (): Row[] {
-      return [...this.studentRows, this.handoutRow]
-    },
-    canEditHandouts () {
-      return this.role === Role.Teacher || this.role === Role.Admin
+    })
+
+    const rows = computed<Row[]>(() => ([...studentRows.value, handoutRow.value]))
+
+    const canEditHandouts = computed<boolean>(() => (props.role === Role.Teacher || props.role === Role.Admin))
+
+    const canEditMark = (): boolean => { return props.role === Role.Teacher || props.role === Role.Admin }
+
+    const canViewAllItems = (student: UserType): boolean => { return canEditMark() || isMe(student) }
+
+    const attestationsString = (item: AttestationType[]): string => {
+      return item.map((attestation: AttestationType) => attestation.registration.shortName).join(', ')
+    }
+
+    const isMe = (student: UserType): boolean => { return user.value.id === student.id }
+
+    const canViewDialog = (student: UserType): boolean => { return props.role !== Role.Student || isMe(student) }
+
+    const onDialogButtonClicked = (index: number, headerValue: string, dialogTypeValue: DialogTypes): void => {
+      currentItemIndex.value = index
+      currentHeaderValue.value = headerValue
+      dialogType.value = dialogTypeValue
+      active.value = true
+    }
+
+    const canOpenHandoutsDialog = (handouts: HandoutType[]) => {
+      return canEditHandouts.value || handouts.length !== 0
+    }
+
+    return {
+      user,
+      DialogTypes,
+      periodTableHeaders,
+      tableHeaders,
+      rows,
+      currentItemIndex,
+      currentHeaderValue,
+      active,
+      dialogType,
+      canViewAllItems,
+      attestationsString,
+      isMe,
+      canViewDialog,
+      onDialogButtonClicked,
+      canOpenHandoutsDialog
     }
   }
 })
-export default class CourseIdRegister extends Vue {
-  @Prop({ type: Number, required: true }) readonly role!: Role
-  @Prop({ type: Object, required: true }) readonly course!: CourseType
-
-  readonly baseTableHeaders!: DataTableHeader[]
-  readonly periodTableHeaders!: PeriodDataTableHeader[]
-  readonly tableHeaders!: (DataTableHeader | PeriodDataTableHeader)[]
-  readonly studentRows!: StudentRow[]
-  readonly handoutRow!: HandoutRow
-  readonly rows!: Row[]
-  readonly user!: UserType
-  readonly canEditHandouts!: boolean
-
-  DialogTypes = DialogTypes
-  currentItemIndex: number | null = null
-  currentHeaderValue: string = ''
-  active: boolean = false
-  dialogType: DialogTypes = DialogTypes.Handouts
-
-  canEditMark (): boolean {
-    return this.role === Role.Teacher || this.role === Role.Admin
-  }
-
-  canViewAllItems (student: UserType): boolean {
-    return this.canEditMark() || this.isMe(student)
-  }
-
-  attestationsString (item: AttestationType[]): string {
-    return item.map((attestation: AttestationType) => attestation.registration.shortName).join(', ')
-  }
-
-  isMe (student: UserType): boolean {
-    return this.user.id === student.id
-  }
-
-  canViewDialog (student: UserType): boolean {
-    return this.role !== Role.Student || this.isMe(student)
-  }
-
-  onDialogButtonClicked (index: number, headerValue: string, dialogType: DialogTypes) {
-    this.currentItemIndex = index
-    this.currentHeaderValue = headerValue
-    this.dialogType = dialogType
-    this.active = true
-  }
-
-  canOpenHandoutsDialog (handouts: HandoutType[]) {
-    return this.canEditHandouts || handouts.length !== 0
-  }
-
-  /**
-   * Получение перевода относильно локального пути
-   * @param path
-   * @param values
-   * @return
-   */
-  t (path: string, values: any = undefined): string {
-    return this.$t(`process.course.register.${path}`, values) as string
-  }
-}
 </script>
 
 <style lang="sass">

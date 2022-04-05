@@ -10,5 +10,6 @@ mutation AddHandout($description: String!, $file: Upload!, $courseId: ID!, $peri
     handout {
       ...HandoutFields
     }
+    __typename
   }
 }

@@ -526,6 +526,8 @@ class DeleteHandoutsMutation(BaseMutation):
             description='Идентификаторы раздаточных материалов'
         )
 
+    id = graphene.ID(description='Идентификатор раздаточного материала')
+
     @staticmethod
     @permission_classes([DeleteHandout])
     def mutate_and_get_payload(root, info: ResolveInfo, handout_ids: list[str]):
@@ -535,7 +537,7 @@ class DeleteHandoutsMutation(BaseMutation):
         for handout in handouts.all():
             info.context.check_object_permissions(info.context, handout.course)
         handouts.delete()
-        return DeleteHandoutsMutation()
+        return DeleteHandoutsMutation(id=handout_ids[0] if len(handout_ids) == 1 else None)
 
 
 class AddRegistrationMutation(BaseMutation):

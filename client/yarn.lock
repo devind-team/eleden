@@ -3730,15 +3730,7 @@
   version "3.2.31"
   resolved "https://registry.npmjs.org/@vue/shared/-/shared-3.2.31.tgz"
 
-"@vueuse/core@8.2.4":
-  version "8.2.4"
-  resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-8.2.4.tgz#04159d28267e56fd27488de116e465d0b12b48ac"
-  dependencies:
-    "@vueuse/metadata" "8.2.4"
-    "@vueuse/shared" "8.2.4"
-    vue-demi "*"
-
-"@vueuse/core@^8.2.5":
+"@vueuse/core@8.2.5", "@vueuse/core@^8.2.5":
   version "8.2.5"
   resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-8.2.5.tgz#ca6a59091ecf16e6739c53f3d857b11967a5eb06"
   dependencies:
@@ -3750,27 +3742,17 @@
   version "0.7.5"
   resolved "https://registry.npmjs.org/@vueuse/head/-/head-0.7.5.tgz"
 
-"@vueuse/integrations@^8.2.4":
-  version "8.2.4"
-  resolved "https://registry.yarnpkg.com/@vueuse/integrations/-/integrations-8.2.4.tgz#2e39250ae4718be7526a77292ed611760922119d"
+"@vueuse/integrations@^8.2.5":
+  version "8.2.5"
+  resolved "https://registry.yarnpkg.com/@vueuse/integrations/-/integrations-8.2.5.tgz#bc10b95bba1d192e33f3866dbbcce3018b1c435b"
   dependencies:
-    "@vueuse/core" "8.2.4"
-    "@vueuse/shared" "8.2.4"
+    "@vueuse/core" "8.2.5"
+    "@vueuse/shared" "8.2.5"
     vue-demi "*"
-
-"@vueuse/metadata@8.2.4":
-  version "8.2.4"
-  resolved "https://registry.yarnpkg.com/@vueuse/metadata/-/metadata-8.2.4.tgz#a880aa1ba1e30850983a85de8e1a6295d798250e"
 
 "@vueuse/metadata@8.2.5":
   version "8.2.5"
   resolved "https://registry.yarnpkg.com/@vueuse/metadata/-/metadata-8.2.5.tgz#51c7d95e04284ea378a5242a2e88b77494e2c117"
-
-"@vueuse/shared@8.2.4":
-  version "8.2.4"
-  resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-8.2.4.tgz#a5b3bb53596c802df2181a3a0095e9782383be32"
-  dependencies:
-    vue-demi "*"
 
 "@vueuse/shared@8.2.5":
   version "8.2.5"

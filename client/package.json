@@ -22,7 +22,7 @@
     "@tailwindcss/typography": "^0.5.2",
     "@vue/apollo-composable": "^4.0.0-alpha.16",
     "@vueuse/core": "^8.2.4",
-    "@vueuse/integrations": "^8.1.2",
+    "@vueuse/integrations": "^8.2.4",
     "accounting": "^0.4.1",
     "apexcharts": "^3.33.2",
     "cookie-universal-nuxt": "^2.1.5",

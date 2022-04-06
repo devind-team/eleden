@@ -4104,9 +4104,9 @@ anymatch@^2.0.0:
     micromatch "^3.1.4"
     normalize-path "^2.1.1"
 
-apexcharts@^3.33.2:
-  version "3.33.2"
-  resolved "https://registry.npmjs.org/apexcharts/-/apexcharts-3.33.2.tgz"
+apexcharts@^3.35.0:
+  version "3.35.0"
+  resolved "https://registry.yarnpkg.com/apexcharts/-/apexcharts-3.35.0.tgz#5571f4852747359b7ef76662998f3d6a8ffe923a"
   dependencies:
     svg.draggable.js "^2.2.2"
     svg.easing.js "^2.0.0"

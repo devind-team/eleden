@@ -3704,9 +3704,9 @@
   version "1.4.9"
   resolved "https://registry.npmjs.org/@vue/composition-api/-/composition-api-1.4.9.tgz"
 
-"@vue/devtools-api@^6.1.0":
-  version "6.1.3"
-  resolved "https://registry.npmjs.org/@vue/devtools-api/-/devtools-api-6.1.3.tgz"
+"@vue/devtools-api@^6.1.4":
+  version "6.1.4"
+  resolved "https://registry.yarnpkg.com/@vue/devtools-api/-/devtools-api-6.1.4.tgz#b4aec2f4b4599e11ba774a50c67fa378c9824e53"
 
 "@vue/reactivity-transform@^3.2.31":
   version "3.2.31"
@@ -10929,11 +10929,11 @@ pify@^5.0.0:
   version "5.0.0"
   resolved "https://registry.npmjs.org/pify/-/pify-5.0.0.tgz"
 
-pinia@^2.0.11:
-  version "2.0.12"
-  resolved "https://registry.npmjs.org/pinia/-/pinia-2.0.12.tgz"
+pinia@^2.0.13:
+  version "2.0.13"
+  resolved "https://registry.yarnpkg.com/pinia/-/pinia-2.0.13.tgz#6656fc290dae120a9f0cb2f5c520df400d41b8c5"
   dependencies:
-    "@vue/devtools-api" "^6.1.0"
+    "@vue/devtools-api" "^6.1.4"
     vue-demi "*"
 
 pkg-dir@^3.0.0:

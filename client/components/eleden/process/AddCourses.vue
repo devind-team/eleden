@@ -4,8 +4,8 @@
       slot(:on="on")
     v-list
       mutation-modal-form(
-        :header="t('addForm.header')"
-        :button-text="t('addForm.buttonText')"
+        :header="$t('process.teams.addMenu.addForm.header')"
+        :button-text="$t('process.teams.addMenu.addForm.buttonText')"
         :mutation="require('~/gql/eleden/mutations/process/add_courses.graphql')"
         :variables="addCoursesVariables"
         :update="(store, result) => addCoursesUpdate(store, result, input.team)"
@@ -20,7 +20,7 @@
             v-list-item-icon
               v-icon mdi-form-select
             v-list-item-content
-              v-list-item-title {{ t('buttons.fillForm') }}
+              v-list-item-title {{ $t('process.teams.addMenu.buttons.fillForm') }}
         template(#form)
           courses-form(:input="input" ref="courseForm")
       experimental-dialog(v-if="hasPerm('core.view_experimental')" v-slot="{ on }")
@@ -28,38 +28,55 @@
           v-list-item-icon
             v-icon mdi-microsoft-excel
           v-list-item-content
-            v-list-item-title {{ t('buttons.addFromFile') }}
+            v-list-item-title {{ $t('process.teams.addMenu.buttons.addFromFile') }}
           v-list-item-action
-            help-dialog(v-slot="{ on: onHelper }" :text="t('helpDialog.helpInstruction')" doc="help/add_courses")
+            help-dialog(
+              v-slot="{ on: onHelper }"
+              :text="$t('process.teams.addMenu.helpDialog.helpInstruction')"
+              doc="help/add_courses"
+            )
               v-tooltip(bottom)
                 template(#activator="{ on: onTooltip}")
                   v-btn(v-on="{ ...onTooltip, ...onHelper}" icon)
                     v-icon mdi-help-circle-outline
-                span {{ t('buttons.helpInstruction') }}
+                span {{ $t('process.teams.addMenu.buttons.helpInstruction') }}
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Ref } from 'vue-property-decorator'
-import { mapGetters } from 'vuex'
 import { DataProxy } from 'apollo-cache'
+import type { PropType } from '#app'
 import { UserType, TeamType, AddCoursesMutationVariables, AddCoursesMutationPayload } from '~/types/graphql'
+import { useAuthStore } from '~/store'
 import MutationModalForm from '~/components/common/forms/MutationModalForm.vue'
 import CoursesForm, { Course, Input } from '~/components/eleden/process/CoursesForm.vue'
 import ExperimentalDialog from '~/components/common/dialogs/ExperimentalDialog.vue'
 import HelpDialog from '~/components/common/dialogs/HelpDialog.vue'
 
-export type AddCoursesData = { data: { addCourses: AddCoursesMutationPayload } }
+export type AddCoursesDataType = { data: { addCourses: AddCoursesMutationPayload } }
+type addCoursesUpdateType = (store: DataProxy, result: AddCoursesDataType, team: TeamType) => void
 
-@Component<AddCourses>({
+export default defineComponent({
   components: { MutationModalForm, CoursesForm, ExperimentalDialog, HelpDialog },
-  computed: {
-    ...mapGetters({ hasPerm: 'auth/hasPerm' }),
-    addCoursesVariables () : AddCoursesMutationVariables {
+  props: {
+    addCoursesUpdate: { required: true, type: Function as PropType<addCoursesUpdateType> }
+  },
+  setup () {
+    const authStore = useAuthStore()
+    const hasPerm = toRef(authStore, 'hasPerm')
+
+    const courseForm = ref<CoursesForm>(null)
+    const input = ref<Input>({
+      team: null,
+      discipline: null,
+      courses: []
+    })
+
+    const addCoursesVariables = computed<AddCoursesMutationVariables>(() => {
       return {
-        teamId: this.input.team ? this.input.team.id : '',
-        courses: this.input.courses
+        teamId: input.value.team ? input.value.team.id : '',
+        courses: input.value.courses
           .filter((course: Course) => course.teachers.length &&
-            Object.values(course.periods).some((value: boolean) => value))
+          Object.values(course.periods).some((value: boolean) => value))
           .map((course: Course) => {
             return {
               eduHoursId: course.eduHours.id,
@@ -68,45 +85,13 @@ export type AddCoursesData = { data: { addCourses: AddCoursesMutationPayload } }
             }
           })
       }
+    })
+
+    const close = (): void => {
+      courseForm.value.clear(true)
     }
+
+    return { hasPerm, courseForm, input, addCoursesVariables, close }
   }
 })
-export default class AddCourses extends Vue {
-  @Prop({ required: true, type: Function })
-  readonly addCoursesUpdate!: (store: DataProxy, result: AddCoursesData, team: TeamType) => void
-
-  @Ref() readonly courseForm!: InstanceType<typeof CoursesForm>
-
-  readonly hasPerm!: (permissions: string | string[], or?: boolean) => boolean
-
-  readonly addCoursesVariables!: AddCoursesMutationVariables
-  input!: Input
-
-  data () {
-    return {
-      input: {
-        team: null,
-        discipline: null,
-        courses: []
-      }
-    }
-  }
-
-  /**
-   * Получение перевода относильно локального пути
-   * @param path
-   * @param values
-   * @return
-   */
-  t (path: string, values: any = undefined): string {
-    return this.$t(`process.teams.addMenu.${path}`, values) as string
-  }
-
-  /**
-   * Закрытие формы
-   */
-  close (): void {
-    this.courseForm.clear(true)
-  }
-}
 </script>

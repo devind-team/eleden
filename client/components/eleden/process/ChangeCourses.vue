@@ -1,7 +1,7 @@
 <template lang="pug">
   mutation-modal-form(
-    :header="t('header')"
-    :button-text="t('buttonText')"
+    :header="$t('process.teams.changeForm.header')"
+    :button-text="$t('process.teams.changeForm.buttonText')"
     :mutation="require('~/gql/eleden/mutations/process/change_courses.graphql')"
     :variables="changeCoursesVariables"
     :update="(store, result) => changeCoursesUpdate(store, result, team)"
@@ -17,22 +17,36 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Ref } from 'vue-property-decorator'
 import { DataProxy } from 'apollo-cache'
+import type { PropType } from '#app'
 import { UserType, TeamType, ChangeCoursesMutationVariables, ChangeCoursesMutationPayload } from '~/types/graphql'
 import MutationModalForm from '~/components/common/forms/MutationModalForm.vue'
 import CoursesForm, { Course, Input } from '~/components/eleden/process/CoursesForm.vue'
 
-export type ChangeCoursesData = { data: { changeCourses: ChangeCoursesMutationPayload } }
+export type ChangeCoursesDataType = { data: { changeCourses: ChangeCoursesMutationPayload } }
 
-@Component<ChangeCourses>({
+type changeCoursesUpdateType = (store: DataProxy, result: ChangeCoursesDataType, team: TeamType) => void
+
+export default defineComponent({
   components: { MutationModalForm, CoursesForm },
-  computed: {
-    changeCoursesVariables (): ChangeCoursesMutationVariables {
+  props: {
+    team: { required: true, type: Object as PropType<TeamType> },
+    changeCoursesUpdate: { required: true, type: Function as PropType<changeCoursesUpdateType> }
+  },
+  setup (props) {
+    const courseForm = ref<CoursesForm>(null)
+
+    const input = ref<Input>({
+      team: props.team,
+      discipline: null,
+      courses: []
+    })
+
+    const changeCoursesVariables = computed<ChangeCoursesMutationVariables>(() => {
       return {
-        disciplineId: this.input.discipline ? this.input.discipline.id : '',
-        teamId: this.input.team ? this.input.team.id : '',
-        courses: this.input.courses
+        disciplineId: input.value.discipline ? input.value.discipline.id : '',
+        teamId: input.value.team ? input.value.team.id : '',
+        courses: input.value.courses
           .filter((course: Course) => course.teachers.length &&
             Object.values(course.periods).some((value: boolean) => value))
           .map((course: Course) => {
@@ -43,44 +57,13 @@ export type ChangeCoursesData = { data: { changeCourses: ChangeCoursesMutationPa
             }
           })
       }
+    })
+
+    const close = (): void => {
+      courseForm.value.clear()
     }
+
+    return { courseForm, input, changeCoursesVariables, close }
   }
 })
-export default class ChangeCourses extends Vue {
-  @Prop({ required: true, type: Object }) readonly team!: TeamType
-  @Prop({ required: true, type: Function })
-  readonly changeCoursesUpdate!: (store: DataProxy, result: ChangeCoursesData, team: TeamType) => void
-
-  @Ref() readonly courseForm!: InstanceType<typeof CoursesForm>
-
-  readonly changeCoursesVariables!: ChangeCoursesMutationVariables
-  input!: Input
-
-  data () {
-    return {
-      input: {
-        team: this.team,
-        discipline: null,
-        courses: []
-      }
-    }
-  }
-
-  /**
-   * Получение перевода относильно локального пути
-   * @param path
-   * @param values
-   * @return
-   */
-  t (path: string, values: any = undefined): string {
-    return this.$t(`process.teams.changeForm.${path}`, values) as string
-  }
-
-  /**
-   * Закрытие формы
-   */
-  close (): void {
-    this.courseForm.clear()
-  }
-}
 </script>

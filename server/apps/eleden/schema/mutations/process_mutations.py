@@ -168,10 +168,13 @@ class DeleteCourseMutation(BaseMutation):
     class Input:
         course_id = graphene.ID(required=True, description='Идентификатор курса')
 
+    id = graphene.ID(required=True, description='Идентификатор курса')
+
     @staticmethod
     @permission_classes([IsAuthenticated, DeleteCourse])
     def mutate_and_get_payload(root, info: ResolveInfo, course_id: str):
-        return DeleteCourseMutation(success=Course.objects.get(pk=from_global_id(course_id)[1]).delete()[0] > 0)
+        count_delete, _ = Course.objects.filter(pk=from_global_id(course_id)[1]).delete()
+        return DeleteCourseMutation(success=count_delete > 0, id=course_id)
 
 
 class AddAttestationMutation(BaseMutation):

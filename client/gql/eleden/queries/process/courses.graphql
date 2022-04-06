@@ -8,6 +8,7 @@ query Courses(
   $teachersIds: [ID!],
   $search: String,
   $offset: Int,
+  $after: String,
   $first: Int
 ) {
   courses(
@@ -21,9 +22,17 @@ query Courses(
     workKindName_Icontains: $search,
     teachersNames_Icontains: $search,
     offset: $offset,
+    after: $after,
     first: $first
   ) {
     totalCount
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+      __typename
+    }
     edges {
       node {
         ...CourseFields

@@ -5,5 +5,7 @@ mutation DeleteCourse($courseId: ID!) {
       field
       messages
     }
+    id
+    __typename
   }
 }

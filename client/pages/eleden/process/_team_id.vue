@@ -1,7 +1,7 @@
 <template lang="pug">
-  bread-crumbs(v-if="!$apollo.queries.team.loading" :items="bc")
+  bread-crumbs(v-if="!teamLoading" :items="bc")
     v-card
-      v-card-title {{ t('name') }}
+      v-card-title {{ $t('process.team.name') }}
       v-card-text
         v-row(align="center")
           v-col
@@ -45,15 +45,15 @@
             )
         v-row(align="center")
           v-col(cols="12" sm="6")
-            v-text-field(v-stream:input="searchStream$" :label="t('search')" prepend-icon="mdi-magnify" clearable)
+            v-text-field(v-model="search" :label="$t('search')" prepend-icon="mdi-magnify" clearable)
           v-col.text-right(cols="12" sm="6")
-            | {{ t('shownOf', { count: courses && courses.length, totalCount }) }}
+            | {{ $t('shownOf', { count: courses && courses.length, totalCount }) }}
         v-row
           v-col(cols="12")
             v-data-table(
               :headers="coursesHeaders"
               :items="courses"
-              :loading="$apollo.queries.courses.loading"
+              :loading="coursesLoading"
               disable-pagination
               hide-default-footer
             )
@@ -63,7 +63,7 @@
                   :to="localePath({ name: 'eleden-process-courses-course_id', params: { course_id: item.id } })"
                 ) {{ getCourseName(item) }}
               template(#item.teachers="{ item }")
-                .font-italic(v-if="item.teachers.length === 0") {{ t('tableItem.noSet') }}
+                .font-italic(v-if="item.teachers.length === 0") {{ $t('process.team.tableItem.noSet') }}
                 template(v-else)
                   user-link(
                     v-for="(teacher, index) in item.teachers"
@@ -78,46 +78,55 @@
                     template(#activator="{ on: onTooltip }")
                       v-btn(v-on="{ ...onChange, ...onTooltip }" color="success" icon)
                         v-icon mdi-pencil
-                    span {{ t('tableItem.actions.change') }}
+                    span {{ $t('process.team.tableItem.actions.change') }}
                 apollo-mutation(
                   v-if="hasPerm('eleden.delete_course')"
                   v-slot="{ mutate, loading }"
                   :mutation="require('~/gql/eleden/mutations/process/delete_course.graphql')"
                   :variables="{ courseId: item.id }"
-                  :update="(store, result) => deleteCourseUpdate(store, result, item)"
+                  :update="(cache, result) => deleteUpdate(cache, result)"
                   tag
                 )
-                  delete-menu(v-slot="{ on: onDelete }" :item-name="t('tableItem.deleteItemName')" @confirm="mutate")
+                  delete-menu(
+                    v-slot="{ on: onDelete }"
+                    :item-name="$t('process.team.tableItem.deleteItemName')"
+                    @confirm="mutate"
+                  )
                     v-tooltip(bottom)
                       template(#activator="{ on: onTooltip }")
                         v-btn(v-on="{ ...onDelete, ...onTooltip }" :loading="loading" color="error" icon)
                           v-icon mdi-delete
-                      span {{ t('tableItem.actions.delete') }}
-              template(#footer v-if="$apollo.queries.courses.loading")
+                      span {{ $t('process.team.tableItem.actions.delete') }}
+              template(#footer v-if="coursesLoading")
                 v-progress-linear(color="primary" indeterminate)
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
-import { PropType } from 'vue'
-import { DataProxy } from 'apollo-cache'
-import { mapGetters } from 'vuex'
-import { fromEvent, Subject } from 'rxjs'
-import { debounceTime, distinctUntilChanged, filter, map, pluck, startWith, tap } from 'rxjs/operators'
 import { DataTableHeader } from 'vuetify/types'
-import { MetaInfo } from 'vue-meta'
+import type { PropType } from '#app'
 import { BreadCrumbsItem } from '~/types/devind'
 import {
   UserType,
-  TeamType,
+  TeamQuery,
   TeamQueryVariables,
+  CoursesQuery,
   CoursesQueryVariables,
   CourseType,
   DisciplineType,
-  WorkKindType,
-  DeleteCourseMutationPayload
+  WorkKindType
 } from '~/types/graphql'
 import { FilterMessages } from '~/types/filters'
+import { useAuthStore } from '~/store'
+import {
+  useI18n,
+  useFilters,
+  useQueryRelay,
+  useCommonQuery,
+  useDebounceSearch,
+  useCursorPagination
+} from '~/composables'
+import teamQuery from '~/gql/eleden/queries/team/team.graphql'
+import coursesQuery from '~/gql/eleden/queries/process/courses.graphql'
 import BreadCrumbs from '~/components/common/BreadCrumbs.vue'
 import ItemsDataFilter from '~/components/common/filters/ItemsDataFilter.vue'
 import QueryDataFilter from '~/components/common/filters/QueryDataFilter.vue'
@@ -125,15 +134,13 @@ import UsersDataFilter from '~/components/core/filters/UsersDataFilter.vue'
 import ExperimentalDialog from '~/components/common/dialogs/ExperimentalDialog.vue'
 import DeleteMenu from '~/components/common/menu/DeleteMenu.vue'
 import UserLink from '~/components/eleden/user/UserLink.vue'
-import Courses from '~/gql/eleden/queries/process/courses.graphql'
 
-type Semester = {
+type SemesterType = {
   id: number,
   value: string
 }
-type DeleteCourseData = { data: { deleteCourse: DeleteCourseMutationPayload } }
 
-@Component<TeamId>({
+export default defineComponent({
   components: {
     BreadCrumbs,
     ItemsDataFilter,
@@ -144,42 +151,56 @@ type DeleteCourseData = { data: { deleteCourse: DeleteCourseMutationPayload } }
     DeleteMenu
   },
   middleware: ['auth'],
-  computed: {
-    ...mapGetters({ hasPerm: 'auth/hasPerm' }),
-    bc (): BreadCrumbsItem[] {
-      return [
-        ...this.breadCrumbs,
-        {
-          text: this.t('process'),
-          to: this.localePath({ name: 'eleden-process' }),
-          exact: true
-        },
-        {
-          text: this.team.name,
-          to: this.localePath({
-            name: 'eleden-process-team_id',
-            params: { team_id: this.$route.params.team_id }
-          }),
-          exact: true
-        }
-      ]
-    },
-    semesters (): Semester[] {
+  props: {
+    breadCrumbs: { type: Array as PropType<BreadCrumbsItem[]>, required: true }
+  },
+  setup (props) {
+    const authStore = useAuthStore()
+    const hasPerm = toRef(authStore, 'hasPerm')
+    const { t, localePath, tc } = useI18n()
+    const { getUserFullName } = useFilters()
+    useNuxt2Meta({ title: t('process.team.process') as string })
+    const route = useRoute()
+
+    const semesterFilter = ref<SemesterType | null>(null)
+    const disciplinesFilter = ref<DisciplineType[]>([])
+    const workKindsFilter = ref<WorkKindType[]>([])
+    const teachersFilter = ref<UserType[]>([])
+
+    const bc = computed<BreadCrumbsItem[]>(() => ([
+      ...props.breadCrumbs,
+      {
+        text: t('process.team.process') as string,
+        to: localePath({ name: 'eleden-process' }),
+        exact: true
+      },
+      {
+        text: team.value.name,
+        to: localePath({
+          name: 'eleden-process-team_id',
+          params: { team_id: route.params.team_id }
+        }),
+        exact: true
+      }
+    ]))
+
+    const semesters = computed<SemesterType[]>(() => {
       return Array.from({ length: 12 })
-        .map((_, i) => ({ id: i + 1, value: this.t('filters.semesterFilter.semester', { number: i + 1 }) }))
-    },
-    coursesHeaders (): DataTableHeader[] {
+        .map((_, i) => ({ id: i + 1, value: t('process.team.filters.semesterFilter.semester', { number: i + 1 }) }))
+    })
+
+    const coursesHeaders = computed<DataTableHeader[]>(() => {
       const headers: DataTableHeader[] = [
-        { text: this.t('tableHeaders.semester'), value: 'semester' },
-        { text: this.t('tableHeaders.name'), value: 'name' },
+        { text: t('process.team.tableHeaders.semester') as string, value: 'semester' },
+        { text: t('process.team.tableHeaders.name') as string, value: 'name' },
         {
-          text: this.t('tableHeaders.teachers'),
+          text: t('process.team.tableHeaders.teachers') as string,
           value: 'teachers',
           sort: (t1: UserType[], t2: UserType[]): number => {
             if (t1.length === t2.length) {
               for (let i = 0; i < t1.length; i++) {
-                const t1FullName = this.$getUserFullName(t1[i])
-                const t2FullName = this.$getUserFullName(t2[i])
+                const t1FullName = getUserFullName(t1[i])
+                const t2FullName = getUserFullName(t2[i])
                 const comparisonResult = t1FullName.localeCompare(t2FullName)
                 if (comparisonResult !== 0) {
                   return comparisonResult
@@ -191,175 +212,85 @@ type DeleteCourseData = { data: { deleteCourse: DeleteCourseMutationPayload } }
           }
         }
       ]
-      if (this.hasPerm(['eleden.change_course', 'eleden.delete_course'], true)) {
-        headers.push({ text: this.t('tableHeaders.actions'), value: 'actions', sortable: false, align: 'center' })
+      if (hasPerm.value(['eleden.change_course', 'eleden.delete_course'], true)) {
+        headers.push({
+          text: t('process.team.tableHeaders.actions') as string,
+          value: 'actions',
+          sortable: false,
+          align: 'center'
+        })
       }
       return headers
-    },
-    coursesVariables (): CoursesQueryVariables {
+    })
+
+    const getFilterMessages = (filterName: string, multiple: boolean = false): FilterMessages => {
       return {
-        first: this.pageSize,
+        title: t(`process.team.filters.${filterName}.title`) as string,
+        noFiltrationMessage: t(`process.team.filters.${filterName}.noFiltrationMessage`) as string,
+        multipleMessageFunction: multiple
+          ? (name, restLength) =>
+              tc(`process.team.filters.${filterName}.multipleMessage`, restLength, { name, restLength })
+          : undefined
+      }
+    }
+
+    const getCourseName = (course: CourseType): string => {
+      return `${course.eduHours.discipline!.name}, ${course.eduHours.workKind!.name}`
+    }
+
+    const { data: team, loading: teamLoading } = useCommonQuery<TeamQuery, TeamQueryVariables>({
+      document: teamQuery,
+      variables: () => ({ teamId: route.params.team_id })
+    })
+
+    const { search, debounceSearch } = useDebounceSearch()
+    const {
+      data: courses,
+      loading: coursesLoading,
+      pagination: { totalCount },
+      deleteUpdate
+    } = useQueryRelay<CoursesQuery, CoursesQueryVariables>({
+      document: coursesQuery,
+      variables: () => ({
         offset: 0,
-        teamId: this.$route.params.team_id,
-        semester: this.semesterFilter ? this.semesterFilter.id : undefined,
-        disciplineIds: this.disciplinesFilter.length
-          ? this.disciplinesFilter.map((discipline: DisciplineType) => discipline.id)
+        teamId: route.params.team_id,
+        semester: semesterFilter.value ? semesterFilter.value.id : undefined,
+        disciplineIds: disciplinesFilter.value.length
+          ? disciplinesFilter.value.map((discipline: DisciplineType) => discipline.id)
           : undefined,
-        workKindIds: this.workKindsFilter.length
-          ? this.workKindsFilter.map((workKind: WorkKindType) => workKind.id)
+        workKindIds: workKindsFilter.value.length
+          ? workKindsFilter.value.map((workKind: WorkKindType) => workKind.id)
           : undefined,
-        teachersIds: this.teachersFilter.length
-          ? this.teachersFilter.map((teacher: UserType) => teacher.id)
+        teachersIds: teachersFilter.value.length
+          ? teachersFilter.value.map((teacher: UserType) => teacher.id)
           : undefined,
-        search: this.search$ || ''
-      }
-    }
-  },
-  apollo: {
-    team: {
-      query: require('~/gql/eleden/queries/team/team.graphql'),
-      variables (): TeamQueryVariables {
-        return {
-          teamId: this.$route.params.team_id
-        }
-      }
-    },
-    courses: {
-      query: Courses,
-      variables (): CoursesQueryVariables {
-        return this.coursesVariables
-      },
-      update ({ courses }): CourseType[] {
-        this.totalCount = courses.totalCount
-        this.page = Math.ceil(courses.edges.length / this.pageSize)
-        return courses.edges.map((e: { node?: CourseType }) => e.node)
-      }
-    }
-  },
-  domStreams: ['searchStream$'],
-  subscriptions () {
-    const search$ = this.searchStream$.pipe(
-      pluck('event', 'msg'),
-      debounceTime(700),
-      distinctUntilChanged(),
-      startWith('')
-    )
-    const al$ = fromEvent(document, 'scroll').pipe(
-      pluck('target', 'documentElement'),
-      debounceTime(100),
-      map((target: any) => ({ top: target.scrollTop + window.innerHeight, height: target.offsetHeight })),
-      filter(({ top, height }: { top: number, height: number }) => (
-        top + 200 >= height &&
-        !this.$apollo.queries.courses.loading &&
-        this.page * this.pageSize < this.totalCount)
-      ),
-      tap(async () => {
-        ++this.page
-        await this.fetchMoreCourses()
+        search: debounceSearch.value || ''
       })
-    )
-    return { search$, al$ }
-  },
-  head (): MetaInfo {
-    return { title: this.t('process') } as MetaInfo
+    },
+    {
+      pagination: useCursorPagination({ pageSize: 20 }),
+      fetchScroll: typeof document === 'undefined' ? null : document
+    })
+
+    return {
+      hasPerm,
+      semesterFilter,
+      disciplinesFilter,
+      workKindsFilter,
+      teachersFilter,
+      bc,
+      semesters,
+      coursesHeaders,
+      team,
+      teamLoading,
+      courses,
+      coursesLoading,
+      search,
+      totalCount,
+      deleteUpdate,
+      getFilterMessages,
+      getCourseName
+    }
   }
 })
-export default class TeamId extends Vue {
-  @Prop({ type: Array as PropType<BreadCrumbsItem[]>, required: true }) readonly breadCrumbs!: BreadCrumbsItem[]
-
-  readonly hasPerm!: (permissions: string | string[], or?: boolean) => boolean
-  readonly bc!: BreadCrumbsItem[]
-  readonly semesters!: Semester[]
-  readonly coursesHeaders!: DataTableHeader[]
-  readonly coursesVariables!: CoursesQueryVariables
-  readonly team!: TeamType
-  readonly courses!: CourseType[]
-
-  page: number = 1
-  pageSize: number = 20
-  totalCount: number = 0
-  semesterFilter: Semester | null = null
-  disciplinesFilter: DisciplineType[] = []
-  workKindsFilter: WorkKindType[] = []
-  teachersFilter: UserType[] = []
-  search$: string = ''
-  searchStream$: Subject<any> = new Subject()
-
-  /**
-   * Получение перевода относильно локального пути
-   * @param path
-   * @param values
-   * @return
-   */
-  t (path: string, values: any = undefined): string {
-    return this.$t(`process.team.${path}`, values) as string
-  }
-
-  /**
-   * Получение сообщений для фильтра
-   * @param filterName
-   * @param multiple
-   * @return
-   */
-  getFilterMessages (filterName: string, multiple: boolean = false): FilterMessages {
-    return {
-      title: this.t(`filters.${filterName}.title`),
-      noFiltrationMessage: this.t(`filters.${filterName}.noFiltrationMessage`),
-      multipleMessageFunction: multiple
-        ? (name, restLength) =>
-            this.$tc(`process.team.filters.${filterName}.multipleMessage`, restLength, { name, restLength })
-        : undefined
-    }
-  }
-
-  /**
-   * Получение имени курса
-   * @param course
-   * @return
-   */
-  getCourseName (course: CourseType): string {
-    return `${course.eduHours.discipline!.name}, ${course.eduHours.workKind!.name}`
-  }
-
-  /**
-   * Получение дополнительных курсов
-   */
-  async fetchMoreCourses (): Promise<void> {
-    await this.$apollo.queries.courses.fetchMore({
-      variables: {
-        first: this.pageSize,
-        offset: (this.page - 1) * this.pageSize,
-        search: this.search$ || ''
-      },
-      updateQuery: (previousResult: any, { fetchMoreResult: { courses } }: any) => {
-        return {
-          courses: {
-            __typename: previousResult.courses.__typename,
-            totalCount: courses.totalCount,
-            edges: [...previousResult.courses.edges, ...courses.edges]
-          }
-        }
-      }
-    })
-  }
-
-  /**
-   * Обновление курсов после удаления курса
-   * @param store
-   * @param success
-   * @param course
-   */
-  deleteCourseUpdate (
-    store: DataProxy,
-    { data: { deleteCourse: { success } } }: DeleteCourseData,
-    course: CourseType
-  ): void {
-    if (success) {
-      const data: any = store.readQuery({ query: Courses, variables: this.coursesVariables })
-      data.courses.totalCount -= 1
-      data.courses.edges = data.courses.edges.filter(({ node }: { node: CourseType }) => node.id !== course.id)
-      store.writeQuery({ query: Courses, variables: this.coursesVariables, data })
-    }
-  }
-}
 </script>

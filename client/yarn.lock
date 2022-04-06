@@ -182,14 +182,14 @@
     browserslist "^4.17.5"
     semver "^6.3.0"
 
-"@babel/helper-create-class-features-plugin@^7.16.10", "@babel/helper-create-class-features-plugin@^7.16.7", "@babel/helper-create-class-features-plugin@^7.17.6":
-  version "7.17.6"
-  resolved "https://registry.npmjs.org/@babel/helper-create-class-features-plugin/-/helper-create-class-features-plugin-7.17.6.tgz"
+"@babel/helper-create-class-features-plugin@^7.16.10", "@babel/helper-create-class-features-plugin@^7.16.7", "@babel/helper-create-class-features-plugin@^7.17.6", "@babel/helper-create-class-features-plugin@^7.17.9":
+  version "7.17.9"
+  resolved "https://registry.yarnpkg.com/@babel/helper-create-class-features-plugin/-/helper-create-class-features-plugin-7.17.9.tgz#71835d7fb9f38bd9f1378e40a4c0902fdc2ea49d"
   dependencies:
     "@babel/helper-annotate-as-pure" "^7.16.7"
     "@babel/helper-environment-visitor" "^7.16.7"
-    "@babel/helper-function-name" "^7.16.7"
-    "@babel/helper-member-expression-to-functions" "^7.16.7"
+    "@babel/helper-function-name" "^7.17.9"
+    "@babel/helper-member-expression-to-functions" "^7.17.7"
     "@babel/helper-optimise-call-expression" "^7.16.7"
     "@babel/helper-replace-supers" "^7.16.7"
     "@babel/helper-split-export-declaration" "^7.16.7"
@@ -234,6 +234,13 @@
     "@babel/template" "^7.16.7"
     "@babel/types" "^7.16.7"
 
+"@babel/helper-function-name@^7.17.9":
+  version "7.17.9"
+  resolved "https://registry.yarnpkg.com/@babel/helper-function-name/-/helper-function-name-7.17.9.tgz#136fcd54bc1da82fcb47565cf16fd8e444b1ff12"
+  dependencies:
+    "@babel/template" "^7.16.7"
+    "@babel/types" "^7.17.0"
+
 "@babel/helper-get-function-arity@^7.16.7":
   version "7.16.7"
   resolved "https://registry.npmjs.org/@babel/helper-get-function-arity/-/helper-get-function-arity-7.16.7.tgz"
@@ -246,7 +253,7 @@
   dependencies:
     "@babel/types" "^7.16.7"
 
-"@babel/helper-member-expression-to-functions@^7.16.7":
+"@babel/helper-member-expression-to-functions@^7.16.7", "@babel/helper-member-expression-to-functions@^7.17.7":
   version "7.17.7"
   resolved "https://registry.npmjs.org/@babel/helper-member-expression-to-functions/-/helper-member-expression-to-functions-7.17.7.tgz"
   dependencies:
@@ -395,13 +402,14 @@
     "@babel/helper-plugin-utils" "^7.16.7"
     "@babel/plugin-syntax-class-static-block" "^7.14.5"
 
-"@babel/plugin-proposal-decorators@^7.16.0", "@babel/plugin-proposal-decorators@^7.16.7", "@babel/plugin-proposal-decorators@^7.17.2":
-  version "7.17.8"
-  resolved "https://registry.npmjs.org/@babel/plugin-proposal-decorators/-/plugin-proposal-decorators-7.17.8.tgz"
+"@babel/plugin-proposal-decorators@^7.16.0", "@babel/plugin-proposal-decorators@^7.16.7", "@babel/plugin-proposal-decorators@^7.17.9":
+  version "7.17.9"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-decorators/-/plugin-proposal-decorators-7.17.9.tgz#67a1653be9c77ce5b6c318aa90c8287b87831619"
   dependencies:
-    "@babel/helper-create-class-features-plugin" "^7.17.6"
+    "@babel/helper-create-class-features-plugin" "^7.17.9"
     "@babel/helper-plugin-utils" "^7.16.7"
     "@babel/helper-replace-supers" "^7.16.7"
+    "@babel/helper-split-export-declaration" "^7.16.7"
     "@babel/plugin-syntax-decorators" "^7.17.0"
     charcodes "^0.2.0"
 
@@ -1768,9 +1776,9 @@
     semver "^7.3.5"
     tar "^6.1.11"
 
-"@mdi/font@^6.5.95":
-  version "6.6.95"
-  resolved "https://registry.npmjs.org/@mdi/font/-/font-6.6.95.tgz"
+"@mdi/font@^6.6.96":
+  version "6.6.96"
+  resolved "https://registry.yarnpkg.com/@mdi/font/-/font-6.6.96.tgz#4eee6faee5f44d3ec401d354fb95775cd6699575"
 
 "@microsoft/fetch-event-source@2.0.1":
   version "2.0.1"
@@ -3722,15 +3730,7 @@
   version "3.2.31"
   resolved "https://registry.npmjs.org/@vue/shared/-/shared-3.2.31.tgz"
 
-"@vueuse/core@8.2.3":
-  version "8.2.3"
-  resolved "https://registry.npmjs.org/@vueuse/core/-/core-8.2.3.tgz"
-  dependencies:
-    "@vueuse/metadata" "8.2.3"
-    "@vueuse/shared" "8.2.3"
-    vue-demi "*"
-
-"@vueuse/core@^8.2.4":
+"@vueuse/core@8.2.4", "@vueuse/core@^8.2.4":
   version "8.2.4"
   resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-8.2.4.tgz#04159d28267e56fd27488de116e465d0b12b48ac"
   dependencies:
@@ -3742,27 +3742,17 @@
   version "0.7.5"
   resolved "https://registry.npmjs.org/@vueuse/head/-/head-0.7.5.tgz"
 
-"@vueuse/integrations@^8.1.2":
-  version "8.2.3"
-  resolved "https://registry.npmjs.org/@vueuse/integrations/-/integrations-8.2.3.tgz"
+"@vueuse/integrations@^8.2.4":
+  version "8.2.4"
+  resolved "https://registry.yarnpkg.com/@vueuse/integrations/-/integrations-8.2.4.tgz#2e39250ae4718be7526a77292ed611760922119d"
   dependencies:
-    "@vueuse/core" "8.2.3"
-    "@vueuse/shared" "8.2.3"
+    "@vueuse/core" "8.2.4"
+    "@vueuse/shared" "8.2.4"
     vue-demi "*"
-
-"@vueuse/metadata@8.2.3":
-  version "8.2.3"
-  resolved "https://registry.npmjs.org/@vueuse/metadata/-/metadata-8.2.3.tgz"
 
 "@vueuse/metadata@8.2.4":
   version "8.2.4"
   resolved "https://registry.yarnpkg.com/@vueuse/metadata/-/metadata-8.2.4.tgz#a880aa1ba1e30850983a85de8e1a6295d798250e"
-
-"@vueuse/shared@8.2.3":
-  version "8.2.3"
-  resolved "https://registry.npmjs.org/@vueuse/shared/-/shared-8.2.3.tgz"
-  dependencies:
-    vue-demi "*"
 
 "@vueuse/shared@8.2.4":
   version "8.2.4"

@@ -16,10 +16,10 @@
           .flex.flex-column
             v-autocomplete(
               v-model="newPortfolioFiles"
-              v-stream:update:search-input="searchStreamPortfolioFiles$"
-              :label="t('newPortfolioFiles')"
+              :search-input.sync="search"
+              :label="$t('process.course.register.changeAttestations.changeAttachments.newPortfolioFiles')"
               :items="portfolioFileItems"
-              :loading="$apollo.queries.portfolioFiles.loading"
+              :loading="portfolioFilesLoading"
               item-value="id"
               multiple
               hide-selected
@@ -38,7 +38,7 @@
               template(#item="{ item }") {{ getPortfolioFileText(item) }}
             v-file-input.mt-2(
               v-model="newFiles.files"
-              :label="t('newFiles')"
+              :label="$t('process.course.register.changeAttestations.changeAttachments.newFiles')"
               multiple
               small-chips
               hide-selected
@@ -48,12 +48,12 @@
             template(v-if="newFiles.files.length")
               validation-provider.mt-2(
                 v-slot="{ errors, valid }"
-                :name="t('describe')"
+                :name="$t('process.course.register.changeAttestations.changeAttachments.describe')"
                 rules="required|min:2|max:512"
               )
                 v-textarea(
                   v-model="newFiles.describe"
-                  :label="t('describe')"
+                  :label="$t('process.course.register.changeAttestations.changeAttachments.describe')"
                   :error-messages="errors"
                   :success="valid"
                   rows="3"
@@ -63,14 +63,14 @@
                 )
               validation-provider.mt-2(
                 v-slot="{ errors, valid }"
-                :name="t('fileKind')"
+                :name="$t('process.course.register.changeAttestations.changeAttachments.fileKind')"
                 rules="required"
               )
                 v-autocomplete(
                   v-model="newFiles.kind"
                   :items="fileKinds"
-                  :label="t('fileKind')"
-                  :loading="$apollo.queries.fileKinds.loading"
+                  :label="$t('process.course.register.changeAttestations.changeAttachments.fileKind')"
+                  :loading="fileKindsLoading"
                   :error-messages="errors"
                   :success="valid"
                   item-text="name"
@@ -79,13 +79,19 @@
                   return-object
                 )
             .w-full.d-flex.justify-center
-              v-switch(v-if="canConfirm" v-model="confirm" :label="t('confirm')" hide-details success)
+              v-switch(
+                v-if="canConfirm"
+                v-model="confirm"
+                :label="$t('process.course.register.changeAttestations.changeAttachments.confirm')"
+                hide-details
+                success
+              )
         v-list-item-action.justify-center
           v-tooltip(right)
             template(#activator="{ on }")
               v-btn(v-on="on" icon @click="cancelEdit")
                 v-icon mdi-minus
-            span {{ t('cancel') }}
+            span {{ $t('process.course.register.changeAttestations.changeAttachments.cancel') }}
           v-tooltip(right :disabled="invalid")
             template(#activator="{ on }")
               v-btn(
@@ -97,11 +103,14 @@
                 @click="$emit('save', editAttachments, newPortfolioFiles, newFiles, confirm)"
               )
                 v-icon mdi-check-circle
-            span {{ t('save') }}
+            span {{ $t('process.course.register.changeAttestations.changeAttachments.save') }}
   v-list(v-else)
     v-list-item(dense)
       v-list-item-content
-        v-list-item-title {{ attachments.length ? t('attachments') : t('zeroAttachments') }}
+        v-list-item-title
+          | {{ attachments.length
+          | ? $t('process.course.register.changeAttestations.changeAttachments.attachments')
+          | : $t('process.course.register.changeAttestations.changeAttachments.zeroAttachments') }}
         v-list-item-action-text.overflow-x-auto
           v-tooltip(v-for="(attachment, index) in attachments" :key="attachment.id" bottom)
             template(#activator="{ on }")
@@ -111,28 +120,31 @@
                 :class="{ 'mr-1': index !== attachments.length - 1 }"
                 target="_blank"
               ) {{ getPortfolioFileText(attachment.portfolioFile) }}
-            span {{ t('open') }}
+            span {{ $t('process.course.register.changeAttestations.changeAttachments.open') }}
       v-list-item-action(v-if="canEdit")
         v-tooltip(right)
           template(#activator="{ on }")
             v-btn(v-on="on" color="success" icon @click="edit = true")
               v-icon mdi-pencil
-          span {{ t('change') }}
+          span {{ $t('process.course.register.changeAttestations.changeAttachments.change') }}
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
-import { Subject } from 'rxjs'
-import { debounceTime, filter, pluck, startWith } from 'rxjs/operators'
+import type { PropType } from '#app'
 import {
   UserType,
   CourseType,
   AttachmentType,
   PortfolioFileType,
   FileKindType,
+  PortfolioFilesQuery,
   PortfolioFilesQueryVariables,
-  PortfolioFileTypeEdge
+  FileKindsQuery,
+  FileKindsQueryVariables
 } from '~/types/graphql'
+import { useI18n, useQueryRelay, useCommonQuery, useDebounceSearch } from '~/composables'
+import portfolioFilesQuery from '~/gql/eleden/queries/profile/portfolio_files.graphql'
+import fileKindsQuery from '~/gql/eleden/queries/profile/file_kinds.graphql'
 
 export type AttachmentFiles = {
   files: File[],
@@ -140,137 +152,112 @@ export type AttachmentFiles = {
   kind: FileKindType | null
 }
 
-@Component<ChangeAttachments>({
-  computed: {
-    portfolioFileItems () {
-      return this.portfolioFiles
-        ? [
-            ...this.portfolioFiles.filter((portfolioFile: PortfolioFileType) =>
-              !this.course.attachments!.find((attachment: AttachmentType) =>
-                attachment.portfolioFile.id === portfolioFile.id) &&
-              !this.newPortfolioFiles.find((newPortfolioFile: PortfolioFileType) =>
-                newPortfolioFile.id === portfolioFile.id)),
-            ...this.newPortfolioFiles
-          ]
-        : []
-    }
+export default defineComponent({
+  props: {
+    student: { type: Object as PropType<UserType>, required: true },
+    course: { type: Object as PropType<CourseType>, required: true },
+    attachments: { type: Array as PropType<AttachmentType[]>, required: true },
+    canEdit: { type: Boolean, required: true },
+    canConfirm: { type: Boolean, required: true },
+    saveLoading: { type: Boolean, required: true }
   },
-  domStreams: ['searchStreamCompetences$'],
-  subscriptions () {
-    const searchPortfolioFiles$ = this.searchStreamPortfolioFiles$.pipe(
-      pluck('event', 'msg'),
-      filter((e: string | null) => e !== null),
-      debounceTime(700),
-      startWith('')
-    )
-    return { searchPortfolioFiles$ }
-  },
-  apollo: {
-    portfolioFiles: {
-      query: require('~/gql/eleden/queries/profile/portfolio_files.graphql'),
-      variables (): PortfolioFilesQueryVariables {
-        return {
-          usersId: [this.student.id],
-          disciplineId: this.course.eduHours.discipline!.id,
-          first: 5,
-          search: this.searchPortfolioFiles$
-        }
-      },
-      update ({ portfolioFiles }) {
-        return portfolioFiles.edges.map((e: PortfolioFileTypeEdge) => e.node)
-      }
-    },
-    fileKinds: require('~/gql/eleden/queries/profile/file_kinds.graphql')
-  }
-})
-export default class ChangeAttachments extends Vue {
-  @Prop({ type: Object, required: true }) readonly student!: UserType
-  @Prop({ type: Object, required: true }) readonly course!: CourseType
-  @Prop({ type: Array, required: true }) readonly attachments!: AttachmentType[]
-  @Prop({ type: Boolean, required: true }) readonly canEdit!: boolean
-  @Prop({ type: Boolean, required: true }) readonly canConfirm!: boolean
-  @Prop({ type: Boolean, required: true }) readonly saveLoading!: boolean
+  setup (props) {
+    const { t } = useI18n()
 
-  portfolioFileItems!: PortfolioFileType[]
-  portfolioFiles!: PortfolioFileType[]
-  fileKinds!: FileKindType[]
-  editAttachments!: AttachmentType[]
-
-  edit: boolean = false
-  confirm: boolean = false
-  searchStreamPortfolioFiles$: Subject<any> = new Subject<any>()
-  searchPortfolioFiles$: string = ''
-  newPortfolioFiles: PortfolioFileType[] = []
-  newFiles: AttachmentFiles = {
-    files: [],
-    describe: '',
-    kind: null
-  }
-
-  data () {
-    return {
-      editAttachments: this.attachments
-    }
-  }
-
-  /**
-   * Получение перевода относильно локального пути
-   * @param path
-   * @param values
-   * @return
-   */
-  t (path: string, values: any = undefined): string {
-    return this.$t(`process.course.register.changeAttestations.changeAttachments.${path}`, values) as string
-  }
-
-  /**
-   * Удаление прикрепленного файла
-   * @param attachment
-   */
-  deleteAttachment (attachment: AttachmentType): void {
-    this.editAttachments = this.editAttachments
-      .filter((existAttachment: AttachmentType) => existAttachment.id !== attachment.id)
-  }
-
-  /**
-   * Удаление файла портфолио из списка на добавление
-   * @param competence
-   */
-  deletePortfolioFile (portfolioFile: PortfolioFileType) {
-    this.newPortfolioFiles = this.newPortfolioFiles
-      .filter((newPortfolioFile: PortfolioFileType) => portfolioFile.id !== newPortfolioFile.id)
-  }
-
-  /**
-   * Получение текста файла портфолио
-   * @param portfolioFile
-   * @return
-   */
-  getPortfolioFileText (portfolioFile: PortfolioFileType): string {
-    return `${portfolioFile.describe} (${portfolioFile.kind?.name}, ` +
-      `${portfolioFile.user ? this.t('confirmed') : this.t('notConfirmed')})`
-  }
-
-  /**
-   * Отмена редактирования
-   */
-  cancelEdit (): void {
-    this.edit = false
-    this.editAttachments = this.attachments
-    this.newPortfolioFiles = []
-    this.newFiles = {
+    const editAttachments = ref<AttachmentType[]>(props.attachments)
+    const edit = ref<boolean>(false)
+    const confirm = ref<boolean>(false)
+    const newPortfolioFiles = ref<PortfolioFileType[]>([])
+    const newFiles = ref<AttachmentFiles>({
       files: [],
       describe: '',
       kind: null
-    }
-    this.confirm = false
-  }
+    })
 
-  /**
-   * Обновление файлов портфолио с сервера
-   */
-  refetchPortfolioFiles () {
-    this.$apollo.queries.portfolioFiles.refetch()
+    const portfolioFileItems = computed<PortfolioFileType[]>(() => {
+      return portfolioFiles.value
+        ? [
+            ...portfolioFiles.value.filter((portfolioFile: PortfolioFileType) =>
+              !props.course.attachments!.find((attachment: AttachmentType) =>
+                attachment.portfolioFile.id === portfolioFile.id) &&
+              !newPortfolioFiles.value.find((newPortfolioFile: PortfolioFileType) =>
+                newPortfolioFile.id === portfolioFile.id)),
+            ...newPortfolioFiles.value
+          ]
+        : []
+    })
+
+    const { search, debounceSearch } = useDebounceSearch()
+    const {
+      data: portfolioFiles,
+      loading: portfolioFilesLoading,
+      refetch
+    } = useQueryRelay<PortfolioFilesQuery, PortfolioFilesQueryVariables>({
+      document: portfolioFilesQuery,
+      variables: () => ({
+        usersId: [props.student.id],
+        disciplineId: props.course.eduHours.discipline!.id,
+        first: 5,
+        search: debounceSearch.value
+      })
+    })
+
+    const {
+      data: fileKinds,
+      loading: fileKindsLoading
+    } = useCommonQuery<FileKindsQuery, FileKindsQueryVariables>({ document: fileKindsQuery })
+
+    const deleteAttachment = (attachment: AttachmentType): void => {
+      editAttachments.value = editAttachments.value
+        .filter((existAttachment: AttachmentType) => existAttachment.id !== attachment.id)
+    }
+
+    const deletePortfolioFile = (portfolioFile: PortfolioFileType) => {
+      newPortfolioFiles.value = newPortfolioFiles.value
+        .filter((newPortfolioFile: PortfolioFileType) => portfolioFile.id !== newPortfolioFile.id)
+    }
+
+    const getPortfolioFileText = (portfolioFile: PortfolioFileType): string => {
+      return `${portfolioFile.describe} (${portfolioFile.kind?.name}, ` +
+      `${portfolioFile.user
+        ? t('process.course.register.changeAttestations.changeAttachments.confirmed')
+        : t('process.course.register.changeAttestations.changeAttachments.notConfirmed')})`
+    }
+
+    const cancelEdit = (): void => {
+      edit.value = false
+      editAttachments.value = props.attachments
+      newPortfolioFiles.value = []
+      newFiles.value = {
+        files: [],
+        describe: '',
+        kind: null
+      }
+      confirm.value = false
+    }
+
+    const refetchPortfolioFiles = () => {
+      refetch()
+    }
+
+    return {
+      editAttachments,
+      edit,
+      confirm,
+      newPortfolioFiles,
+      newFiles,
+      portfolioFileItems,
+      portfolioFiles,
+      portfolioFilesLoading,
+      search,
+      fileKinds,
+      fileKindsLoading,
+      deleteAttachment,
+      deletePortfolioFile,
+      getPortfolioFileText,
+      cancelEdit,
+      refetchPortfolioFiles
+    }
   }
-}
+})
 </script>

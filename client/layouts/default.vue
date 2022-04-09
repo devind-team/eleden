@@ -12,13 +12,13 @@ import type { Ref, ComputedRef } from '#app'
 import { defineComponent, provide, ref, toRefs, watchEffect } from '#app'
 import { useAuthStore } from '~/store'
 import { useCursorPagination, useQueryRelay, useVuetify } from '~/composables'
+import { updateQueryNotifications } from '~/services/notifications'
 import { NotificationsQuery, NotificationsQueryVariables, NotificationType, UserType } from '~/types/graphql'
 import notificationsSubscription from '~/gql/notifications/subscriptions/notifications.graphql'
 import notificationsQuery from '~/gql/notifications/queries/notifications.graphql'
 import Navigation from '~/components/global/Navigation.vue'
 import AppBar from '~/components/global/AppBar.vue'
 import FooterComponent from '~/components/global/FooterComponent.vue'
-import { updateQueryNotifications } from '~/services/notifications'
 
 export default defineComponent({
   components: { AppBar, Navigation, FooterComponent },
@@ -53,7 +53,7 @@ export default defineComponent({
       }
     })
 
-    watchEffect(() => { vuetify.theme.dark = isDark })
+    watchEffect(() => { vuetify.theme.dark = isDark.value })
 
     const setFooter = (state: boolean = true): void => {
       footer.value = state

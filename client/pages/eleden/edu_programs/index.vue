@@ -46,9 +46,9 @@ import type { PropType } from '#app'
 import { defineComponent, computed, useNuxt2Meta, toRef } from '#app'
 import { DataTableHeader } from 'vuetify/types'
 import { BreadCrumbsItem } from '~/types/devind'
-import { EduProgramsQuery, EduProgramsQueryVariables } from '~/types/graphql'
+import { EduProgramsQuery, EduProgramsQueryVariables, EduProgramType } from '~/types/graphql'
 import { useAuthStore } from '~/store'
-import { useDebounceSearch, useI18n, useQueryRelay, useCursorPagination } from '~/composables'
+import { useDebounceSearch, useI18n, useQueryRelay, useCursorPagination, useApolloHelpers } from '~/composables'
 import eduProgramsQuery from '~/gql/eleden/queries/education/edu_programs.graphql'
 import BreadCrumbs from '~/components/common/BreadCrumbs.vue'
 import AddEduPrograms from '~/components/eleden/edu_programs/AddEduPrograms.vue'
@@ -65,6 +65,9 @@ export default defineComponent({
     const hasPerm = toRef(authStore, 'hasPerm')
     const { t, localePath } = useI18n()
     useNuxt2Meta({ title: t('eduPrograms.name') as string })
+    const route = useRoute()
+    const router = useRouter()
+    const { defaultClient } = useApolloHelpers()
 
     const headers = computed<DataTableHeader[]>(() => ([
       { text: t('eduPrograms.tableHeaders.directionCode') as string, value: 'direction.code' },
@@ -88,6 +91,7 @@ export default defineComponent({
       data: eduPrograms,
       loading,
       pagination: { totalCount, count },
+      update,
       addUpdate
     } = useQueryRelay<EduProgramsQuery, EduProgramsQueryVariables>({
       document: eduProgramsQuery,
@@ -98,6 +102,21 @@ export default defineComponent({
       fetchScroll: typeof document === 'undefined' ? null : document
     }
     )
+
+    onMounted(() => {
+      if (route.query.eduProgramId) {
+        update(
+          defaultClient.cache,
+          { data: { deleteEduProgram: { id: route.query.eduProgramId } } },
+          (cacheData, { data: { deleteEduProgram: { id: eduProgramId } } }) => {
+            cacheData.eduPrograms =
+              cacheData.eduPrograms.edges.map(e => e.node).filter((e: EduProgramType) => e.id !== eduProgramId)
+            return cacheData
+          }
+        )
+        router.push(localePath({ name: 'eleden-edu_programs' }))
+      }
+    })
 
     return {
       hasPerm,

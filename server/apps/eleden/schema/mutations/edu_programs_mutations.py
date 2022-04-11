@@ -239,12 +239,14 @@ class DeleteEduProgramMutation(BaseMutation):
     class Input:
         edu_program_id = graphene.ID(required=True, description='Идентификатор образовательной программы')
 
+    id = graphene.ID(required=True, description='Идентификатор образовательной программы')
+
     @staticmethod
     @permission_classes([IsAuthenticated, DeleteEduProgram])
     def mutate_and_get_payload(root, info: ResolveInfo, edu_program_id):
         edu_program_id = from_global_id(edu_program_id)[1]
         count_delete, _ = EduProgram.objects.filter(pk=edu_program_id).delete()
-        return DeleteEduProgramMutation(success=count_delete > 0)
+        return DeleteEduProgramMutation(success=count_delete > 0, id=edu_program_id)
 
 
 class AddDisciplineMutation(BaseMutation):

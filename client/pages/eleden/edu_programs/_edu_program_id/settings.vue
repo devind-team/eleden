@@ -18,7 +18,7 @@
         :mutation="require('~/gql/eleden/mutations/edu_programs/delete_edu_program.graphql')"
         :variables="{ eduProgramId: eduProgram.id }"
         @error="setError"
-        @done="redirectToEduPrograms"
+        @done="DeleteEduProgramDone"
       )
         delete-menu(v-slot="{ on }" :item-name="$t('eduPrograms.settings.deleteItemName')" @confirm="mutate")
           v-btn(v-on="on" color="error") {{ $t('eduPrograms.settings.deleteButtonText') }}
@@ -29,7 +29,12 @@
 <script lang="ts">
 import type { PropType } from '#app'
 import { defineComponent, ref, computed, useRouter, toRef } from '#app'
-import { EduProgramType, ChangeEduProgramMutationPayload, ChangeEduProgramMutationVariables } from '~/types/graphql'
+import {
+  EduProgramType,
+  ChangeEduProgramMutationPayload,
+  ChangeEduProgramMutationVariables,
+  DeleteEduProgramMutationPayload
+} from '~/types/graphql'
 import { useAuthStore } from '~/store'
 import { useFilters, useI18n } from '~/composables'
 import MutationForm from '~/components/common/forms/MutationForm.vue'
@@ -39,6 +44,10 @@ import { getInputEduProgram } from '~/services/eleden'
 
 type ChangeEduProgramDataType = {
   data: { changeEduProgram: ChangeEduProgramMutationPayload }
+}
+
+type DeleteEduProgramDataType = {
+  data: { deleteEduProgram: DeleteEduProgramMutationPayload }
 }
 
 export default defineComponent({
@@ -84,13 +93,15 @@ export default defineComponent({
       }
     }
 
-    const redirectToEduPrograms = (): void => {
-      router.push(
-        localePath({ name: 'eleden-edu_programs' })
-      )
+    const DeleteEduProgramDone = ({ data: { deleteEduProgram: { success, id } } }: DeleteEduProgramDataType): void => {
+      if (success) {
+        router.push(
+          localePath({ name: 'eleden-edu_programs', query: { eduProgramId: id } })
+        )
+      }
     }
 
-    return { hasPerm, dateTimeHM, inputEduProgram, changeVariables, changeEduProgramDone, redirectToEduPrograms }
+    return { hasPerm, dateTimeHM, inputEduProgram, changeVariables, changeEduProgramDone, DeleteEduProgramDone }
   }
 })
 </script>

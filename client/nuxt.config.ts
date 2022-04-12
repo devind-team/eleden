@@ -64,13 +64,12 @@ export default defineNuxtConfig({
 
   buildModules: [
     '@nuxt/bridge',
-    // @ts-ignore
-    ['@pinia/nuxt', { disableVuex: false }],
     '@nuxtjs/vuetify',
     '@nuxtjs/i18n'
   ],
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
+    ['@pinia/nuxt', { disableVuex: false }],
     '@nuxtjs/color-mode',
     '@nuxtjs/apollo',
     'cookie-universal-nuxt'
@@ -146,7 +145,6 @@ export default defineNuxtConfig({
   build: {
     parallel: true,
     transpile: [
-      'pinia',
       '@apollo/client',
       'graphql',
       'ts-invariant',
@@ -156,7 +154,8 @@ export default defineNuxtConfig({
       'subscriptions-transport-ws',
       'cross-fetch/polyfill',
       'cookie-universal-nuxt',
-      'universal-cookie'
+      'universal-cookie',
+      'pinia'
     ]
   }
 })

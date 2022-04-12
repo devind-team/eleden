@@ -2966,6 +2966,8 @@ export type DeleteEduHourMutationPayload = {
   clientMutationId?: Maybe<Scalars['String']>;
   /** Ошибки мутации */
   errors: Array<ErrorFieldType>;
+  /** Идентификатор вида работ */
+  id: Scalars['ID'];
   /** Успех мутации */
   success: Scalars['Boolean'];
 };
@@ -3150,6 +3152,8 @@ export type DeleteMethodologicalSupportMutationPayload = {
   clientMutationId?: Maybe<Scalars['String']>;
   /** Ошибки мутации */
   errors: Array<ErrorFieldType>;
+  /** Идентификатор методического обеспечения */
+  id: Scalars['ID'];
   /** Успех мутации */
   success: Scalars['Boolean'];
 };
@@ -4040,11 +4044,11 @@ export type MailingType = {
   /** Адрес отправки */
   address: Scalars['String'];
   /** Массив прикрепленных файлов */
-  attachments?: Maybe<Array<Scalars['String']>>;
+  attachments?: Maybe<Scalars['JSONString']>;
   /** Дата добавления */
   createdAt: Scalars['DateTime'];
   /** Средства отправки */
-  dispatchers: Array<Scalars['String']>;
+  dispatchers: Scalars['JSONString'];
   /** Заголовок сообщения */
   header: Scalars['String'];
   id: Scalars['ID'];
@@ -7666,7 +7670,7 @@ export type DeleteEduHourMutationVariables = Exact<{
   eduHourId: Scalars['ID'];
 }>;
 
-export type DeleteEduHourMutation = { __typename?: 'Mutation', deleteEduHour: { __typename?: 'DeleteEduHourMutationPayload', success: boolean, errors: Array<{ __typename?: 'ErrorFieldType', field: string, messages: Array<string> }> } };
+export type DeleteEduHourMutation = { __typename?: 'Mutation', deleteEduHour: { __typename: 'DeleteEduHourMutationPayload', success: boolean, id: string, errors: Array<{ __typename?: 'ErrorFieldType', field: string, messages: Array<string> }> } };
 
 export type DeleteEduProgramMutationVariables = Exact<{
   eduProgramId: Scalars['ID'];
@@ -7678,7 +7682,7 @@ export type DeleteMethodologicalSupportMutationVariables = Exact<{
   methodologicalSupportId: Scalars['ID'];
 }>;
 
-export type DeleteMethodologicalSupportMutation = { __typename?: 'Mutation', deleteMethodologicalSupport: { __typename?: 'DeleteMethodologicalSupportMutationPayload', success: boolean, errors: Array<{ __typename?: 'ErrorFieldType', field: string, messages: Array<string> }> } };
+export type DeleteMethodologicalSupportMutation = { __typename?: 'Mutation', deleteMethodologicalSupport: { __typename: 'DeleteMethodologicalSupportMutationPayload', success: boolean, id: string, errors: Array<{ __typename?: 'ErrorFieldType', field: string, messages: Array<string> }> } };
 
 export type UnloadEduProgramsMutationVariables = Exact<{
   extension: Scalars['String'];
@@ -8025,6 +8029,7 @@ export type BlockKindsQuery = { __typename?: 'Query', blockKinds: Array<{ __type
 
 export type CompetencesQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
   search?: InputMaybe<Scalars['String']>;
   excludeDisciplineId?: InputMaybe<Scalars['ID']>;
 }>;
@@ -8095,11 +8100,12 @@ export type EduProgramQuery = { __typename?: 'Query', eduProgram: { __typename: 
 
 export type EduProgramsQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
   offset?: InputMaybe<Scalars['Int']>;
   search?: InputMaybe<Scalars['String']>;
 }>;
 
-export type EduProgramsQuery = { __typename?: 'Query', eduPrograms: { __typename: 'EduProgramTypeConnection', totalCount: number, edges: Array<{ __typename: 'EduProgramTypeEdge', node?: { __typename: 'EduProgramType', id: string, name: string, adaptive: boolean, admission: number, expedited: boolean, description?: string | null, descriptionSign?: string | null, calendar?: string | null, calendarSign?: string | null, syllabus?: string | null, syllabusSign?: string | null, createdAt: any, updatedAt: any, eduForm: { __typename: 'EduFormType', id: string, name: string, shortName: string }, direction: { __typename: 'DirectionType', id: string, name: string, code: string, eduService: { __typename: 'EduServiceType', id: string, name: string } } } | null } | null> } };
+export type EduProgramsQuery = { __typename?: 'Query', eduPrograms: { __typename: 'EduProgramTypeConnection', totalCount: number, pageInfo: { __typename: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null }, edges: Array<{ __typename: 'EduProgramTypeEdge', node?: { __typename: 'EduProgramType', id: string, name: string, adaptive: boolean, admission: number, expedited: boolean, description?: string | null, descriptionSign?: string | null, calendar?: string | null, calendarSign?: string | null, syllabus?: string | null, syllabusSign?: string | null, createdAt: any, updatedAt: any, eduForm: { __typename: 'EduFormType', id: string, name: string, shortName: string }, direction: { __typename: 'DirectionType', id: string, name: string, code: string, eduService: { __typename: 'EduServiceType', id: string, name: string } } } | null } | null> } };
 
 export type EduServicesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -8364,7 +8370,7 @@ export type MembersSubscriptionSubscriptionVariables = Exact<{ [key: string]: ne
 
 export type MembersSubscriptionSubscription = { __typename?: 'Subscription', members: { __typename: 'MembersSubscription', action: ConsumerActionType, id: string, update?: boolean | null, member?: { __typename?: 'MemberType', id: string, role: MemberRole, notification: boolean, favorite: boolean, excluded: boolean, createdAt: any, updatedAt: any, chat?: { __typename: 'ChatType', id: string, name?: string | null, avatar?: string | null, createdAt: any, updatedAt: any, users: Array<{ __typename: 'UserType', id: string, username: string, avatar?: string | null, email: string, firstName: string, lastName: string, sirName?: string | null, isActive: boolean, createdAt: any }>, lastMessage?: { __typename: 'MessageType', id: string, text: string, user?: { __typename: 'UserType', id: string, lastName: string, firstName: string } | null } | null } | null } | null } };
 
-export type MailingFieldsFragment = { __typename: 'MailingType', id: string, dispatchers: Array<string>, address: string, header: string, text: string, attachments?: Array<string> | null, createdAt: any };
+export type MailingFieldsFragment = { __typename: 'MailingType', id: string, dispatchers: any, address: string, header: string, text: string, attachments?: any | null, createdAt: any };
 
 export type NoticeFieldsFragment = { __typename: 'NoticeType', id: string, kind: NoticeKind, payload: string, objectId: string, createdAt: any, user?: { __typename: 'UserType', id: string, username: string, avatar?: string | null, email: string, firstName: string, lastName: string, sirName?: string | null, isActive: boolean, createdAt: any } | null };
 
@@ -8404,7 +8410,7 @@ export type NotificationQueryVariables = Exact<{
   notificationId: Scalars['ID'];
 }>;
 
-export type NotificationQuery = { __typename?: 'Query', notification: { __typename: 'NotificationType', id: string, hide: boolean, read: boolean, createdAt: any, notice: { __typename: 'NoticeEmptyType', id: string, kind: number, payload: string, objectId: string, createdAt: any, user?: { __typename: 'UserType', id: string, username: string, avatar?: string | null, email: string, firstName: string, lastName: string, sirName?: string | null, isActive: boolean, createdAt: any } | null } | { __typename: 'NoticeMailingType', id: string, kind: number, payload: string, objectId: string, createdAt: any, mailing?: { __typename: 'MailingType', id: string, dispatchers: Array<string>, address: string, header: string, text: string, attachments?: Array<string> | null, createdAt: any } | null, user?: { __typename: 'UserType', id: string, username: string, avatar?: string | null, email: string, firstName: string, lastName: string, sirName?: string | null, isActive: boolean, createdAt: any } | null } | { __typename: 'NoticePageType', id: string, kind: number, payload: string, objectId: string, createdAt: any, page?: { __typename: 'PageType', id: string, avatar?: string | null, parallax: boolean, title: string, views: number, signature?: string | null, hide: boolean, priority: boolean, createdAt: any, updatedAt: any, sections: Array<{ __typename: 'SectionFilesType', text: string, id: number, kind: number, position: number, files: Array<{ __typename: 'FileType', id: string, name: string, src: string, size?: number | null, ext?: string | null, createdAt: any } | null>, user: { __typename?: 'UserType', id: string } } | { __typename: 'SectionGalleryType', text: string, id: number, kind: number, position: number, images: Array<{ __typename: 'FileType', id: string, name: string, src: string } | null>, user: { __typename?: 'UserType', id: string } } | { __typename: 'SectionTextType', text: string, id: number, kind: number, position: number, user: { __typename?: 'UserType', id: string } } | { __typename: 'SectionUsersType', id: number, kind: number, position: number, users: Array<{ __typename: 'UserType', id: string, avatar?: string | null, lastName: string, firstName: string, sirName?: string | null } | null>, user: { __typename?: 'UserType', id: string } } | null>, user?: { __typename: 'UserType', id: string, username: string, avatar?: string | null, email: string, firstName: string, lastName: string, sirName?: string | null, isActive: boolean, createdAt: any } | null, kind?: { __typename: 'PageKindType', id: string, name: string } | null, category: { __typename: 'CategoryType', id: string, avatar?: string | null, text: string, position: number, createdAt: any, updatedAt: any }, tags: Array<{ __typename: 'TagType', id: string, name: string, createdAt: any } | null> } | null, user?: { __typename: 'UserType', id: string, username: string, avatar?: string | null, email: string, firstName: string, lastName: string, sirName?: string | null, isActive: boolean, createdAt: any } | null } } };
+export type NotificationQuery = { __typename?: 'Query', notification: { __typename: 'NotificationType', id: string, hide: boolean, read: boolean, createdAt: any, notice: { __typename: 'NoticeEmptyType', id: string, kind: number, payload: string, objectId: string, createdAt: any, user?: { __typename: 'UserType', id: string, username: string, avatar?: string | null, email: string, firstName: string, lastName: string, sirName?: string | null, isActive: boolean, createdAt: any } | null } | { __typename: 'NoticeMailingType', id: string, kind: number, payload: string, objectId: string, createdAt: any, mailing?: { __typename: 'MailingType', id: string, dispatchers: any, address: string, header: string, text: string, attachments?: any | null, createdAt: any } | null, user?: { __typename: 'UserType', id: string, username: string, avatar?: string | null, email: string, firstName: string, lastName: string, sirName?: string | null, isActive: boolean, createdAt: any } | null } | { __typename: 'NoticePageType', id: string, kind: number, payload: string, objectId: string, createdAt: any, page?: { __typename: 'PageType', id: string, avatar?: string | null, parallax: boolean, title: string, views: number, signature?: string | null, hide: boolean, priority: boolean, createdAt: any, updatedAt: any, sections: Array<{ __typename: 'SectionFilesType', text: string, id: number, kind: number, position: number, files: Array<{ __typename: 'FileType', id: string, name: string, src: string, size?: number | null, ext?: string | null, createdAt: any } | null>, user: { __typename?: 'UserType', id: string } } | { __typename: 'SectionGalleryType', text: string, id: number, kind: number, position: number, images: Array<{ __typename: 'FileType', id: string, name: string, src: string } | null>, user: { __typename?: 'UserType', id: string } } | { __typename: 'SectionTextType', text: string, id: number, kind: number, position: number, user: { __typename?: 'UserType', id: string } } | { __typename: 'SectionUsersType', id: number, kind: number, position: number, users: Array<{ __typename: 'UserType', id: string, avatar?: string | null, lastName: string, firstName: string, sirName?: string | null } | null>, user: { __typename?: 'UserType', id: string } } | null>, user?: { __typename: 'UserType', id: string, username: string, avatar?: string | null, email: string, firstName: string, lastName: string, sirName?: string | null, isActive: boolean, createdAt: any } | null, kind?: { __typename: 'PageKindType', id: string, name: string } | null, category: { __typename: 'CategoryType', id: string, avatar?: string | null, text: string, position: number, createdAt: any, updatedAt: any }, tags: Array<{ __typename: 'TagType', id: string, name: string, createdAt: any } | null> } | null, user?: { __typename: 'UserType', id: string, username: string, avatar?: string | null, email: string, firstName: string, lastName: string, sirName?: string | null, isActive: boolean, createdAt: any } | null } } };
 
 export type NotificationsQueryVariables = Exact<{
   userId: Scalars['ID'];

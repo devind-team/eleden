@@ -2798,6 +2798,8 @@ type DeleteEduHourMutationPayload {
   clientMutationId: String
   """Ошибки мутации"""
   errors: [ErrorFieldType!]!
+  """Идентификатор вида работ"""
+  id: ID!
   """Успех мутации"""
   success: Boolean!
 }
@@ -2987,6 +2989,8 @@ type DeleteMethodologicalSupportMutationPayload {
   clientMutationId: String
   """Ошибки мутации"""
   errors: [ErrorFieldType!]!
+  """Идентификатор методического обеспечения"""
+  id: ID!
   """Успех мутации"""
   success: Boolean!
 }
@@ -3817,11 +3821,11 @@ type MailingType {
   """Адрес отправки"""
   address: String!
   """Массив прикрепленных файлов"""
-  attachments: [String!]
+  attachments: JSONString
   """Дата добавления"""
   createdAt: DateTime!
   """Средства отправки"""
-  dispatchers: [String!]!
+  dispatchers: JSONString!
   """Заголовок сообщения"""
   header: String!
   id: ID!

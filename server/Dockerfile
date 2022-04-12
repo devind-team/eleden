@@ -16,11 +16,9 @@ RUN apt-get update -y && \
     apt-get install libreoffice -y  && \
     apt-get install libreoffice --upgrade
 
-COPY pyproject.toml /usr/src/app
-
-RUN poetry install
-
 # Копируем приложение
 COPY . /usr/src/app
+
+RUN poetry install
 # Точка входа в контейнер
 CMD ['python']

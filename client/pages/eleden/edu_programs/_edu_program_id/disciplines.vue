@@ -28,14 +28,15 @@
 </template>
 
 <script lang="ts">
-import type { PropType, Ref } from '#app'
-import { defineComponent, ref } from '#app'
+import type { PropType } from '#app'
+import { defineComponent, ref, toRef } from '#app'
 import { useAuthStore } from '~/store'
-import { useQueryRelay } from '~/composables'
+import { useQueryRelay, useI18n, useApolloHelpers } from '~/composables'
 import { EduProgramType, DisciplinesQuery, DisciplinesQueryVariables } from '~/types/graphql'
 import AddDisciplines from '~/components/eleden/edu_programs/AddDisciplines.vue'
 import disciplinesQuery from '~/gql/eleden/queries/education/disciplines.graphql'
 import DisciplinesTable from '~/components/eleden/edu_programs/DisciplinesTable.vue'
+import { fromGlobalId } from '~/services/graphql-relay'
 
 export default defineComponent({
   components: { AddDisciplines, DisciplinesTable },
@@ -43,15 +44,21 @@ export default defineComponent({
     eduProgram: { type: Object as PropType<EduProgramType>, required: true }
   },
   setup (props) {
-    const { hasPerm } = useAuthStore()
+    const authStore = useAuthStore()
+    const hasPerm = toRef(authStore, 'hasPerm')
+    const route = useRoute()
+    const router = useRouter()
+    const { localePath } = useI18n()
+    const { defaultClient } = useApolloHelpers()
 
-    const search: Ref<string> = ref<string>('')
-    const count: Ref<number> = ref<number>(0)
-    const totalCount: Ref<number> = ref<number>(0)
+    const search = ref<string>('')
+    const count = ref<number>(0)
+    const totalCount = ref<number>(0)
 
     const {
       data: disciplines,
       loading,
+      update,
       addUpdate
     } = useQueryRelay<DisciplinesQuery, DisciplinesQueryVariables>({
       document: disciplinesQuery,
@@ -62,6 +69,22 @@ export default defineComponent({
       count.value = countt
       totalCount.value = totalCountt
     }
+
+    onMounted(() => {
+      if (route.query.disciplineId) {
+        update(
+          defaultClient.cache,
+          { data: { deleteDiscipline: { id: route.query.disciplineId } } },
+          (cacheData, { data: { deleteDiscipline: { id: disciplineId } } }) => {
+            cacheData.disciplines.edges =
+               cacheData.disciplines.edges.filter(e => fromGlobalId(e.node.id).id !== Number(disciplineId))
+            --cacheData.disciplines.totalCount
+            return cacheData
+          }
+        )
+        router.push(localePath({ name: 'eleden-edu_programs-edu_program_id-disciplines', params: route.params }))
+      }
+    })
 
     return { hasPerm, search, count, totalCount, disciplines, loading, addUpdate, countChange }
   }

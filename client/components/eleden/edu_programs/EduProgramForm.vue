@@ -2,40 +2,40 @@
   div
     validation-provider(
       v-slot="{ errors, valid }"
-      :name="t('name')"
+      :name="$t('eduPrograms.form.name')"
       rules="required|min:4|max:1024"
     )
       v-text-field(
         v-model="eduProgram.name"
-        :label="t('name')"
+        :label="$t('eduPrograms.form.name')"
         :error-messages="errors"
         :success="valid"
       )
     v-row
       v-col(cols="6")
-        v-checkbox(v-model="eduProgram.adaptive" :label="t('adaptive')" success)
+        v-checkbox(v-model="eduProgram.adaptive" :label="$t('eduPrograms.form.adaptive')" success)
       v-col(cols="6")
-        v-checkbox(v-model="eduProgram.expedited" :label="t('expedited')" success)
+        v-checkbox(v-model="eduProgram.expedited" :label="$t('eduPrograms.form.expedited')" success)
     validation-provider(
       v-slot="{ errors, valid }"
-      :name="t('admission')"
+      :name="$t('eduPrograms.form.admission')"
       rules="digits:4"
     )
       v-text-field(
         v-model="eduProgram.admission"
-        :label="t('admission')"
+        :label="$t('eduPrograms.form.admission')"
         :error-messages="errors"
         :success="valid"
       )
     validation-provider(
       v-slot="{ errors, valid }"
-      :name="t('eduFormId')"
+      :name="$t('eduPrograms.form.eduFormId')"
       rules="required"
     )
       v-combobox(
         v-model="eduProgram.eduForm"
         :items="eduForms"
-        :label="t('eduFormId')"
+        :label="$t('eduPrograms.form.eduFormId')"
         :error-messages="errors"
         :success="valid"
         item-text="name"
@@ -43,15 +43,15 @@
       )
     validation-provider(
       v-slot="{ errors, valid }"
-      :name="t('directionId')"
+      :name="$t('eduPrograms.form.directionId')"
       rules="required"
     )
       v-autocomplete(
         v-model="eduProgram.direction"
-        v-stream:update:search-input="searchStreamDirections$"
+        :search-input="directionsSearch"
         :items="directions"
-        :loading="$apollo.queries.directions.loading"
-        :label="t('directionId')"
+        :loading="directionsLoading"
+        :label="$t('eduPrograms.form.directionId')"
         :error-messages="errors"
         :success="valid"
         item-value="id"
@@ -66,7 +66,7 @@
     file-field(
       v-model="eduProgram.description"
       :existing-file.sync="eduProgram.existingDescription"
-      :label="t('description')"
+      :label="$t('eduPrograms.form.description')"
       accept=".pdf"
       clearable
       success
@@ -74,7 +74,7 @@
     file-field(
       v-model="eduProgram.syllabus"
       :existing-file.sync="eduProgram.existingSyllabus"
-      :label="t('syllabus')"
+      :label="$t('eduPrograms.form.syllabus')"
       accept=".pdf"
       clearable
       success
@@ -82,7 +82,7 @@
     file-field(
       v-model="eduProgram.calendar"
       :existing-file.sync="eduProgram.existingCalendar"
-      :label="t('calendar')"
+      :label="$t('eduPrograms.form.calendar')"
       accept=".pdf"
       clearable
       success
@@ -90,10 +90,10 @@
     div(v-if="!eduProgram.id")
       v-autocomplete(
         v-model="eduProgram.donor"
-        v-stream:update:search-input="searchStreamEduPrograms$"
-        :label="t('donor')"
+        :search-input.sync="eduProgramsSearch"
+        :label="$t('eduPrograms.form.donor')"
         :items="eduPrograms"
-        :loading="$apollo.queries.eduPrograms.loading"
+        :loading="eduProgramsLoading"
         :filter="filterEduPrograms"
         item-value="id"
         clearable
@@ -107,11 +107,23 @@
 </template>
 
 <script lang="ts">
-import { PropType } from 'vue'
-import { Component, Prop, Vue } from 'vue-property-decorator'
-import { Subject } from 'rxjs'
-import { debounceTime, filter, pluck, startWith } from 'rxjs/operators'
-import { EduProgramType, EduFormType, DirectionType } from '~/types/graphql'
+import type { PropType } from '#app'
+import { computed, defineComponent, ref } from '#app'
+import {
+  EduProgramType,
+  EduFormType,
+  DirectionType,
+  EduFormsQuery,
+  EduFormsQueryVariables,
+  DirectionsQuery,
+  DirectionsQueryVariables,
+  EduProgramsQuery,
+  EduProgramsQueryVariables
+} from '~/types/graphql'
+import { useCommonQuery, useDebounceSearch, useQueryRelay } from '~/composables'
+import eduFormsQuery from '~/gql/eleden/queries/education/edu_forms.graphql'
+import directionsQuery from '~/gql/eleden/queries/education/directions.graphql'
+import eduProgramsQuery from '~/gql/eleden/queries/education/edu_programs.graphql'
 import FileField, { ExistingFile } from '~/components/common/FileField.vue'
 
 export type InputEduProgram = {
@@ -131,88 +143,69 @@ export type InputEduProgram = {
   donor?: EduProgramType | null
 }
 
-@Component<EduProgramForm>({
+export default defineComponent({
   components: { FileField },
-  domStreams: ['searchStreamDirections$', 'searchStreamEduPrograms$'],
-  subscriptions () {
-    const searchDirections$ = this.searchStreamDirections$.pipe(
-      pluck('event', 'msg'),
-      filter((e: any) => e !== null),
-      debounceTime(700),
-      startWith('')
-    )
-    const searchEduPrograms$ = this.searchStreamEduPrograms$.pipe(
-      pluck('event', 'msg'),
-      filter((e: any) => e !== null),
-      debounceTime(700),
-      startWith('')
-    )
-    return { searchDirections$, searchEduPrograms$ }
+  props: {
+    eduProgram: { type: Object as PropType<InputEduProgram>, default: undefined }
   },
-  apollo: {
-    eduForms: require('~/gql/eleden/queries/education/edu_forms.graphql'),
-    directions: require('~/gql/eleden/queries/education/directions.graphql'),
-    eduPrograms: {
-      query: require('~/gql/eleden/queries/education/edu_programs.graphql'),
-      variables () { return { first: 5, search: this.searchEduPrograms$ } },
-      update ({ eduPrograms }) {
-        return this.eduProgram.donor
-          ? [this.eduProgram.donor, ...eduPrograms.edges
-              .map((e: { node?: EduProgramType}) => e.node)
-              .filter((eduProgram: EduProgramType) => eduProgram.id !== this.eduProgram.donor!.id)]
-          : eduPrograms.edges.map((e: { node?: EduProgramType}) => e.node)
-      }
-    }
-  }
-})
-export default class EduProgramForm extends Vue {
-  @Prop({ type: Object as PropType<InputEduProgram> }) readonly eduProgram!: InputEduProgram
+  setup (props) {
+    const { data: eduForms } = useCommonQuery<EduFormsQuery, EduFormsQueryVariables>({
+      document: eduFormsQuery
+    })
 
-  readonly eduForms!: EduFormType[]
-  readonly directions!: DirectionType[]
-  readonly eduPrograms!: EduProgramType[]
+    const directionsSearch = ref<string>('')
 
-  searchEduPrograms$: string = ''
-  searchStreamEduPrograms$: Subject<any> = new Subject<any>()
-  searchDirections$: string = ''
-  searchStreamDirections$: Subject<any> = new Subject<any>()
+    const {
+      data: directions,
+      loading: directionsLoading
+    } = useCommonQuery<DirectionsQuery, DirectionsQueryVariables>({
+      document: directionsQuery
+    })
 
-  /**
-   * Получение перевода относильно локального пути
-   * @param path
-   * @param values
-   * @return
-   */
-  t (path: string, values: any = undefined): string {
-    return this.$t(`eduPrograms.form.${path}`, values) as string
-  }
+    const { search: eduProgramsSearch, debounceSearch: eduProgramsDebounceSearch } = useDebounceSearch()
+    const {
+      data: eduProgramsData,
+      loading: eduProgramsLoading
+    } = useQueryRelay<EduProgramsQuery, EduProgramsQueryVariables, EduProgramType>({
+      document: eduProgramsQuery,
+      variables: () => ({ search: eduProgramsDebounceSearch.value })
+    })
+    const eduPrograms = computed<EduProgramType[]>(() => (
+      props.eduProgram.donor
+        ? [props.eduProgram.donor, ...eduProgramsData.value.filter(
+            (eduProgram: EduProgramType) => eduProgram.id !== props.eduProgram.donor!.id)]
+        : eduProgramsData.value
+    )
+    )
 
-  /**
-   * Получение текста донорской образовательной программы
-   * @param item
-   * @return
-   */
-  getDonorText (item: EduProgramType): string {
-    return `${item.direction.code} ${item.name} ${item.eduForm.shortName} ${item.direction.eduService.name}` +
+    const getDonorText = (item: EduProgramType): string => {
+      return `${item.direction.code} ${item.name} ${item.eduForm.shortName} ${item.direction.eduService.name}` +
       ` ${item.admission}`
-  }
+    }
 
-  /**
-   * Фильтрация доноров
-   * @param item
-   * @param queryText
-   * @return
-   */
-  filterEduPrograms (item: EduProgramType, queryText: string): boolean {
-    const qt: string = queryText.toLocaleLowerCase()
-    const name: string = item.name.toLocaleLowerCase()
-    const admission: string = String(item.admission).toLocaleLowerCase()
-    const directionCode: string | undefined = item.direction.code?.toLocaleLowerCase()
-    const directionName: string = item.direction.name.toLocaleLowerCase()
-    return name.includes(qt) ||
+    const filterEduPrograms = (item: EduProgramType, queryText: string): boolean => {
+      const qt: string = queryText.toLocaleLowerCase()
+      const name: string = item.name.toLocaleLowerCase()
+      const admission: string = String(item.admission).toLocaleLowerCase()
+      const directionCode: string | undefined = item.direction.code?.toLocaleLowerCase()
+      const directionName: string = item.direction.name.toLocaleLowerCase()
+      return name.includes(qt) ||
       admission.includes(qt) ||
       (directionCode && directionCode.includes(qt)) ||
       directionName.includes(qt)
+    }
+
+    return {
+      eduForms,
+      directions,
+      directionsLoading,
+      directionsSearch,
+      eduPrograms,
+      eduProgramsLoading,
+      eduProgramsSearch,
+      getDonorText,
+      filterEduPrograms
+    }
   }
-}
+})
 </script>

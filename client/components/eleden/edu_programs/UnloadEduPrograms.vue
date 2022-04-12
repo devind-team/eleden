@@ -22,28 +22,27 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { defineComponent, ref } from '#app'
 import { UnloadEduProgramsMutationPayload } from '~/types/graphql'
 
 export type UnloadEduProgramsResultType = { data: { unloadEduPrograms : UnloadEduProgramsMutationPayload } }
 
-@Component<UnloadEduPrograms>({})
-export default class UnloadEduPrograms extends Vue {
-  extensionIcons: { [k: string]: string } = {
-    html: 'language-html5',
-    excel: 'file-excel'
-  }
-
-  active: boolean = false
-
-  /**
-   * Завершение выгрузки образовательных программ
-   * @param result
-   */
-  unloadEduProgramsDone ({ data: { unloadEduPrograms: result } }: UnloadEduProgramsResultType): void {
-    if (result.success) {
-      window.open(`/${result.src!}`)
+export default defineComponent({
+  setup () {
+    const extensionIcons: Record<string, string> = {
+      html: 'language-html5',
+      excel: 'file-excel'
     }
+
+    const active = ref<boolean>(false)
+
+    const unloadEduProgramsDone = ({ data: { unloadEduPrograms: result } }: UnloadEduProgramsResultType): void => {
+      if (result.success) {
+        window.open(`/${result.src!}`)
+      }
+    }
+
+    return { extensionIcons, active, unloadEduProgramsDone }
   }
-}
+})
 </script>

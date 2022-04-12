@@ -46,13 +46,14 @@ import type { PropType } from '#app'
 import { defineComponent, computed, useNuxt2Meta, toRef } from '#app'
 import { DataTableHeader } from 'vuetify/types'
 import { BreadCrumbsItem } from '~/types/devind'
-import { EduProgramsQuery, EduProgramsQueryVariables, EduProgramType } from '~/types/graphql'
+import { EduProgramsQuery, EduProgramsQueryVariables, EduProgramTypeEdge } from '~/types/graphql'
 import { useAuthStore } from '~/store'
 import { useDebounceSearch, useI18n, useQueryRelay, useCursorPagination, useApolloHelpers } from '~/composables'
 import eduProgramsQuery from '~/gql/eleden/queries/education/edu_programs.graphql'
 import BreadCrumbs from '~/components/common/BreadCrumbs.vue'
 import AddEduPrograms from '~/components/eleden/edu_programs/AddEduPrograms.vue'
 import UnloadEduPrograms from '~/components/eleden/edu_programs/UnloadEduPrograms.vue'
+import { fromGlobalId } from '~/services/graphql-relay'
 
 export default defineComponent({
   components: { BreadCrumbs, AddEduPrograms, UnloadEduPrograms },
@@ -109,8 +110,9 @@ export default defineComponent({
           defaultClient.cache,
           { data: { deleteEduProgram: { id: route.query.eduProgramId } } },
           (cacheData, { data: { deleteEduProgram: { id: eduProgramId } } }) => {
-            cacheData.eduPrograms =
-              cacheData.eduPrograms.edges.map(e => e.node).filter((e: EduProgramType) => e.id !== eduProgramId)
+            cacheData.eduPrograms.edges =
+              cacheData.eduPrograms.edges.filter(e => fromGlobalId(e.node.id).id !== Number(eduProgramId))
+            --cacheData.eduPrograms.totalCount
             return cacheData
           }
         )

@@ -32,10 +32,11 @@ import type { PropType } from '#app'
 import { defineComponent, ref, toRef } from '#app'
 import { useAuthStore } from '~/store'
 import { useQueryRelay, useI18n, useApolloHelpers } from '~/composables'
-import { EduProgramType, DisciplinesQuery, DisciplinesQueryVariables, DisciplineType } from '~/types/graphql'
+import { EduProgramType, DisciplinesQuery, DisciplinesQueryVariables } from '~/types/graphql'
 import AddDisciplines from '~/components/eleden/edu_programs/AddDisciplines.vue'
 import disciplinesQuery from '~/gql/eleden/queries/education/disciplines.graphql'
 import DisciplinesTable from '~/components/eleden/edu_programs/DisciplinesTable.vue'
+import { fromGlobalId } from '~/services/graphql-relay'
 
 export default defineComponent({
   components: { AddDisciplines, DisciplinesTable },
@@ -75,8 +76,8 @@ export default defineComponent({
           defaultClient.cache,
           { data: { deleteDiscipline: { id: route.query.disciplineId } } },
           (cacheData, { data: { deleteDiscipline: { id: disciplineId } } }) => {
-            cacheData.disciplines =
-              cacheData.disciplines.edges.map(e => e.node).filter((e: DisciplineType) => e.id !== disciplineId)
+            cacheData.disciplines.edges =
+               cacheData.disciplines.edges.filter(e => fromGlobalId(e.node.id).id !== Number(disciplineId))
             return cacheData
           }
         )

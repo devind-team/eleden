@@ -3,6 +3,7 @@
 
 query Disciplines($eduProgramId: ID!, $viewId: Float, $search: String) {
   disciplines(eduProgram_Id: $eduProgramId, view_Id: $viewId, code_Icontains: $search, name_Icontains: $search) {
+    totalCount
      edges {
        node {
          ...DisciplineFields

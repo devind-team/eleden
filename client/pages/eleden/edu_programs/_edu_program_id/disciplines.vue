@@ -78,6 +78,8 @@ export default defineComponent({
           (cacheData, { data: { deleteDiscipline: { id: disciplineId } } }) => {
             cacheData.disciplines.edges =
                cacheData.disciplines.edges.filter(e => fromGlobalId(e.node.id).id !== Number(disciplineId))
+            --cacheData.disciplines.totalCount
+            console.log(cacheData.disciplines)
             return cacheData
           }
         )

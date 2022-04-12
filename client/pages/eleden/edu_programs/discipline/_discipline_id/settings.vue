@@ -20,7 +20,7 @@
         :mutation="require('~/gql/eleden/mutations/edu_programs/delete_discipline.graphql')"
         :variables="{ disciplineId: discipline.id }"
         :update="deleteUpdate"
-        @done="redirectToDisciplines"
+        @done="deleteDisciplineDone"
         @error="setError"
       )
         delete-menu(
@@ -41,7 +41,8 @@ import {
   ChangeDisciplineMutationVariables,
   ChangeDisciplineMutationPayload,
   DisciplinesQuery,
-  DisciplinesQueryVariables
+  DisciplinesQueryVariables,
+  DeleteDisciplineMutationPayload
 } from '~/types/graphql'
 import { useAuthStore } from '~/store'
 import { useI18n, useFilters, useQueryRelay } from '~/composables'
@@ -54,6 +55,7 @@ import { getInputDiscipline } from '~/services/eleden'
 type ChangeDisciplineData = {
   data: { changeDiscipline: ChangeDisciplineMutationPayload }
 }
+type DeleteDisciplineResultMutation = { data: { deleteDiscipline: DeleteDisciplineMutationPayload } }
 
 export default defineComponent({
   components: { MutationForm, DisciplineForm, DeleteMenu },
@@ -94,13 +96,14 @@ export default defineComponent({
       variables: () => ({ eduProgramId: props.discipline.eduProgram.id })
     })
 
-    const redirectToDisciplines = (): void => {
-      router.push(
-        localePath({
-          name: 'eleden-edu_programs-edu_program_id',
-          params: { edu_program_id: props.discipline.eduProgram.id }
-        })
-      )
+    const deleteDisciplineDone = ({ data: { deleteDiscipline: { success, id } } }: DeleteDisciplineResultMutation): void => {
+      if (success) {
+        router.push(localePath({
+          name: 'eleden-edu_programs-edu_program_id-disciplines',
+          params: { edu_program_id: props.discipline.eduProgram.id },
+          query: { disciplineId: id }
+        }))
+      }
     }
 
     return {
@@ -110,7 +113,7 @@ export default defineComponent({
       changeVariables,
       changeDisciplineDone,
       deleteUpdate,
-      redirectToDisciplines
+      deleteDisciplineDone
     }
   }
 })

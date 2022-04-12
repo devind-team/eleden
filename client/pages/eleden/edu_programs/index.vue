@@ -46,13 +46,14 @@ import type { PropType } from '#app'
 import { defineComponent, computed, useNuxt2Meta, toRef } from '#app'
 import { DataTableHeader } from 'vuetify/types'
 import { BreadCrumbsItem } from '~/types/devind'
-import { EduProgramsQuery, EduProgramsQueryVariables } from '~/types/graphql'
+import { EduProgramsQuery, EduProgramsQueryVariables, EduProgramTypeEdge } from '~/types/graphql'
 import { useAuthStore } from '~/store'
-import { useDebounceSearch, useI18n, useQueryRelay, useCursorPagination } from '~/composables'
+import { useDebounceSearch, useI18n, useQueryRelay, useCursorPagination, useApolloHelpers } from '~/composables'
 import eduProgramsQuery from '~/gql/eleden/queries/education/edu_programs.graphql'
 import BreadCrumbs from '~/components/common/BreadCrumbs.vue'
 import AddEduPrograms from '~/components/eleden/edu_programs/AddEduPrograms.vue'
 import UnloadEduPrograms from '~/components/eleden/edu_programs/UnloadEduPrograms.vue'
+import { fromGlobalId } from '~/services/graphql-relay'
 
 export default defineComponent({
   components: { BreadCrumbs, AddEduPrograms, UnloadEduPrograms },
@@ -65,6 +66,9 @@ export default defineComponent({
     const hasPerm = toRef(authStore, 'hasPerm')
     const { t, localePath } = useI18n()
     useNuxt2Meta({ title: t('eduPrograms.name') as string })
+    const route = useRoute()
+    const router = useRouter()
+    const { defaultClient } = useApolloHelpers()
 
     const headers = computed<DataTableHeader[]>(() => ([
       { text: t('eduPrograms.tableHeaders.directionCode') as string, value: 'direction.code' },
@@ -88,6 +92,7 @@ export default defineComponent({
       data: eduPrograms,
       loading,
       pagination: { totalCount, count },
+      update,
       addUpdate
     } = useQueryRelay<EduProgramsQuery, EduProgramsQueryVariables>({
       document: eduProgramsQuery,
@@ -98,6 +103,22 @@ export default defineComponent({
       fetchScroll: typeof document === 'undefined' ? null : document
     }
     )
+
+    onMounted(() => {
+      if (route.query.eduProgramId) {
+        update(
+          defaultClient.cache,
+          { data: { deleteEduProgram: { id: route.query.eduProgramId } } },
+          (cacheData, { data: { deleteEduProgram: { id: eduProgramId } } }) => {
+            cacheData.eduPrograms.edges =
+              cacheData.eduPrograms.edges.filter(e => fromGlobalId(e.node.id).id !== Number(eduProgramId))
+            --cacheData.eduPrograms.totalCount
+            return cacheData
+          }
+        )
+        router.push(localePath({ name: 'eleden-edu_programs' }))
+      }
+    })
 
     return {
       hasPerm,

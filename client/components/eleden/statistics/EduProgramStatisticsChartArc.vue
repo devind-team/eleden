@@ -9,12 +9,13 @@
     v-col(cols="12")
       .text-h6 {{ t('disciplines') }}
     v-col(v-for="chart in chartDisciplines" :key="chart" cols="12" md="3")
-      div {{ labels[$snakeToCamel(chart)] }}
+      div {{ labels[camelCase(chart)] }}
       client-only
         apex-chart(type="donut" :options="statistics[chart].options" :series="statistics[chart].series")
 </template>
 
 <script lang="ts">
+import { camelCase } from 'scule'
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { EduProgramStatisticsType, PointTotalStatisticsType } from '~/types/graphql'
 
@@ -86,6 +87,9 @@ type PointType = {
         }, a)
       }, {}) as Statistics
     }
+  },
+  methods: {
+    camelCase
   }
 })
 export default class EduProgramStatisticsChartArc extends Vue {

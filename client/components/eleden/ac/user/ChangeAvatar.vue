@@ -38,6 +38,7 @@
 </template>
 
 <script lang="ts">
+import { camelCase } from 'scule'
 import Vue, { PropType } from 'vue'
 import { Component, Prop } from 'vue-property-decorator'
 import { DataProxy } from 'apollo-cache'
@@ -76,7 +77,7 @@ export default class ChangeAvatar extends Vue {
     } else {
       this.$refs.changeAvatar.setErrors(errors.reduce(
         (a: { [key: string]: string[] }, c: ErrorFieldType) => {
-          return { ...a, [this.$t(`profile.${this.$snakeToCamel(c.field)}`) as string]: c.messages }
+          return { ...a, [this.$t(`profile.${camelCase(c.field)}`) as string]: c.messages }
         }, {}))
     }
   }

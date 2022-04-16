@@ -51,6 +51,7 @@
 </template>
 
 <script lang="ts">
+import { camelCase } from 'scule'
 import { Vue, Component, Prop, Ref } from 'vue-property-decorator'
 import { ValidationObserver } from 'vee-validate'
 import { DataProxy } from 'apollo-cache'
@@ -75,7 +76,7 @@ export default class AddCategory extends Vue {
     } else {
       this.addCategory.setErrors(errors.reduce(
         (a: { [key: string]: string[] }, c: ErrorFieldType) => {
-          return { ...a, [this.$t(`pages.addDialog.category.${this.$snakeToCamel(c.field)}`) as string]: c.messages }
+          return { ...a, [this.$t(`pages.addDialog.category.${camelCase(c.field)}`) as string]: c.messages }
         }, {}))
     }
   }

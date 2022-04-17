@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 import graphene
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -45,12 +45,13 @@ class AddPageMutation(BaseMutation):
         kind_id = graphene.Int(description='Тип страницы')
         category_id = graphene.ID(required=True, description='Категория страницы')
         tag_names = graphene.List(graphene.NonNull(graphene.String), description='Теги на странице')
+        text = graphene.String(description='Первоначальное добавление текста страницы')
 
     page = graphene.Field(PageType, description='Добавленная страница')
 
     @staticmethod
     @permission_classes([IsAuthenticated, AddPage])
-    def mutate_and_get_payload(root, info: ResolveInfo, *args, **kwargs):
+    def mutate_and_get_payload(root, info: ResolveInfo, text: Optional[str], *args, **kwargs):
         data = Page.resolve_global({**kwargs, 'user_id': info.context.user.pk})
         validator: PageValidator = PageValidator(data)
         if validator.validate():
@@ -64,6 +65,8 @@ class AddPageMutation(BaseMutation):
             ]
             page: Page = Page.objects.create(**data)
             page.tags.set(tags)
+            if text:
+                page.section_set.create(text=text, user=info.context.user)
             return AddPageMutation(page=page)
         return AddPageMutation(success=False, errors=ErrorFieldType.from_validator(validator.get_message()))
 

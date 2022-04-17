@@ -21,7 +21,7 @@ import CategoryRightNavigator from '~/components/pages/CategoryRightNavigator.vu
 export default defineComponent({
   components: { BreadCrumbs, CategoryRightNavigator },
   props: {
-    breadCrumbs: { type: Object as PropType<BreadCrumbsItem[]>, required: true },
+    breadCrumbs: { type: Array as PropType<BreadCrumbsItem[]>, required: true },
     category: { type: Object as PropType<CategoryType>, required: true },
     loading: { type: Boolean, required: true }
   },

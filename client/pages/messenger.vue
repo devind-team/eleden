@@ -28,7 +28,6 @@ import {
   PageInfo, MembersSubscription, MemberTypeEdge
 } from '~/types/graphql'
 import membersQuery from '~/gql/messenger/queries/members.graphql'
-import DefaultLayout from '~/layouts/default.vue'
 import BreadCrumbs from '~/components/common/BreadCrumbs.vue'
 import Chat from '~/components/messenger/Member.vue'
 import MembersControl from '~/components/messenger/MembersControl.vue'
@@ -114,7 +113,7 @@ export type MembersSubscriptionResultType = { subscriptionData: { data: { member
 })
 export default class Messenger extends Vue {
   @ProvideReactive() state: MessengerStateType = { search: '', view: 'default' }
-  @Inject() layoutInstance!: DefaultLayout
+  @Inject() setFooter!: (state?: boolean) => void
 
   membersVariable!: MembersQueryVariables
   readonly user!: UserType
@@ -127,11 +126,11 @@ export default class Messenger extends Vue {
   chatName: string = ''
 
   created () {
-    this.layoutInstance.setFooter(false)
+    this.setFooter(false)
   }
 
   destroyed () {
-    this.layoutInstance.setFooter()
+    this.setFooter()
   }
 
   async fetchMoreMembers (): Promise<void> {

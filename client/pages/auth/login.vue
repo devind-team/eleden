@@ -3,12 +3,12 @@
     v-row
       v-col.mx-auto(cols="12" sm="4" md="4")
         mutation-form(
+          @done="tokenDone"
           :mutation="require('~/gql/core/mutations/user/get_token.graphql')"
           :variables="variables"
           :header="String($t('auth.login.signIn'))"
           i18n-path="auth.login"
           mutation-name="getToken"
-          @done="tokenDone"
         )
           template(#form)
             validation-provider(
@@ -76,7 +76,7 @@ export default defineComponent({
     const { $store } = useNuxtApp()
     const { t, localePath } = useI18n()
     const { onLogin, defaultClient } = useApolloHelpers()
-    const userStore = useAuthStore()
+    const authStore = useAuthStore()
     const { CLIENT_ID, CLIENT_SECRET } = useRuntimeConfig()
 
     useNuxt2Meta({ title: t('auth.login.signIn') as string })
@@ -101,7 +101,7 @@ export default defineComponent({
     const tokenDone = ({ data: { getToken: { success, errors, accessToken, expiresIn, user } } }: { data: GetTokenMutation }) => {
       if (success) {
         onLogin(accessToken, defaultClient, { maxAge: expiresIn, path: '/' }, true)
-        userStore.user = user as UserType
+        authStore.user = user as UserType
 
         // Убрать после удаления vuex
         $store.dispatch('auth/fetchExistUser', Object.assign({}, user))
@@ -115,5 +115,4 @@ export default defineComponent({
     return { breadCrumbs, username, password, loginError, hiddenPassword, variables, tokenDone }
   }
 })
-
 </script>

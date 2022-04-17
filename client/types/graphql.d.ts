@@ -799,6 +799,8 @@ export type AddPageMutationInput = {
   signature?: InputMaybe<Scalars['String']>;
   /** Теги на странице */
   tagNames?: InputMaybe<Array<Scalars['String']>>;
+  /** Первоначальное добавление текста страницы */
+  text?: InputMaybe<Scalars['String']>;
   /** Заголовок */
   title: Scalars['String'];
 };
@@ -2984,6 +2986,8 @@ export type DeleteEduProgramMutationPayload = {
   clientMutationId?: Maybe<Scalars['String']>;
   /** Ошибки мутации */
   errors: Array<ErrorFieldType>;
+  /** Идентификатор образовательной программы */
+  id: Scalars['ID'];
   /** Успех мутации */
   success: Scalars['Boolean'];
 };
@@ -7676,7 +7680,7 @@ export type DeleteEduProgramMutationVariables = Exact<{
   eduProgramId: Scalars['ID'];
 }>;
 
-export type DeleteEduProgramMutation = { __typename?: 'Mutation', deleteEduProgram: { __typename?: 'DeleteEduProgramMutationPayload', success: boolean, errors: Array<{ __typename?: 'ErrorFieldType', field: string, messages: Array<string> }> } };
+export type DeleteEduProgramMutation = { __typename?: 'Mutation', deleteEduProgram: { __typename: 'DeleteEduProgramMutationPayload', success: boolean, id: string, errors: Array<{ __typename?: 'ErrorFieldType', field: string, messages: Array<string> }> } };
 
 export type DeleteMethodologicalSupportMutationVariables = Exact<{
   methodologicalSupportId: Scalars['ID'];
@@ -8082,7 +8086,7 @@ export type DisciplinesQueryVariables = Exact<{
   search?: InputMaybe<Scalars['String']>;
 }>;
 
-export type DisciplinesQuery = { __typename?: 'Query', disciplines: { __typename: 'DisciplineTypeConnection', edges: Array<{ __typename?: 'DisciplineTypeEdge', node?: { __typename: 'DisciplineType', id: string, code: string, name: string, annotation?: string | null, annotationSign?: string | null, workProgram?: string | null, workProgramSign?: string | null, updatedAt: any, order: number, eduProgram: { __typename: 'EduProgramType', id: string, name: string, adaptive: boolean, admission: number, expedited: boolean, description?: string | null, descriptionSign?: string | null, calendar?: string | null, calendarSign?: string | null, syllabus?: string | null, syllabusSign?: string | null, createdAt: any, updatedAt: any, eduForm: { __typename: 'EduFormType', id: string, name: string, shortName: string }, direction: { __typename: 'DirectionType', id: string, name: string, code: string, eduService: { __typename: 'EduServiceType', id: string, name: string } } }, view: { __typename: 'DisciplineViewType', id: string, name: string, order: number }, users: Array<{ __typename: 'UserType', id: string, username: string, avatar?: string | null, email: string, firstName: string, lastName: string, sirName?: string | null, isActive: boolean, createdAt: any }>, parent?: { __typename: 'DisciplineType', id: string, code: string, name: string } | null, methodologicalSupport: Array<{ __typename: 'MethodologicalSupportType', id: string, name: string, src?: string | null, srcSign?: string | null, createdAt: any, updatedAt: any }> } | null } | null> } };
+export type DisciplinesQuery = { __typename?: 'Query', disciplines: { __typename: 'DisciplineTypeConnection', totalCount: number, edges: Array<{ __typename?: 'DisciplineTypeEdge', node?: { __typename: 'DisciplineType', id: string, code: string, name: string, annotation?: string | null, annotationSign?: string | null, workProgram?: string | null, workProgramSign?: string | null, updatedAt: any, order: number, eduProgram: { __typename: 'EduProgramType', id: string, name: string, adaptive: boolean, admission: number, expedited: boolean, description?: string | null, descriptionSign?: string | null, calendar?: string | null, calendarSign?: string | null, syllabus?: string | null, syllabusSign?: string | null, createdAt: any, updatedAt: any, eduForm: { __typename: 'EduFormType', id: string, name: string, shortName: string }, direction: { __typename: 'DirectionType', id: string, name: string, code: string, eduService: { __typename: 'EduServiceType', id: string, name: string } } }, view: { __typename: 'DisciplineViewType', id: string, name: string, order: number }, users: Array<{ __typename: 'UserType', id: string, username: string, avatar?: string | null, email: string, firstName: string, lastName: string, sirName?: string | null, isActive: boolean, createdAt: any }>, parent?: { __typename: 'DisciplineType', id: string, code: string, name: string } | null, methodologicalSupport: Array<{ __typename: 'MethodologicalSupportType', id: string, name: string, src?: string | null, srcSign?: string | null, createdAt: any, updatedAt: any }> } | null } | null> } };
 
 export type EduCyclesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -8485,6 +8489,7 @@ export type AddPageMutationVariables = Exact<{
   kindId?: InputMaybe<Scalars['Int']>;
   categoryId: Scalars['ID'];
   tagNames?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  text?: InputMaybe<Scalars['String']>;
 }>;
 
 export type AddPageMutation = { __typename?: 'Mutation', addPage: { __typename?: 'AddPageMutationPayload', success: boolean, errors: Array<{ __typename: 'ErrorFieldType', field: string, messages: Array<string> }>, page?: { __typename: 'PageType', id: string } | null } };
@@ -8636,7 +8641,7 @@ export type PagesQueryVariables = Exact<{
   search?: InputMaybe<Scalars['String']>;
 }>;
 
-export type PagesQuery = { __typename?: 'Query', pages: { __typename: 'PageTypeConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', startCursor?: string | null, endCursor?: string | null, hasNextPage: boolean, hasPreviousPage: boolean }, edges: Array<{ __typename: 'PageTypeEdge', node?: { __typename: 'PageType', id: string, avatar?: string | null, parallax: boolean, title: string, views: number, signature?: string | null, hide: boolean, priority: boolean, createdAt: any, updatedAt: any, kind?: { __typename: 'PageKindType', id: string, name: string } | null, category: { __typename: 'CategoryType', id: string, avatar?: string | null, text: string, position: number, createdAt: any, updatedAt: any }, tags: Array<{ __typename: 'TagType', id: string, name: string, createdAt: any } | null>, user?: { __typename: 'UserType', id: string, username: string, avatar?: string | null, email: string, firstName: string, lastName: string, sirName?: string | null, isActive: boolean, createdAt: any } | null } | null } | null> } };
+export type PagesQuery = { __typename?: 'Query', pages: { __typename: 'PageTypeConnection', totalCount: number, pageInfo: { __typename: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, endCursor?: string | null, startCursor?: string | null }, edges: Array<{ __typename: 'PageTypeEdge', node?: { __typename: 'PageType', id: string, avatar?: string | null, parallax: boolean, title: string, views: number, signature?: string | null, hide: boolean, priority: boolean, createdAt: any, updatedAt: any, kind?: { __typename: 'PageKindType', id: string, name: string } | null, category: { __typename: 'CategoryType', id: string, avatar?: string | null, text: string, position: number, createdAt: any, updatedAt: any }, tags: Array<{ __typename: 'TagType', id: string, name: string, createdAt: any } | null>, user?: { __typename: 'UserType', id: string, username: string, avatar?: string | null, email: string, firstName: string, lastName: string, sirName?: string | null, isActive: boolean, createdAt: any } | null } | null } | null> } };
 
 export type SegmentsQueryVariables = Exact<{ [key: string]: never; }>;
 

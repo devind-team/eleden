@@ -8,7 +8,7 @@
             v-avatar(v-if="page.user.avatar" left)
               v-img(:src="`/${page.user.avatar}`")
             | {{ `${page.user.lastName} ${page.user.firstName[0]}. ${page.user.sirName[0]}.` }}
-          span.ml-4.caption {{ dateTimeHM(page.createdAt) }}
+          span.ml-4.caption {{ $filters.dateTimeHM(page.createdAt) }}
         v-col.text-right
           slot(name="actions")
       v-row(v-if="page.parallax && !!page.avatar")
@@ -32,13 +32,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from '#app'
-import { PageType, UserType } from '~/types/graphql'
+import type { PropType } from '#app'
+import { defineComponent } from '#app'
+import { UserType, PageType } from '~/types/graphql'
 import { PageKindChoices } from '~/types/devind'
-import { useFilters } from '~/composables'
-import SectionFiles from '~/components/pages/sections/views/SectionFiles.vue'
 import SectionText from '~/components/pages/sections/views/SectionText.vue'
 import SectionGallery from '~/components/pages/sections/views/SectionGallery.vue'
+import SectionFiles from '~/components/pages/sections/views/SectionFiles.vue'
 
 export default defineComponent({
   components: { SectionFiles, SectionText, SectionGallery },
@@ -46,7 +46,6 @@ export default defineComponent({
     page: { type: Object as PropType<PageType & { user: UserType }>, required: true }
   },
   setup () {
-    const { dateTimeHM } = useFilters()
     const sectionKind: PageKindChoices = {
       TEXT: 0,
       GALLERY: 1,
@@ -57,7 +56,7 @@ export default defineComponent({
       JUPYTER: 6,
       DATASET: 7
     }
-    return { sectionKind, dateTimeHM }
+    return { sectionKind }
   }
 })
 </script>

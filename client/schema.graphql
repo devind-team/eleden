@@ -737,6 +737,8 @@ input AddPageMutationInput {
   signature: String
   """Теги на странице"""
   tagNames: [String!]
+  """Первоначальное добавление текста страницы"""
+  text: String
   """Заголовок"""
   title: String!
 }
@@ -2815,6 +2817,8 @@ type DeleteEduProgramMutationPayload {
   clientMutationId: String
   """Ошибки мутации"""
   errors: [ErrorFieldType!]!
+  """Идентификатор образовательной программы"""
+  id: ID!
   """Успех мутации"""
   success: Boolean!
 }

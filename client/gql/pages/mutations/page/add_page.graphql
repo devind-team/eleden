@@ -7,7 +7,8 @@ mutation AddPage(
   $priority: Boolean,
   $kindId: Int,
   $categoryId: ID!,
-  $tagNames: [String!]
+  $tagNames: [String!],
+  $text: String
 ) {
   addPage(input: {
     avatar: $avatar,
@@ -18,7 +19,8 @@ mutation AddPage(
     priority: $priority,
     kindId: $kindId,
     categoryId: $categoryId,
-    tagNames: $tagNames
+    tagNames: $tagNames,
+    text: $text
   }) {
     success
     errors {

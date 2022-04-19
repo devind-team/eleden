@@ -6,10 +6,11 @@ query Pages($first: Int, $offset: Int, $categoryId: ID, $kindId: ID, $search: St
   pages(first: $first, offset: $offset, category_Id: $categoryId, kind_Id: $kindId, title_Icontains: $search) {
     totalCount
     pageInfo {
-      startCursor
-      endCursor
       hasNextPage
       hasPreviousPage
+      endCursor
+      startCursor
+      __typename
     }
     edges {
       node {

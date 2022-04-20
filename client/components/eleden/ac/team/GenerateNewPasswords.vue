@@ -1,8 +1,8 @@
 <template lang="pug">
   mutation-modal-form(
-    :header="t('generatingNewPasswords')"
+    :header="$t('ac.teams.teamActions.generateNewPasswords.generatingNewPasswords')"
     :subheader="team.name"
-    :buttonText="t('generatePasswords')"
+    :buttonText="$t('ac.teams.teamActions.generateNewPasswords.generatePasswords')"
     :mutation="require('~/gql/eleden/mutations/team/generate_team_new_passwords.graphql')"
     :variables="{ teamId: team.id, usersId: selectedJobs.map((e) => e.user.id), date }"
     mutation-name="generateTeamNewPasswords"
@@ -14,7 +14,7 @@
     template(#activator="{ on }")
       slot(:on="on")
     template(#form)
-      v-text-field(v-model="search" :label="t('search')" prepend-icon="mdi-magnify" clearable)
+      v-text-field(v-model="search" :label="$t('search')" prepend-icon="mdi-magnify" clearable)
       validation-provider(rules="required")
         v-data-table.mb-3(
           v-model="selectedJobs"
@@ -46,7 +46,7 @@
             v-bind="attrs"
             v-on="on"
             v-model="formattingDate"
-            :label= "t('generationDate')"
+            :label= "$t('ac.teams.teamActions.generateNewPasswords.generationDate')"
             prepend-icon="mdi-calendar"
             hide-details
             readonly
@@ -61,87 +61,68 @@
 </template>
 
 <script lang="ts">
-import { PropType } from 'vue'
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import type { PropType } from '#app'
 import { DataTableHeader } from 'vuetify'
 import { TeamType, JobType, GenerateTeamNewPasswordsMutationPayload } from '~/types/graphql'
+import { useI18n, useFilters } from '~/composables'
 import MutationModalForm from '~/components/common/forms/MutationModalForm.vue'
 import AvatarDialog from '~/components/users/AvatarDialog.vue'
 
-type GenerateTeamNewPasswordsData = { data: { generateTeamNewPasswords: GenerateTeamNewPasswordsMutationPayload } }
+type GenerateTeamNewPasswordsDataType = { data: { generateTeamNewPasswords: GenerateTeamNewPasswordsMutationPayload } }
 
-@Component<GenerateNewPasswords>({
+export default defineComponent({
   components: { MutationModalForm, AvatarDialog },
-  computed: {
-    headers (): DataTableHeader[] {
-      return [
-        {
-          text: this.t('tableHeaders.avatar'),
-          value: 'user.avatar'
-        },
-        {
-          text: this.t('tableHeaders.username'),
-          value: 'user.username'
-        },
-        {
-          text: this.t('tableHeaders.lastName'),
-          value: 'user.lastName'
-        },
-        {
-          text: this.t('tableHeaders.firstName'),
-          value: 'user.firstName'
-        },
-        {
-          text: this.t('tableHeaders.sirName'),
-          value: 'user.sirName'
-        }
-      ]
-    },
-    formattingDate (): string {
-      return new Date(this.date).toLocaleDateString()
+  props: {
+    team: { type: Object as PropType<TeamType>, required: true }
+  },
+  setup (props) {
+    const { t } = useI18n()
+    const { getNowDate } = useFilters()
+
+    const search = ref<string>('')
+    const selectedJobs = ref<JobType[]>([])
+    const date = ref<string>(getNowDate())
+    const dateMenuActive = ref<boolean>(false)
+
+    const headers = computed<DataTableHeader[]>(() => ([
+      {
+        text: t('ac.teams.teamActions.generateNewPasswords.tableHeaders.avatar') as string,
+        value: 'user.avatar'
+      },
+      {
+        text: t('ac.teams.teamActions.generateNewPasswords.tableHeaders.username') as string,
+        value: 'user.username'
+      },
+      {
+        text: t('ac.teams.teamActions.generateNewPasswords.tableHeaders.lastName') as string,
+        value: 'user.lastName'
+      },
+      {
+        text: t('ac.teams.teamActions.generateNewPasswords.tableHeaders.firstName') as string,
+        value: 'user.firstName'
+      },
+      {
+        text: t('ac.teams.teamActions.generateNewPasswords.tableHeaders.sirName') as string,
+        value: 'user.sirName'
+      }
+    ]))
+
+    const formattingDate = computed<string>(() => (new Date(date.value).toLocaleDateString()))
+
+    const generatePasswordsDone = ({ data: { generateTeamNewPasswords: { success, src } } }: GenerateTeamNewPasswordsDataType): void => {
+      if (success) {
+        window.open(`/${src}`, '_blank')
+      }
     }
+
+    const close = (): void => {
+      search.value = ''
+      selectedJobs.value = []
+      date.value = getNowDate()
+      dateMenuActive.value = false
+    }
+
+    return { search, selectedJobs, date, dateMenuActive, headers, formattingDate, generatePasswordsDone, close }
   }
 })
-export default class GenerateNewPasswords extends Vue {
-  @Prop({ type: Object as PropType<TeamType>, required: true }) readonly team!: TeamType
-
-  readonly headers!: DataTableHeader[]
-  readonly formattingDate!: string
-
-  search: string = ''
-  selectedJobs: JobType[] = []
-  date: string = this.$getNowDate()
-  dateMenuActive: boolean = false
-
-  /**
-   * Получение перевода относительно локального пути
-   * @param path
-   * @param values
-   * @return
-   */
-  t (path: string, values: any = undefined): string {
-    return this.$t(`ac.teams.teamActions.generateNewPasswords.${path}`, values) as string
-  }
-
-  /**
-   * Открытие файла с новыми паролями после генерации
-   * @param success
-   * @param src
-   */
-  generatePasswordsDone ({ data: { generateTeamNewPasswords: { success, src } } }: GenerateTeamNewPasswordsData): void {
-    if (success) {
-      window.open(`/${src}`, '_blank')
-    }
-  }
-
-  /**
-   * Закрыте формы
-   */
-  close (): void {
-    this.search = ''
-    this.selectedJobs = []
-    this.date = this.$getNowDate()
-    this.dateMenuActive = false
-  }
-}
 </script>

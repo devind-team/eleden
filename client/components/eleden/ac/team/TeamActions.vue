@@ -8,49 +8,41 @@
           v-list-item-icon
             v-icon mdi-send
           v-list-item-content
-            v-list-item-title {{ t('sendNotification') }}
+            v-list-item-title {{ $t('ac.teams.teamActions.sendNotification') }}
       unload-users-form(v-slot="{ on }" :team="team" @close="active = false")
         v-list-item(v-on="on")
           v-list-item-icon
             v-icon mdi-upload
           v-list-item-content
-            v-list-item-title {{ t('upload') }}
+            v-list-item-title {{ $t('ac.teams.teamActions.upload') }}
       generate-new-passwords(v-if="team.permissions.canChange" v-slot="{ on }" :team="team" @close="active = false")
         v-list-item(v-on="on")
           v-list-item-icon
             v-icon mdi-lock-reset
           v-list-item-content
-            v-list-item-title {{ t('generateNewPasswords.name') }}
+            v-list-item-title {{ $t('ac.teams.teamActions.generateNewPasswords.name') }}
 </template>
 
 <script lang="ts">
-import { PropType } from 'vue'
-import { Vue, Component, Prop } from 'vue-property-decorator'
-import { mapGetters } from 'vuex'
+import type { PropType } from '#app'
 import { TeamType } from '~/types/graphql'
+import { useAuthStore } from '~/store'
 import GenerateNewPasswords from '~/components/eleden/ac/team/GenerateNewPasswords.vue'
 import UnloadUsersForm from '~/components/users/UnloadUsersForm.vue'
 import ExperimentalDialog from '~/components/common/dialogs/ExperimentalDialog.vue'
 
-@Component<TeamActions>({
+export default defineComponent({
   components: { GenerateNewPasswords, ExperimentalDialog, UnloadUsersForm },
-  computed: mapGetters({ hasPerm: 'auth/hasPerm' })
-})
-export default class TeamActions extends Vue {
-  @Prop({ type: Object as PropType<TeamType>, required: true }) readonly team!: TeamType
+  props: {
+    team: { type: Object as PropType<TeamType>, required: true }
+  },
+  setup () {
+    const authStore = useAuthStore()
+    const hasPerm = toRef(authStore, 'hasPerm')
 
-  readonly hasPerm!: (permissions: string | string[], or?: boolean) => boolean
+    const active = ref<boolean>(false)
 
-  active: boolean = false
-
-  /**
-   * Получение перевода относительно локального пути
-   * @param path
-   * @param values
-   * @return
-   */
-  t (path: string, values: any = undefined): string {
-    return this.$t(`ac.teams.teamActions.${path}`, values) as string
+    return { hasPerm, active }
   }
-}
+})
 </script>

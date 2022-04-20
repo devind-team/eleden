@@ -4,10 +4,10 @@
       slot(:on="on")
     v-list
       mutation-modal-form(
-        :header="t('addForm.header')"
-        :button-text="t('addForm.buttonText')"
+        :header="$t('ac.users.addMenu.addForm.header')"
+        :button-text="$t('ac.users.addMenu.addForm.buttonText')"
         :mutation="require('~/gql/eleden/mutations/core/upload_eleden_users.graphql')"
-        :variables="{ file, groupsId: this.selectGroups.map((e) => Number(e.id)) }"
+        :variables="{ file, groupsId: selectGroups.map((e) => Number(e.id)) }"
         :update="update"
         mutation-name="uploadUsers"
         errors-in-alert
@@ -17,19 +17,23 @@
           v-list-item(v-on="on")
             v-list-item-icon
               v-icon mdi-file
-            v-list-item-content {{ t('buttons.fromFile') }}
+            v-list-item-content {{ $t('ac.users.addMenu.buttons.fromFile') }}
             v-list-item-action
-              help-dialog(v-slot="{ on: onHelper }" :text="t('helpDialog.helpInstruction')" doc="help/add_users")
+              help-dialog(
+                v-slot="{ on: onHelper }"
+                :text="$t('ac.users.addMenu.helpDialog.helpInstruction')"
+                doc="help/add_users"
+              )
                 v-tooltip(bottom)
                   template(#activator="{ on: onTooltip}")
                     v-btn(v-on="{ ...onTooltip, ...onHelper}" icon)
                       v-icon mdi-help-circle-outline
-                  span {{ t('buttons.helpInstruction') }}
+                  span {{ $t('ac.users.addMenu.buttons.helpInstruction') }}
         template(#form)
-          validation-provider(v-slot="{ errors, valid }" :name="t('form.file')" rules="required")
+          validation-provider(v-slot="{ errors, valid }" :name="$t('ac.users.addMenu.form.file')" rules="required")
             v-file-input(
               v-model="file"
-              :label="t('form.file')"
+              :label="$t('ac.users.addMenu.form.file')"
               :error-messages="errors"
               :success="valid"
               accept=".xlsx,.csv,.json"
@@ -38,7 +42,7 @@
           v-select(
             v-model="selectGroups"
             :items="groups"
-            :label="t('form.groups')"
+            :label="$t('ac.users.addMenu.form.groups')"
             item-text="name"
             multiple
             return-object
@@ -47,39 +51,30 @@
 </template>
 
 <script lang="ts">
-import { PropType } from 'vue'
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import type { PropType } from '#app'
 import { DataProxy } from 'apollo-cache'
-import { GroupType } from '~/types/graphql'
+import { GroupType, GroupsQuery, GroupsQueryVariables } from '~/types/graphql'
+import { useCommonQuery } from '~/composables'
+import groupsQuery from '~/gql/core/queries/groups.graphql'
 import ErrorValidateDialog from '~/components/common/dialogs/ErrorValidateDialog.vue'
 import HelpDialog from '~/components/common/dialogs/HelpDialog.vue'
 import MutationModalForm from '~/components/common/forms/MutationModalForm.vue'
 
-type Update = (store: DataProxy, result: any) => void
+type UpdateType = (store: DataProxy, result: any) => void
 
-@Component<AddUsers>({
+export default defineComponent({
   components: { MutationModalForm, HelpDialog, ErrorValidateDialog },
-  apollo: {
-    groups: require('~/gql/core/queries/groups.graphql')
+  props: {
+    update: { type: Function as PropType<UpdateType>, required: true }
+  },
+  setup () {
+    const active = ref<boolean>(false)
+    const file = ref<File | null>(null)
+    const selectGroups = ref<GroupType[]>([])
+
+    const { data: groups } = useCommonQuery<GroupsQuery, GroupsQueryVariables>({ document: groupsQuery })
+
+    return { active, file, selectGroups, groups }
   }
 })
-export default class AddUsers extends Vue {
-  @Prop({ type: Function as PropType<Update>, required: true }) readonly update!: Update
-
-  readonly groups!: GroupType[] | undefined
-
-  active: boolean = false
-  file: File | null = null
-  selectGroups: GroupType[] = []
-
-  /**
-   * Получение перевода относильно локального пути
-   * @param path
-   * @param values
-   * @return
-   */
-  t (path: string, values: any = undefined): string {
-    return this.$t(`ac.users.addMenu.${path}`, values) as string
-  }
-}
 </script>

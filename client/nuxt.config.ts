@@ -31,7 +31,8 @@ export default defineNuxtConfig({
     CLIENT_ID: process.env.CLIENT_ID,
     CLIENT_SECRET: process.env.CLIENT_SECRET,
     TINYMCE_API: process.env.TINYMCE_API,
-    ASK: process.env.ASK
+    ASK: process.env.ASK,
+    BUILD: process.env.BUILD
   },
   head: {
     title: 'Home page',

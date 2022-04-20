@@ -1,5 +1,9 @@
 <template lang="pug">
-  v-container
+  raai-index(v-if="BUILD === 'raai'")
+    page-segment(v-if="!loading" v-for="segment in segments" :key="segment.id" :segment="segment")
+    v-row(v-else)
+      v-progress-circular.mt-12.mx-auto(size="60" color="primary" indeterminate)
+  v-container(v-else)
     page-segment(v-if="!loading" v-for="segment in segments" :key="segment.id" :segment="segment")
     v-row(v-else)
       v-progress-circular.mt-12.mx-auto(size="60" color="primary" indeterminate)
@@ -11,10 +15,12 @@ import { SegmentsQuery, SegmentsQueryVariables } from '~/types/graphql'
 import { useCommonQuery, useI18n } from '~/composables'
 import segmentsQuery from '~/gql/pages/queries/segments.graphql'
 import PageSegment from '~/components/pages/PageSegment.vue'
+import RaaiIndex from '~/components/raai/RaaiIndex.vue'
 
 export default defineComponent({
-  components: { PageSegment },
+  components: { RaaiIndex, PageSegment },
   setup () {
+    const { BUILD } = useRuntimeConfig()
     const { t } = useI18n()
     useNuxt2Meta({ title: t('homePage') as string })
 
@@ -22,7 +28,7 @@ export default defineComponent({
       document: segmentsQuery
     })
 
-    return { segments, loading }
+    return { segments, loading, BUILD }
   }
 })
 </script>

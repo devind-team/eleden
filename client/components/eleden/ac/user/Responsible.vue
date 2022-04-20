@@ -7,12 +7,12 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+import type { PropType } from '#app'
 import { UserType } from '~/types/graphql'
 
-@Component<Responsible>({})
-export default class Responsible extends Vue {
-  @Prop({ required: true, type: Object as PropType<UserType> }) user!: UserType
-}
+export default defineComponent({
+  props: {
+    user: { required: true, type: Object as PropType<UserType> }
+  }
+})
 </script>

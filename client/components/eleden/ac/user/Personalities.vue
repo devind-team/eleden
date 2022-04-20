@@ -3,29 +3,30 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue'
-import { Component, Prop } from 'vue-property-decorator'
+import type { PropType } from '#app'
 import { DataTableHeader } from 'vuetify'
 import { UserType } from '~/types/graphql'
+import { useI18n } from '~/composables'
 
-@Component<Personalities>({
-  computed: {
-    headers (): DataTableHeader[] {
-      return [
-        { text: this.$t('ac.users.personalities.personalities.tableHeaders.text') as string, value: 'text' },
-        { text: this.$t('ac.users.personalities.personalities.tableHeaders.value') as string, value: 'value' }
-      ]
-    },
-    items (): { text: string, value: string }[] {
-      return ['id', 'username', 'lastName', 'firstName', 'sirName', 'email'].map(
-        (e: string) => ({ text: this.$t(`profile.${e}`) as string, value: (this.user as any)[e] })
+export default defineComponent({
+  props: {
+    user: { required: true, type: Object as PropType<UserType> }
+  },
+  setup (props) {
+    const { t } = useI18n()
+
+    const headers = computed<DataTableHeader[]>(() => ([
+      { text: t('ac.users.personalities.personalities.tableHeaders.text') as string, value: 'text' },
+      { text: t('ac.users.personalities.personalities.tableHeaders.value') as string, value: 'value' }
+    ]))
+
+    const items = computed<{ text: string, value: string }[]>(() => (
+      ['id', 'username', 'lastName', 'firstName', 'sirName', 'email'].map(
+        (e: string) => ({ text: t(`profile.${e}`) as string, value: (props.user as any)[e] })
       ) as { text: string, value: string }[]
-    }
+    ))
+
+    return { headers, items }
   }
 })
-export default class Personalities extends Vue {
-  @Prop({ required: true, type: Object as PropType<UserType> }) user!: UserType
-  readonly headers!: DataTableHeader[]
-  readonly items!: { text: string, value: string }[]
-}
 </script>

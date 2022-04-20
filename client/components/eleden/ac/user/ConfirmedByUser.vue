@@ -4,45 +4,37 @@
     template(v-else)
       v-menu(v-if="canChange" v-model="active" bottom)
         template(#activator="{ on }")
-          v-btn(v-on="on" :loading="loading" text color="primary") {{ t('confirm') }}
+          v-btn(v-on="on" :loading="loading" text color="primary") {{ $t('ac.users.portfolio.confirmation.confirm') }}
         v-card(style="width: 400px")
-          v-card-text {{ t('confirmQuestion') }}
+          v-card-text {{ $t('ac.users.portfolio.confirmation.confirmQuestion') }}
           v-card-actions
-            v-btn(@click="confirm" color="primary") {{ t('yes') }}
+            v-btn(@click="confirm" color="primary") {{ $t('yes') }}
             v-spacer
-            v-btn(@click="active = false" color="warning") {{ t('no') }}
-      .font-italic(v-else) {{ t('notConfirmed') }}
+            v-btn(@click="active = false" color="warning") {{ $t('no') }}
+      .font-italic(v-else) {{ $t('ac.users.portfolio.confirmation.notConfirmed') }}
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import type { PropType } from '#app'
 import { UserType } from '~/types/graphql'
 import UserLink from '~/components/eleden/user/UserLink.vue'
 
-@Component<ConfirmedByUser>({ components: { UserLink } })
-export default class ConfirmedByUser extends Vue {
-  @Prop({ default: null }) readonly user!: UserType | null
-  @Prop({ default: false }) readonly canChange!: boolean
-  @Prop({ default: false }) readonly loading!: boolean
+export default defineComponent({
+  components: { UserLink },
+  props: {
+    user: { type: Object as PropType<UserType | null>, default: null },
+    canChange: { type: Boolean, default: false },
+    loading: { type: Boolean, default: false }
+  },
+  setup (_, { emit }) {
+    const active = ref<boolean>(false)
 
-  active: boolean = false
+    const confirm = () => {
+      emit('confirm')
+      active.value = false
+    }
 
-  /**
-   * Получение перевода относильно локального пути
-   * @param path
-   * @param values
-   * @return
-   */
-  t (path: string, values: any = undefined): string {
-    return this.$t(`ac.users.portfolio.confirmation.${path}`, values) as string
+    return { active, confirm }
   }
-
-  /**
-   * Подтвердить
-   */
-  confirm () {
-    this.$emit('confirm')
-    this.active = false
-  }
-}
+})
 </script>

@@ -84,7 +84,7 @@ export default defineComponent({
         }
       }
 
-    return { file, active, changeAvatarDone }
+    return { changeAvatar, file, active, changeAvatarDone }
   }
 })
 </script>

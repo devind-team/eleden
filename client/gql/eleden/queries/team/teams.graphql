@@ -1,9 +1,10 @@
 #import '../../fragments/team_groups_user_fields.graphql'
 
-query Teams($first: Int, $offset: Int, $search: String, $courseCount: Float, $courseCountGt: Float) {
+query Teams($first: Int, $offset: Int, $after: String, $search: String, $courseCount: Float, $courseCountGt: Float) {
   teams(
     first: $first,
     offset: $offset,
+    after: $after,
     name_Icontains: $search,
     shortName_Icontains: $search,
     admission_Icontains: $search,
@@ -11,6 +12,13 @@ query Teams($first: Int, $offset: Int, $search: String, $courseCount: Float, $co
     courseCount_Gt: $courseCountGt
   ) {
     totalCount
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+      __typename
+    }
     edges {
       node {
         ...TeamGroupsUserFields

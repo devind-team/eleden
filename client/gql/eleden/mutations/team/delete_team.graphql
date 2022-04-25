@@ -5,5 +5,6 @@ mutation DeleteTeam($teamId: ID!) {
       messages
       field
     }
+    __typename
   }
 }

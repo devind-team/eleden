@@ -13,16 +13,10 @@
           v-col.text-center(cols="12" sm="4" v-for="(item,i) in goals" :key="i")
             v-icon.indigo--text.text--accent-4.outlined(size="100" color="indigo accent-4" center="true") {{ item.icon }}
             v-card-text.headline {{ item.text }}
-      //v-row.justify-center
-        v-col(cols="7" v-for="(item,i) in goals" :key="i" )
-          v-list-item
-            v-icon.indigo--text.text--accent-4(x-large) mdi-check
-            v-card-text.headline {{ item.text }}
 </template>
 
-<script>
-export default {
-  name: "RaaiGoals",
+<script lang="ts">
+export default defineComponent({
   data () {
     return {
       goals: [
@@ -64,8 +58,8 @@ export default {
         }
       ]
     }
-  },
-}
+  }
+})
 </script>
 
 <style scoped>

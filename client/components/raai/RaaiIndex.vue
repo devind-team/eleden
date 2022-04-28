@@ -5,25 +5,18 @@
     v-row.justify-center
       v-col(cols="12" sm="4")
         v-card(flat)
-          v-card-title.headline Новости
-          //выводится новость в зависимости от типа блока
-          raai-news
-            v-card-subtitle.py-0(slot="card") Дата
-            v-card-title.py-0(slot="card") Заголовок новости
+          v-card-title.headline.justify-center Новости
+          v-card-subtitle.py-0 Дата
+          v-card-title.py-0 Заголовок новости
       v-col(cols="12" sm="4")
         v-card(flat)
-          v-card-title.headline Мероприятия
-          //выводится новость в зависимости от типа блока
-          raai-news
-            v-card-subtitle.py-0(slot="card") Дата
-            v-card-title.py-0(slot="card") Заголовок мероприятия
-    raai-goals
+          v-card-title.headline.justify-center Мероприятия
+          v-card-subtitle.py-0 Дата
+          v-card-title.py-0 Заголовок мероприятия
     pre Бонусы РАИИ
 </template>
 
 <script lang="ts">
-import RaaiNews from './RaaiNews'
-import RaaiGoals from './RaaiGoals'
 
 export default defineComponent({
   data () {
@@ -36,9 +29,6 @@ export default defineComponent({
         { src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg' }
       ]
     }
-  },
-  components: {
-    RaaiNews, RaaiGoals
   }
 })
 </script>

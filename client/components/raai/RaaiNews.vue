@@ -1,14 +1,15 @@
 <template lang="pug">
   div
-    //новость в зависимости от типа блока: Новость или мероприятие
     slot(name="card")
 
 </template>
 
-<script>
-export default {
-  name: "RaaiNews"
-}
+<script lang="ts">
+export default defineComponent({
+  data () {
+
+  }
+})
 </script>
 
 <style scoped>

@@ -32,7 +32,7 @@
     "vee-validate": "^3.4.14",
     "vue-apexcharts": "^1.6.2",
     "vue-rx": "^6.2.0",
-    "vuetify": "^2.6.4"
+    "vuetify": "^2.6.5"
   },
   "devDependencies": {
     "@babel/core": "^7.17.9",
@@ -78,9 +78,9 @@
     "@tiptap/extension-underline": "^2.0.0-beta.23",
     "@tiptap/starter-kit": "^2.0.0-beta.183",
     "@tiptap/vue-2": "^2.0.0-beta.77",
-    "@typescript-eslint/eslint-plugin": "^5.21.0",
+    "@typescript-eslint/eslint-plugin": "^5.22.0",
     "@typescript-eslint/parser": "^5.21.0",
-    "core-js": "^3.22.2",
+    "core-js": "^3.22.4",
     "eslint": "^8.14.0",
     "eslint-import-resolver-typescript": "^2.7.1",
     "eslint-plugin-import": "^2.26.0",

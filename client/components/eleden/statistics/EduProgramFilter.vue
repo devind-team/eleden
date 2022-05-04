@@ -58,14 +58,14 @@
           template(#activator="{ on }")
             v-btn(v-on="on" :value="v" icon)
               v-icon mdi-{{ v }}
-          span {{ t(`view.${v}`) }}
+          span {{ $t(`statistics.eduProgramsStatistics.view.${v}`) }}
 </template>
 
 <script lang="ts">
-import { Vue, Component, PropSync } from 'vue-property-decorator'
-import { PropType } from 'vue'
+import type { PropType } from '#app'
 import { DirectionType, EduFormType } from '~/types/graphql'
 import { FilterMessages } from '~/types/filters'
+import { useI18n } from '~/composables'
 import ItemsDataFilter from '~/components/common/filters/ItemsDataFilter.vue'
 import QueryDataFilter from '~/components/common/filters/QueryDataFilter.vue'
 
@@ -80,117 +80,126 @@ type DirectionFilter = {
   children: DirectionFilter[] | DirectionType[]
 }
 
-@Component<EduProgramFilter>({
+export default defineComponent({
   components: { ItemsDataFilter, QueryDataFilter },
-  computed: {
-    years (): Year[] {
+  props: {
+    directionsFilter: { type: Array as PropType<DirectionType[]>, required: true },
+    yearsFilter: { type: Array as PropType<Year[]>, required: true },
+    eduFormsFilter: { type: Array as PropType<EduFormType[]>, required: true },
+    view: { type: String, required: true }
+  },
+  setup (props, { emit }) {
+    const { t, tc } = useI18n()
+
+    const syncedDirectionsFilter = computed<DirectionType[]>({
+      get () {
+        return props.directionsFilter
+      },
+      set (value) {
+        emit('update:directionsFilter', value)
+      }
+    })
+
+    const syncedYearsFilter = computed<Year[]>({
+      get () {
+        return props.yearsFilter
+      },
+      set (value) {
+        emit('update:yearsFilter', value)
+      }
+    })
+
+    const syncedEduFormsFilter = computed<EduFormType[]>({
+      get () {
+        return props.eduFormsFilter
+      },
+      set (value) {
+        emit('update:eduFormsFilter', value)
+      }
+    })
+
+    const syncedView = computed<string>({
+      get () {
+        return props.view
+      },
+      set (value) {
+        emit('update:view', value)
+      }
+    })
+
+    const directionsSearch = ref<string>('')
+
+    const years = computed<Year[]>(() => {
       const start: number = 2017
       const year = new Date().getFullYear() + 2
       return Array.from(Array(year - start).keys())
         .map((y: number) => y + start).reverse()
-        .map((y: number) => ({ id: y, text: this.t('filters.yearsFilter.year', { year: y }) }))
+        .map((y: number) => ({ id: y, text: t('statistics.eduProgramsStatistics.filters.yearsFilter.year', { year: y }) }))
+    })
+
+    const getFilterMessages = (filterName: string, multiple: boolean = false): FilterMessages => {
+      return {
+        title: t(`statistics.eduProgramsStatistics.filters.${filterName}.title`) as string,
+        noFiltrationMessage: t(`statistics.eduProgramsStatistics.filters.${filterName}.noFiltrationMessage`) as string,
+        multipleMessageFunction: multiple
+          ? (name, restLength) =>
+              tc(
+              `statistics.eduProgramsStatistics.filters.${filterName}.multipleMessage`,
+              restLength, { name, restLength }
+              )
+          : undefined
+      }
+    }
+
+    const buildDirectionsTree = (directions: DirectionType[], substrLength: number = 2): DirectionFilter[] => {
+      const codes: string[] = [
+        ...new Set(directions.map((d: DirectionType) => d.code?.substr(0, substrLength)))
+      ] as string[]
+      return codes.map((code: string) => {
+        const children = directions.filter((d: DirectionType) => d.code?.substr(0, code.length) === code)
+        return {
+          id: code,
+          code,
+          name: `${code}` + Array.from({ length: (8 - substrLength) / 3 }).map(_ => '.xx').join(''),
+          children: substrLength < 5 ? buildDirectionsTree(children, substrLength + 3) : children
+        }
+      })
+    }
+
+    const filterDirections = (
+      direction: DirectionFilter | DirectionType,
+      search: string,
+      getSelected: (direction: DirectionType) => boolean
+    ): boolean => {
+      if ('__typename' in direction) {
+        return direction.name.toLocaleLowerCase().includes(search.toLocaleLowerCase()) || getSelected(direction)
+      }
+      return direction.name.toLocaleLowerCase().includes(search.toLocaleLowerCase()) ||
+      (direction as DirectionFilter).children
+        .some((child: DirectionFilter | DirectionType) => filterDirections(child, search, getSelected))
+    }
+
+    const selectDirections = (
+      allDirections: DirectionType[],
+      directions: DirectionType[],
+      setSelected: (direction: DirectionType, selected: boolean) => void
+    ): void => {
+      allDirections.forEach(direction => setSelected(direction, false))
+      directions.forEach(direction => setSelected(direction, true))
+    }
+
+    return {
+      syncedDirectionsFilter,
+      syncedYearsFilter,
+      syncedEduFormsFilter,
+      syncedView,
+      directionsSearch,
+      years,
+      getFilterMessages,
+      buildDirectionsTree,
+      filterDirections,
+      selectDirections
     }
   }
 })
-export default class EduProgramFilter extends Vue {
-  @PropSync('directionsFilter', { type: Array as PropType<DirectionType[]>, required: true })
-    syncedDirectionsFilter!: DirectionType[]
-
-  @PropSync('yearsFilter', { type: Array as PropType<Year[]>, required: true })
-    syncedYearsFilter!: Year[]
-
-  @PropSync('eduFormsFilter', { type: Array as PropType<EduFormType[]>, required: true })
-    syncedEduFormsFilter!: EduFormType[]
-
-  @PropSync('view', { type: String, required: true }) syncedView!: View
-
-  readonly years!: Year[]
-
-  directionsSearch: string = ''
-
-  /**
-   * Получение перевода относильно локального пути
-   * @param path
-   * @param values
-   * @return
-   */
-  t (path: string, values: any = undefined): string {
-    return this.$t(`statistics.eduProgramsStatistics.${path}`, values) as string
-  }
-
-  /**
-   * Получение сообщений для фильтра
-   * @param filterName
-   * @param multiple
-   * @return
-   */
-  getFilterMessages (filterName: string, multiple: boolean = false): FilterMessages {
-    return {
-      title: this.t(`filters.${filterName}.title`),
-      noFiltrationMessage: this.t(`filters.${filterName}.noFiltrationMessage`),
-      multipleMessageFunction: multiple
-        ? (name, restLength) =>
-            this.$tc(
-              `statistics.eduProgramsStatistics.filters.${filterName}.multipleMessage`,
-              restLength, { name, restLength }
-            )
-        : undefined
-    }
-  }
-
-  /**
-   * Построение дерева направлений подготовки
-   * @param directions
-   * @param substrLength
-   * @return
-   */
-  buildDirectionsTree (directions: DirectionType[], substrLength: number = 2): DirectionFilter[] {
-    const codes: string[] = [
-      ...new Set(directions.map((d: DirectionType) => d.code?.substr(0, substrLength)))
-    ] as string[]
-    return codes.map((code: string) => {
-      const children = directions.filter((d: DirectionType) => d.code?.substr(0, code.length) === code)
-      return {
-        id: code,
-        code,
-        name: `${code}` + Array.from({ length: (8 - substrLength) / 3 }).map(_ => '.xx').join(''),
-        children: substrLength < 5 ? this.buildDirectionsTree(children, substrLength + 3) : children
-      }
-    })
-  }
-
-  /**
-   * Фильтрация направлений подготовки
-   * @param direction
-   * @param search
-   * @param getSelected
-   */
-  filterDirections (
-    direction: DirectionFilter | DirectionType,
-    search: string,
-    getSelected: (direction: DirectionType) => boolean
-  ): boolean {
-    if ('__typename' in direction) {
-      return direction.name.toLocaleLowerCase().includes(search.toLocaleLowerCase()) || getSelected(direction)
-    }
-    return direction.name.toLocaleLowerCase().includes(search.toLocaleLowerCase()) ||
-      (direction as DirectionFilter).children
-        .some((child: DirectionFilter | DirectionType) => this.filterDirections(child, search, getSelected))
-  }
-
-  /**
-   * Выбор направлений подготовки
-   * @param allDirections
-   * @param directions
-   * @param setSelected
-   */
-  selectDirections (
-    allDirections: DirectionType[],
-    directions: DirectionType[],
-    setSelected: (direction: DirectionType, selected: boolean) => void
-  ): void {
-    allDirections.forEach(direction => setSelected(direction, false))
-    directions.forEach(direction => setSelected(direction, true))
-  }
-}
 </script>

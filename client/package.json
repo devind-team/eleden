@@ -19,7 +19,7 @@
     "@nuxtjs/vuetify": "^1.12.3",
     "@pinia/nuxt": "^0.1.8",
     "@vue/apollo-composable": "^4.0.0-alpha.16",
-    "@vueuse/core": "^8.3.1",
+    "@vueuse/core": "^8.4.0",
     "@vueuse/integrations": "^8.4.0",
     "accounting": "^0.4.1",
     "apexcharts": "^3.35.0",
@@ -35,7 +35,7 @@
     "vuetify": "^2.6.5"
   },
   "devDependencies": {
-    "@babel/core": "^7.17.9",
+    "@babel/core": "^7.17.10",
     "@babel/eslint-parser": "^7.17.0",
     "@babel/plugin-proposal-decorators": "^7.17.9",
     "@babel/plugin-proposal-optional-chaining": "^7.16.7",
@@ -48,7 +48,7 @@
     "@nuxt/bridge": "npm:@nuxt/bridge-edge",
     "@nuxt/types": "^2.15.8",
     "@nuxtjs/color-mode": "^3.0.2",
-    "@nuxtjs/eslint-config-typescript": "^9.0.0",
+    "@nuxtjs/eslint-config-typescript": "^10.0.0",
     "@tiptap/core": "^2.0.0-beta.174",
     "@tiptap/extension-bold": "^2.0.0-beta.26",
     "@tiptap/extension-bullet-list": "^2.0.0-beta.26",
@@ -78,8 +78,8 @@
     "@tiptap/extension-underline": "^2.0.0-beta.23",
     "@tiptap/starter-kit": "^2.0.0-beta.183",
     "@tiptap/vue-2": "^2.0.0-beta.77",
-    "@typescript-eslint/eslint-plugin": "^5.21.0",
-    "@typescript-eslint/parser": "^5.21.0",
+    "@typescript-eslint/eslint-plugin": "^5.22.0",
+    "@typescript-eslint/parser": "^5.22.0",
     "core-js": "^3.22.4",
     "eslint": "^8.14.0",
     "eslint-import-resolver-typescript": "^2.7.1",
@@ -88,7 +88,7 @@
     "pug": "^3.0.2",
     "pug-plain-loader": "^1.1.0",
     "rxjs": "^7.5.5",
-    "typescript": "^4.6.3",
+    "typescript": "^4.6.4",
     "vue-class-component": "^7.2.6",
     "vue-property-decorator": "^9.1.2"
   }

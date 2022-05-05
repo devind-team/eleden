@@ -11,7 +11,7 @@
       v-item-group
         v-row.justify-center
           v-col.text-center(cols="12" sm="4" v-for="(item, i) in goals" :key="i")
-            v-icon.indigo--text.text--accent-4.outlined(size="100" color="indigo accent-4" center="true") {{ item.icon }}
+            v-icon.indigo--text.text--accent-4.outlined(size="100" color="indigo accent-4" center="true") mdi-{{ item.icon }}
             v-card-text.headline {{ item.text }}
 </template>
 
@@ -20,39 +20,39 @@ export default defineComponent({
   setup () {
     const goals = [
         {
-          icon: 'mdi-human-capacity-decrease',
+          icon: 'human-capacity-decrease',
           text: 'Объединение и развитие плодотворного сотрудничества отечественных ученых и специалистов.'
         },
         {
-          icon: 'mdi-account-voice',
+          icon: 'account-voice',
           text: 'Анализ состояния, обсуждение проблем и путей решения, систематизация результатов.'
         },
         {
-          icon: 'mdi-chart-bell-curve-cumulative',
+          icon: 'chart-bell-curve-cumulative',
           text: 'Мониторинг тенденций и определение перспектив развития теории, прикладных исследований и разработок.'
         },
         {
-          icon: 'mdi-handshake',
+          icon: 'handshake',
           text: 'Развитие международного сотрудничества в области искусственного интеллекта.'
         },
         {
-          icon: 'mdi-book-account',
+          icon: 'book-account',
           text: 'Популяризация знаний в области искусственного интеллекта.'
         },
         {
-          icon: 'mdi-professional-hexagon',
+          icon: 'professional-hexagon',
           text: 'Содействие в профессиональной деятельности членов РАИИ.'
         },
         {
-          icon: 'mdi-book-arrow-up',
+          icon: 'book-arrow-up',
           text: 'Поддержка и продвижение отечественных теоретических и прикладных исследований и разработок.'
         },
         {
-          icon: 'mdi-feature-search',
+          icon: 'feature-search',
           text: 'Независимая профессиональная экспертиза проектов и результатов теоретических и прикладных исследований и разработок.'
         },
         {
-          icon: 'mdi-chat-question',
+          icon: 'chat-question',
           text: 'Консультативная и экспертная поддержка, участие в разработке отечественных и международных нормативных документов по тематике искусственного интеллекта (по запросам или проактивно) для органов государственной власти, бизнеса, других институтов и организаций.'
         }
       ]

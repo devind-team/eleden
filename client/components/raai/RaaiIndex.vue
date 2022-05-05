@@ -1,35 +1,18 @@
 <template lang="pug">
   v-container
-    v-carousel(height="700")
-      v-carousel-item(v-for="(item,i) in items" :key="i" :src="item.src")
-    v-row.justify-center
-      v-col(cols="12" sm="4")
-        v-card(flat)
-          v-card-title.headline.justify-center Новости
-          v-card-subtitle.py-0 Дата
-          v-card-title.py-0 Заголовок новости
-      v-col(cols="12" sm="4")
-        v-card(flat)
-          v-card-title.headline.justify-center Мероприятия
-          v-card-subtitle.py-0 Дата
-          v-card-title.py-0 Заголовок мероприятия
-    pre Бонусы РАИИ
+    raai-carousel
+    page-news
+    raai-goals
 </template>
 
 <script lang="ts">
+import RaaiCarousel from "~/components/raai/RaaiCarousel.vue";
+import PageNews from "~/components/pages/index/PageNews.vue";
+import RaaiGoals from "~/components/raai/RaaiGoals.vue";
 
 export default defineComponent({
-  data () {
-    return {
-      items: [
-        { src: '/LogoCarousel.svg' },
-        { src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg' },
-        { src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg' },
-        { src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg' },
-        { src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg' }
-      ]
-    }
-  }
+  components: {RaaiCarousel, RaaiGoals, PageNews},
+
 })
 </script>
 

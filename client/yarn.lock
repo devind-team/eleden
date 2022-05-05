@@ -3072,7 +3072,7 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
-"@tiptap/core@^2.0.0-beta.174", "@tiptap/core@^2.0.0-beta.175":
+"@tiptap/core@^2.0.0-beta.175":
   version "2.0.0-beta.175"
   resolved "https://registry.yarnpkg.com/@tiptap/core/-/core-2.0.0-beta.175.tgz#d23f6e60308cde192451121e21df83c256bdcd92"
   integrity sha512-dDf+2GtifskNLysn49kaCIz0o5hf6VDZ8J7jSQAfoPDEkEkfw9OKhWrR7NzWW6J34CSJreFDRiWkGt8Qz283Vg==
@@ -4182,22 +4182,13 @@
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.2.31.tgz#c90de7126d833dcd3a4c7534d534be2fb41faa4e"
   integrity sha512-ymN2pj6zEjiKJZbrf98UM2pfDd6F2H7ksKw7NDt/ZZ1fh5Ei39X5tABugtT03ZRlWd9imccoK0hE8hpjpU7irQ==
 
-"@vueuse/core@8.4.0":
-  version "8.4.0"
-  resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-8.4.0.tgz#94b1b198274a05dba85e7bf3debfba63bed6492b"
-  integrity sha512-W0ZHkuYN0B21L/LAP4kzX5V4ABsqkYYVkb7Lkd4vMHMI+3RBlhPKAX3ySD0EOu6TSQEggmqnIFfs2TjMNmiOOQ==
+"@vueuse/core@8.4.1", "@vueuse/core@^8.4.0":
+  version "8.4.1"
+  resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-8.4.1.tgz#68d06039bee53e08db5e9761aa06cb018e190535"
+  integrity sha512-YRM2+wZj/XWzch44sgFaRWtTGEZ8xgTsleaGy6cuULIU1q6o9Z/XHDHqofzNXrEqEhN6EtJqM4m8puURFO0nzg==
   dependencies:
-    "@vueuse/metadata" "8.4.0"
-    "@vueuse/shared" "8.4.0"
-    vue-demi "*"
-
-"@vueuse/core@^8.4.0":
-  version "8.4.0"
-  resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-8.4.0.tgz#94b1b198274a05dba85e7bf3debfba63bed6492b"
-  integrity sha512-W0ZHkuYN0B21L/LAP4kzX5V4ABsqkYYVkb7Lkd4vMHMI+3RBlhPKAX3ySD0EOu6TSQEggmqnIFfs2TjMNmiOOQ==
-  dependencies:
-    "@vueuse/metadata" "8.4.0"
-    "@vueuse/shared" "8.4.0"
+    "@vueuse/metadata" "8.4.1"
+    "@vueuse/shared" "8.4.1"
     vue-demi "*"
 
 "@vueuse/head@^0.7.5":
@@ -4205,31 +4196,24 @@
   resolved "https://registry.yarnpkg.com/@vueuse/head/-/head-0.7.5.tgz#0284e3dc53ea6709196956bf25115eea863a847a"
   integrity sha512-L+XQ5Act0nT/ZyO8Qo10J4FyM1qPOyQb6MT4MMn6+AITzrStpmKs/nUDDLJKD/rCcNWl/65XbdQm4T2vKp3VOQ==
 
-"@vueuse/integrations@^8.4.0":
-  version "8.4.0"
-  resolved "https://registry.yarnpkg.com/@vueuse/integrations/-/integrations-8.4.0.tgz#3070f78578e9a754a9d40ee92d245f95364170aa"
-  integrity sha512-dPC2Hg48ARuIPTUXxptjbWc2zFZ0z410BC3KPmpPSFWy9FyH0PATXyjfYoWg8h7GOkipBGeU09291f08FXTz/w==
+"@vueuse/integrations@^8.4.1":
+  version "8.4.1"
+  resolved "https://registry.yarnpkg.com/@vueuse/integrations/-/integrations-8.4.1.tgz#edc0ed7f45963179fdc0f006c547ffd08751fc5d"
+  integrity sha512-6WE9sUaHMZGMWC48kgcs1O6/yFgEquIGB1LmrzjUEW36zCoOHnTcFnTOEoWapHbgdzxlT5eJHQ+iZKg5Uyxr1A==
   dependencies:
-    "@vueuse/core" "8.4.0"
-    "@vueuse/shared" "8.4.0"
+    "@vueuse/core" "8.4.1"
+    "@vueuse/shared" "8.4.1"
     vue-demi "*"
 
-"@vueuse/metadata@8.4.0":
-  version "8.4.0"
-  resolved "https://registry.yarnpkg.com/@vueuse/metadata/-/metadata-8.4.0.tgz#6cf2a3011bc1b47a1e0f57a2adff4f39d88b95c9"
-  integrity sha512-jFS3lFLohwlT/W3C1PTZSNSgFh/jckSG0G8aMWwMORQ8V5pwvmhdMwqCm8G35R6xLME71yJuq7G1742ljtRcOA==
+"@vueuse/metadata@8.4.1":
+  version "8.4.1"
+  resolved "https://registry.yarnpkg.com/@vueuse/metadata/-/metadata-8.4.1.tgz#933d971599fbb772769afd281fd2aefa09bb955e"
+  integrity sha512-OMwadiewrAHgJAgCh5zrbJMXySECB09cnEnIWRicvTWBiqBm14N1t464oeV1fhskRPEBsLSzxQmDoVBAqQh4rQ==
 
-"@vueuse/shared@8.4.0":
-  version "8.4.0"
-  resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-8.4.0.tgz#a8a99ad843321bf83620e0234b5f6145a2131583"
-  integrity sha512-8ECJyrr6e/PTkJOTP4ym2KDVfabWfcx+8K2sz00XofzjKBlUeYEiBTaXor/SzoInlQLkJtMpa6Z81NYNpxzIOw==
-  dependencies:
-    vue-demi "*"
-
-"@vueuse/shared@8.4.0":
-  version "8.4.0"
-  resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-8.4.0.tgz#a8a99ad843321bf83620e0234b5f6145a2131583"
-  integrity sha512-8ECJyrr6e/PTkJOTP4ym2KDVfabWfcx+8K2sz00XofzjKBlUeYEiBTaXor/SzoInlQLkJtMpa6Z81NYNpxzIOw==
+"@vueuse/shared@8.4.1":
+  version "8.4.1"
+  resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-8.4.1.tgz#a6856fc04db1db74c4d3252cce5f16641313ca50"
+  integrity sha512-yzWNzvqaTGkc25fNsGkaF3pnMdXDax3EasYgPKlC4/eXSo0TqwG+xLz0Y8t6KN52x/kIHlpSwtry4LXfw7LSBA==
   dependencies:
     vue-demi "*"
 

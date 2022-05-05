@@ -10,7 +10,7 @@
         v-card-title.display-1 Основные цели РАИИ
       v-item-group
         v-row.justify-center
-          v-col.text-center(cols="12" sm="4" v-for="(item,i) in goals" :key="i")
+          v-col.text-center(cols="12" sm="4" v-for="(item, i) in goals" :key="i")
             v-icon.indigo--text.text--accent-4.outlined(size="100" color="indigo accent-4" center="true") {{ item.icon }}
             v-card-text.headline {{ item.text }}
 </template>

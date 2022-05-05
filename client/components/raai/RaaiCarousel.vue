@@ -1,7 +1,6 @@
 <template lang="pug">
-  div
-    v-carousel
-      v-carousel-item(v-for="(item,i) in images" :key="i" :src="item.src" height="100%")
+  v-carousel
+    v-carousel-item(v-for="(item, i) in images" :key="i" :src="item.src" height="100%")
 </template>
 
 <script lang="ts">

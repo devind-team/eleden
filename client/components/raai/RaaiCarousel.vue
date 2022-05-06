@@ -9,11 +9,9 @@ export default defineComponent({
   setup () {
     const images = [
         { src: '/LogoCarousel.svg' }
-      ]
+    ]
 
-    return {
-      images
-    }
+    return { images }
   }
 })
 </script>

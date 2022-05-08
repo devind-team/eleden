@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-footer(padless)
+  v-footer(padless dark)
     v-container
       v-row
         v-col(cols="12" md="9")

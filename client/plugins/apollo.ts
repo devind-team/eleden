@@ -1,17 +1,16 @@
 import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory'
-import { Plugin } from '@nuxt/types'
+import { Plugin, Context } from '@nuxt/types'
 import schema from '~/schema.json'
 
 const fragmentMatcher = new IntrospectionFragmentMatcher({
   introspectionQueryResultData: schema
 })
 
-export default <Plugin> function (): any {
-  const { API_URL, API_URL_BROWSER, WS_URL } = useRuntimeConfig()
+export default <Plugin> function (context: Context): any {
   return {
-    httpEndpoint: API_URL,
-    browserHttpEndpoint: API_URL_BROWSER,
-    wsEndpoint: WS_URL,
+    httpEndpoint: context.$config.API_URL,
+    browserHttpEndpoint: context.$config.API_URL_BROWSER,
+    wsEndpoint: context.$config.WS_URL,
     cache: new InMemoryCache({ fragmentMatcher }),
     httpLinkOptions: {
       headers: {

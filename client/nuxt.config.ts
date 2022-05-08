@@ -36,7 +36,7 @@ export default defineNuxtConfig({
   },
   head: {
     title: 'Home page',
-    titleTemplate: '%s - Информационная система сбора данных',
+    titleTemplate: '%s',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },

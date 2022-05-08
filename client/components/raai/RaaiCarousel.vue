@@ -1,18 +1,15 @@
 <template lang="pug">
-  v-carousel
-    v-carousel-item(v-for="(item, i) in images" :key="i" :src="item.src" height="100%")
+  v-carousel(height="100%")
+    v-carousel-item(v-for="item in images" :key="item.src" :src="item.src")
 </template>
 
 <script lang="ts">
 export default defineComponent({
-
   setup () {
-    const images = [
-        { src: '/LogoCarousel.svg' }
+    const images: { src: string }[] = [
+      { src: '/LogoCarousel.svg' }
     ]
-
     return { images }
   }
 })
 </script>
-

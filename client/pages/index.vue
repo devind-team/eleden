@@ -1,9 +1,5 @@
 <template lang="pug">
-  raai-index(v-if="BUILD === 'raai'")
-    page-segment(v-if="!loading" v-for="segment in segments" :key="segment.id" :segment="segment")
-    v-row(v-else)
-      v-progress-circular.mt-12.mx-auto(size="60" color="primary" indeterminate)
-  v-container(v-else)
+  component(:is="BUILD === 'raai' ? 'raai-index' : 'v-container'")
     page-segment(v-if="!loading" v-for="segment in segments" :key="segment.id" :segment="segment")
     v-row(v-else)
       v-progress-circular.mt-12.mx-auto(size="60" color="primary" indeterminate)

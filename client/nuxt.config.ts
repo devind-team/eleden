@@ -11,7 +11,6 @@ export default defineNuxtConfig({
   alias: {
     tslib: 'tslib/tslib.es6.js'
   },
-  buildDir: 'nuxt-dist',
   /*
   ** Nuxt rendering mode
   ** See https://nuxtjs.org/api/configuration-mode
@@ -31,11 +30,12 @@ export default defineNuxtConfig({
     CLIENT_ID: process.env.CLIENT_ID,
     CLIENT_SECRET: process.env.CLIENT_SECRET,
     TINYMCE_API: process.env.TINYMCE_API,
-    ASK: process.env.ASK
+    ASK: process.env.ASK,
+    BUILD: process.env.BUILD
   },
   head: {
     title: 'Home page',
-    titleTemplate: '%s - Информационная система сбора данных',
+    titleTemplate: '%s',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },

@@ -42,7 +42,6 @@
               template(v-slot:activator="{ on }")
                 validation-provider(
                   :name="$t('profile.birthday')"
-                  rules="required"
                   v-slot="{ errors, valid }"
                   tag="div"
                 )

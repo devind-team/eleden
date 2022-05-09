@@ -23,7 +23,7 @@
     "@vueuse/core": "^8.4.0",
     "@vueuse/integrations": "^8.4.2",
     "accounting": "^0.4.1",
-    "apexcharts": "^3.35.0",
+    "apexcharts": "^3.35.2",
     "graphql-tag": "^2.12.6",
     "moment": "^2.29.3",
     "nuxt-edge": "latest",

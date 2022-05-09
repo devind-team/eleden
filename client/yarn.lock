@@ -4313,8 +4313,6 @@
   version "8.4.2"
   resolved "https://registry.yarnpkg.com/@vueuse/metadata/-/metadata-8.4.2.tgz#b33e6b7bd5ca69e3f24ea41b149267118bcd566f"
   integrity sha512-2BIj++7P0/I5dfMsEe8q7Kw0HqVAjVcyNOd9+G22/ILUC9TVLTeYOuJ1kwa1Gpr+0LWKHc6GqHiLWNL33+exoQ==
-  dependencies:
-    vue-demi "*"
 
 "@vueuse/shared@8.4.2":
   version "8.4.2"

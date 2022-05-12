@@ -1,6 +1,6 @@
-import { Ref, computed } from '#app'
 import { ExtractSingleKey } from '@vue/apollo-composable/dist/util/ExtractSingleKey'
 import type { DeepNonNullable, DeepRequired } from 'ts-essentials'
+import { Ref, computed } from '#app'
 
 export type UseResultReturn<T> = Readonly<Ref<Readonly<T>>>
 

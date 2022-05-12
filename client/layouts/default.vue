@@ -9,7 +9,6 @@
 
 <script lang="ts">
 import type { Ref, ComputedRef } from '#app'
-import { defineComponent, provide, ref, toRefs, watchEffect } from '#app'
 import { useAuthStore } from '~/store'
 import { useCursorPagination, useQueryRelay, useVuetify } from '~/composables'
 import { updateQueryNotifications } from '~/services/notifications'
@@ -28,8 +27,8 @@ export default defineComponent({
 
     const { user, loginIn } = toRefs<{ user: UserType, loginIn: boolean }>(authStore)
 
-    const drawer: Ref<boolean> = ref<boolean>(false)
-    const footer: Ref<boolean> = ref<boolean>(true)
+    const drawer = ref<boolean>(false)
+    const footer = ref<boolean>(true)
 
     const {
       data: notifications,
@@ -53,7 +52,9 @@ export default defineComponent({
       }
     })
 
-    watchEffect(() => { vuetify.theme.dark = isDark.value })
+    watchEffect(() => {
+      vuetify.theme.dark = isDark.value
+    })
 
     const setFooter = (state: boolean = true): void => {
       footer.value = state

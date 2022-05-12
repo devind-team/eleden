@@ -1,5 +1,6 @@
 .idea/
 client/.nuxt/
+client/nuxt-dist/
 client/coverage/
 client/node_modules/
 client/static/storage
@@ -12,6 +13,5 @@ client/.env
 server/.env
 server/storage/**
 !server/storage/readme.md
-client/yarn.lock
 client/static/sw.js
 client/dist

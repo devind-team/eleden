@@ -30,11 +30,12 @@ export default defineNuxtConfig({
     CLIENT_ID: process.env.CLIENT_ID,
     CLIENT_SECRET: process.env.CLIENT_SECRET,
     TINYMCE_API: process.env.TINYMCE_API,
-    ASK: process.env.ASK
+    ASK: process.env.ASK,
+    BUILD: process.env.BUILD
   },
   head: {
     title: 'Home page',
-    titleTemplate: '%s - ' + process.env.APP_NAME,
+    titleTemplate: '%s',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -62,17 +63,13 @@ export default defineNuxtConfig({
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: false,
 
-  buildModules: [
-    '@nuxt/bridge',
-    '@nuxtjs/vuetify',
-    '@nuxtjs/i18n'
-  ],
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
-    ['@pinia/nuxt', { disableVuex: false }],
     '@nuxtjs/color-mode',
     '@nuxtjs/apollo',
-    'cookie-universal-nuxt'
+    '@nuxtjs/i18n',
+    '@nuxtjs/vuetify',
+    ['@pinia/nuxt', { disableVuex: false }]
   ],
   apollo: {
     includeNodeModules: true,
@@ -90,6 +87,9 @@ export default defineNuxtConfig({
       { code: 'en', file: 'en.ts' }
     ]
   },
+  router: {
+    middleware: ['check-auth']
+  },
   typescript: {
     tsConfig: {
       compilerOptions: {
@@ -105,7 +105,6 @@ export default defineNuxtConfig({
           '@pinia/nuxt',
           'vuetify',
           'vue-apollo/types',
-          'cookie-universal-nuxt',
           'vee-validate',
           '@nuxtjs/vuetify'
         ]
@@ -117,9 +116,6 @@ export default defineNuxtConfig({
         files: './**/*.{ts,js,vue}'
       }
     }
-  },
-  router: {
-    middleware: ['check-auth']
   },
   /*
   ** vuetify module configuration
@@ -153,7 +149,6 @@ export default defineNuxtConfig({
       'vee-validate/dist/rules',
       'subscriptions-transport-ws',
       'cross-fetch/polyfill',
-      'cookie-universal-nuxt',
       'universal-cookie',
       'pinia'
     ]

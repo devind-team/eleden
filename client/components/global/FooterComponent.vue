@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-footer(padless)
+  v-footer(padless dark)
     v-container
       v-row
         v-col(cols="12" md="9")
@@ -17,7 +17,7 @@
         v-col(cols="12" md="9")
           .body-2.gray-text &copy; {{ $t('index.rights') }}. {{ new Date().getFullYear() }}&nbsp;
             strong #[a(href="https://devind.ru" style="text-decoration: none") {{ $t('index.support') }}.]
-        v-col.text-right(cols="12" md="3")
+        v-col.text-right(cols="12" md="3" style="height: 88px")
           a(href="https://www.liveinternet.ru/click" style="display: block; width: 88px; height: 31px;" target="_blank")
             img(:src="counterSrc" alt="" width="88" height="31")
     v-btn(v-show="upVisible" @click="$vuetify.goTo(0)" size="small" fab fixed bottom right color="primary")

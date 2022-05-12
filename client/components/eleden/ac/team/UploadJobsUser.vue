@@ -1,8 +1,8 @@
 <template lang="pug">
   mutation-modal-form(
-    :header="$t('ac.teams.users.addMenu.fromFileForNew.header')"
-    :subheader="team.name + ' (' + team.shortName + ')'"
-    :buttonText="$t('ac.teams.users.addMenu.fromFileForNew.buttonText')"
+    :header="String($t('ac.teams.users.addMenu.fromFileForNew.header'))"
+    :subheader="`${team.name} (${team.shortName})`"
+    :buttonText="String($t('ac.teams.users.addMenu.fromFileForNew.buttonText'))"
     :mutation="require('~/gql/eleden/mutations/job/upload_jobs_user.graphql')"
     :variables="variables"
     :update="update"
@@ -16,7 +16,7 @@
     template(#form)
       validation-provider(
         v-slot="{ errors, valid }"
-        :name="$t('ac.teams.users.addMenu.form.rate')"
+        :name="String($t('ac.teams.users.addMenu.form.rate'))"
         rules="required|rate"
       )
         v-text-field(
@@ -27,7 +27,7 @@
         )
       validation-provider(
         v-slot="{ errors, valid }"
-        :name="$t('ac.teams.users.addMenu.form.postId')"
+        :name="String($t('ac.teams.users.addMenu.form.postId'))"
         rules="required"
       )
         v-autocomplete(
@@ -44,7 +44,7 @@
       validation-provider(
         ref="statusIdValidationProvider"
         v-slot="{ errors, valid }"
-        :name="$t('ac.teams.users.addMenu.form.statusId')"
+        :name="String($t('ac.teams.users.addMenu.form.statusId'))"
         rules="required"
       )
         v-select(
@@ -99,7 +99,7 @@
         persistent-hint
       )
       validation-provider(
-        :name="$t('ac.teams.users.addMenu.form.file')"
+        :name="String($t('ac.teams.users.addMenu.form.file'))"
         rules="required"
         v-slot="{ errors, valid }"
       )
@@ -117,6 +117,7 @@
 import type { PropType } from '#app'
 import { ValidationProvider } from 'vee-validate'
 import { DataProxy } from 'apollo-cache'
+import { computed, defineComponent, ref } from '#app'
 import {
   TeamType,
   JobPostStatusType,
@@ -168,10 +169,6 @@ export default defineComponent({
       generatePdf: generatePdf.value
     }))
 
-    const statuses = computed<JobPostStatusType[]>(() => (
-      postId.value && posts.value ? posts.value.find(post => post.id === postId.value)!.statuses : []
-    ))
-
     const canGenerateDecree = computed<boolean>(() => {
       if (!statusId.value) {
         return false
@@ -189,6 +186,10 @@ export default defineComponent({
       data: posts,
       loading
     } = useCommonQuery<PostsQuery, PostsQueryVariables>({ document: postsQuery })
+
+    const statuses = computed<JobPostStatusType[]>(() => (
+      postId.value && posts.value ? posts.value.find(post => post.id === postId.value)!.statuses : []
+    ))
 
     const resetStatus = (): void => {
       if (!statuses.value.find((status: JobPostStatusType) => status.id === statusId.value)) {

@@ -1,4 +1,4 @@
-import { Ref, computed } from 'vue-demi'
+import { Ref, computed } from '#app'
 import { ExtractSingleKey } from '@vue/apollo-composable/dist/util/ExtractSingleKey'
 import type { DeepNonNullable, DeepRequired } from 'ts-essentials'
 

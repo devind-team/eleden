@@ -1,6 +1,6 @@
 import { DocumentNode } from 'graphql'
 import { ApolloQueryResult, DataProxy } from '@apollo/client'
-import { useQuery, useResult } from '@vue/apollo-composable'
+import { useQuery } from '@vue/apollo-composable'
 import { useScroll } from '@vueuse/core'
 import { FetchResult } from '@apollo/client/link/core'
 import type {
@@ -16,6 +16,7 @@ import { ExtractSingleKey } from '@vue/apollo-composable/dist/util/ExtractSingle
 import { PageInfo } from '~/types/graphql'
 import { getValue } from '~/services/graphql-relay'
 import { PaginationInterface, useOffsetPagination } from '~/composables/pagination'
+import { useResult } from '~/composables/query-result'
 
 export type ResultDefaultValueType<TNode> = {
   totalCount: number,

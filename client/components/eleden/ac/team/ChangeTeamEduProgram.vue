@@ -1,8 +1,8 @@
 <template lang="pug">
   mutation-modal-form(
-    :header="team.eduProgram ? $t('ac.teams.settings.changeTeamEduProgram.form.changeHeader') : $t('ac.teams.settings.changeTeamEduProgram.form.setHeader')"
+    :header="String($t( team.eduProgram ? 'ac.teams.settings.changeTeamEduProgram.form.changeHeader' : 'ac.teams.settings.changeTeamEduProgram.form.setHeader'))"
     :subheader="team.name"
-    :buttonText="team.eduProgram ? $t('ac.teams.settings.changeTeamEduProgram.form.changeButtonText') : $t('ac.teams.settings.changeTeamEduProgram.form.setButtonText')"
+    :buttonText="String($t(team.eduProgram ? 'ac.teams.settings.changeTeamEduProgram.form.changeButtonText' : 'ac.teams.settings.changeTeamEduProgram.form.setButtonText'))"
     :mutation="require('~/gql/eleden/mutations/team/change_team_edu_program.graphql')"
     :variables="{ teamId: team.id, transferCourses: transferCourses, eduProgramId: eduProgram ? eduProgram.id : null }"
     mutation-name="changeTeamEduProgram"
@@ -18,7 +18,7 @@
     template(#form)
       validation-provider(
         v-slot="{ errors, valid }"
-        :name="$t('ac.teams.settings.changeTeamEduProgram.form.eduProgram')"
+        :name="String($t('ac.teams.settings.changeTeamEduProgram.form.eduProgram'))"
         :rules="team.eduProgram ? '' : 'required'"
       )
         v-autocomplete(
@@ -66,9 +66,10 @@
 
 <script lang="ts">
 import type { PropType } from '#app'
+import { computed, defineComponent, ref } from '#app'
 import { DataTableHeader } from 'vuetify'
 import {
-  CoursesQueryVariables, CourseType,
+  CoursesQueryVariables,
   DisciplinesQueryVariables,
   EduProgramsQueryVariables,
   EduProgramType, TeamType, EduProgramsQuery, DisciplinesQuery, CoursesQuery
@@ -95,20 +96,13 @@ export default defineComponent({
     const totalCount = ref<number>(0)
 
     const headers = computed<DataTableHeader[]>(() => ([
-      { text: t('ac.teams.settings.changeTeamEduProgram.form.tableHeaders.code'), value: 'code' },
-      { text: t('ac.teams.settings.changeTeamEduProgram.form.tableHeaders.name'), value: 'name' }
+      { text: t('ac.teams.settings.changeTeamEduProgram.form.tableHeaders.code') as string, value: 'code' },
+      { text: t('ac.teams.settings.changeTeamEduProgram.form.tableHeaders.name') as string, value: 'name' }
     ]))
 
-    const canTransferCourses = computed<boolean>(() => {
-      return !coursesCountLoading.value && coursesCount.value !== 0 &&
-        props.team.eduProgram !== null && props.team.eduProgram !== eduProgram.value
-    })
-
-    const transferCoursesMessage = computed<string>(() => {
-      return eduProgram.value
-        ? t('ac.teams.settings.changeTeamEduProgram.form.transferCourses')
-        : t('ac.teams.settings.changeTeamEduProgram.form.deleteCourses')
-    })
+    const transferCoursesMessage = computed<string>(() => (
+      t(`ac.teams.settings.changeTeamEduProgram.form.${eduProgram.value ? 'transferCourses' : 'deleteCourses'}`) as string
+    ))
 
     const { search: eduProgramsSearch, debounceSearch } = useDebounceSearch()
     const {
@@ -132,7 +126,7 @@ export default defineComponent({
       document: disciplinesQuery,
       variables: () => ({ eduProgramId: eduProgram.value?.id }),
       options: () => ({
-        enabled: eduProgram.value !== null || eduProgram.value !== undefined
+        enabled: Boolean(eduProgram.value)
       })
     })
 
@@ -142,6 +136,11 @@ export default defineComponent({
     } = useQueryRelay<CoursesQuery, CoursesQueryVariables>({
       document: coursesQuery,
       variables: () => ({ teamId: props.team.id })
+    })
+
+    const canTransferCourses = computed<boolean>(() => {
+      return !coursesCountLoading.value && coursesCount.value.length &&
+        props.team.eduProgram !== null && props.team.eduProgram !== eduProgram.value
     })
 
     const filterEduPrograms = (item: EduProgramType, queryText: string): boolean => {
@@ -157,9 +156,9 @@ export default defineComponent({
         (eduProgram.expedited ? `, ${t('ac.teams.settings.changeTeamEduProgram.form.expedited')})` : ')')
     }
 
-    const countChange = ({ count: countt, totalCount: totalCountt }: { count: number, totalCount: number }): void => {
-      count.value = countt
-      totalCount.value = totalCountt
+    const countChange = ({ count: _count, totalCount: _totalCount }: { count: number, totalCount: number }): void => {
+      count.value = _count
+      totalCount.value = _totalCount
     }
 
     const close = (): void => {

@@ -11,7 +11,7 @@
           mutation-result-alert(ref="mutationResultAlert")
           validation-provider(
             v-slot="{ errors, valid }"
-            :name="$t('ac.teams.settings.changeTeam.form.name')"
+            :name="String($t('ac.teams.settings.changeTeam.form.name'))"
             rules="required|min:4|max:1024"
           )
             v-text-field(
@@ -22,7 +22,7 @@
             )
           validation-provider(
             v-slot="{ errors, valid }"
-            :name="$t('ac.teams.settings.changeTeam.form.shortName')"
+            :name="String($t('ac.teams.settings.changeTeam.form.shortName'))"
             rules="required|min:2|max:50"
           )
             v-text-field(
@@ -33,7 +33,7 @@
             )
           validation-provider(
             v-slot="{ errors, valid }"
-            :name="$t('ac.teams.settings.changeTeam.form.admission')"
+            :name="String($t('ac.teams.settings.changeTeam.form.admission'))"
             rules="required|numeric|min:4|max:4"
           )
             v-text-field(

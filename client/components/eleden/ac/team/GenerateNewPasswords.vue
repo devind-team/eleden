@@ -1,8 +1,8 @@
 <template lang="pug">
   mutation-modal-form(
-    :header="$t('ac.teams.teamActions.generateNewPasswords.generatingNewPasswords')"
+    :header="String($t('ac.teams.teamActions.generateNewPasswords.generatingNewPasswords'))"
     :subheader="team.name"
-    :buttonText="$t('ac.teams.teamActions.generateNewPasswords.generatePasswords')"
+    :buttonText="String($t('ac.teams.teamActions.generateNewPasswords.generatePasswords'))"
     :mutation="require('~/gql/eleden/mutations/team/generate_team_new_passwords.graphql')"
     :variables="{ teamId: team.id, usersId: selectedJobs.map((e) => e.user.id), date }"
     mutation-name="generateTeamNewPasswords"

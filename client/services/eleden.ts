@@ -1,4 +1,5 @@
-import { EduProgramType, DisciplineType } from '~/types/graphql'
+import VueI18n from 'vue-i18n'
+import { EduProgramType, DisciplineType, JobPostStatusType } from '~/types/graphql'
 
 export const getInputDiscipline = (discipline?: DisciplineType) => ({
   id: discipline?.id ? discipline?.id : '',
@@ -30,3 +31,8 @@ export const getInputEduProgram = (eduProgram?: EduProgramType) => ({
   existingCalendar: eduProgram?.calendar ? { src: eduProgram?.calendar } : undefined,
   donor: null
 })
+
+export const getStatusText = (t: (key: VueI18n.Path, values?: VueI18n.Values) => VueI18n.TranslateResult, status: JobPostStatusType): string => {
+  const statusText: string = String(t(status.active ? 'active' : 'notActive'))
+  return `${status.name} (${statusText})`
+}

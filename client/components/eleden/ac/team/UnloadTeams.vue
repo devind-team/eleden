@@ -21,13 +21,13 @@
 </template>
 
 <script lang="ts">
+import { defineComponent, ref } from '#app'
 import ExperimentalDialog from '~/components/common/dialogs/ExperimentalDialog.vue'
 
 export default defineComponent({
   components: { ExperimentalDialog },
   setup () {
     const active = ref<boolean>(false)
-
     return { active }
   }
 })

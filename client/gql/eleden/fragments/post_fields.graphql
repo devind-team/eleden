@@ -1,6 +1,7 @@
 fragment PostFields on PostType {
   id
   name
+  order
   statuses {
     id
     name

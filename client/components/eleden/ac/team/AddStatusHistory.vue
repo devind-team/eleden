@@ -1,8 +1,8 @@
 <template lang="pug">
   mutation-modal-form(
-    :header="$t('ac.teams.posts.statusHistoryAddForm.header')"
+    :header="String($t('ac.teams.posts.statusHistoryAddForm.header'))"
     :subheader="`${getUserFullName(job.user)}, ${jobPost.post.name}`"
-    :buttonText="$t('ac.teams.posts.statusHistoryAddForm.buttonText')"
+    :buttonText="String($t('ac.teams.posts.statusHistoryAddForm.buttonText'))"
     :mutation="require('~/gql/eleden/mutations/job_post/add_job_post_status_history.graphql')"
     :variables="variables"
     :update="(store, data) => update(store, data, job, jobPost)"
@@ -16,7 +16,7 @@
     template(#form)
       validation-provider(
         v-slot="{ errors, valid }"
-        :name="$t('ac.teams.posts.statusHistoryAddForm.statusId')"
+        :name="String($t('ac.teams.posts.statusHistoryAddForm.statusId'))"
         rules="required"
       )
         v-select(
@@ -65,8 +65,9 @@
 </template>
 
 <script lang="ts">
-import type { PropType } from '#app'
 import { DataProxy } from 'apollo-cache'
+import type { PropType } from '#app'
+import { computed, defineComponent, ref } from '#app'
 import {
   JobType,
   JobPostType,
@@ -75,6 +76,7 @@ import {
   AddJobPostStatusHistoryMutationVariables
 } from '~/types/graphql'
 import { useFilters, useI18n } from '~/composables'
+import { getStatusText as _getStatusText } from '~/services/eleden'
 import MutationModalForm from '~/components/common/forms/MutationModalForm.vue'
 
 export type AddJobPostStatusHistoryData = { data: { addJobPostStatusHistory: AddJobPostStatusHistoryMutationPayload } }
@@ -110,7 +112,7 @@ export default defineComponent({
     const statusWarning = computed<string | null>(() => {
       if (statusId.value && props.jobPost.statusHistory.some(
         statusHistory => statusHistory.status.id === statusId.value && !statusHistory.endAt)) {
-        return t('ac.teams.posts.statusHistoryAddForm.statusIdWarning')
+        return String(t('ac.teams.posts.statusHistoryAddForm.statusIdWarning'))
       }
       return null
     })
@@ -128,11 +130,7 @@ export default defineComponent({
 
     const formattingStatusCreatedAt = computed<string>(() => (new Date(statusCreatedAt.value).toLocaleDateString()))
 
-    const getStatusText = (status: JobPostStatusType): string => {
-      return `${status.name} (${status.active
-        ? t('ac.teams.posts.statusHistoryAddForm.active')
-        : t('ac.teams.posts.statusHistoryAddForm.notActive')})`
-    }
+    const getStatusText = (status: JobPostStatusType) => _getStatusText(t, status)
 
     const close = (): void => {
       statusId.value = null

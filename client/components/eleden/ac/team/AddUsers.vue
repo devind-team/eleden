@@ -4,8 +4,8 @@
       slot(:on="on")
     v-list
       mutation-modal-form(
-        :header="$t('ac.users.addMenu.addForm.header')"
-        :button-text="$t('ac.users.addMenu.addForm.buttonText')"
+        :header="String($t('ac.users.addMenu.addForm.header'))"
+        :button-text="String($t('ac.users.addMenu.addForm.buttonText'))"
         :mutation="require('~/gql/eleden/mutations/core/upload_eleden_users.graphql')"
         :variables="{ file, groupsId: selectGroups.map((e) => Number(e.id)) }"
         :update="update"
@@ -21,7 +21,7 @@
             v-list-item-action
               help-dialog(
                 v-slot="{ on: onHelper }"
-                :text="$t('ac.users.addMenu.helpDialog.helpInstruction')"
+                :text="String($t('ac.users.addMenu.helpDialog.helpInstruction'))"
                 doc="help/add_users"
               )
                 v-tooltip(bottom)
@@ -30,7 +30,11 @@
                       v-icon mdi-help-circle-outline
                   span {{ $t('ac.users.addMenu.buttons.helpInstruction') }}
         template(#form)
-          validation-provider(v-slot="{ errors, valid }" :name="$t('ac.users.addMenu.form.file')" rules="required")
+          validation-provider(
+            v-slot="{ errors, valid }"
+            :name="String($t('ac.users.addMenu.form.file'))"
+            rules="required"
+          )
             v-file-input(
               v-model="file"
               :label="$t('ac.users.addMenu.form.file')"
@@ -53,6 +57,7 @@
 <script lang="ts">
 import type { PropType } from '#app'
 import { DataProxy } from 'apollo-cache'
+import { defineComponent, ref } from '#app'
 import { GroupType, GroupsQuery, GroupsQueryVariables } from '~/types/graphql'
 import { useCommonQuery } from '~/composables'
 import groupsQuery from '~/gql/core/queries/groups.graphql'

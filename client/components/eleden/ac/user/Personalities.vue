@@ -3,8 +3,9 @@
 </template>
 
 <script lang="ts">
-import type { PropType } from '#app'
 import { DataTableHeader } from 'vuetify'
+import type { PropType } from '#app'
+import { computed, defineComponent } from '#app'
 import { UserType } from '~/types/graphql'
 import { useI18n } from '~/composables'
 

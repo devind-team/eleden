@@ -1,8 +1,8 @@
 <template lang="pug">
   mutation-modal-form(
-    :header="$t('ac.teams.users.addMenu.fromExisting.header')"
+    :header="String($t('ac.teams.users.addMenu.fromExisting.header'))"
     :subheader="team.name + ' (' + team.shortName + ')'"
-    :buttonText="$t('ac.teams.users.addMenu.fromExisting.buttonText')"
+    :buttonText="String($t('ac.teams.users.addMenu.fromExisting.buttonText'))"
     :mutation="require('~/gql/eleden/mutations/job/add_job.graphql')"
     :variables="variables"
     :update="update"
@@ -16,7 +16,7 @@
     template(#form)
       validation-provider(
         v-slot="{ errors, valid }"
-        :name="$t('ac.teams.users.addMenu.form.userId')"
+        :name="String($t('ac.teams.users.addMenu.form.userId'))"
         rules="required"
       )
         v-autocomplete(
@@ -42,7 +42,7 @@
               v-list-item-subtitle {{ item.username }}
       validation-provider(
         v-slot="{ errors, valid }"
-        :name="$t('ac.teams.users.addMenu.form.rate')"
+        :name="String($t('ac.teams.users.addMenu.form.rate'))"
         rules="required|rate"
       )
         v-text-field(
@@ -53,7 +53,7 @@
         )
       validation-provider(
         v-slot="{ errors, valid }"
-        :name="$t('ac.teams.users.addMenu.form.postId')"
+        :name="String($t('ac.teams.users.addMenu.form.postId'))"
         rules="required"
       )
         v-autocomplete(
@@ -70,7 +70,7 @@
       validation-provider(
         ref="statusIdValidationProvider"
         v-slot="{ errors, valid }"
-        :name="$t('ac.teams.users.addMenu.form.statusId')"
+        :name="String($t('ac.teams.users.addMenu.form.statusId'))"
         rules="required"
       )
         v-select(
@@ -130,6 +130,7 @@
 import type { PropType } from '#app'
 import { ValidationProvider } from 'vee-validate'
 import { DataProxy } from 'apollo-cache'
+import { computed, defineComponent, ref } from '#app'
 import {
   TeamType,
   UserType,
@@ -146,6 +147,7 @@ import {
 import { useCommonQuery, useFilters, useI18n, useQueryRelay, useDebounceSearch } from '~/composables'
 import postsQuery from '~/gql/eleden/queries/team/posts.graphql'
 import usersQuery from '~/gql/eleden/queries/core/search_users.graphql'
+import { getStatusText as _getStatusText } from '~/services/eleden'
 import { JobKind } from '~/pages/eleden/ac/teams/_team_id.vue'
 import MutationModalForm from '~/components/common/forms/MutationModalForm.vue'
 import AvatarDialog from '~/components/users/AvatarDialog.vue'
@@ -238,11 +240,7 @@ export default defineComponent({
       }
     }
 
-    const getStatusText = (status: JobPostStatusType): string => {
-      return `${status.name} (${status.active
-        ? t('ac.teams.users.addMenu.form.active')
-        : t('ac.teams.users.addMenu.form.notActive')})`
-    }
+    const getStatusText = (status: JobPostStatusType) => _getStatusText(t, status)
 
     const close = (): void => {
       rate.value = 1

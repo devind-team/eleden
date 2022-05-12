@@ -1,8 +1,8 @@
 <template lang="pug">
   mutation-modal-form(
-    :header="$t('ac.teams.users.addMenu.fromFileForExisting.header')"
+    :header="String($t('ac.teams.users.addMenu.fromFileForExisting.header'))"
     :subheader="team.name + ' (' + team.shortName + ')'"
-    :buttonText="$t('ac.teams.users.addMenu.fromFileForExisting.buttonText')"
+    :buttonText="String($t('ac.teams.users.addMenu.fromFileForExisting.buttonText'))"
     :mutation="require('~/gql/eleden/mutations/job/upload_jobs.graphql')"
     :variables="{ file, teamId: team.id, generateDocx, generatePdf }"
     :update="update"
@@ -16,7 +16,7 @@
     template(#form)
       validation-provider(
         v-slot="{ errors, valid }"
-        :name="$t('ac.teams.users.addMenu.form.file')"
+        :name="String($t('ac.teams.users.addMenu.form.file'))"
         rules="required"
       )
         v-file-input(

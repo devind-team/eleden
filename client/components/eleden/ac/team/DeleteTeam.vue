@@ -9,7 +9,7 @@
         @done="deleteTeamDone"
       )
         template(v-slot="{ mutate, loading }")
-          delete-menu(:item-name="$t('ac.teams.settings.changeTeamDelete.deleteItemName')" @confirm="mutate")
+          delete-menu(:item-name="String($t('ac.teams.settings.changeTeamDelete.deleteItemName'))" @confirm="mutate")
             template(#default="{ on }")
               v-btn(v-on="on" :loading="loading" color="error") {{ $t('ac.teams.settings.changeTeamDelete.delete') }}
       v-spacer
@@ -21,19 +21,20 @@
       )
         template(v-slot="{ mutate, loading }")
           confirm-menu(
-            :text="team.delete ? $t('ac.teams.settings.changeTeamDelete.restoreConfirmText') : $t('ac.teams.settings.changeTeamDelete.archiveConfirmText')"
+            :text="String($t(`ac.teams.settings.changeTeamDelete.${team.delete ? 'restoreConfirmText' : 'archiveConfirmText'}`))"
             yes-color="warning"
             no-color="success"
             @confirm="mutate"
           )
             template(#default="{ on }")
               v-btn(v-on="on" :loading="loading" color="warning")
-                | {{ team.delete ? $t('ac.teams.settings.changeTeamDelete.restore') : $t('ac.teams.settings.changeTeamDelete.archive') }}
+                | {{ $t(`ac.teams.settings.changeTeamDelete.${team.delete ? 'restore' : 'archive'}`) }}
 </template>
 
 <script lang="ts">
 import type { PropType } from '#app'
 import { ApolloError } from 'apollo-client'
+import { defineComponent, ref, useRouter } from '#app'
 import { TeamType, DeleteTeamMutationPayload, ChangeTeamDeleteMutationPayload } from '~/types/graphql'
 import { ErrorType } from '~/types/devind'
 import { useI18n } from '~/composables'

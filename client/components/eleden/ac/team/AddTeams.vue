@@ -4,8 +4,8 @@
       slot(:on="on")
     v-list
       mutation-modal-form(
-        :header="$t('ac.teams.addMenu.addForm.header')"
-        :buttonText="$t('ac.teams.addMenu.addForm.buttonText')"
+        :header="String($t('ac.teams.addMenu.addForm.header'))"
+        :buttonText="String($t('ac.teams.addMenu.addForm.buttonText'))"
         :mutation="require('~/gql/eleden/mutations/team/add_team.graphql')"
         :variables="addTeamVariables"
         :update="addTeamUpdate"
@@ -21,7 +21,7 @@
         template(#form)
           validation-provider(
             v-slot="{ errors, valid }"
-            :name="$t('ac.teams.addMenu.form.name')"
+            :name="String($t('ac.teams.addMenu.form.name'))"
             rules="required|min:4|max:1024"
           )
             v-text-field(
@@ -32,7 +32,7 @@
             )
           validation-provider(
             v-slot="{ errors, valid }"
-            :name="$t('ac.teams.addMenu.form.shortName')"
+            :name="String($t('ac.teams.addMenu.form.shortName'))"
             rules="required|min:2|max:50"
           )
             v-text-field(
@@ -43,7 +43,7 @@
             )
           validation-provider(
             v-slot="{ errors, valid }"
-            :name="$t('ac.teams.addMenu.form.admission')"
+            :name="String($t('ac.teams.addMenu.form.admission'))"
             rules="required|min:4|max:4"
           )
             v-text-field(
@@ -79,8 +79,8 @@
                 v-list-item-title {{ item.name }} ({{ item.admission }})
                 v-list-item-subtitle {{ item.shortName }}
       mutation-modal-form(
-        :header="$t('ac.teams.addMenu.fromFile.header')"
-        :buttonText="$t('ac.teams.addMenu.fromFile.buttonText')"
+        :header="String($t('ac.teams.addMenu.fromFile.header'))"
+        :buttonText="String($t('ac.teams.addMenu.fromFile.buttonText'))"
         :mutation="require('~/gql/eleden/mutations/team/upload_teams.graphql')"
         :variables="{ file }"
         :update="addTeamsUpdate"
@@ -96,7 +96,7 @@
             v-list-item-action
               help-dialog(
                 v-slot="{ on: onHelper }"
-                :text="$t('ac.teams.addMenu.helpDialog.helpInstruction')"
+                :text="String($t('ac.teams.addMenu.helpDialog.helpInstruction'))"
                 doc="help/add_teams"
               )
                 v-tooltip(bottom)
@@ -105,7 +105,7 @@
                       v-icon mdi-help-circle-outline
                   span {{ $t('ac.teams.addMenu.buttons.helpInstruction') }}
         template(#form)
-          validation-provider(v-slot="{ errors, valid }" :name="$t('ac.teams.addMenu.form.file')" rules="required")
+          validation-provider(v-slot="{ errors, valid }" :name="String($t('ac.teams.addMenu.form.file'))" rules="required")
             v-file-input(
               v-model="file"
               :label="$t('ac.teams.addMenu.form.file')"
@@ -118,6 +118,7 @@
 
 <script lang="ts">
 import type { PropType } from '#app'
+import { computed, defineComponent, ref } from '#app'
 import {
   GroupType,
   TeamType,

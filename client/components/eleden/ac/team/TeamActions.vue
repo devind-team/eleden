@@ -25,8 +25,9 @@
 
 <script lang="ts">
 import type { PropType } from '#app'
-import { TeamType } from '~/types/graphql'
+import { defineComponent, ref, toRef } from '#app'
 import { useAuthStore } from '~/store'
+import { TeamType } from '~/types/graphql'
 import GenerateNewPasswords from '~/components/eleden/ac/team/GenerateNewPasswords.vue'
 import UnloadUsersForm from '~/components/users/UnloadUsersForm.vue'
 import ExperimentalDialog from '~/components/common/dialogs/ExperimentalDialog.vue'

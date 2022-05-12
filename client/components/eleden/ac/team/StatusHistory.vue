@@ -70,6 +70,7 @@
 
 <script lang="ts">
 import type { PropType } from '#app'
+import { computed, defineComponent, ref, toRef } from '#app'
 import { JobType, JobPostType } from '~/types/graphql'
 import { useFilters } from '~/composables'
 import { useAuthStore } from '~/store'

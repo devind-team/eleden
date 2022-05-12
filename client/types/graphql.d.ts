@@ -7954,7 +7954,7 @@ export type DeleteTeamMutationVariables = Exact<{
   teamId: Scalars['ID'];
 }>;
 
-export type DeleteTeamMutation = { __typename?: 'Mutation', deleteTeam: { __typename?: 'DeleteTeamMutationPayload', success: boolean, errors: Array<{ __typename?: 'ErrorFieldType', messages: Array<string>, field: string }> } };
+export type DeleteTeamMutation = { __typename?: 'Mutation', deleteTeam: { __typename: 'DeleteTeamMutationPayload', success: boolean, errors: Array<{ __typename?: 'ErrorFieldType', messages: Array<string>, field: string }> } };
 
 export type GenerateTeamNewPasswordsMutationVariables = Exact<{
   teamId: Scalars['ID'];
@@ -8081,12 +8081,15 @@ export type DisciplineViewsQueryVariables = Exact<{ [key: string]: never; }>;
 export type DisciplineViewsQuery = { __typename?: 'Query', disciplineViews: Array<{ __typename: 'DisciplineViewType', id: string, name: string, order: number }> };
 
 export type DisciplinesQueryVariables = Exact<{
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  offset?: InputMaybe<Scalars['Int']>;
   eduProgramId: Scalars['ID'];
   viewId?: InputMaybe<Scalars['Float']>;
   search?: InputMaybe<Scalars['String']>;
 }>;
 
-export type DisciplinesQuery = { __typename?: 'Query', disciplines: { __typename: 'DisciplineTypeConnection', totalCount: number, edges: Array<{ __typename?: 'DisciplineTypeEdge', node?: { __typename: 'DisciplineType', id: string, code: string, name: string, annotation?: string | null, annotationSign?: string | null, workProgram?: string | null, workProgramSign?: string | null, updatedAt: any, order: number, eduProgram: { __typename: 'EduProgramType', id: string, name: string, adaptive: boolean, admission: number, expedited: boolean, description?: string | null, descriptionSign?: string | null, calendar?: string | null, calendarSign?: string | null, syllabus?: string | null, syllabusSign?: string | null, createdAt: any, updatedAt: any, eduForm: { __typename: 'EduFormType', id: string, name: string, shortName: string }, direction: { __typename: 'DirectionType', id: string, name: string, code: string, eduService: { __typename: 'EduServiceType', id: string, name: string } } }, view: { __typename: 'DisciplineViewType', id: string, name: string, order: number }, users: Array<{ __typename: 'UserType', id: string, username: string, avatar?: string | null, email: string, firstName: string, lastName: string, sirName?: string | null, isActive: boolean, createdAt: any }>, parent?: { __typename: 'DisciplineType', id: string, code: string, name: string } | null, methodologicalSupport: Array<{ __typename: 'MethodologicalSupportType', id: string, name: string, src?: string | null, srcSign?: string | null, createdAt: any, updatedAt: any }> } | null } | null> } };
+export type DisciplinesQuery = { __typename?: 'Query', disciplines: { __typename: 'DisciplineTypeConnection', totalCount: number, pageInfo: { __typename: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null }, edges: Array<{ __typename?: 'DisciplineTypeEdge', node?: { __typename: 'DisciplineType', id: string, code: string, name: string, annotation?: string | null, annotationSign?: string | null, workProgram?: string | null, workProgramSign?: string | null, updatedAt: any, order: number, eduProgram: { __typename: 'EduProgramType', id: string, name: string, adaptive: boolean, admission: number, expedited: boolean, description?: string | null, descriptionSign?: string | null, calendar?: string | null, calendarSign?: string | null, syllabus?: string | null, syllabusSign?: string | null, createdAt: any, updatedAt: any, eduForm: { __typename: 'EduFormType', id: string, name: string, shortName: string }, direction: { __typename: 'DirectionType', id: string, name: string, code: string, eduService: { __typename: 'EduServiceType', id: string, name: string } } }, view: { __typename: 'DisciplineViewType', id: string, name: string, order: number }, users: Array<{ __typename: 'UserType', id: string, username: string, avatar?: string | null, email: string, firstName: string, lastName: string, sirName?: string | null, isActive: boolean, createdAt: any }>, parent?: { __typename: 'DisciplineType', id: string, code: string, name: string } | null, methodologicalSupport: Array<{ __typename: 'MethodologicalSupportType', id: string, name: string, src?: string | null, srcSign?: string | null, createdAt: any, updatedAt: any }> } | null } | null> } };
 
 export type EduCyclesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -8252,12 +8255,13 @@ export type PostsQuery = { __typename?: 'Query', posts: Array<{ __typename: 'Pos
 export type RelativeTeamsQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
   search?: InputMaybe<Scalars['String']>;
   courseCount?: InputMaybe<Scalars['Float']>;
   courseCountGt?: InputMaybe<Scalars['Float']>;
 }>;
 
-export type RelativeTeamsQuery = { __typename?: 'Query', relativeTeams: { __typename: 'TeamTypeConnection', totalCount: number, edges: Array<{ __typename: 'TeamTypeEdge', node?: { __typename: 'TeamType', id: string, name: string, shortName: string, admission: number, delete: boolean, createdAt: any, updatedAt: any, group?: { __typename: 'GroupType', id: string, name: string } | null, responsibleUsers: Array<{ __typename: 'UserType', id: string, username: string, avatar?: string | null, email: string, firstName: string, lastName: string, sirName?: string | null, isActive: boolean, createdAt: any }>, parent?: { __typename: 'TeamType', id: string, name: string, shortName: string, admission: number } | null, permissions: { __typename?: 'TeamPermissionsType', canViewTeamMembers: boolean, canChange: boolean, canDelete: boolean } } | null } | null> } };
+export type RelativeTeamsQuery = { __typename?: 'Query', relativeTeams: { __typename: 'TeamTypeConnection', totalCount: number, pageInfo: { __typename: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null }, edges: Array<{ __typename: 'TeamTypeEdge', node?: { __typename: 'TeamType', id: string, name: string, shortName: string, admission: number, delete: boolean, createdAt: any, updatedAt: any, group?: { __typename: 'GroupType', id: string, name: string } | null, responsibleUsers: Array<{ __typename: 'UserType', id: string, username: string, avatar?: string | null, email: string, firstName: string, lastName: string, sirName?: string | null, isActive: boolean, createdAt: any }>, parent?: { __typename: 'TeamType', id: string, name: string, shortName: string, admission: number } | null, permissions: { __typename?: 'TeamPermissionsType', canViewTeamMembers: boolean, canChange: boolean, canDelete: boolean } } | null } | null> } };
 
 export type TeamQueryVariables = Exact<{
   teamId: Scalars['ID'];
@@ -8268,12 +8272,13 @@ export type TeamQuery = { __typename?: 'Query', team: { __typename: 'TeamType', 
 export type TeamsQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
   search?: InputMaybe<Scalars['String']>;
   courseCount?: InputMaybe<Scalars['Float']>;
   courseCountGt?: InputMaybe<Scalars['Float']>;
 }>;
 
-export type TeamsQuery = { __typename?: 'Query', teams: { __typename: 'TeamTypeConnection', totalCount: number, edges: Array<{ __typename: 'TeamTypeEdge', node?: { __typename: 'TeamType', id: string, name: string, shortName: string, admission: number, delete: boolean, createdAt: any, updatedAt: any, group?: { __typename: 'GroupType', id: string, name: string } | null, responsibleUsers: Array<{ __typename: 'UserType', id: string, username: string, avatar?: string | null, email: string, firstName: string, lastName: string, sirName?: string | null, isActive: boolean, createdAt: any }>, parent?: { __typename: 'TeamType', id: string, name: string, shortName: string, admission: number } | null, permissions: { __typename?: 'TeamPermissionsType', canViewTeamMembers: boolean, canChange: boolean, canDelete: boolean } } | null } | null> } };
+export type TeamsQuery = { __typename?: 'Query', teams: { __typename: 'TeamTypeConnection', totalCount: number, pageInfo: { __typename: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor?: string | null, endCursor?: string | null }, edges: Array<{ __typename: 'TeamTypeEdge', node?: { __typename: 'TeamType', id: string, name: string, shortName: string, admission: number, delete: boolean, createdAt: any, updatedAt: any, group?: { __typename: 'GroupType', id: string, name: string } | null, responsibleUsers: Array<{ __typename: 'UserType', id: string, username: string, avatar?: string | null, email: string, firstName: string, lastName: string, sirName?: string | null, isActive: boolean, createdAt: any }>, parent?: { __typename: 'TeamType', id: string, name: string, shortName: string, admission: number } | null, permissions: { __typename?: 'TeamPermissionsType', canViewTeamMembers: boolean, canChange: boolean, canDelete: boolean } } | null } | null> } };
 
 export type ChatFieldsFragment = { __typename: 'ChatType', id: string, name?: string | null, avatar?: string | null, createdAt: any, updatedAt: any };
 

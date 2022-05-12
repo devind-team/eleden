@@ -46,6 +46,7 @@
 
 <script lang="ts">
 import type { PropType } from '#app'
+import { computed, defineComponent, onMounted, toRef, useNuxt2Meta, useRoute, useRouter } from '#app'
 import { DocumentNode } from 'graphql'
 import { DataTableHeader } from 'vuetify'
 import { BreadCrumbsItem } from '~/types/devind'
@@ -116,16 +117,18 @@ export default defineComponent({
 
     onMounted(() => {
       if (route.query.teamId) {
-        update(
-          defaultClient.cache,
-          { data: { deleteTeam: { id: route.query.teamId } } },
-          (cacheData, { data: { deleteTeam: { id: teamId } } }) => {
-            cacheData.teams.edges =
-               cacheData.teams.edges.filter(e => e.node.id !== teamId)
-            --cacheData.teams.totalCount
-            return cacheData
-          }
-        )
+        if (teams.value.map(team => team.id).includes(route.query.teamId)) {
+          update(
+            defaultClient.cache,
+            { data: { deleteTeam: { id: route.query.teamId } } },
+            (cacheData, { data: { deleteTeam: { id: teamId } } }) => {
+              cacheData.teams.edges =
+                cacheData.teams.edges.filter(e => e.node.id !== teamId)
+              --cacheData.teams.totalCount
+              return cacheData
+            }
+          )
+        }
         router.push(localePath({ name: 'eleden-ac-teams' }))
       }
     })

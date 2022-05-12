@@ -47,5 +47,10 @@ export function useFilters () {
     return `${u.lastName} ${u.firstName[0]}.${u.sirName[0]}`
   }
 
-  return { money, basename, date, dateTimeHM, timeHM, textLength, getUserFullName, getUserName }
+  const getNowDate = () => {
+    const nowDate = new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)
+    return nowDate.toISOString().substr(0, 10)
+  }
+
+  return { money, basename, date, dateTimeHM, timeHM, textLength, getUserFullName, getUserName, getNowDate }
 }

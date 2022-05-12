@@ -1,8 +1,8 @@
 <template lang="pug">
   mutation-modal-form(
-    :header="t('header')"
-    :subheader="`${$getUserFullName(job.user)}, ${jobPost.post.name}`"
-    :buttonText="t('buttonText')"
+    :header="String($t('ac.teams.posts.statusHistoryAddForm.header'))"
+    :subheader="`${getUserFullName(job.user)}, ${jobPost.post.name}`"
+    :buttonText="String($t('ac.teams.posts.statusHistoryAddForm.buttonText'))"
     :mutation="require('~/gql/eleden/mutations/job_post/add_job_post_status_history.graphql')"
     :variables="variables"
     :update="(store, data) => update(store, data, job, jobPost)"
@@ -16,14 +16,14 @@
     template(#form)
       validation-provider(
         v-slot="{ errors, valid }"
-        :name="t('statusId')"
+        :name="String($t('ac.teams.posts.statusHistoryAddForm.statusId'))"
         rules="required"
       )
         v-select(
           v-model="statusId"
           :class="{ 'add-status-history__status_warning': statusWarning }"
           :items="jobPost.post.statuses"
-          :label="t('statusId')"
+          :label="$t('ac.teams.posts.statusHistoryAddForm.statusId')"
           :error-messages="errors"
           :success="valid"
           :hint="statusWarning"
@@ -34,9 +34,9 @@
           template(#selection="{ item }") {{ getStatusText(item) }}
       v-row(v-if="canGenerateDecree")
         v-col(cols="6")
-          v-checkbox(v-model="generateDocx" :label="t('generateDocx')" success)
+          v-checkbox(v-model="generateDocx" :label="$t('ac.teams.posts.statusHistoryAddForm.generateDocx')" success)
         v-col(cols="6")
-          v-checkbox(v-model="generatePdf" :label="t('generatePdf')" success)
+          v-checkbox(v-model="generatePdf" :label="$t('ac.teams.posts.statusHistoryAddForm.generatePdf')" success)
       v-menu(
         v-model="statusCreatedAtMenuActive"
         :close-on-content-click="false"
@@ -50,7 +50,7 @@
             v-bind="attrs"
             v-on="on"
             v-model="formattingStatusCreatedAt"
-            :label="t('statusCreatedAt')"
+            :label="$t('ac.teams.posts.statusHistoryAddForm.statusCreatedAt')"
             prepend-icon="mdi-calendar"
             readonly
             success
@@ -61,13 +61,13 @@
           no-title
           @input="statusCreatedAtMenuActive = false"
         )
-      v-checkbox(v-model="completePrevious" :label="t('completePrevious')" success)
+      v-checkbox(v-model="completePrevious" :label="$t('ac.teams.posts.statusHistoryAddForm.completePrevious')" success)
 </template>
 
 <script lang="ts">
-import { PropType } from 'vue'
-import { Vue, Component, Prop } from 'vue-property-decorator'
 import { DataProxy } from 'apollo-cache'
+import type { PropType } from '#app'
+import { computed, defineComponent, ref } from '#app'
 import {
   JobType,
   JobPostType,
@@ -75,94 +75,89 @@ import {
   AddJobPostStatusHistoryMutationPayload,
   AddJobPostStatusHistoryMutationVariables
 } from '~/types/graphql'
+import { useFilters, useI18n } from '~/composables'
+import { getStatusText as _getStatusText } from '~/services/eleden'
 import MutationModalForm from '~/components/common/forms/MutationModalForm.vue'
 
 export type AddJobPostStatusHistoryData = { data: { addJobPostStatusHistory: AddJobPostStatusHistoryMutationPayload } }
-type Update = (store: DataProxy, data: AddJobPostStatusHistoryData, job: JobType, jobPost: JobPostType) => void
+type UpdateType = (store: DataProxy, data: AddJobPostStatusHistoryData, job: JobType, jobPost: JobPostType) => void
 
-@Component<AddStatusHistory>({
+export default defineComponent({
   components: { MutationModalForm },
-  computed: {
-    variables (): AddJobPostStatusHistoryMutationVariables {
-      return {
-        jobPostId: this.jobPost.id,
-        statusId: this.statusId ?? '',
-        statusCreatedAt: this.statusCreatedAt,
-        generateDocx: this.generateDocx,
-        generatePdf: this.generatePdf,
-        completePrevious: this.completePrevious
-      }
-    },
-    statusWarning (): string | null {
-      if (this.statusId && this.jobPost.statusHistory.some(
-        statusHistory => statusHistory.status.id === this.statusId && !statusHistory.endAt)) {
-        return this.t('statusIdWarning')
+  props: {
+    job: { type: Object as PropType<JobType>, required: true },
+    jobPost: { type: Object as PropType<JobPostType>, required: true },
+    update: { type: Function as PropType<UpdateType>, required: true }
+  },
+  setup (props) {
+    const { getNowDate, getUserFullName } = useFilters()
+    const { t } = useI18n()
+
+    const statusId = ref<string | null>(null)
+    const statusCreatedAt = ref<string>(getNowDate())
+    const statusCreatedAtMenuActive = ref<boolean>(false)
+    const generateDocx = ref<boolean>(false)
+    const generatePdf = ref<boolean>(false)
+    const completePrevious = ref<boolean>(true)
+
+    const variables = computed<AddJobPostStatusHistoryMutationVariables>(() => ({
+      jobPostId: props.jobPost.id,
+      statusId: statusId.value ?? '',
+      statusCreatedAt: statusCreatedAt.value,
+      generateDocx: generateDocx.value,
+      generatePdf: generatePdf.value,
+      completePrevious: completePrevious.value
+    }))
+
+    const statusWarning = computed<string | null>(() => {
+      if (statusId.value && props.jobPost.statusHistory.some(
+        statusHistory => statusHistory.status.id === statusId.value && !statusHistory.endAt)) {
+        return String(t('ac.teams.posts.statusHistoryAddForm.statusIdWarning'))
       }
       return null
-    },
-    canGenerateDecree (): boolean {
-      if (!this.statusId) {
+    })
+
+    const canGenerateDecree = computed<boolean>(() => {
+      if (!statusId.value) {
         return false
       }
-      const status = this.jobPost.post.statuses.find((status: JobPostStatusType) => status.id === this.statusId)
+      const status = props.jobPost.post.statuses.find((status: JobPostStatusType) => status.id === statusId.value)
       if (!status) {
         return false
       }
       return Boolean(status.templateXml) && Boolean(status.templateDocx)
-    },
-    formattingStatusCreatedAt (): string {
-      return new Date(this.statusCreatedAt).toLocaleDateString()
+    })
+
+    const formattingStatusCreatedAt = computed<string>(() => (new Date(statusCreatedAt.value).toLocaleDateString()))
+
+    const getStatusText = (status: JobPostStatusType) => _getStatusText(t, status)
+
+    const close = (): void => {
+      statusId.value = null
+      statusCreatedAt.value = getNowDate()
+      statusCreatedAtMenuActive.value = false
+      generateDocx.value = false
+      generatePdf.value = false
+      completePrevious.value = true
+    }
+
+    return {
+      getUserFullName,
+      statusId,
+      statusCreatedAt,
+      statusCreatedAtMenuActive,
+      generateDocx,
+      generatePdf,
+      completePrevious,
+      variables,
+      statusWarning,
+      canGenerateDecree,
+      formattingStatusCreatedAt,
+      getStatusText,
+      close
     }
   }
 })
-export default class AddStatusHistory extends Vue {
-  @Prop({ type: Object as PropType<JobType>, required: true }) readonly job!: JobType
-  @Prop({ type: Object as PropType<JobPostType>, required: true }) readonly jobPost!: JobPostType
-  @Prop({ type: Function as PropType<Update>, required: true }) readonly update!: Update
-
-  readonly variables!: AddJobPostStatusHistoryMutationVariables
-  readonly statusWarning!: string | null
-  readonly canGenerateDecree!: boolean
-  readonly formattingStatusCreatedAt!: string
-
-  statusId: string | null = null
-  statusCreatedAt: string = this.$getNowDate()
-  statusCreatedAtMenuActive: boolean = false
-  generateDocx: boolean = false
-  generatePdf: boolean = false
-  completePrevious: boolean = true
-
-  /**
-   * Получение перевода относильно локального пути
-   * @param path
-   * @param values
-   * @return
-   */
-  t (path: string, values: any = undefined): string {
-    return this.$t(`ac.teams.posts.statusHistoryAddForm.${path}`, values) as string
-  }
-
-  /**
-   * Получение текста статуса
-   * @param status
-   * @return
-   */
-  getStatusText (status: JobPostStatusType): string {
-    return `${status.name} (${status.active ? this.t('active') : this.t('notActive')})`
-  }
-
-  /**
-   * Закрыте формы
-   */
-  close (): void {
-    this.statusId = null
-    this.statusCreatedAt = this.$getNowDate()
-    this.statusCreatedAtMenuActive = false
-    this.generateDocx = false
-    this.generatePdf = false
-    this.completePrevious = true
-  }
-}
 </script>
 
 <style lang="sass">

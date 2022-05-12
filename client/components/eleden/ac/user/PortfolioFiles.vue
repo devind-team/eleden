@@ -24,7 +24,7 @@
           hide-default-footer
           dense
         )
-          template(#item.key="{ value }") {{ t(`subTableKeys.${value}`) }}
+          template(#item.key="{ value }") {{ $t(`ac.users.portfolio.subTableKeys.${value}`) }}
           template(#item.value="{ item: subItem }")
             apollo-mutation(
               v-if="subItem.key === 'user'"
@@ -34,9 +34,14 @@
             )
               confirmed-by-user(:loading="loading" :user="item.user" :can-change="canChange" @confirm="mutate")
             template(v-else-if="['createdAt', 'updatedAt'].includes(subItem.key)")
-              | {{ $filters.dateTimeHM(subItem.value) }}
+              | {{ dateTimeHM(subItem.value) }}
             template(v-else-if="subItem.key === 'file'")
-              v-btn(:href="`/${item.file.src}`" target="_blank" color="primary" text) {{ t('buttons.open') }}
+              v-btn(
+                :href="`/${item.file.src}`"
+                target="_blank"
+                color="primary"
+                text
+              ) {{ $t('ac.users.portfolio.buttons.open') }}
             template(v-else-if="subItem.key === 'delete'")
               apollo-mutation(
                 v-slot="{ mutate, loading }"
@@ -45,55 +50,49 @@
                 :update="(store, result) => deleteUpdate(store, result, item)"
               )
                 delete-menu(v-slot="{ on: onDelete }" @confirm="mutate")
-                  v-btn(v-on="onDelete" :loading="loading" color="error" text) {{ t('buttons.delete') }}
+                  v-btn(
+                    v-on="onDelete"
+                    :loading="loading"
+                    color="error"
+                    text
+                  ) {{ $t('ac.users.portfolio.buttons.delete') }}
             template(v-else) {{ subItem.value }}
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
-import { PropType } from 'vue'
+import type { PropType } from '#app'
 import { DataTableHeader } from 'vuetify'
 import { DataProxy } from 'apollo-cache'
 import { PortfolioFileType, UserType } from '~/types/graphql'
+import { useI18n, useFilters } from '~/composables'
 import AvatarDialog from '~/components/users/AvatarDialog.vue'
 import UserLink from '~/components/eleden/user/UserLink.vue'
 import ConfirmedByUser from '~/components/eleden/ac/user/ConfirmedByUser.vue'
 import DeleteMenu from '~/components/common/menu/DeleteMenu.vue'
 
-type DeleteUpdate = (store: DataProxy, result: any, pf: PortfolioFileType) => void
-type GetSubItem = (item: PortfolioFileType) => { key: string, value: string | UserType }[]
+type DeleteUpdateType = (store: DataProxy, result: any, pf: PortfolioFileType) => void
+type GetSubItemType = (item: PortfolioFileType) => { key: string, value: string | UserType }[]
 
-@Component<PortfolioFiles>({
+export default defineComponent({
   components: { AvatarDialog, UserLink, ConfirmedByUser, DeleteMenu },
-  computed: {
-    subHeaders (): DataTableHeader[] {
-      return [
-        { text: this.t('tableSubheaders.key') as string, value: 'key' },
-        { text: this.t('tableSubheaders.value') as string, value: 'value' }
-      ]
-    }
+  props: {
+    items: { type: Array as PropType<PortfolioFileType[]>, default: () => [] },
+    headers: { type: Array as PropType<DataTableHeader[]>, required: true },
+    canChange: { type: Boolean, default: false },
+    loading: { type: Boolean, default: false },
+    deleteUpdate: { type: Function as PropType<DeleteUpdateType>, required: true },
+    getSubItem: { type: Function as PropType<GetSubItemType>, required: true }
+  },
+  setup () {
+    const { t } = useI18n()
+    const { dateTimeHM } = useFilters()
+
+    const subHeaders = computed<DataTableHeader[]>(() => ([
+      { text: t('ac.users.portfolio.tableSubheaders.key') as string, value: 'key' },
+      { text: t('ac.users.portfolio.tableSubheaders.value') as string, value: 'value' }
+    ]))
+
+    return { dateTimeHM, subHeaders }
   }
 })
-export default class PortfolioFiles extends Vue {
-  @Prop({ type: Array as PropType<PortfolioFileType[]>, default: () => [] }) readonly items!: PortfolioFileType[]
-  @Prop({ type: Array as PropType<DataTableHeader[]>, required: true }) readonly headers!: DataTableHeader[]
-  @Prop({ type: Boolean, default: false }) readonly canChange!: boolean
-  @Prop({ type: Boolean, default: false }) readonly loading!: boolean
-  @Prop({ type: Function as PropType<DeleteUpdate>, required: true }) readonly deleteUpdate!: DeleteUpdate
-  @Prop({ type: Function as PropType<GetSubItem>, required: true }) readonly getSubItem!: GetSubItem
-
-  readonly user!: UserType
-  readonly hasPerm!: (perm: string | string[]) => boolean
-  readonly subHeaders!: DataTableHeader[]
-
-  /**
-   * Получение перевода относильно локального пути
-   * @param path
-   * @param values
-   * @return
-   */
-  t (path: string, values: any = undefined): string {
-    return this.$t(`ac.users.portfolio.${path}`, values) as string
-  }
-}
 </script>

@@ -45,7 +45,7 @@
     )
       v-combobox(
         v-model="newAuthors"
-        :search-input="search"
+        :search-input.sync="search"
         :loading="usersLoading"
         :items="allAuthors"
         :label="$t('articles.articleFields.authors')"

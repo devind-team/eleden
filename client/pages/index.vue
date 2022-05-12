@@ -6,7 +6,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useNuxt2Meta } from '#app'
+import { VContainer } from 'vuetify/lib/components'
+import { defineComponent, useNuxt2Meta, useRuntimeConfig } from '#app'
 import { SegmentsQuery, SegmentsQueryVariables } from '~/types/graphql'
 import { useCommonQuery, useI18n } from '~/composables'
 import segmentsQuery from '~/gql/pages/queries/segments.graphql'
@@ -14,7 +15,7 @@ import PageSegment from '~/components/pages/PageSegment.vue'
 import RaaiIndex from '~/components/raai/RaaiIndex.vue'
 
 export default defineComponent({
-  components: { RaaiIndex, PageSegment },
+  components: { RaaiIndex, PageSegment, VContainer },
   setup () {
     const { BUILD } = useRuntimeConfig()
     const { t } = useI18n()

@@ -1,12 +1,14 @@
 fragment PostFields on PostType {
   id
   name
+  order
   statuses {
     id
     name
     active
     templateDocx
     templateXml
+    order
     __typename
   }
   __typename

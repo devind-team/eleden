@@ -1,8 +1,8 @@
 <template lang="pug">
   mutation-modal-form(
-    :header="t('fromFileForNew.header')"
-    :subheader="team.name + ' (' + team.shortName + ')'"
-    :buttonText="t('fromFileForNew.buttonText')"
+    :header="String($t('ac.teams.users.addMenu.fromFileForNew.header'))"
+    :subheader="`${team.name} (${team.shortName})`"
+    :buttonText="String($t('ac.teams.users.addMenu.fromFileForNew.buttonText'))"
     :mutation="require('~/gql/eleden/mutations/job/upload_jobs_user.graphql')"
     :variables="variables"
     :update="update"
@@ -16,25 +16,25 @@
     template(#form)
       validation-provider(
         v-slot="{ errors, valid }"
-        :name="t('form.rate')"
+        :name="String($t('ac.teams.users.addMenu.form.rate'))"
         rules="required|rate"
       )
         v-text-field(
           v-model="rate"
-          :label="t('form.rate')"
+          :label="$t('ac.teams.users.addMenu.form.rate')"
           :error-messages="errors"
           :success="valid"
         )
       validation-provider(
         v-slot="{ errors, valid }"
-        :name="t('form.postId')"
+        :name="String($t('ac.teams.users.addMenu.form.postId'))"
         rules="required"
       )
         v-autocomplete(
           v-model="postId"
           :items="posts"
-          :loading="$apollo.queries.posts.loading"
-          :label="t('form.postId')"
+          :loading="loading"
+          :label="$t('ac.teams.users.addMenu.form.postId')"
           :error-messages="errors"
           :success="valid"
           item-text="name"
@@ -44,15 +44,15 @@
       validation-provider(
         ref="statusIdValidationProvider"
         v-slot="{ errors, valid }"
-        :name="t('form.statusId')"
+        :name="String($t('ac.teams.users.addMenu.form.statusId'))"
         rules="required"
       )
         v-select(
           v-model="statusId"
           :disabled="!postId"
           :items="statuses"
-          :loading="$apollo.queries.posts.loading"
-          :label="t('form.statusId')"
+          :loading="loading"
+          :label="$t('ac.teams.users.addMenu.form.statusId')"
           :error-messages="errors"
           :success="valid"
           item-text="name"
@@ -62,9 +62,9 @@
           template(#selection="{ item }") {{ getStatusText(item) }}
       v-row(v-if="canGenerateDecree")
         v-col(cols="6")
-          v-checkbox(v-model="generateDocx" :label="t('form.generateDocx')" success)
+          v-checkbox(v-model="generateDocx" :label="$t('ac.teams.users.addMenu.form.generateDocx')" success)
         v-col(cols="6")
-          v-checkbox(v-model="generatePdf" :label="t('form.generatePdf')" success)
+          v-checkbox(v-model="generatePdf" :label="$t('ac.teams.users.addMenu.form.generatePdf')" success)
       v-menu(
         v-model="statusCreatedAtMenuActive"
         :close-on-content-click="false"
@@ -79,7 +79,7 @@
             v-on="on"
             v-model="formattingStatusCreatedAt"
             :disabled="!postId"
-            :label="t('form.statusCreatedAt')"
+            :label="$t('ac.teams.users.addMenu.form.statusCreatedAt')"
             prepend-icon="mdi-calendar"
             readonly
             success
@@ -93,19 +93,19 @@
       v-select(
         v-model="kind"
         :items="jobKinds"
-        :label="t('form.kind')"
-        :hint="t('form.kindHint')"
+        :label="$t('ac.teams.users.addMenu.form.kind')"
+        :hint="$t('ac.teams.users.addMenu.form.kindHint')"
         success
         persistent-hint
       )
       validation-provider(
-        :name="t('form.file')"
+        :name="String($t('ac.teams.users.addMenu.form.file'))"
         rules="required"
         v-slot="{ errors, valid }"
       )
         v-file-input(
           v-model="file"
-          :label="t('form.file')"
+          :label="$t('ac.teams.users.addMenu.form.file')"
           :success="valid"
           :error-messages="errors"
           accept=".xlsx,.csv,.json"
@@ -114,138 +114,134 @@
 </template>
 
 <script lang="ts">
-import { PropType } from 'vue'
-import { Vue, Component, Prop, Ref } from 'vue-property-decorator'
+import type { PropType } from '#app'
 import { ValidationProvider } from 'vee-validate'
 import { DataProxy } from 'apollo-cache'
-import { pluck, tap } from 'rxjs/operators'
+import { computed, defineComponent, ref } from '#app'
 import {
   TeamType,
-  PostType,
   JobPostStatusType,
   UploadJobsUserMutationVariables,
-  UploadJobsUserMutationPayload
+  UploadJobsUserMutationPayload,
+  PostsQuery,
+  PostsQueryVariables
 } from '~/types/graphql'
+import { useCommonQuery, useFilters, useI18n } from '~/composables'
+import postsQuery from '~/gql/eleden/queries/team/posts.graphql'
 import { JobKind } from '~/pages/eleden/ac/teams/_team_id.vue'
 import MutationModalForm from '~/components/common/forms/MutationModalForm.vue'
 
 export type UploadJobsUserData = { data: { uploadJobsUser: UploadJobsUserMutationPayload } }
-type Update = (store: DataProxy, data: UploadJobsUserData) => void
+type UpdateType = (store: DataProxy, data: UploadJobsUserData) => void
+type statusIdValidationProviderType = InstanceType<typeof ValidationProvider> | null
 
-@Component<UploadJobsUser>({
+export default defineComponent({
   components: { MutationModalForm },
-  computed: {
-    variables (): UploadJobsUserMutationVariables {
-      return {
-        rate: this.rate,
-        kind: this.kind,
-        file: this.file,
-        teamId: this.team.id,
-        postId: this.postId ?? '',
-        statusId: this.statusId ?? '',
-        statusCreatedAt: this.statusCreatedAt,
-        generateDocx: this.generateDocx,
-        generatePdf: this.generatePdf
-      }
-    },
-    statuses (): JobPostStatusType[] {
-      return this.postId && this.posts ? this.posts.find((post: PostType) => post.id === this.postId)!.statuses : []
-    },
-    canGenerateDecree (): boolean {
-      if (!this.statusId) {
+  props: {
+    team: { type: Object as PropType<TeamType>, required: true },
+    update: { type: Function as PropType<UpdateType>, required: true },
+    jobKinds: { type: Array as PropType<JobKind[]>, required: true }
+  },
+  setup (props) {
+    const { getNowDate } = useFilters()
+    const { t } = useI18n()
+
+    const statusIdValidationProvider = ref<statusIdValidationProviderType>(null)
+    const rate = ref<number>(1)
+    const postId = ref<string | null>(null)
+    const kind = ref<string>('MJ')
+    const file = ref<File | null>(null)
+    const statusId = ref<string | null>(null)
+    const statusCreatedAt = ref<string>(getNowDate())
+    const statusCreatedAtMenuActive = ref<boolean>(false)
+    const generateDocx = ref<boolean>(false)
+    const generatePdf = ref<boolean>(false)
+
+    const variables = computed<UploadJobsUserMutationVariables>(() => ({
+      rate: rate.value,
+      kind: kind.value,
+      file: file.value,
+      teamId: props.team.id,
+      postId: postId.value ?? '',
+      statusId: statusId.value ?? '',
+      statusCreatedAt: statusCreatedAt.value,
+      generateDocx: generateDocx.value,
+      generatePdf: generatePdf.value
+    }))
+
+    const canGenerateDecree = computed<boolean>(() => {
+      if (!statusId.value) {
         return false
       }
-      const status = this.statuses.find((status: JobPostStatusType) => status.id === this.statusId)
+      const status = statuses.value.find((status: JobPostStatusType) => status.id === statusId.value)
       if (!status) {
         return false
       }
       return Boolean(status.templateXml) && Boolean(status.templateDocx)
-    },
-    formattingStatusCreatedAt (): string {
-      return new Date(this.statusCreatedAt).toLocaleDateString()
+    })
+
+    const formattingStatusCreatedAt = computed<string>(() => (new Date(statusCreatedAt.value).toLocaleDateString()))
+
+    const {
+      data: posts,
+      loading
+    } = useCommonQuery<PostsQuery, PostsQueryVariables>({ document: postsQuery })
+
+    const statuses = computed<JobPostStatusType[]>(() => (
+      postId.value && posts.value ? posts.value.find(post => post.id === postId.value)!.statuses : []
+    ))
+
+    const resetStatus = (): void => {
+      if (!statuses.value.find((status: JobPostStatusType) => status.id === statusId.value)) {
+        statusId.value = null
+        statusIdValidationProvider.value.reset()
+      }
     }
-  },
-  subscriptions () {
-    const canGenerateDecreeWatch$ = this.$watchAsObservable('canGenerateDecree').pipe(
-      pluck('newValue'),
-      tap(() => {
-        this.generateDocx = false
-        this.generatePdf = false
-      })
-    )
-    return { canGenerateDecreeWatch$ }
-  },
-  apollo: {
-    posts: require('~/gql/eleden/queries/team/posts.graphql')
+
+    const getStatusText = (status: JobPostStatusType): string => {
+      return `${status.name} (${status.active
+        ? t('ac.teams.users.addMenu.form.active')
+        : t('ac.teams.users.addMenu.form.notActive')})`
+    }
+
+    const close = (): void => {
+      rate.value = 1
+      kind.value = 'MJ'
+      file.value = null
+      postId.value = null
+      statusId.value = null
+      generateDocx.value = false
+      generatePdf.value = false
+      statusCreatedAt.value = getNowDate()
+      statusCreatedAtMenuActive.value = false
+    }
+
+    watch(canGenerateDecree, () => {
+      generateDocx.value = false
+      generatePdf.value = false
+    })
+
+    return {
+      statusIdValidationProvider,
+      rate,
+      postId,
+      kind,
+      file,
+      statusId,
+      statusCreatedAt,
+      statusCreatedAtMenuActive,
+      generateDocx,
+      generatePdf,
+      variables,
+      statuses,
+      canGenerateDecree,
+      formattingStatusCreatedAt,
+      posts,
+      loading,
+      resetStatus,
+      getStatusText,
+      close
+    }
   }
 })
-export default class UploadJobsUser extends Vue {
-  @Prop({ type: Object as PropType<TeamType>, required: true }) readonly team!: TeamType
-  @Prop({ type: Function as PropType<Update>, required: true }) readonly update!: Update
-  @Prop({ type: Array as PropType<JobKind[]>, required: true }) readonly jobKinds!: JobKind[]
-
-  @Ref() readonly statusIdValidationProvider!: InstanceType<typeof ValidationProvider>
-
-  readonly variables!: UploadJobsUserMutationVariables
-  readonly statuses!: JobPostStatusType[]
-  readonly canGenerateDecree!: boolean
-  readonly formattingStatusCreatedAt!: string
-  readonly posts!: PostType[] | undefined
-
-  canGenerateDecreeWatch$: boolean | null = null
-
-  rate: number = 1
-  kind: string = 'MJ'
-  file: File | null = null
-  postId: string | null = null
-  statusId: string | null = null
-  generateDocx: boolean = false
-  generatePdf: boolean = false
-  statusCreatedAt: string = this.$getNowDate()
-  statusCreatedAtMenuActive: boolean = false
-
-  /**
-   * Получение перевода относильно локального пути
-   * @param path
-   * @param values
-   * @return
-   */
-  t (path: string, values: any = undefined): string {
-    return this.$t(`ac.teams.users.addMenu.${path}`, values) as string
-  }
-
-  /**
-   * Сброс статуса, если он не соответствует выбранной должности
-   */
-  resetStatus (): void {
-    if (!this.statuses.find((status: JobPostStatusType) => status.id === this.statusId)) {
-      this.statusId = null
-      this.statusIdValidationProvider.reset()
-    }
-  }
-
-  /**
-   * Получение текста статуса
-   * @param status
-   * @return
-   */
-  getStatusText (status: JobPostStatusType): string {
-    return `${status.name} (${status.active ? this.t('form.active') : this.t('form.notActive')})`
-  }
-
-  /**
-   * Закрыте формы
-   */
-  close (): void {
-    this.rate = 1
-    this.kind = 'MJ'
-    this.file = null
-    this.postId = null
-    this.statusId = null
-    this.generateDocx = false
-    this.generatePdf = false
-    this.statusCreatedAt = this.$getNowDate()
-    this.statusCreatedAtMenuActive = false
-  }
-}
 </script>

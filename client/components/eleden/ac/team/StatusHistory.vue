@@ -15,14 +15,12 @@
               thead
                 tr
                   th {{ $t('ac.teams.posts.statusHistory.tableHeaders.status') }}
-                  th {{ $t('ac.teams.posts.statusHistory.tableHeaders.active') }}
                   th {{ $t('ac.teams.posts.statusHistory.tableHeaders.createdAt') }}
                   th {{ $t('ac.teams.posts.statusHistory.tableHeaders.endAt') }}
                   th(v-if="viewActions") {{ $t('ac.teams.posts.statusHistory.tableHeaders.actions') }}
               tbody
                 tr(v-for="statusHistory in jobPost.statusHistory" :key="statusHistory.id")
-                  td {{ statusHistory.status.name }}
-                  td {{ statusHistory.status.active ? $t('yes') : $t('no') }}
+                  td {{ getStatusText(statusHistory.status) }}
                   td {{ dateTimeHM(statusHistory.createdAt) }}
                   td
                     template(v-if="statusHistory.endAt") {{ dateTimeHM(statusHistory.endAt) }}
@@ -71,9 +69,10 @@
 <script lang="ts">
 import type { PropType } from '#app'
 import { computed, defineComponent, ref, toRef } from '#app'
-import { JobType, JobPostType } from '~/types/graphql'
-import { useFilters } from '~/composables'
+import type { JobType, JobPostType, JobPostStatusType } from '~/types/graphql'
+import { useFilters, useI18n } from '~/composables'
 import { useAuthStore } from '~/store'
+import { getStatusText as _getStatusText } from '~/services/eleden'
 import ExperimentalDialog from '~/components/common/dialogs/ExperimentalDialog.vue'
 
 export default defineComponent({
@@ -85,6 +84,7 @@ export default defineComponent({
     canDelete: { type: Boolean, required: true }
   },
   setup (props) {
+    const { t } = useI18n()
     const authStore = useAuthStore()
     const hasPerm = toRef(authStore, 'hasPerm')
     const { getUserFullName, dateTimeHM } = useFilters()
@@ -100,11 +100,13 @@ export default defineComponent({
     ].some(check => check)
     ))
 
+    const getStatusText = (status: JobPostStatusType) => _getStatusText(t, status)
+
     const close = (): void => {
       active.value = false
     }
 
-    return { hasPerm, getUserFullName, dateTimeHM, viewActions, active, close }
+    return { hasPerm, getUserFullName, dateTimeHM, viewActions, active, getStatusText, close }
   }
 })
 </script>

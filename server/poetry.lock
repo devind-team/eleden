@@ -62,7 +62,7 @@ python-versions = "*"
 
 [[package]]
 name = "asgiref"
-version = "3.5.1"
+version = "3.5.2"
 description = "ASGI specs, helper code, and adapters"
 category = "main"
 optional = false
@@ -1000,7 +1000,7 @@ python-versions = ">=3.5"
 
 [[package]]
 name = "itemadapter"
-version = "0.5.0"
+version = "0.6.0"
 description = "Common interface for data container classes"
 category = "main"
 optional = false
@@ -1030,7 +1030,7 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "jwcrypto"
-version = "1.2"
+version = "1.3"
 description = "Implementation of JOSE Web standards"
 category = "main"
 optional = false
@@ -1887,8 +1887,8 @@ aniso8601 = [
     {file = "aniso8601-7.0.0.tar.gz", hash = "sha256:513d2b6637b7853806ae79ffaca6f3e8754bdd547048f5ccc1420aec4b714f1e"},
 ]
 asgiref = [
-    {file = "asgiref-3.5.1-py3-none-any.whl", hash = "sha256:45a429524fba18aba9d512498b19d220c4d628e75b40cf5c627524dbaebc5cc1"},
-    {file = "asgiref-3.5.1.tar.gz", hash = "sha256:fddeea3c53fa99d0cdb613c3941cc6e52d822491fc2753fba25768fb5bf4e865"},
+    {file = "asgiref-3.5.2-py3-none-any.whl", hash = "sha256:1d2880b792ae8757289136f1db2b7b99100ce959b2aa57fd69dab783d05afac4"},
+    {file = "asgiref-3.5.2.tar.gz", hash = "sha256:4a29362a6acebe09bf1d6640db38c1dc3d9217c68e6f9f6204d72667fc19a424"},
 ]
 astor = [
     {file = "astor-0.8.1-py2.py3-none-any.whl", hash = "sha256:070a54e890cefb5b3739d19f30f5a5ec840ffc9c50ffa7d23cc9fc1a38ebbfc5"},
@@ -2341,8 +2341,8 @@ inflection = [
     {file = "inflection-0.5.1.tar.gz", hash = "sha256:1a29730d366e996aaacffb2f1f1cb9593dc38e2ddd30c91250c6dde09ea9b417"},
 ]
 itemadapter = [
-    {file = "itemadapter-0.5.0-py3-none-any.whl", hash = "sha256:cbe58de9fd64422132610e32e0f603a5a85b0cfc062bbee116782d0b4f90529a"},
-    {file = "itemadapter-0.5.0.tar.gz", hash = "sha256:05b6a79dd31a7a993dfb2e8386a91c97e3b8c6cf28b72553e808e625e0b87c20"},
+    {file = "itemadapter-0.6.0-py3-none-any.whl", hash = "sha256:6641a97a52a3e60eb7b0e626010af6edcb6af834b32ce129992150dec266c916"},
+    {file = "itemadapter-0.6.0.tar.gz", hash = "sha256:3f1f60ebd6c91b00222820f38bf5126aa49a8fb6e467d351f0364421f953a15d"},
 ]
 itemloaders = [
     {file = "itemloaders-1.0.4-py3-none-any.whl", hash = "sha256:4cb46a0f8915e910c770242ae3b60b1149913ed37162804f1e40e8535d6ec497"},
@@ -2353,7 +2353,7 @@ jmespath = [
     {file = "jmespath-1.0.0.tar.gz", hash = "sha256:a490e280edd1f57d6de88636992d05b71e97d69a26a19f058ecf7d304474bf5e"},
 ]
 jwcrypto = [
-    {file = "jwcrypto-1.2.tar.gz", hash = "sha256:edf4309321721e5161cefccdd64b04509e03924feaf3de085b47780765989ae3"},
+    {file = "jwcrypto-1.3.tar.gz", hash = "sha256:0d6461ba13f7c271d8bac5018ee60ddbcae5ff39403fafa42375f57d08e398bb"},
 ]
 kombu = [
     {file = "kombu-5.2.4-py3-none-any.whl", hash = "sha256:8b213b24293d3417bcf0d2f5537b7f756079e3ea232a8386dcc89a59fd2361a4"},

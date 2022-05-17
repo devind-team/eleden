@@ -1,7 +1,7 @@
 <template lang="pug">
   bread-crumbs(:items="bc")
     v-card
-      v-card-title {{ t('name') }}
+      v-card-title {{ $t('process.name') }}
       v-card-text
         v-row(align="center")
           v-col(v-if="hasPerm('eleden.add_course')" cols="12" md="6")
@@ -93,7 +93,7 @@ type DeleteCoursesData = { data: { deleteCourses: DeleteCoursesMutationPayload }
     bc (): BreadCrumbsItem[] {
       return [
         ...this.breadCrumbs,
-        { text: this.t('name') as string, to: this.localePath({ name: 'eleden-process' }), exact: true }
+        { text: this.$t('process.name') as string, to: this.localePath({ name: 'eleden-process' }), exact: true }
       ]
     },
     processTeamsHeaders (): DataTableHeader[] {

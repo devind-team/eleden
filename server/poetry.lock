@@ -1143,7 +1143,7 @@ pyparsing = ">=2.0.2,<3.0.5 || >3.0.5"
 
 [[package]]
 name = "paramiko"
-version = "2.10.4"
+version = "2.11.0"
 description = "SSH2 protocol library"
 category = "main"
 optional = false
@@ -1793,7 +1793,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "d509d488e18dc2f9b0692aeb9e482688f83d249c7392713ae241e1ba51159a97"
+content-hash = "8a12092ba7391990536775a4025d3d225be145c086b428c89d5e31a00a371383"
 
 [metadata.files]
 aiohttp = [
@@ -2536,8 +2536,8 @@ packaging = [
     {file = "packaging-21.3.tar.gz", hash = "sha256:dd47c42927d89ab911e606518907cc2d3a1f38bbd026385970643f9c5b8ecfeb"},
 ]
 paramiko = [
-    {file = "paramiko-2.10.4-py2.py3-none-any.whl", hash = "sha256:3c9ed6084f4b671ab66dc3c729092d32d96c3258f1426071301cb33654b09027"},
-    {file = "paramiko-2.10.4.tar.gz", hash = "sha256:3d2e650b6812ce6d160abff701d6ef4434ec97934b13e95cf1ad3da70ffb5c58"},
+    {file = "paramiko-2.11.0-py2.py3-none-any.whl", hash = "sha256:655f25dc8baf763277b933dfcea101d636581df8d6b9774d1fb653426b72c270"},
+    {file = "paramiko-2.11.0.tar.gz", hash = "sha256:003e6bee7c034c21fbb051bf83dc0a9ee4106204dd3c53054c71452cc4ec3938"},
 ]
 parsel = [
     {file = "parsel-1.6.0-py2.py3-none-any.whl", hash = "sha256:9e1fa8db1c0b4a878bf34b35c043d89c9d1cbebc23b4d34dbc3c0ec33f2e087d"},

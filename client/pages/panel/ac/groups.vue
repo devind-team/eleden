@@ -101,30 +101,6 @@ export default defineComponent({
       changeNameGroupMutation,
       { update: (cache, result) => changeUpdate(cache, result, 'group') }
     )
-    const { mutate: ChangeGroupPermissionMutate } = useMutation<ChangeGroupPermissionsMutation, ChangeGroupPermissionsMutationVariables>(
-      changeGroupPermissionMutation,
-      {
-        update: (cache, result) => update(cache, result,
-          (dataCache, { data: { changeGroupPermissions: { action, success, permissionsId } } }): any => {
-            if (success) {
-              const dataKey: string = Object.keys(dataCache)[0]
-              if (action === 'ADD') {
-                dataCache[dataKey][selectGroup.value].permissions.push(
-                  ...permissions.value.filter(e => permissionsId.includes(Number(e.id)))
-                )
-              } else if (action === 'DELETE') {
-                dataCache[dataKey][selectGroup.value].permissions = dataCache[dataKey][selectGroup.value].permissions.filter(
-                  (el: PermissionType) => !permissionsId.includes(Number(el.id))
-                )
-              }
-              return dataCache
-            }
-          })
-      })
-
-    const { mutate: deleteGroupMutate } = useMutation<DeleteGroupMutation, DeleteGroupMutationVariables>(deleteGroup, {
-      update: deleteUpdate
-    })
 
     const selectGroup: Ref<number | null | undefined> = ref<number | null | undefined>(null)
     const searchPermissions: Ref<string | null> = ref<string | null>(null)
@@ -150,6 +126,26 @@ export default defineComponent({
     const changeGroupName = (group: GroupType, name: string): void => {
       ChangeGroupNameMutate({ groupId: Number(group.id), name })
     }
+    const { mutate: ChangeGroupPermissionMutate } = useMutation<ChangeGroupPermissionsMutation, ChangeGroupPermissionsMutationVariables>(
+      changeGroupPermissionMutation,
+      {
+        update: (cache, result) => update(cache, result,
+          (dataCache, { data: { changeGroupPermissions: { success, permissionsId, action } } }): any => {
+            if (success) {
+              const dataKey: string = Object.keys(dataCache)[0]
+              if (action === 'ADD') {
+                dataCache[dataKey][selectGroup.value].permissions.push(
+                  ...permissions.value.filter(e => permissionsId.includes(Number(e.id)))
+                )
+              } else if (action === 'DELETE') {
+                dataCache[dataKey][selectGroup.value].permissions = dataCache[dataKey][selectGroup.value].permissions.filter(
+                  (el: PermissionType) => !permissionsId.includes(Number(el.id))
+                )
+              }
+            }
+            return dataCache
+          })
+      })
 
     const changeGroupPermission = (permissions: PermissionType[]): void => {
       if (permissions.length === selectPermissions.value.length) { return }
@@ -169,6 +165,11 @@ export default defineComponent({
         action: (action as ActionRelationShip)
       })
     }
+
+    // Мутация для удаления группы
+    const { mutate: deleteGroupMutate } = useMutation<DeleteGroupMutation, DeleteGroupMutationVariables>(deleteGroup, {
+      update: deleteUpdate
+    })
 
     return {
       hasPerm,

@@ -3098,10 +3098,10 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
-"@tiptap/core@^2.0.0-beta.175":
-  version "2.0.0-beta.175"
-  resolved "https://registry.yarnpkg.com/@tiptap/core/-/core-2.0.0-beta.175.tgz#d23f6e60308cde192451121e21df83c256bdcd92"
-  integrity sha512-dDf+2GtifskNLysn49kaCIz0o5hf6VDZ8J7jSQAfoPDEkEkfw9OKhWrR7NzWW6J34CSJreFDRiWkGt8Qz283Vg==
+"@tiptap/core@^2.0.0-beta.175", "@tiptap/core@^2.0.0-beta.176":
+  version "2.0.0-beta.176"
+  resolved "https://registry.yarnpkg.com/@tiptap/core/-/core-2.0.0-beta.176.tgz#a8bb9b57d2ecf77b6cd02340324626ef3e336a15"
+  integrity sha512-Gs/+yUYTNpt8PnclEHbfBnY56D/9PpKTyzrg8VZwCFK9S69aVD2dqLsYs/Gn+EjzKImXRAiqSe1/FWcNEDkmCg==
   dependencies:
     "@types/prosemirror-commands" "^1.0.4"
     "@types/prosemirror-keymap" "^1.0.4"
@@ -3234,10 +3234,10 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-italic/-/extension-italic-2.0.0-beta.26.tgz#b00c9e32b81b1bd94eaed24bb2a22e44d5dc54a3"
   integrity sha512-vejGe2ra4K5ipFOn1U9viqF9X9nPTX8WSJpSOux+9UbKjHpANy7bz69tp66OIi/Wh5L/MMDc+luH/04qfVnpZw==
 
-"@tiptap/extension-link@^2.0.0-beta.37":
-  version "2.0.0-beta.37"
-  resolved "https://registry.yarnpkg.com/@tiptap/extension-link/-/extension-link-2.0.0-beta.37.tgz#8d569284b82860e6a9aac42b85ed9c0911e50599"
-  integrity sha512-G5sM1a8Kjm1ZMro+BGsk+yApIDMl7RF/u1PY929HHld7JPsjgB+DZbbQ1U7e9Kxiu/9aDwgOa+w+SLqLiajedw==
+"@tiptap/extension-link@^2.0.0-beta.38":
+  version "2.0.0-beta.38"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-link/-/extension-link-2.0.0-beta.38.tgz#e7fb0ebee0d557ef921bf3c7fa6a7c62335f66a5"
+  integrity sha512-j+ygwq3cpDu5/8zPBcHyfgC5cuyO3jfV+2KcJw2I6Qi73y4Kwo3PW/leEYlSHkIt7i1zjyFHo/oDfC4K9x9eQg==
   dependencies:
     linkifyjs "^3.0.5"
     prosemirror-model "^1.16.1"
@@ -3278,11 +3278,15 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-table-row/-/extension-table-row-2.0.0-beta.19.tgz#b45e82f29dfcc7405440ba237b069dbb93d1a94a"
   integrity sha512-ldEVDpIUX7ZqbViTy4c/RfyNGRv++O/r3A/Ivuon1PykaDDTbPlp5JM89FunAD39cLAbo2HKtweqdmzCMlZsqA==
 
-"@tiptap/extension-table@^2.0.0-beta.48":
-  version "2.0.0-beta.48"
-  resolved "https://registry.yarnpkg.com/@tiptap/extension-table/-/extension-table-2.0.0-beta.48.tgz#4b6adfe358fd38199ef5b29dafc9425fd461d1b3"
-  integrity sha512-Hcx3kOBQyazQ3dV0Oq4zKIl1og4EqUuZ5nEWxwcb8HgxSUYIhAJQ7pujPZiRLfkoFy92oVwmh9KhBRfQqRkUpQ==
+"@tiptap/extension-table@^2.0.0-beta.49":
+  version "2.0.0-beta.49"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-table/-/extension-table-2.0.0-beta.49.tgz#10e2fbc204290ae39b6768c9247f6aaced666776"
+  integrity sha512-7irrvMUe9z/6Y8DcFwSuxaIVQ71VUUT1xxv6NZADvdf0HJWesCaTpVORISTnNuQdO5nwEyJXXJ5Ri/82YzWe0g==
   dependencies:
+    "@types/prosemirror-model" "^1.16.0"
+    "@types/prosemirror-state" "^1.2.8"
+    prosemirror-model "^1.16.1"
+    prosemirror-state "^1.3.4"
     prosemirror-tables "^1.1.1"
     prosemirror-view "^1.23.6"
 
@@ -3306,12 +3310,12 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-underline/-/extension-underline-2.0.0-beta.23.tgz#050a31ac55b7ad63e8abf57ac941c62e255f57b8"
   integrity sha512-pMjFH/NpFWLd2XQQa5rG9rGVQ9mu3ygdtu6VGfJ3aAjzBiyLXDKhE4biIFWyFsr8zLpp7DjwbrmLV0UGvbG1WQ==
 
-"@tiptap/starter-kit@^2.0.0-beta.184":
-  version "2.0.0-beta.184"
-  resolved "https://registry.yarnpkg.com/@tiptap/starter-kit/-/starter-kit-2.0.0-beta.184.tgz#c621d51d9cb8a1b18cbec7af6080ce8288bdce72"
-  integrity sha512-FgF94i5RQzXiGAIkaubnXEaYwJfiZRbMPZcmarwNo8IyqPnLT34Q1yjw/qZ3nv7rDehWV5l/zenbrrNtPYVCkA==
+"@tiptap/starter-kit@^2.0.0-beta.185":
+  version "2.0.0-beta.185"
+  resolved "https://registry.yarnpkg.com/@tiptap/starter-kit/-/starter-kit-2.0.0-beta.185.tgz#a14e2de102bce662f499de82253c2621dce982ef"
+  integrity sha512-UN7GfYpenav9osAhUYfUnYxtGOYxq6i+k/rDEil/LsFKiRgWW7LrddX6X99TW66dmKohNXU4PaCy5RJ7IfoMdg==
   dependencies:
-    "@tiptap/core" "^2.0.0-beta.175"
+    "@tiptap/core" "^2.0.0-beta.176"
     "@tiptap/extension-blockquote" "^2.0.0-beta.26"
     "@tiptap/extension-bold" "^2.0.0-beta.26"
     "@tiptap/extension-bullet-list" "^2.0.0-beta.26"

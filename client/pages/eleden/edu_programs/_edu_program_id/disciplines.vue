@@ -29,9 +29,9 @@
 
 <script lang="ts">
 import type { PropType } from '#app'
-import { defineComponent, ref, toRef } from '#app'
+import { defineComponent, onMounted, ref, toRef, useRoute, useRouter } from '#app'
 import { useAuthStore } from '~/store'
-import { useQueryRelay, useI18n, useApolloHelpers } from '~/composables'
+import { useQueryRelay, useI18n, useApolloHelpers, useCursorPagination } from '~/composables'
 import { EduProgramType, DisciplinesQuery, DisciplinesQueryVariables } from '~/types/graphql'
 import AddDisciplines from '~/components/eleden/edu_programs/AddDisciplines.vue'
 import disciplinesQuery from '~/gql/eleden/queries/education/disciplines.graphql'
@@ -63,6 +63,8 @@ export default defineComponent({
     } = useQueryRelay<DisciplinesQuery, DisciplinesQueryVariables>({
       document: disciplinesQuery,
       variables: () => ({ eduProgramId: props.eduProgram.id })
+    }, {
+      pagination: useCursorPagination({ pageSize: 100 })
     })
 
     const countChange = ({ count: countt, totalCount: totalCountt }: { count: number, totalCount: number }): void => {

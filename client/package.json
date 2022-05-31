@@ -14,7 +14,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@babel/preset-env": "^7.18.0",
+    "@babel/preset-env": "^7.18.2",
     "@nuxtjs/apollo": "^4.0.1-rc.5",
     "@nuxtjs/i18n": "^7.2.2",
     "@nuxtjs/vuetify": "^1.12.3",
@@ -23,7 +23,7 @@
     "@vueuse/core": "^8.5.0",
     "@vueuse/integrations": "^8.5.0",
     "accounting": "^0.4.1",
-    "apexcharts": "^3.35.2",
+    "apexcharts": "^3.35.3",
     "graphql-tag": "^2.12.6",
     "moment": "^2.29.3",
     "nuxt-edge": "latest",
@@ -36,7 +36,7 @@
     "vuetify": "^2.6.6"
   },
   "devDependencies": {
-    "@babel/core": "^7.18.0",
+    "@babel/core": "^7.18.2",
     "@babel/eslint-parser": "^7.18.2",
     "@babel/plugin-proposal-decorators": "^7.18.2",
     "@babel/plugin-proposal-optional-chaining": "^7.17.12",

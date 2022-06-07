@@ -21,12 +21,14 @@ export default defineComponent({
       A_0: 'empty',
       A_1: 'card'
     }
+
     const represent: { [K in SegmentElementRepresent]: string } = {
       A_0: 'grid',
       A_1: 'card',
       A_2: 'list',
       A_3: 'slider'
     }
+
     return { view, represent }
   }
 })

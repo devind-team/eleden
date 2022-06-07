@@ -7,6 +7,8 @@
           v-card-title
             nuxt-link(:to="localePath({ name: 'pages-pageId', params: { pageId: page.id }})"
               style="text-decoration: none; word-break: normal;") {{ page.title }}
+          v-card-text(v-if="page.preview")
+            editor-typography(:html="page.preview")
           v-divider
           v-card-text.px-0(v-if="page.tags.length")
             v-chip.ml-2(v-for="tag in page.tags" :key="tag.id" small) {{ tag.name }}

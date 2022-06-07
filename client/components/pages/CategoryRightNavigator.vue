@@ -6,7 +6,7 @@
         :key="category.id"
         :to="localePath({ name: 'categories-categoryId', params: { categoryId: category.id } })"
         :class="{'v-list-item--active': activeCategories.map(e => e.id).includes(category.id) }"
-      ) {{ category.text }}
+        ) {{ category.text }}
 </template>
 
 <script lang="ts">

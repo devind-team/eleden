@@ -94,8 +94,10 @@ brew services start redis
 Сделать это можно следующей командой:
 ```shell
 # Unix
+poetry run python3 manage.py migrate
 poetry run python3 manage.py fs
 # Windows
+poetry run python3 manage.py migrate
 poetry run python manage.py fs
 ```
 
@@ -202,3 +204,5 @@ yarn run dev
 а в качестве `Scripts` команду `dev`. В конце необходимо нажать на кнопку `Ок`.
 
 После настройки конфигурации появляется возможность запускать сервис путем нажатия кнопки `Run`.
+
+

@@ -63,7 +63,8 @@ INSTALLED_APPS = [
     'apps.dashboard',
     'push_notifications',
     'apps.messenger',
-    'apps.sveden'
+    'apps.sveden',
+    'auditlog'
 ]
 
 
@@ -76,6 +77,7 @@ MIDDLEWARE = [
     'devind_core.middleware.SessionMiddleware',
     'devind_core.middleware.TimeRequestMiddleware',
     'devind_core.middleware.LangRequestMiddleware',
+    'auditlog.middleware.AuditlogMiddleware',
 ]
 
 # Список шаблонов

@@ -431,7 +431,7 @@ dev = ["tox", "bump2version (<1)", "sphinx (<2)", "importlib-metadata (<3)", "im
 
 [[package]]
 name = "devind-core"
-version = "0.6.2"
+version = "0.7.0"
 description = "Devind core."
 category = "main"
 optional = false
@@ -442,6 +442,7 @@ celery = ">=5.2.7,<6.0.0"
 channels = ">=3.0.4,<4.0.0"
 devind_helpers = ">=0.3,<0.4"
 Django = ">=3,<4"
+django-auditlog = ">=2.0.0,<3.0.0"
 django-channels-graphql-ws = ">=0.9.1,<0.10.0"
 django-oauth-toolkit = ">=1.7.1,<2.0.0"
 graphene-django = ">=2.15.0,<3.0.0"
@@ -497,6 +498,17 @@ sqlparse = ">=0.2.2"
 [package.extras]
 argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
+
+[[package]]
+name = "django-auditlog"
+version = "2.0.0"
+description = "Audit log app for Django"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+python-dateutil = ">=2.6.0"
 
 [[package]]
 name = "django-celery-beat"
@@ -2065,8 +2077,8 @@ deprecated = [
     {file = "Deprecated-1.2.13.tar.gz", hash = "sha256:43ac5335da90c31c24ba028af536a91d41d53f9e6901ddb021bcc572ce44e38d"},
 ]
 devind-core = [
-    {file = "devind_core-0.6.2-py3-none-any.whl", hash = "sha256:3d6e55f232afa63a36089c3ba494d68204e47032727fc25889cb9e97eb6a34a9"},
-    {file = "devind_core-0.6.2.tar.gz", hash = "sha256:53286eba984e73822f4f27e435d26245fb2b18ea19990bcc73256cd24eebe70e"},
+    {file = "devind_core-0.7.0-py3-none-any.whl", hash = "sha256:7a473ea34f88630be2649c5e2f969193eac87667c2a80c10d54a634cc0c20625"},
+    {file = "devind_core-0.7.0.tar.gz", hash = "sha256:13641008ae36072055979be0d1c9c6182ce1703a11aa5f4bb82074626a242e68"},
 ]
 devind-helpers = [
     {file = "devind_helpers-0.3.0-py3-none-any.whl", hash = "sha256:3a0d838dac430223a289f65dab1d45ba61a974d227c2954b74246fe070d75b50"},
@@ -2079,6 +2091,10 @@ devind-notifications = [
 django = [
     {file = "Django-3.2.13-py3-none-any.whl", hash = "sha256:b896ca61edc079eb6bbaa15cf6071eb69d6aac08cce5211583cfb41515644fdf"},
     {file = "Django-3.2.13.tar.gz", hash = "sha256:6d93497a0a9bf6ba0e0b1a29cccdc40efbfc76297255b1309b3a884a688ec4b6"},
+]
+django-auditlog = [
+    {file = "django-auditlog-2.0.0.tar.gz", hash = "sha256:fc2314c57a95d8e4674f68e8867bc3dfc485d40c062e33e06a417fede446f454"},
+    {file = "django_auditlog-2.0.0-py3-none-any.whl", hash = "sha256:d0017d5a4655cfb379c260c9123fab68c126973060d94c60018ed4b36bce4dd7"},
 ]
 django-celery-beat = [
     {file = "django-celery-beat-2.2.1.tar.gz", hash = "sha256:97ae5eb309541551bdb07bf60cc57cadacf42a74287560ced2d2c06298620234"},

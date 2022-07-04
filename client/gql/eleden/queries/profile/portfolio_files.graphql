@@ -2,6 +2,7 @@
 
 query PortfolioFiles(
   $first: Int,
+  $after: String,
   $offset: Int,
   $usersId: [ID!],
   $disciplineId: ID,
@@ -11,6 +12,7 @@ query PortfolioFiles(
 ) {
   portfolioFiles(
     first: $first,
+    after: $after,
     offset: $offset,
     disciplineId: $disciplineId,
     file_UserId_In: $usersId,
@@ -19,6 +21,13 @@ query PortfolioFiles(
     describe_Icontains: $search
   ) {
     totalCount
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+      __typename
+    }
     edges {
       node {
         ...PortfolioFileFields

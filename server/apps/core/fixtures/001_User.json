@@ -1,0 +1,22 @@
+[
+  {
+    "model": "users",
+    "pk": 1,
+    "fields": {
+      "is_superuser": true,
+      "username": "admin",
+      "email": "admin@gmail.com",
+      "first_name": "admin",
+      "last_name": "admin",
+      "sir_name": "admin",
+      "methods": [
+        {
+          "name": "set_password",
+          "args": [
+            "12345678"
+          ]
+        }
+      ]
+    }
+  }
+]

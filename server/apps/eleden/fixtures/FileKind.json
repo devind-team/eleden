@@ -1,0 +1,172 @@
+[
+  {
+    "model": "eleden.FileKind",
+    "pk": 1,
+    "fields": {
+      "name": "Лабораторная работа",
+      "accept": "*/*",
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.FileKind",
+    "pk": 2,
+    "fields": {
+      "name": "Расчетное задание",
+      "accept": "*/*",
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.FileKind",
+    "pk": 3,
+    "fields": {
+      "name": "Курсовая работа",
+      "accept": "*/*",
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.FileKind",
+    "pk": 4,
+    "fields": {
+      "name": "Курсовой проект",
+      "accept": "*/*",
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.FileKind",
+    "pk": 5,
+    "fields": {
+      "name": "Рецензия",
+      "accept": "*/*",
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.FileKind",
+    "pk": 6,
+    "fields": {
+      "name": "Антиплагиат",
+      "accept": "*/*",
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.FileKind",
+    "pk": 7,
+    "fields": {
+      "name": "Презентация",
+      "accept": "*/*",
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.FileKind",
+    "pk": 8,
+    "fields": {
+      "name": "Свидетельство о регистрации программного средства",
+      "accept": "*/*",
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.FileKind",
+    "pk": 9,
+    "fields": {
+      "name": "Диплом 1 степени",
+      "accept": "*/*",
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.FileKind",
+    "pk": 10,
+    "fields": {
+      "name": "Диплом 2 степени",
+      "accept": "*/*",
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.FileKind",
+    "pk": 11,
+    "fields": {
+      "name": "Диплом 3 степени",
+      "accept": "*/*",
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.FileKind",
+    "pk": 12,
+    "fields": {
+      "name": "Благодарственное письмо",
+      "accept": "*/*",
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.FileKind",
+    "pk": 13,
+    "fields": {
+      "name": "Выпускная квалификационная работа",
+      "accept": "*/*",
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.FileKind",
+    "pk": 14,
+    "fields": {
+      "name": "Магистерская диссертация",
+      "accept": "*/*",
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.FileKind",
+    "pk": 15,
+    "fields": {
+      "name": "Кандидатская диссертация",
+      "accept": "*/*",
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.FileKind",
+    "pk": 16,
+    "fields": {
+      "name": "Докторская диссертация",
+      "accept": "*/*",
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.FileKind",
+    "pk": 17,
+    "fields": {
+      "name": "Методические рекомендации",
+      "accept": "*/*",
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  }
+]

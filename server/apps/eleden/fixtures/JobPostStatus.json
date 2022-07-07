@@ -1,0 +1,119 @@
+[
+  {
+    "model": "eleden.JobPostStatus",
+    "pk": 1,
+    "fields": {
+      "name": "Обучается",
+      "active": true,
+      "order": 1
+    }
+  },
+  {
+    "model": "eleden.JobPostStatus",
+    "pk": 2,
+    "fields": {
+      "name": "Отчислен в связи с академической задолженностью",
+      "active": false,
+      "order": 2
+    }
+  },
+  {
+    "model": "eleden.JobPostStatus",
+    "pk": 3,
+    "fields": {
+      "name": "Отчислен в связи с переводом в другое учебное заведение",
+      "active": false,
+      "order": 3
+    }
+  },
+  {
+    "model": "eleden.JobPostStatus",
+    "pk": 4,
+    "fields": {
+      "name": "Отчислен по обстоятельствам, не зависящим от воли обучающегося",
+      "active": false,
+      "order": 4
+    }
+  },
+  {
+    "model": "eleden.JobPostStatus",
+    "pk": 5,
+    "fields": {
+      "name": "Отчислен в связи с окончанием обучения",
+      "active": false,
+      "order": 5
+    }
+  },
+  {
+    "model": "eleden.JobPostStatus",
+    "pk": 6,
+    "fields": {
+      "name": "Ушел в академический отпуск",
+      "active": false,
+      "order": 9
+    }
+  },
+  {
+    "model": "eleden.JobPostStatus",
+    "pk": 7,
+    "fields": {
+      "name": "Переведен в другую группу",
+      "active": false,
+      "order": 10
+    }
+  },
+  {
+    "model": "eleden.JobPostStatus",
+    "pk": 8,
+    "fields": {
+      "name": "Переведен в другую группу в связи с переходом на следующий курс",
+      "active": false,
+      "order": 11
+    }
+  },
+  {
+    "model": "eleden.JobPostStatus",
+    "pk": 9,
+    "fields": {
+      "name": "Работает",
+      "active": true,
+      "order": 12
+    }
+  },
+  {
+    "model": "eleden.JobPostStatus",
+    "pk": 10,
+    "fields": {
+      "name": "Уволен",
+      "active": false,
+      "order": 13
+    }
+  },
+  {
+    "model": "eleden.JobPostStatus",
+    "pk": 11,
+    "fields": {
+      "name": "Отчислен как не приступивший к занятиям",
+      "active": false,
+      "order": 6
+    }
+  },
+  {
+    "model": "eleden.JobPostStatus",
+    "pk": 12,
+    "fields": {
+      "name": "Отчислен как имеющий пропуски без уважительной причины",
+      "active": false,
+      "order": 7
+    }
+  },
+  {
+    "model": "eleden.JobPostStatus",
+    "pk": 13,
+    "fields": {
+      "name": "Отчислен в связи с академической задолженностью",
+      "active": false,
+      "order": 8
+    }
+  }
+]

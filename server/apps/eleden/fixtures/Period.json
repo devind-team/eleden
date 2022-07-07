@@ -1,0 +1,317 @@
+[
+  {
+    "model": "eleden.Period",
+    "pk": 1,
+    "fields": {
+      "name": "1 неделя",
+      "short_name": "1",
+      "order": 1,
+      "registrations": [1, 2, 6, 7, 8, 9],
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Period",
+    "pk": 2,
+    "fields": {
+      "name": "2 неделя",
+      "short_name": "2",
+      "order": 2,
+      "registrations": [1, 2, 6, 7, 8, 9],
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Period",
+    "pk": 3,
+    "fields": {
+      "name": "3 неделя",
+      "short_name": "3",
+      "order": 3,
+      "registrations": [1, 2, 6, 7, 8, 9],
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Period",
+    "pk": 4,
+    "fields": {
+      "name": "4 неделя",
+      "short_name": "4",
+      "order": 4,
+      "registrations": [1, 2, 6, 7, 8, 9],
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Period",
+    "pk": 5,
+    "fields": {
+      "name": "5 неделя",
+      "short_name": "5",
+      "order": 5,
+      "registrations": [1, 2, 6, 7, 8, 9],
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Period",
+    "pk": 6,
+    "fields": {
+      "name": "6 неделя",
+      "short_name": "6",
+      "order": 6,
+      "registrations": [1, 2, 6, 7, 8, 9],
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Period",
+    "pk": 7,
+    "fields": {
+      "name": "Контрольная неделя 1",
+      "short_name": "кн1",
+      "order": 7,
+      "registrations": [3, 4, 5],
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Period",
+    "pk": 8,
+    "fields": {
+      "name": "7 неделя",
+      "short_name": "7",
+      "order": 8,
+      "registrations": [1, 2, 6, 7, 8, 9],
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Period",
+    "pk": 9,
+    "fields": {
+      "name": "8 неделя",
+      "short_name": "8",
+      "order": 9,
+      "registrations": [1, 2, 6, 7, 8, 9],
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Period",
+    "pk": 10,
+    "fields": {
+      "name": "9 неделя",
+      "short_name": "9",
+      "order": 10,
+      "registrations": [1, 2, 6, 7, 8, 9],
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Period",
+    "pk": 11,
+    "fields": {
+      "name": "10 неделя",
+      "short_name": "10",
+      "order": 11,
+      "registrations": [1, 2, 6, 7, 8, 9],
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Period",
+    "pk": 12,
+    "fields": {
+      "name": "11 неделя",
+      "short_name": "11",
+      "order": 12,
+      "registrations": [1, 2, 6, 7, 8, 9],
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Period",
+    "pk": 13,
+    "fields": {
+      "name": "12 неделя",
+      "short_name": "12",
+      "order": 13,
+      "registrations": [1, 2, 6, 7, 8, 9],
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Period",
+    "pk": 14,
+    "fields": {
+      "name": "Контрольная неделя 2",
+      "short_name": "кн2",
+      "order": 14,
+      "registrations": [3, 4, 5],
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Period",
+    "pk": 15,
+    "fields": {
+      "name": "13 неделя",
+      "short_name": "13",
+      "order": 15,
+      "registrations": [1, 2, 6, 7, 8, 9],
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Period",
+    "pk": 16,
+    "fields": {
+      "name": "14 неделя",
+      "short_name": "14",
+      "order": 16,
+      "registrations": [1, 2, 6, 7, 8, 9],
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Period",
+    "pk": 17,
+    "fields": {
+      "name": "15 неделя",
+      "short_name": "15",
+      "order": 17,
+      "registrations": [1, 2, 6, 7, 8, 9],
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Period",
+    "pk": 18,
+    "fields": {
+      "name": "16 неделя",
+      "short_name": "16",
+      "order": 18,
+      "registrations": [1, 2, 6, 7, 8, 9],
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Period",
+    "pk": 19,
+    "fields": {
+      "name": "17 неделя",
+      "short_name": "17",
+      "order": 19,
+      "registrations": [1, 2, 6, 7, 8, 9],
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Period",
+    "pk": 20,
+    "fields": {
+      "name": "18 неделя",
+      "short_name": "18",
+      "order": 20,
+      "registrations": [1, 2, 6, 7, 8, 9],
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Period",
+    "pk": 21,
+    "fields": {
+      "name": "Допуск",
+      "short_name": "д",
+      "order": 21,
+      "registrations": [10],
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Period",
+    "pk": 22,
+    "fields": {
+      "name": "Экзамен",
+      "short_name": "э",
+      "is_final": true,
+      "order": 22,
+      "registrations": [1, 2, 6, 7, 8, 9],
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Period",
+    "pk": 23,
+    "fields": {
+      "name": "Зачет",
+      "short_name": "з",
+      "is_final": true,
+      "order": 23,
+      "registrations": [11],
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Period",
+    "pk": 24,
+    "fields": {
+      "name": "Зачет с оценкой",
+      "short_name": "зо",
+      "is_final": true,
+      "order": 24,
+      "registrations": [6, 7, 8, 9],
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Period",
+    "pk": 25,
+    "fields": {
+      "name": "Курсовая работа",
+      "short_name": "кр",
+      "order": 25,
+      "registrations": [6, 7, 8, 9],
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Period",
+    "pk": 26,
+    "fields": {
+      "name": "Курсовой проект",
+      "short_name": "кп",
+      "order": 26,
+      "registrations": [6, 7, 8, 9],
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  }
+]

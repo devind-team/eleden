@@ -1,0 +1,76 @@
+[
+  {
+    "model": "django_celery_beat.PeriodicTask",
+    "pk": 3,
+    "fields": {
+      "name": "Очистка результатов задач",
+      "description": "Удаляет результаты всех задач",
+      "task": "celery.backend_cleanup",
+      "crontab": 1,
+      "expire_seconds": 43200,
+      "kwargs": {},
+      "enabled": true,
+      "total_run_count": 0,
+      "date_changed": "2021-01-01T12:00:00.000Z",
+      "one_off": false,
+      "headers": {}
+    }
+  },
+  {
+    "model": "django_celery_beat.PeriodicTask",
+    "pk": 4,
+    "fields": {
+      "name": "Обработка файлов",
+      "description": "Синхронизирует файлы и их электронные подписи, а также удаляет лишние файлы",
+      "task": "core.tasks.file_tasks.process_files",
+      "crontab": 2,
+      "kwargs": {
+        "synchronize_sign_data": [
+          {
+            "model": "eleden.EduProgram",
+            "file_field_name": "description",
+            "sign_field_name": "description_sign"
+          },
+          {
+            "model": "eleden.EduProgram",
+            "file_field_name": "syllabus",
+            "sign_field_name": "syllabus_sign"
+          },
+          {
+            "model": "eleden.EduProgram",
+            "file_field_name": "calendar",
+            "sign_field_name": "calendar_sign"
+          },
+          {
+            "model": "eleden.Discipline",
+            "file_field_name": "annotation",
+            "sign_field_name": "annotation_sign"
+          },
+          {
+            "model": "eleden.Discipline",
+            "file_field_name": "work_program",
+            "sign_field_name": "work_program_sign"
+          },
+          {
+            "model": "eleden.MethodologicalSupport",
+            "file_field_name": "src",
+            "sign_field_name": "src_sign"
+          }
+        ],
+        "clear_files_data": [
+          "core",
+          "dashboard",
+          "eleden",
+          "messanger",
+          "notifications",
+          "pages"
+        ]
+      },
+      "enabled": true,
+      "total_run_count": 0,
+      "date_changed": "2021-01-01T12:00:00.000Z",
+      "one_off": false,
+      "headers": {}
+    }
+  }
+]

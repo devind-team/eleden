@@ -1,0 +1,82 @@
+[
+  {
+    "model": "eleden.ArticleIndex",
+    "pk": 1,
+    "fields": {
+      "name": "РИНЦ",
+      "coefficient": 1,
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.ArticleIndex",
+    "pk": 2,
+    "fields": {
+      "name": "ВАК",
+      "coefficient": 5,
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.ArticleIndex",
+    "pk": 3,
+    "fields": {
+      "name": "Scopus",
+      "coefficient": 10,
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.ArticleIndex",
+    "pk": 4,
+    "fields": {
+      "name": "Web of Science",
+      "coefficient": 10,
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.ArticleIndex",
+    "pk": 5,
+    "fields": {
+      "name": "Web of Science (Q4)",
+      "coefficient": 15,
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.ArticleIndex",
+    "pk": 6,
+    "fields": {
+      "name": "Web of Science (Q3)",
+      "coefficient": 20,
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.ArticleIndex",
+    "pk": 7,
+    "fields": {
+      "name": "Web of Science (Q2)",
+      "coefficient": 25,
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.ArticleIndex",
+    "pk": 8,
+    "fields": {
+      "name": "Web of Science (Q1)",
+      "coefficient": 30,
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  }
+]

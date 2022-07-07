@@ -1,0 +1,209 @@
+[
+  {
+    "model": "eleden.Post",
+    "pk": 1,
+    "fields": {
+      "name": "Студент",
+      "order": 1,
+      "statuses": [1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13]
+    }
+  },
+  {
+    "model": "eleden.Post",
+    "pk": 2,
+    "fields": {
+      "name": "Ассистент",
+      "order": 2,
+      "statuses": [9, 10]
+    }
+  },
+  {
+    "model": "eleden.Post",
+    "pk": 3,
+    "fields": {
+      "name": "Старший преподаватель",
+      "order": 3,
+      "statuses": [9, 10]
+    }
+  },
+  {
+    "model": "eleden.Post",
+    "pk": 4,
+    "fields": {
+      "name": "Доцент",
+      "order": 4,
+      "statuses": [9, 10]
+    }
+  },
+  {
+    "model": "eleden.Post",
+    "pk": 5,
+    "fields": {
+      "name": "Профессор",
+      "order": 5,
+      "statuses": [9, 10]
+    }
+  },
+  {
+    "model": "eleden.Post",
+    "pk": 6,
+    "fields": {
+      "name": "Заместитель заведующего кафедрой",
+      "order": 6,
+      "statuses": [9, 10]
+    }
+  },
+  {
+    "model": "eleden.Post",
+    "pk": 7,
+    "fields": {
+      "name": "Заведующий кафедрой",
+      "order": 7,
+      "statuses": [9, 10]
+    }
+  },
+  {
+    "model": "eleden.Post",
+    "pk": 8,
+    "fields": {
+      "name": "Старший лаборант",
+      "order": 8,
+      "statuses": [9, 10]
+    }
+  },
+  {
+    "model": "eleden.Post",
+    "pk": 9,
+    "fields": {
+      "name": "Программист 2-й категории",
+      "order": 9,
+      "statuses": [9, 10]
+    }
+  },
+  {
+    "model": "eleden.Post",
+    "pk": 10,
+    "fields": {
+      "name": "Программист 1-й категории",
+      "order": 10,
+      "statuses": [9, 10]
+    }
+  },
+  {
+    "model": "eleden.Post",
+    "pk": 11,
+    "fields": {
+      "name": "Инженер 2-й категории",
+      "order": 11,
+      "statuses": [9, 10]
+    }
+  },
+  {
+    "model": "eleden.Post",
+    "pk": 12,
+    "fields": {
+      "name": "Инженер 1-й категории",
+      "order": 12,
+      "statuses": [9, 10]
+    }
+  },
+  {
+    "model": "eleden.Post",
+    "pk": 13,
+    "fields": {
+      "name": "Ведущий инженер",
+      "order": 13,
+      "statuses": [9, 10]
+    }
+  },
+  {
+    "model": "eleden.Post",
+    "pk": 14,
+    "fields": {
+      "name": "Секретарь ученого совета",
+      "order": 14,
+      "statuses": [9, 10]
+    }
+  },
+  {
+    "model": "eleden.Post",
+    "pk": 15,
+    "fields": {
+      "name": "Директор музея",
+      "order": 15,
+      "statuses": [9, 10]
+    }
+  },
+  {
+    "model": "eleden.Post",
+    "pk": 16,
+    "fields": {
+      "name": "Начальник отдела кадров",
+      "order": 16,
+      "statuses": [9, 10]
+    }
+  },
+  {
+    "model": "eleden.Post",
+    "pk": 17,
+    "fields": {
+      "name": "Заведующий лабораторией информатизации",
+      "order": 17,
+      "statuses": [9, 10]
+    }
+  },
+  {
+    "model": "eleden.Post",
+    "pk": 18,
+    "fields": {
+      "name": "Начальник учебного управления",
+      "order": 18,
+      "statuses": [9, 10]
+    }
+  },
+  {
+    "model": "eleden.Post",
+    "pk": 19,
+    "fields": {
+      "name": "Начальник отдела по учебно-методической работе",
+      "order": 19,
+      "statuses": [9, 10]
+    }
+  },
+  {
+    "model": "eleden.Post",
+    "pk": 20,
+    "fields": {
+      "name": "Начальник отдела по учебной работе",
+      "order": 20,
+      "statuses": [9, 10]
+    }
+  },
+  {
+    "model": "eleden.Post",
+    "pk": 21,
+    "fields": {
+      "name": "Заместитель директора по учебно-методической работе",
+      "order": 21,
+      "statuses": [9, 10]
+    }
+  },
+  {
+    "model": "eleden.Post",
+    "pk": 22,
+    "fields": {
+      "name": "Заместитель директора по воспитательной работе",
+      "order": 22,
+      "statuses": [9, 10]
+    }
+  },
+  {
+    "model": "eleden.Post",
+    "pk": 23,
+    "fields": {
+      "name": "Директор",
+      "order": 23,
+      "statuses": [9, 10]
+    }
+  }
+]

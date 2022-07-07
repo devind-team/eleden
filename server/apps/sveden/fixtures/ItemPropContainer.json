@@ -1,0 +1,412 @@
+[
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 1,
+    "fields": {
+      "header": "Основные сведения",
+      "values": [],
+      "is_generated": false,
+      "subsection": 1
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 2,
+    "fields": {
+      "header": "Сведения о каждом учредителе\nобразовательной организации",
+      "values": [],
+      "is_generated": false,
+      "subsection": 1
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 3,
+    "fields": {
+      "header": "Сведения о каждом филиале\nобразовательной организации (в том числе\nнаходящихся за пределами Российской Федерации)",
+      "values": [],
+      "is_generated": false,
+      "subsection": 1
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 4,
+    "fields": {
+      "header": "Сведения о каждом представительстве\nобразовательной организации (в том числе\nнаходящихся за пределами Российской Федерации)",
+      "values": [],
+      "is_generated": false,
+      "subsection": 1
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 5,
+    "fields": {
+      "header": "Наличие на официальном сайте в\nподразделе «Структура и органы управления\nобразовательной организацией» информации о\nструктуре и органах управления образовательной\nорганизацией",
+      "values": [],
+      "is_generated": false,
+      "subsection": 2
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 6,
+    "fields": {
+      "header": "Общие сведения",
+      "values": [],
+      "is_generated": false,
+      "subsection": 3
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 7,
+    "fields": {
+      "header": "Информация о реализуемых уровнях\nобразования, о формах обучения, нормативных сроках\nобучения, сроке действия государственной\nаккредитации образовательной программы (при\nналичии государственной аккредитации), о языках, на\nкоторых осуществляется образование",
+      "values": [],
+      "is_generated": false,
+      "subsection": 4
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 8,
+    "fields": {
+      "header": "Информация о профессионально-\nобщественной аккредитации образовательной\nпрограммы (при наличии)",
+      "values": [],
+      "is_generated": false,
+      "subsection": 4
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 9,
+    "fields": {
+      "header": "Информация о численности\nобучающихся по реализуемым образовательным\nпрограммам по источникам финансирования",
+      "values": [],
+      "is_generated": false,
+      "subsection": 4
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 10,
+    "fields": {
+      "header": "Информация о результатах приема ",
+      "values": [],
+      "is_generated": false,
+      "subsection": 4
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 11,
+    "fields": {
+      "header": "Информация о результатах перевода,\nвосстановления и отчисления",
+      "values": [],
+      "is_generated": false,
+      "subsection": 4
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 12,
+    "fields": {
+      "header": "Информация об образовательной\nпрограмме",
+      "values": [],
+      "is_generated": true,
+      "subsection": 4
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 13,
+    "fields": {
+      "header": "Информация об адаптированной\nобразовательной программе",
+      "values": [],
+      "is_generated": true,
+      "subsection": 4
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 14,
+    "fields": {
+      "header": "Информация о направлениях и\nрезультатах научной (научно-исследовательской)\nдеятельности и научно-исследовательской базе для ее\nосуществления (для образовательных организаций\nвысшего образования и организаций дополнительного\nпрофессионального образования)",
+      "values": [],
+      "is_generated": false,
+      "subsection": 4
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 15,
+    "fields": {
+      "header": "Основные сведения",
+      "values": [],
+      "is_generated": false,
+      "subsection": 5
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 16,
+    "fields": {
+      "header": "Наличие на сайте информации о\nруководителе образовательной организации",
+      "values": [],
+      "is_generated": false,
+      "subsection": 6
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 17,
+    "fields": {
+      "header": "Наличие на сайте информации о\nзаместителях руководителя образовательной\nорганизации",
+      "values": [],
+      "is_generated": false,
+      "subsection": 6
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 18,
+    "fields": {
+      "header": "Наличие на сайте информации о\nруководителях филиалов образовательной организации\n(при наличии филиалов)",
+      "values": [],
+      "is_generated": false,
+      "subsection": 6
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 19,
+    "fields": {
+      "header": "Информация о персональном составе\nпедагогических работников",
+      "values": [],
+      "is_generated": true,
+      "subsection": 6
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 20,
+    "fields": {
+      "header": "Общие сведения",
+      "values": [],
+      "is_generated": false,
+      "subsection": 7
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 21,
+    "fields": {
+      "header": "Сведения об оборудованных учебных\nкабинетах",
+      "values": [],
+      "is_generated": false,
+      "subsection": 7
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 22,
+    "fields": {
+      "header": "Сведения об объектах для проведения\nпрактических занятий",
+      "values": [],
+      "is_generated": false,
+      "subsection": 7
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 23,
+    "fields": {
+      "header": "Сведения о библиотеке(ах)",
+      "values": [],
+      "is_generated": false,
+      "subsection": 7
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 24,
+    "fields": {
+      "header": "Сведения об объектах спорта",
+      "values": [],
+      "is_generated": false,
+      "subsection": 7
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 25,
+    "fields": {
+      "header": "Сведения об условиях питания\nобучающихся",
+      "values": [],
+      "is_generated": false,
+      "subsection": 7
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 26,
+    "fields": {
+      "header": "Сведения об условиях охраны здоровья\nобучающихся",
+      "values": [],
+      "is_generated": false,
+      "subsection": 7
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 27,
+    "fields": {
+      "header": "Общие сведения",
+      "values": [],
+      "is_generated": false,
+      "subsection": 8
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 28,
+    "fields": {
+      "header": "Информация о трудоустройстве\nвыпускников",
+      "values": [],
+      "is_generated": false,
+      "subsection": 8
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 29,
+    "fields": {
+      "header": "Общие сведения",
+      "values": [],
+      "is_generated": false,
+      "subsection": 9
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 30,
+    "fields": {
+      "header": "Общие сведения",
+      "values": [],
+      "is_generated": false,
+      "subsection": 10
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 31,
+    "fields": {
+      "header": "Информация о поступлении и\nрасходовании финансовых и материальных средств",
+      "values": [],
+      "is_generated": false,
+      "subsection": 10
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 32,
+    "fields": {
+      "header": "Наличие на официальном сайте в\nподразделе «Вакантные места для приема\n(перевода)» информации о количестве вакантных\nмест для приема (перевода)",
+      "values": [],
+      "is_generated": false,
+      "subsection": 11
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 33,
+    "fields": {
+      "header": "общие сведения",
+      "values": [],
+      "is_generated": false,
+      "subsection": 12
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 34,
+    "fields": {
+      "header": "Сведения о специально оборудованных\nучебных кабинетах",
+      "values": [],
+      "is_generated": false,
+      "subsection": 12
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 35,
+    "fields": {
+      "header": "Сведения о приспособленных объектах\nдля проведения практических занятий",
+      "values": [],
+      "is_generated": false,
+      "subsection": 12
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 36,
+    "fields": {
+      "header": "Сведения о библиотеке(ах) ",
+      "values": [],
+      "is_generated": false,
+      "subsection": 12
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 37,
+    "fields": {
+      "header": "Сведения об объектах спорта ",
+      "values": [],
+      "is_generated": false,
+      "subsection": 12
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 38,
+    "fields": {
+      "header": "Сведения об условиях питания\nобучающихся",
+      "values": [],
+      "is_generated": false,
+      "subsection": 12
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 39,
+    "fields": {
+      "header": "Сведения об условиях охраны здоровья\nобучающихся",
+      "values": [],
+      "is_generated": false,
+      "subsection": 12
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 40,
+    "fields": {
+      "header": "Информация о заключенных и\nпланируемых к заключению договорах с\nиностранными и (или) международными\nорганизациями по вопросам образования и науки",
+      "values": [],
+      "is_generated": false,
+      "subsection": 13
+    }
+  },
+  {
+    "model": "sveden.ItemPropContainer",
+    "pk": 41,
+    "fields": {
+      "header": "Информация о международной\nаккредитации",
+      "values": [],
+      "is_generated": false,
+      "subsection": 13
+    }
+  }
+]

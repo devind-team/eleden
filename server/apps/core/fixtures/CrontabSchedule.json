@@ -1,0 +1,20 @@
+[
+  {
+    "model": "django_celery_beat.CrontabSchedule",
+    "pk": 1,
+    "fields": {
+      "minute": 0,
+      "hour": 4,
+      "day_of_month": "1"
+    }
+  },
+  {
+    "model": "django_celery_beat.CrontabSchedule",
+    "pk": 2,
+    "fields": {
+      "minute": 0,
+      "hour": 5,
+      "day_of_week": "sunday"
+    }
+  }
+]

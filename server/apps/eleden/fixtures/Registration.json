@@ -1,0 +1,134 @@
+[
+  {
+    "model": "eleden.Registration",
+    "pk": 1,
+    "fields": {
+      "name": "Отсутствие",
+      "short_name": "н",
+      "order": 1,
+      "kind": 0,
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Registration",
+    "pk": 2,
+    "fields": {
+      "name": "Пропуск по уважительной причине",
+      "short_name": "п",
+      "order": 2,
+      "kind": 0,
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Registration",
+    "pk": 3,
+    "fields": {
+      "name": "Ноль",
+      "short_name": "0",
+      "order": 3,
+      "kind": 1,
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Registration",
+    "pk": 4,
+    "fields": {
+      "name": "Один",
+      "short_name": "1",
+      "order": 4,
+      "kind": 1,
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Registration",
+    "pk": 5,
+    "fields": {
+      "name": "Два",
+      "short_name": "2",
+      "order": 5,
+      "kind": 1,
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Registration",
+    "pk": 6,
+    "fields": {
+      "name": "Неудовлетворительно",
+      "short_name": "ну",
+      "order": 6,
+      "kind": 1,
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Registration",
+    "pk": 7,
+    "fields": {
+      "name": "Удовлетворительно",
+      "short_name": "у",
+      "order": 7,
+      "kind": 1,
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Registration",
+    "pk": 8,
+    "fields": {
+      "name": "Хорошо",
+      "short_name": "х",
+      "order": 8,
+      "kind": 1,
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Registration",
+    "pk": 9,
+    "fields": {
+      "name": "Отлично",
+      "short_name": "о",
+      "order": 9,
+      "kind": 1,
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Registration",
+    "pk": 10,
+    "fields": {
+      "name": "Допуск",
+      "short_name": "д",
+      "order": 10,
+      "kind": 1,
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  },
+  {
+    "model": "eleden.Registration",
+    "pk": 11,
+    "fields": {
+      "name": "Зачет",
+      "short_name": "з",
+      "order": 11,
+      "kind": 1,
+      "created_at": "2021-01-01T12:00:00.000Z",
+      "updated_at": "2021-01-01T12:00:00.000Z"
+    }
+  }
+]

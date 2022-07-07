@@ -1,6 +1,6 @@
 [
   {
-    "models": "oauth2.provider.application",
+    "model": "oauth2_provider.Application",
     "pk": 1,
     "fields": {
       "client_id": "4nbfxL69fcCMLrYVXcomGJzexAtfMg8B5b2cuxED",
@@ -9,7 +9,10 @@
       "client_type": "confidential",
       "redirect_uris": "/auth/login",
       "name": "Клиентское web-приложение",
-      "algorithm": ""
+      "algorithm": "",
+      "created": "2021-01-01T12:00:00.000Z",
+      "updated": "2021-01-01T12:00:00.000Z",
+      "user_id": 1
     }
   }
 ]

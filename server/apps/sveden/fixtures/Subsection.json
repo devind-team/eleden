@@ -1,0 +1,106 @@
+[
+  {
+    "model": "sveden.Subsection",
+    "pk": 1,
+    "fields": {
+      "header": "Основные сведения",
+      "url": "common"
+    }
+  },
+  {
+    "model": "sveden.Subsection",
+    "pk": 2,
+    "fields": {
+      "header": "Структура и органы\nуправления образовательной\nорганизацией",
+      "url": "struct"
+    }
+  },
+  {
+    "model": "sveden.Subsection",
+    "pk": 3,
+    "fields": {
+      "header": "Документы",
+      "url": "document"
+    }
+  },
+  {
+    "model": "sveden.Subsection",
+    "pk": 4,
+    "fields": {
+      "header": "Образование",
+      "url": "education"
+    }
+  },
+  {
+    "model": "sveden.Subsection",
+    "pk": 5,
+    "fields": {
+      "header": "Образовательные стандарты",
+      "url": "eduStandarts"
+    }
+  },
+  {
+    "model": "sveden.Subsection",
+    "pk": 6,
+    "fields": {
+      "header": "Руководство. Педагогический (научно-\nпедагогический) состав",
+      "url": "employees"
+    }
+  },
+  {
+    "model": "sveden.Subsection",
+    "pk": 7,
+    "fields": {
+      "header": "Материально-техническое\nобеспечение и оснащённость\nобразовательного процесса",
+      "url": "objects"
+    }
+  },
+  {
+    "model": "sveden.Subsection",
+    "pk": 8,
+    "fields": {
+      "header": "Стипендии и иные виды\nматериальной поддержки",
+      "url": "grants"
+    }
+  },
+  {
+    "model": "sveden.Subsection",
+    "pk": 9,
+    "fields": {
+      "header": "Платные образовательные\nуслуги",
+      "url": "paid_edu"
+    }
+  },
+  {
+    "model": "sveden.Subsection",
+    "pk": 10,
+    "fields": {
+      "header": "Финансово-хозяйственная\nдеятельность",
+      "url": "budget"
+    }
+  },
+  {
+    "model": "sveden.Subsection",
+    "pk": 11,
+    "fields": {
+      "header": "Вакантные места для приема\n(перевода)",
+      "url": "vacant"
+    }
+  },
+  {
+    "model": "sveden.Subsection",
+    "pk": 12,
+    "fields": {
+      "header": "Доступная среда",
+      "url": "ovz"
+    }
+  },
+  {
+    "model": "sveden.Subsection",
+    "pk": 13,
+    "fields": {
+      "header": "Международное\nсотрудничество",
+      "url": "inter"
+    }
+  }
+]

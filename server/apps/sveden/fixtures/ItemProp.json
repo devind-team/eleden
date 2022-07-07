@@ -1,0 +1,330 @@
+[
+  {
+    "model": "sveden.ItemProp",
+    "pk": 1,
+    "fields": {
+      "item_prop": "",
+      "container_id": 1
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 2,
+    "fields": {
+      "item_prop": "uchredLaw",
+      "container_id": 2
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 3,
+    "fields": {
+      "item_prop": "filInfo",
+      "container_id": 3
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 4,
+    "fields": {
+      "item_prop": "repInfo",
+      "container_id": 4
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 5,
+    "fields": {
+      "item_prop": "structOrgUprav",
+      "container_id": 5
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 6,
+    "fields": {
+      "item_prop": "",
+      "container_id": 6
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 7,
+    "fields": {
+      "item_prop": "eduAccred",
+      "container_id": 7
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 8,
+    "fields": {
+      "item_prop": "eduPOAccred",
+      "container_id": 8
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 9,
+    "fields": {
+      "item_prop": "eduChislen",
+      "container_id": 9
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 10,
+    "fields": {
+      "item_prop": "eduPriem",
+      "container_id": 10
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 11,
+    "fields": {
+      "item_prop": "eduPerevod",
+      "container_id": 11
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 12,
+    "fields": {
+      "item_prop": "eduOp",
+      "container_id": 12
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 13,
+    "fields": {
+      "item_prop": "eduAdOp",
+      "container_id": 13
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 14,
+    "fields": {
+      "item_prop": "eduNir",
+      "container_id": 14
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 15,
+    "fields": {
+      "item_prop": "",
+      "container_id": 15
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 16,
+    "fields": {
+      "item_prop": "rucovodstvo",
+      "container_id": 16
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 17,
+    "fields": {
+      "item_prop": "rucovodstvoZam",
+      "container_id": 17
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 18,
+    "fields": {
+      "item_prop": "rucovodstvoFil",
+      "container_id": 18
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 19,
+    "fields": {
+      "item_prop": "teachingStaff",
+      "container_id": 19
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 20,
+    "fields": {
+      "item_prop": "",
+      "container_id": 20
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 21,
+    "fields": {
+      "item_prop": "purposeCab",
+      "container_id": 21
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 22,
+    "fields": {
+      "item_prop": "purposePrac",
+      "container_id": 22
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 23,
+    "fields": {
+      "item_prop": "purposeLibr",
+      "container_id": 23
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 24,
+    "fields": {
+      "item_prop": "purposeSport",
+      "container_id": 24
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 25,
+    "fields": {
+      "item_prop": "meals",
+      "container_id": 25
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 26,
+    "fields": {
+      "item_prop": "health",
+      "container_id": 26
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 27,
+    "fields": {
+      "item_prop": "",
+      "container_id": 27
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 28,
+    "fields": {
+      "item_prop": "graduateJob",
+      "container_id": 28
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 29,
+    "fields": {
+      "item_prop": "",
+      "container_id": 29
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 30,
+    "fields": {
+      "item_prop": "",
+      "container_id": 30
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 31,
+    "fields": {
+      "item_prop": "volume",
+      "container_id": 31
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 32,
+    "fields": {
+      "item_prop": "vacant",
+      "container_id": 32
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 33,
+    "fields": {
+      "item_prop": "",
+      "container_id": 33
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 34,
+    "fields": {
+      "item_prop": "purposeCab",
+      "container_id": 34
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 35,
+    "fields": {
+      "item_prop": "purposePrac",
+      "container_id": 35
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 36,
+    "fields": {
+      "item_prop": "purposeLibr",
+      "container_id": 36
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 37,
+    "fields": {
+      "item_prop": "purposeSport",
+      "container_id": 37
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 38,
+    "fields": {
+      "item_prop": "meals",
+      "container_id": 38
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 39,
+    "fields": {
+      "item_prop": "health",
+      "container_id": 39
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 40,
+    "fields": {
+      "item_prop": "internationalDog",
+      "container_id": 40
+    }
+  },
+  {
+    "model": "sveden.ItemProp",
+    "pk": 41,
+    "fields": {
+      "item_prop": "internationalAccr",
+      "container_id": 41
+    }
+  }
+]

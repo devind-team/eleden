@@ -1,0 +1,2774 @@
+[
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 1,
+    "fields": {
+      "header": "О дате создания образовательной организации",
+      "item_prop": "regDate",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 1
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 2,
+    "fields": {
+      "header": "О месте нахождения образовательной организации",
+      "item_prop": "address",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 1
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 3,
+    "fields": {
+      "header": "О режиме и графике работы образовательной\nорганизации",
+      "item_prop": "workTime",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 1
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 4,
+    "fields": {
+      "header": "О контактных телефонах образовательной организации",
+      "item_prop": "telephone",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 1
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 5,
+    "fields": {
+      "header": "Об адресах электронной почты образовательной организации",
+      "item_prop": "email",
+      "show_position": 4,
+      "value_position": 4,
+      "parent": 1
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 6,
+    "fields": {
+      "header": "Сведения о каждом месте осуществления\nобразовательной деятельности, в том числе не\nуказываемых в соответствии с частью 4 статьи 91\nФедерального закона от 29.12.2012 N 273-ФЗ \"Об\nобразовании в Российской Федерации\" (Собрание\nзаконодательства Российской Фед",
+      "item_prop": "addressPlace",
+      "show_position": 5,
+      "value_position": 5,
+      "parent": 1
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 7,
+    "fields": {
+      "header": "Наименование учредителя образовательной\nорганизации (юридическое или физическое лицо)",
+      "item_prop": "nameUchred",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 2
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 8,
+    "fields": {
+      "header": "Сведения о юридическом адресе учредителя ",
+      "item_prop": "addressUchred",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 2
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 9,
+    "fields": {
+      "header": "Сведения о контактных телефонах ",
+      "item_prop": "telUchred",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 2
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 10,
+    "fields": {
+      "header": "Сведения об адресе электронной почты ",
+      "item_prop": "mailUchred",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 2
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 11,
+    "fields": {
+      "header": "Сведения об адресе сайта учредителя в сети «Интернет» ",
+      "item_prop": "websiteUchred",
+      "show_position": 4,
+      "value_position": 4,
+      "parent": 2
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 12,
+    "fields": {
+      "header": "О наименовании филиала образовательной организации",
+      "item_prop": "nameFil",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 3
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 13,
+    "fields": {
+      "header": "О месте нахождения филиала образовательной\nорганизации",
+      "item_prop": "addressFil",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 3
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 14,
+    "fields": {
+      "header": "О графике работы филиала образовательной\nорганизации",
+      "item_prop": "workTimeFil",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 3
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 15,
+    "fields": {
+      "header": "О контактных телефонах филиала образовательной\nорганизации",
+      "item_prop": "telephoneFil",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 3
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 16,
+    "fields": {
+      "header": "Об адресах электронной почты филиала\nобразовательной организации",
+      "item_prop": "emailFil",
+      "show_position": 4,
+      "value_position": 4,
+      "parent": 3
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 17,
+    "fields": {
+      "header": "Об адресе официального сайта филиала или странице в\nсети «Интернет»",
+      "item_prop": "websiteFil",
+      "show_position": 5,
+      "value_position": 5,
+      "parent": 3
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 18,
+    "fields": {
+      "header": "О наименовании представительства образовательной\nорганизации",
+      "item_prop": "nameRep",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 4
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 19,
+    "fields": {
+      "header": "О месте нахождения представительства\nобразовательной организации",
+      "item_prop": "addressRep",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 4
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 20,
+    "fields": {
+      "header": "О графике работы представительства образовательной\nорганизации",
+      "item_prop": "workTimeRep",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 4
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 21,
+    "fields": {
+      "header": "О контактных телефонах представительства\nобразовательной организации",
+      "item_prop": "telephoneRep",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 4
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 22,
+    "fields": {
+      "header": "Об адресах электронной почты представительства\nобразовательной организации",
+      "item_prop": "emailRep",
+      "show_position": 4,
+      "value_position": 4,
+      "parent": 4
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 23,
+    "fields": {
+      "header": "Об адресе официального сайта представительства или\nстранице в сети «Интернет»",
+      "item_prop": "websiteRep",
+      "show_position": 5,
+      "value_position": 5,
+      "parent": 4
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 24,
+    "fields": {
+      "header": "Наименование структурного подразделения (органа\nуправления)",
+      "item_prop": "name",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 5
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 25,
+    "fields": {
+      "header": "Фамилия, имя, отчество (при наличии отчества)\nруководителя структурного подразделения (органа\nуправления)",
+      "item_prop": "fio",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 5
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 26,
+    "fields": {
+      "header": "Должность руководителя структурного подразделения\n(органа управления)",
+      "item_prop": "post",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 5
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 27,
+    "fields": {
+      "header": "Место нахождения структурного подразделения (органа\nуправления)",
+      "item_prop": "addressStr",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 5
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 28,
+    "fields": {
+      "header": "Адрес официального сайта структурного подразделения\n(органа управления) (при наличии официального сайта)",
+      "item_prop": "site",
+      "show_position": 4,
+      "value_position": 4,
+      "parent": 5
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 29,
+    "fields": {
+      "header": "Об адресах электронной почты структурного\nподразделения (органа управления) (при наличии\nэлектронной почты",
+      "item_prop": "email",
+      "show_position": 5,
+      "value_position": 5,
+      "parent": 5
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 30,
+    "fields": {
+      "header": "Положение о структурном подразделении (об органе\nуправления) (при наличии)",
+      "item_prop": "divisionClauseDocLink",
+      "show_position": 6,
+      "value_position": 6,
+      "parent": 5
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 31,
+    "fields": {
+      "header": "Устав образовательной организации",
+      "item_prop": "ustavDocLink",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 6
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 32,
+    "fields": {
+      "header": "Лицензия на осуществление образовательной\nдеятельности с приложениями",
+      "item_prop": "licenseDocLink",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 6
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 33,
+    "fields": {
+      "header": "Свидетельство о государственной аккредитации\nс приложениями",
+      "item_prop": "accreditationDocLink",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 6
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 34,
+    "fields": {
+      "header": "Утвержденный план финансово-хозяйственной\nдеятельности образовательной организации или\nбюджетные сметы образовательной организации",
+      "item_prop": "finPlanDocLink",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 6
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 35,
+    "fields": {
+      "header": "Правила приема обучающихся",
+      "item_prop": "priemDocLink",
+      "show_position": 4,
+      "value_position": 4,
+      "parent": 6
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 36,
+    "fields": {
+      "header": "Режим занятий обучающихся",
+      "item_prop": "modeDocLink",
+      "show_position": 5,
+      "value_position": 5,
+      "parent": 6
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 37,
+    "fields": {
+      "header": "Формы, периодичность и порядок текущего контроля\nуспеваемости и промежуточной аттестации\nобучающихся",
+      "item_prop": "tekKontrolDocLink",
+      "show_position": 6,
+      "value_position": 6,
+      "parent": 6
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 38,
+    "fields": {
+      "header": "Порядок и основания перевода, отчисления и\nвосстановления обучающихся",
+      "item_prop": "perevodDocLink",
+      "show_position": 7,
+      "value_position": 7,
+      "parent": 6
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 39,
+    "fields": {
+      "header": "Порядок оформления возникновения,\nприостановления и прекращения отношений между\nобразовательной организацией и обучающимися и\n(или) родителями (законными представителями)\nнесовершеннолетних обучающихся",
+      "item_prop": "vozDocLink",
+      "show_position": 8,
+      "value_position": 8,
+      "parent": 6
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 40,
+    "fields": {
+      "header": "Правила внутреннего распорядка обучающихся",
+      "item_prop": "localActStud",
+      "show_position": 9,
+      "value_position": 9,
+      "parent": 6
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 41,
+    "fields": {
+      "header": "Правила внутреннего трудового распорядка ",
+      "item_prop": "localActOrder",
+      "show_position": 10,
+      "value_position": 10,
+      "parent": 6
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 42,
+    "fields": {
+      "header": "Коллективный договор",
+      "item_prop": "localActCollec",
+      "show_position": 11,
+      "value_position": 11,
+      "parent": 6
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 43,
+    "fields": {
+      "header": "Отчет о результатах самообследования ",
+      "item_prop": "reportEduDocLink",
+      "show_position": 12,
+      "value_position": 12,
+      "parent": 6
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 44,
+    "fields": {
+      "header": "Документ о порядке оказания платных\nобразовательных услуг, в том числе образец договора\nоб оказании платных образовательных услуг,\nдокумент об утверждении стоимости обучения по\nкаждой образовательной программе",
+      "item_prop": "paidEduDocLink",
+      "show_position": 13,
+      "value_position": 13,
+      "parent": 6
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 45,
+    "fields": {
+      "header": "Документ об установлении размера платы, взимаемой\nс родителей (законных представителей) за присмотр и\nуход за детьми, осваивающими образовательные\nпрограммы дошкольного образования в организациях,\nосуществляющих образовательную деятельность, за\nсодержание",
+      "item_prop": "paidParents",
+      "show_position": 14,
+      "value_position": 14,
+      "parent": 6
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 46,
+    "fields": {
+      "header": "Предписания органов, осуществляющих\nгосударственный контроль (надзор) в сфере\nобразования, отчеты об исполнении таких\nпредписаний",
+      "item_prop": "prescriptionDocLink",
+      "show_position": 15,
+      "value_position": 15,
+      "parent": 6
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 47,
+    "fields": {
+      "header": "Код специальности, направления подготовки",
+      "item_prop": "eduCode",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 7
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 48,
+    "fields": {
+      "header": "Наименование специальности, направления\nподготовки",
+      "item_prop": "eduName",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 7
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 49,
+    "fields": {
+      "header": "Реализуемый уровень образования",
+      "item_prop": "eduLevel",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 7
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 50,
+    "fields": {
+      "header": "Форма обучения",
+      "item_prop": "eduForm",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 7
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 51,
+    "fields": {
+      "header": "Срок получения образования",
+      "item_prop": "learningTerm",
+      "show_position": 4,
+      "value_position": 4,
+      "parent": 7
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 52,
+    "fields": {
+      "header": "Срок действия государственной аккредитации\nобразовательной программы (при наличии\nгосударственной аккредитации)",
+      "item_prop": "dateEnd",
+      "show_position": 5,
+      "value_position": 5,
+      "parent": 7
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 53,
+    "fields": {
+      "header": "Языки, на которых осуществляется образование\n(обучение)",
+      "item_prop": "language",
+      "show_position": 6,
+      "value_position": 6,
+      "parent": 7
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 54,
+    "fields": {
+      "header": "Код специальности, направления подготовки",
+      "item_prop": "eduCode",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 8
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 55,
+    "fields": {
+      "header": "Наименование специальности, направления\nподготовки",
+      "item_prop": "eduName",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 8
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 56,
+    "fields": {
+      "header": "Наименование аккредитующей организации",
+      "item_prop": "orgName",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 8
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 57,
+    "fields": {
+      "header": "Срок действия профессионально-общественной\nаккредитации образовательной программы",
+      "item_prop": "dateEnd",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 8
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 58,
+    "fields": {
+      "header": "Код специальности, направления подготовки",
+      "item_prop": "eduCode",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 9
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 59,
+    "fields": {
+      "header": "Наименование специальности, направления\nподготовки",
+      "item_prop": "eduName",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 9
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 60,
+    "fields": {
+      "header": "Реализуемый уровень образования",
+      "item_prop": "eduLevel",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 9
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 61,
+    "fields": {
+      "header": "Форма обучения",
+      "item_prop": "eduForm",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 9
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 62,
+    "fields": {
+      "header": "Численность обучающихся за счет бюджетных\nассигнований федерального бюджета",
+      "item_prop": "numberBF",
+      "show_position": 4,
+      "value_position": 4,
+      "parent": 9
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 63,
+    "fields": {
+      "header": "Численность обучающихся за счет бюджетов\nсубъектов Российской Федерации",
+      "item_prop": "numberBR",
+      "show_position": 5,
+      "value_position": 5,
+      "parent": 9
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 64,
+    "fields": {
+      "header": "Численность обучающихся за счет местных бюджетов",
+      "item_prop": "numberBM",
+      "show_position": 6,
+      "value_position": 6,
+      "parent": 9
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 65,
+    "fields": {
+      "header": "Численность обучающихся по договорам об\nобразовании за счет средств физических и (или)\nюридических лиц",
+      "item_prop": "numberP",
+      "show_position": 7,
+      "value_position": 7,
+      "parent": 9
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 66,
+    "fields": {
+      "header": "Численность обучающихся, являющихся\nиностранными гражданами",
+      "item_prop": "numberF",
+      "show_position": 8,
+      "value_position": 8,
+      "parent": 9
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 67,
+    "fields": {
+      "header": "Код специальности, направления подготовки",
+      "item_prop": "eduCode",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 10
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 68,
+    "fields": {
+      "header": "Наименование специальности, направления\nподготовки",
+      "item_prop": "eduName",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 10
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 69,
+    "fields": {
+      "header": "Реализуемый уровень образования",
+      "item_prop": "eduLevel",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 10
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 70,
+    "fields": {
+      "header": "Форма обучения",
+      "item_prop": "eduForm",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 10
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 71,
+    "fields": {
+      "header": "Сведения о результатах приема за счет бюджетных\nассигнований федерального бюджета",
+      "item_prop": "numberBF",
+      "show_position": 4,
+      "value_position": 4,
+      "parent": 10
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 72,
+    "fields": {
+      "header": "Сведения о результатах приема за счет бюджетов\nсубъектов Российской Федерации",
+      "item_prop": "numberBR",
+      "show_position": 5,
+      "value_position": 5,
+      "parent": 10
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 73,
+    "fields": {
+      "header": "Сведения о результатах приема за счет местных\nбюджетов",
+      "item_prop": "numberBM",
+      "show_position": 6,
+      "value_position": 6,
+      "parent": 10
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 74,
+    "fields": {
+      "header": "Сведения о результатах приема по договорам об\nобразовании за счет средств физических и (или)\nюридических лиц",
+      "item_prop": "numberP",
+      "show_position": 7,
+      "value_position": 7,
+      "parent": 10
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 75,
+    "fields": {
+      "header": "Сведения о средней сумме набранных баллов по всем\nвступительным испытаниям",
+      "item_prop": "score",
+      "show_position": 8,
+      "value_position": 8,
+      "parent": 10
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 76,
+    "fields": {
+      "header": "Код специальности, направления подготовки",
+      "item_prop": "eduCode",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 11
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 77,
+    "fields": {
+      "header": "Наименование специальности, направления\nподготовки",
+      "item_prop": "eduName",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 11
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 78,
+    "fields": {
+      "header": "Реализуемый уровень образования ",
+      "item_prop": "eduLevel",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 11
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 79,
+    "fields": {
+      "header": "Форма обучения",
+      "item_prop": "eduForm",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 11
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 80,
+    "fields": {
+      "header": "Численность обучающихся, переведенных в другие\nобразовательные организации",
+      "item_prop": "numberOut",
+      "show_position": 4,
+      "value_position": 4,
+      "parent": 11
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 81,
+    "fields": {
+      "header": "Численность обучающихся, переведенных из других\nобразовательных организаций",
+      "item_prop": "numberTo",
+      "show_position": 5,
+      "value_position": 5,
+      "parent": 11
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 82,
+    "fields": {
+      "header": "Численность восстановленных обучающихся",
+      "item_prop": "numberRes",
+      "show_position": 6,
+      "value_position": 6,
+      "parent": 11
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 83,
+    "fields": {
+      "header": "Численность отчисленных обучающихся ",
+      "item_prop": "numberExp",
+      "show_position": 7,
+      "value_position": 7,
+      "parent": 11
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 84,
+    "fields": {
+      "header": "Код специальности, направления подготовки ",
+      "item_prop": "eduCode",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 12
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 85,
+    "fields": {
+      "header": "Наименование специальности, направления\nподготовки",
+      "item_prop": "eduName",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 12
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 86,
+    "fields": {
+      "header": "Реализуемый уровень образования",
+      "item_prop": "eduLevel",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 12
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 87,
+    "fields": {
+      "header": "Форма обучения ",
+      "item_prop": "eduForm",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 12
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 88,
+    "fields": {
+      "header": "Ссылка на описание образовательной программы с\nприложением ее копии (в том числе РПД)",
+      "item_prop": "opMain",
+      "show_position": 4,
+      "value_position": 4,
+      "parent": 12
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 89,
+    "fields": {
+      "header": "Ссылка на учебный план",
+      "item_prop": "educationPlan",
+      "show_position": 5,
+      "value_position": 5,
+      "parent": 12
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 90,
+    "fields": {
+      "header": "Ссылки на аннотации к рабочим программам\nдисциплин (по каждой дисциплине в составе\nобразовательной программы)",
+      "item_prop": "educationAnnotation",
+      "show_position": 6,
+      "value_position": 6,
+      "parent": 12
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 91,
+    "fields": {
+      "header": "Ссылка на календарный учебный график",
+      "item_prop": "educationShedule",
+      "show_position": 7,
+      "value_position": 7,
+      "parent": 12
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 92,
+    "fields": {
+      "header": "Ссылки на нормативные и методические документы,\nразработанные образовательной организацией для\nобеспечения образовательного процесса",
+      "item_prop": "methodology",
+      "show_position": 8,
+      "value_position": 8,
+      "parent": 12
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 93,
+    "fields": {
+      "header": "Ссылки на рабочие программы практик,\nпредусмотренных соответствующей образовательной\nпрограммой",
+      "item_prop": "eduPr",
+      "show_position": 9,
+      "value_position": 9,
+      "parent": 12
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 94,
+    "fields": {
+      "header": "Ссылки на информацию об использовании при\nреализации образовательных программ электронного\nобучения и дистанционных образовательных\nтехнологий",
+      "item_prop": "eduEl",
+      "show_position": 10,
+      "value_position": 10,
+      "parent": 12
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 95,
+    "fields": {
+      "header": "Код специальности, направления подготовки",
+      "item_prop": "eduCode",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 13
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 96,
+    "fields": {
+      "header": "Наименование специальности, направления\nподготовки",
+      "item_prop": "eduName",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 13
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 97,
+    "fields": {
+      "header": "Реализуемый уровень образования",
+      "item_prop": "eduLevel",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 13
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 98,
+    "fields": {
+      "header": "Форма обучения",
+      "item_prop": "eduForm",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 13
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 99,
+    "fields": {
+      "header": "Ссылка на описание образовательной программы с\nприложением ее копии",
+      "item_prop": "opMain",
+      "show_position": 4,
+      "value_position": 4,
+      "parent": 13
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 100,
+    "fields": {
+      "header": "Ссылка на учебный план ",
+      "item_prop": "educationPlan",
+      "show_position": 5,
+      "value_position": 5,
+      "parent": 13
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 101,
+    "fields": {
+      "header": "Ссылки на аннотации к рабочим программам\nдисциплин (по каждой дисциплине в составе\nобразовательной программы)",
+      "item_prop": "educationAnnotation",
+      "show_position": 6,
+      "value_position": 6,
+      "parent": 13
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 102,
+    "fields": {
+      "header": "Ссылка на календарный учебный график",
+      "item_prop": "educationShedule",
+      "show_position": 7,
+      "value_position": 7,
+      "parent": 13
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 103,
+    "fields": {
+      "header": "Ссылки на нормативные и методические документы,\nразработанные образовательной организацией для\nобеспечения образовательного процесса",
+      "item_prop": "methodology",
+      "show_position": 8,
+      "value_position": 8,
+      "parent": 13
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 104,
+    "fields": {
+      "header": "Ссылки на рабочие программы практик,\nпредусмотренных соответствующей образовательной\nпрограммой",
+      "item_prop": "eduPr",
+      "show_position": 9,
+      "value_position": 9,
+      "parent": 13
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 105,
+    "fields": {
+      "header": "Ссылки на информацию об использовании при\nреализации образовательных программ электронного\nобучения и дистанционных образовательных\nтехнологий",
+      "item_prop": "eduEl",
+      "show_position": 10,
+      "value_position": 10,
+      "parent": 13
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 106,
+    "fields": {
+      "header": "Код специальности, направления подготовки ",
+      "item_prop": "eduCode",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 14
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 107,
+    "fields": {
+      "header": "Наименование специальности, направления\nподготовки",
+      "item_prop": "eduName",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 14
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 108,
+    "fields": {
+      "header": "Реализуемый уровень образования",
+      "item_prop": "eduLevel",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 14
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 109,
+    "fields": {
+      "header": "Перечень научных направлений, в рамках которых\nведется научная (научно-исследовательская)\nдеятельность",
+      "item_prop": "perechenNir",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 14
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 110,
+    "fields": {
+      "header": "Результаты научной (научно-исследовательской)\nдеятельности",
+      "item_prop": "resultNir",
+      "show_position": 4,
+      "value_position": 4,
+      "parent": 14
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 111,
+    "fields": {
+      "header": "Сведения о научно-исследовательской базе для\nосуществления научной (научно-исследовательской)\nдеятельности",
+      "item_prop": "baseNir",
+      "show_position": 5,
+      "value_position": 5,
+      "parent": 14
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 112,
+    "fields": {
+      "header": "о федеральных государственных образовательных\nстандартах с размещением их копий и (или)\nгиперссылки на соответствующие документы",
+      "item_prop": "eduFedDoc",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 15
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 113,
+    "fields": {
+      "header": "об образовательных стандартах с размещением их\nкопий и (или) гиперссылки на соответствующие\nдокументы",
+      "item_prop": "eduStandartDoc",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 15
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 114,
+    "fields": {
+      "header": "фамилия, имя, отчество (при наличии)",
+      "item_prop": "fio",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 16
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 115,
+    "fields": {
+      "header": "должность ",
+      "item_prop": "post",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 16
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 116,
+    "fields": {
+      "header": "контактные телефоны",
+      "item_prop": "telephone",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 16
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 117,
+    "fields": {
+      "header": "адрес электронной почты ",
+      "item_prop": "email",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 16
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 118,
+    "fields": {
+      "header": "фамилия, имя, отчество (при наличии)",
+      "item_prop": "fio",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 17
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 119,
+    "fields": {
+      "header": "должность ",
+      "item_prop": "post",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 17
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 120,
+    "fields": {
+      "header": "контактные телефоны",
+      "item_prop": "telephone",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 17
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 121,
+    "fields": {
+      "header": "адрес электронной почты ",
+      "item_prop": "email",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 17
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 122,
+    "fields": {
+      "header": "наименовании филиала образовательной организации ",
+      "item_prop": "nameFil",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 18
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 123,
+    "fields": {
+      "header": "фамилия, имя, отчество (при наличии)",
+      "item_prop": "fio",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 18
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 124,
+    "fields": {
+      "header": "должность ",
+      "item_prop": "post",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 18
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 125,
+    "fields": {
+      "header": "контактные телефоны",
+      "item_prop": "telephone",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 18
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 126,
+    "fields": {
+      "header": "адрес электронной почты ",
+      "item_prop": "email",
+      "show_position": 4,
+      "value_position": 4,
+      "parent": 18
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 127,
+    "fields": {
+      "header": "Фамилия, имя, отчество (при наличии отчества)\nработника",
+      "item_prop": "fio",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 19
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 128,
+    "fields": {
+      "header": "Занимаемая должность (должности)",
+      "item_prop": "post",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 19
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 129,
+    "fields": {
+      "header": "Преподаваемые учебные предметы, курсы, дисциплины\n(модули)",
+      "item_prop": "teachingDiscipline",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 19
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 130,
+    "fields": {
+      "header": "Уровень образования ",
+      "item_prop": "teachingLevel",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 19
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 131,
+    "fields": {
+      "header": "Квалификация",
+      "item_prop": "teachingQual",
+      "show_position": 4,
+      "value_position": 4,
+      "parent": 19
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 132,
+    "fields": {
+      "header": "Ученая степень (при наличии)",
+      "item_prop": "degree",
+      "show_position": 5,
+      "value_position": 5,
+      "parent": 19
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 133,
+    "fields": {
+      "header": "Ученое звание (при наличии)",
+      "item_prop": "academStat",
+      "show_position": 6,
+      "value_position": 6,
+      "parent": 19
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 134,
+    "fields": {
+      "header": "Наименование направления подготовки и (или)\nспециальности",
+      "item_prop": "employeeQualification",
+      "show_position": 7,
+      "value_position": 7,
+      "parent": 19
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 135,
+    "fields": {
+      "header": "Данные о повышении квалификации и (или)\nпрофессиональной переподготовке (при наличии)",
+      "item_prop": "profDevelopment",
+      "show_position": 8,
+      "value_position": 8,
+      "parent": 19
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 136,
+    "fields": {
+      "header": "Общий стаж работы",
+      "item_prop": "genExperience",
+      "show_position": 9,
+      "value_position": 9,
+      "parent": 19
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 137,
+    "fields": {
+      "header": "Стаж работы по специальности",
+      "item_prop": "specExperience",
+      "show_position": 10,
+      "value_position": 10,
+      "parent": 19
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 138,
+    "fields": {
+      "header": "Сведения о каждом месте осуществления\nобразовательной деятельности, в том числе не\nуказываемых в соответствии с частью 4 статьи 91\nФедерального закона от 29.12.2012 N 273-ФЗ \"Об\nобразовании в Российской Федерации\" (Собрание\nзаконодательства Российской Фед",
+      "item_prop": "addressPlace",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 20
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 139,
+    "fields": {
+      "header": "Сведения о средствах обучения и воспитания ",
+      "item_prop": "purposeFacil",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 20
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 140,
+    "fields": {
+      "header": "Сведения о доступе к информационным системам и\nинформационно-телекоммуникационным сетям",
+      "item_prop": "comNet",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 20
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 141,
+    "fields": {
+      "header": "Наличие в образовательной организации электронной\nинформационно-образовательной среды",
+      "item_prop": "purposeEios",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 20
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 142,
+    "fields": {
+      "header": "Количество собственных электронных образовательных\nи информационных ресурсов",
+      "item_prop": "eoisOwn",
+      "show_position": 4,
+      "value_position": 4,
+      "parent": 20
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 143,
+    "fields": {
+      "header": "Количество сторонних электронных образовательных и\nинформационных ресурсов",
+      "item_prop": "eoisSide",
+      "show_position": 5,
+      "value_position": 5,
+      "parent": 20
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 144,
+    "fields": {
+      "header": "Количество баз данных электронного каталога",
+      "item_prop": "bdec",
+      "show_position": 6,
+      "value_position": 6,
+      "parent": 20
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 145,
+    "fields": {
+      "header": "Ссылка на электронный образовательный ресурс, к\nкоторым обеспечивается доступ обучающихся",
+      "item_prop": "erList",
+      "show_position": 7,
+      "value_position": 7,
+      "parent": 20
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 146,
+    "fields": {
+      "header": "Адрес места нахождения",
+      "item_prop": "addressCab",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 21
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 147,
+    "fields": {
+      "header": "Наименование оборудованного учебного кабинетов",
+      "item_prop": "nameCab",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 21
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 148,
+    "fields": {
+      "header": "Оснащенность оборудованного учебного кабинетов",
+      "item_prop": "osnCab",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 21
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 149,
+    "fields": {
+      "header": "Адрес места нахождения",
+      "item_prop": "addressPrac",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 22
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 150,
+    "fields": {
+      "header": "Наименование объекта для проведения практических\nзанятий",
+      "item_prop": "namePrac",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 22
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 151,
+    "fields": {
+      "header": "Оснащенность объекта для проведения практических\nзанятий",
+      "item_prop": "osnPrac",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 22
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 152,
+    "fields": {
+      "header": "Наименование объекта",
+      "item_prop": "objName",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 23
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 153,
+    "fields": {
+      "header": "Адрес места нахождения объекта",
+      "item_prop": "objAddres",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 23
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 154,
+    "fields": {
+      "header": "Площадь объекта",
+      "item_prop": "objSq",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 23
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 155,
+    "fields": {
+      "header": "Количество мест ",
+      "item_prop": "objCnt",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 23
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 156,
+    "fields": {
+      "header": "Наименование объекта ",
+      "item_prop": "objName",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 24
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 157,
+    "fields": {
+      "header": "Адрес места нахождения объекта",
+      "item_prop": "objAddress",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 24
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 158,
+    "fields": {
+      "header": "Площадь объекта",
+      "item_prop": "objSq",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 24
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 159,
+    "fields": {
+      "header": "Количество мест",
+      "item_prop": "objCnt",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 24
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 160,
+    "fields": {
+      "header": "Наименование объекта",
+      "item_prop": "objName",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 25
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 161,
+    "fields": {
+      "header": "Адрес места нахождения объекта",
+      "item_prop": "objAddress",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 25
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 162,
+    "fields": {
+      "header": "Площадь объекта ",
+      "item_prop": "objSq",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 25
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 163,
+    "fields": {
+      "header": "Количество мест ",
+      "item_prop": "objCnt",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 25
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 164,
+    "fields": {
+      "header": "Наименование объекта",
+      "item_prop": "objName",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 26
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 165,
+    "fields": {
+      "header": "Адрес места нахождения объекта",
+      "item_prop": "objAddress",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 26
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 166,
+    "fields": {
+      "header": "Площадь объекта ",
+      "item_prop": "objSq",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 26
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 167,
+    "fields": {
+      "header": "Количество мест",
+      "item_prop": "objCnt",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 26
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 168,
+    "fields": {
+      "header": "Ссылка на локальный нормативный акт",
+      "item_prop": "localAct",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 27
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 169,
+    "fields": {
+      "header": "Информация о предоставлении стипендии\nобучающимся",
+      "item_prop": "grant",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 27
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 170,
+    "fields": {
+      "header": "Информация о мерах социальной поддержки\nобучающихся",
+      "item_prop": "support",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 27
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 171,
+    "fields": {
+      "header": "Количество общежитий ",
+      "item_prop": "hostelInfo",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 27
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 172,
+    "fields": {
+      "header": "Количество интернатов",
+      "item_prop": "interInfo",
+      "show_position": 4,
+      "value_position": 4,
+      "parent": 27
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 173,
+    "fields": {
+      "header": "Общая площадь общежитий",
+      "item_prop": "hostelTS",
+      "show_position": 5,
+      "value_position": 5,
+      "parent": 27
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 174,
+    "fields": {
+      "header": "Общая площадь интернатов",
+      "item_prop": "interTS",
+      "show_position": 6,
+      "value_position": 6,
+      "parent": 27
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 175,
+    "fields": {
+      "header": "Жилая площадь общежитий",
+      "item_prop": "hostelLS",
+      "show_position": 7,
+      "value_position": 7,
+      "parent": 27
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 176,
+    "fields": {
+      "header": "Жилая площадь интернатов",
+      "item_prop": "interTS",
+      "show_position": 8,
+      "value_position": 8,
+      "parent": 27
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 177,
+    "fields": {
+      "header": "Количество мест в общежитиях",
+      "item_prop": "hostelNum",
+      "show_position": 9,
+      "value_position": 9,
+      "parent": 27
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 178,
+    "fields": {
+      "header": "Количество мест в интернатов",
+      "item_prop": "interNum",
+      "show_position": 10,
+      "value_position": 10,
+      "parent": 27
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 179,
+    "fields": {
+      "header": "Обеспеченность общежитий 100% мягким и жестким\nинвентарем по установленным стандартным нормам",
+      "item_prop": "hostelInv",
+      "show_position": 11,
+      "value_position": 11,
+      "parent": 27
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 180,
+    "fields": {
+      "header": "Обеспеченность интернатов 100% мягким и жестким\nинвентарем по установленным стандартным нормам",
+      "item_prop": "interInv",
+      "show_position": 12,
+      "value_position": 12,
+      "parent": 27
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 181,
+    "fields": {
+      "header": "Наличие питания (да/нет) в общежитиях ",
+      "item_prop": "hostelFd",
+      "show_position": 13,
+      "value_position": 13,
+      "parent": 27
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 182,
+    "fields": {
+      "header": "Наличие питания (да/нет) интернатах",
+      "item_prop": "interFd",
+      "show_position": 14,
+      "value_position": 14,
+      "parent": 27
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 183,
+    "fields": {
+      "header": "Ссылка на информацию о формировании платы за\nпроживание в общежитии",
+      "item_prop": "localActObSt",
+      "show_position": 15,
+      "value_position": 15,
+      "parent": 27
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 184,
+    "fields": {
+      "header": "Код",
+      "item_prop": "eduCode",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 28
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 185,
+    "fields": {
+      "header": "Наименование профессии, специальности, направления\nподготовки",
+      "item_prop": "eduName",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 28
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 186,
+    "fields": {
+      "header": "Кол-во выпускников",
+      "item_prop": "v1",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 28
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 187,
+    "fields": {
+      "header": "Кол-во трудоустроенных выпускников",
+      "item_prop": "t1",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 28
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 188,
+    "fields": {
+      "header": "Кол-во выпускников",
+      "item_prop": "v2",
+      "show_position": 4,
+      "value_position": 4,
+      "parent": 28
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 189,
+    "fields": {
+      "header": "Кол-во трудоустроенных выпускников",
+      "item_prop": "t2",
+      "show_position": 5,
+      "value_position": 5,
+      "parent": 28
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 190,
+    "fields": {
+      "header": "Кол-во выпускников ",
+      "item_prop": "v3",
+      "show_position": 6,
+      "value_position": 6,
+      "parent": 28
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 191,
+    "fields": {
+      "header": "Кол-во трудоустроенных выпускников",
+      "item_prop": "t3",
+      "show_position": 7,
+      "value_position": 7,
+      "parent": 28
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 192,
+    "fields": {
+      "header": "Наличие на официальном сайте в подразделе «Платные\nобразовательные услуги» информации о порядке\nоказания платных образовательных услуг",
+      "item_prop": "paidEdu",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 29
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 193,
+    "fields": {
+      "header": "Документ об установлении размера платы, взимаемой с\nродителей (законных представителей) за присмотр и\nуход за детьми, осваивающими образовательные\nпрограммы дошкольного образования в организациях,\nосуществляющих образовательную деятельность, за\nсодержание",
+      "item_prop": "paidParents",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 29
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 194,
+    "fields": {
+      "header": "Информация об объеме образовательной деятельности,\nфинансовое обеспечение которой осуществляется за\nсчет бюджетных ассигнований федерального бюджета",
+      "item_prop": "finBFVolume",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 30
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 195,
+    "fields": {
+      "header": "Информация об объеме образовательной деятельности,\nфинансовое обеспечение которой осуществляется за\nсчет бюджетов субъектов Российской Федерации",
+      "item_prop": "finBRVolume",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 30
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 196,
+    "fields": {
+      "header": "Информация об объеме образовательной деятельности,\nфинансовое обеспечение которой осуществляется за\nсчет местных бюджетов",
+      "item_prop": "finBMVolume",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 30
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 197,
+    "fields": {
+      "header": "Информация об объеме образовательной деятельности,\nфинансовое обеспечение которой осуществляется по\nдоговорам об образовании за счет средств физических и\n(или) юридических лиц",
+      "item_prop": "finPVolume",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 30
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 198,
+    "fields": {
+      "header": "Год отчетности",
+      "item_prop": "finYear",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 31
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 199,
+    "fields": {
+      "header": "Информация о поступлении финансовых и\nматериальных средств",
+      "item_prop": "finPost",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 31
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 200,
+    "fields": {
+      "header": "Информация о расходовании финансовых и\nматериальных средств",
+      "item_prop": "finRas",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 31
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 201,
+    "fields": {
+      "header": "Код",
+      "item_prop": "eduCode",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 32
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 202,
+    "fields": {
+      "header": "Наименование профессии, специальности,\nнаправления подготовки",
+      "item_prop": "eduName",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 32
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 203,
+    "fields": {
+      "header": "Уровень образования ",
+      "item_prop": "eduLevel",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 32
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 204,
+    "fields": {
+      "header": "Курс",
+      "item_prop": "eduCourse",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 32
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 205,
+    "fields": {
+      "header": "Форма обучения",
+      "item_prop": "eduForm",
+      "show_position": 4,
+      "value_position": 4,
+      "parent": 32
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 206,
+    "fields": {
+      "header": "количество вакантных мест для приёма (перевода) за\nсчёт бюджетных ассигнований федерального\nбюджета",
+      "item_prop": "numberBFVacant",
+      "show_position": 5,
+      "value_position": 5,
+      "parent": 32
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 207,
+    "fields": {
+      "header": "количество вакантных мест для приёма (перевода) за\nсчёт бюджетных ассигнований бюджетов субъекта\nРоссийской Федерации",
+      "item_prop": "numberBRVacan",
+      "show_position": 6,
+      "value_position": 6,
+      "parent": 32
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 208,
+    "fields": {
+      "header": "количество вакантных мест для приёма (перевода) за\nсчёт бюджетных ассигнований местных бюджетов",
+      "item_prop": "numberBMVacant",
+      "show_position": 7,
+      "value_position": 7,
+      "parent": 32
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 209,
+    "fields": {
+      "header": "количество вакантных мест для приёма (перевода) за\nсчёт средств физических и (или) юридических лиц",
+      "item_prop": "numberPVacant",
+      "show_position": 8,
+      "value_position": 8,
+      "parent": 32
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 210,
+    "fields": {
+      "header": "Информация о приспособленных средствах обучения\nи воспитания",
+      "item_prop": "purposeFacilOvz",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 33
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 211,
+    "fields": {
+      "header": "Информация об обеспечении беспрепятственного\nдоступа в здания образовательной организации",
+      "item_prop": "ovz",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 33
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 212,
+    "fields": {
+      "header": "Информация о доступе к приспособленным\nинформационным системам и информационно-\nтелекоммуникационным сетям",
+      "item_prop": "comNetOvz",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 33
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 213,
+    "fields": {
+      "header": "Ссылка на приспособленный электронный\nобразовательный ресурс, к которым обеспечивается\nдоступ",
+      "item_prop": "erListOvz",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 33
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 214,
+    "fields": {
+      "header": "Информация о наличии специальных технических\nсредств обучения коллективного и индивидуального\nпользования",
+      "item_prop": "techOvz",
+      "show_position": 4,
+      "value_position": 4,
+      "parent": 33
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 215,
+    "fields": {
+      "header": "Инфомация о наличии условий для\nбеспрепятственного доступа в общежитии, интернате",
+      "item_prop": "hostelInterOvz",
+      "show_position": 5,
+      "value_position": 5,
+      "parent": 33
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 216,
+    "fields": {
+      "header": "Количество жилых помещений в общежитии,\nприспособленных для использования инвалидами и\nлицами с ограниченными возможностями здоровья",
+      "item_prop": "hostelNumOvz",
+      "show_position": 6,
+      "value_position": 6,
+      "parent": 33
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 217,
+    "fields": {
+      "header": "Количество жилых помещений в интернате,\nприспособленных для использования инвалидами и\nлицами с ограниченными возможностями здоровья",
+      "item_prop": "interNumOvz",
+      "show_position": 7,
+      "value_position": 7,
+      "parent": 33
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 218,
+    "fields": {
+      "header": "Адрес места нахождения ",
+      "item_prop": "addressCab",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 34
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 219,
+    "fields": {
+      "header": "Наименование специально оборудованного учебного\nкабинета",
+      "item_prop": "nameCab",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 34
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 220,
+    "fields": {
+      "header": "Оснащенность специально специально\nоборудованного учебного кабинета",
+      "item_prop": "osnCab",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 34
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 221,
+    "fields": {
+      "header": "Приспособленность для использования инвалидами и\nлицами с ограниченными возможностями здоровья",
+      "item_prop": "ovzCab",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 34
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 222,
+    "fields": {
+      "header": "Адрес места нахождения ",
+      "item_prop": "addressPrac",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 35
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 223,
+    "fields": {
+      "header": "Наименование приспособленного объекта для\nпроведения практических занятий",
+      "item_prop": "namePrac",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 35
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 224,
+    "fields": {
+      "header": "Оснащенность приспособленного объекта для\nпроведения практических занятий",
+      "item_prop": "osnPrac",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 35
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 225,
+    "fields": {
+      "header": "Приспособленность для использования инвалидами и\nлицами с ограниченными возможностями здоровья",
+      "item_prop": "ovzPrac",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 35
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 226,
+    "fields": {
+      "header": "Наименование объекта",
+      "item_prop": "objName",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 36
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 227,
+    "fields": {
+      "header": "Адрес места нахождения объекта",
+      "item_prop": "objAddres",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 36
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 228,
+    "fields": {
+      "header": "Площадь объекта",
+      "item_prop": "objSq",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 36
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 229,
+    "fields": {
+      "header": "Количество мест",
+      "item_prop": "objCnt",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 36
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 230,
+    "fields": {
+      "header": "Приспособленность для использования инвалидами и\nлицами с ограниченными возможностями здоровья",
+      "item_prop": "objOvz",
+      "show_position": 4,
+      "value_position": 4,
+      "parent": 36
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 231,
+    "fields": {
+      "header": "Наименование объекта ",
+      "item_prop": "objName",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 37
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 232,
+    "fields": {
+      "header": "Адрес места нахождения объекта",
+      "item_prop": "objAddress",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 37
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 233,
+    "fields": {
+      "header": "Площадь объекта",
+      "item_prop": "objSq",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 37
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 234,
+    "fields": {
+      "header": "Количество мест",
+      "item_prop": "objCnt",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 37
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 235,
+    "fields": {
+      "header": "Приспособленность для использования инвалидами и\nлицами с ограниченными возможностями здоровья",
+      "item_prop": "objOvz",
+      "show_position": 4,
+      "value_position": 4,
+      "parent": 37
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 236,
+    "fields": {
+      "header": "Наименование объекта ",
+      "item_prop": "objName",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 38
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 237,
+    "fields": {
+      "header": "Адрес места нахождения объекта",
+      "item_prop": "objAddress",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 38
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 238,
+    "fields": {
+      "header": "Площадь объекта",
+      "item_prop": "objSq",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 38
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 239,
+    "fields": {
+      "header": "Количество мест",
+      "item_prop": "objCnt",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 38
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 240,
+    "fields": {
+      "header": "Приспособленность для использования инвалидами и\nлицами с ограниченными возможностями здоровья",
+      "item_prop": "objOvz",
+      "show_position": 4,
+      "value_position": 4,
+      "parent": 38
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 241,
+    "fields": {
+      "header": "Наименование объекта",
+      "item_prop": "objName",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 39
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 242,
+    "fields": {
+      "header": "Адрес места нахождения объекта",
+      "item_prop": "objAddress",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 39
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 243,
+    "fields": {
+      "header": "Площадь объекта",
+      "item_prop": "objSq",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 39
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 244,
+    "fields": {
+      "header": "Количество мест",
+      "item_prop": "objCnt",
+      "show_position": 4,
+      "value_position": 4,
+      "parent": 39
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 245,
+    "fields": {
+      "header": "Приспособленность для использования инвалидами и\nлицами с ограниченными возможностями здоровья",
+      "item_prop": "objOvz",
+      "show_position": 4,
+      "value_position": 4,
+      "parent": 39
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 246,
+    "fields": {
+      "header": "Название государства",
+      "item_prop": "stateName",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 40
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 247,
+    "fields": {
+      "header": "Наименование организации",
+      "item_prop": "orgName",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 40
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 248,
+    "fields": {
+      "header": "Реквизиты договора (наименование, дата, номер, срок\nдействия)",
+      "item_prop": "dogReg",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 40
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 249,
+    "fields": {
+      "header": "Код",
+      "item_prop": "eduCode",
+      "show_position": 0,
+      "value_position": 0,
+      "parent": 41
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 250,
+    "fields": {
+      "header": "Наименование профессии, специальности,\nнаправления подготовки",
+      "item_prop": "eduName",
+      "show_position": 1,
+      "value_position": 1,
+      "parent": 41
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 251,
+    "fields": {
+      "header": "Наименование аккредитующей организации",
+      "item_prop": "orgName",
+      "show_position": 2,
+      "value_position": 2,
+      "parent": 41
+    }
+  },
+  {
+    "model": "sveden.ChildItemProp",
+    "pk": 252,
+    "fields": {
+      "header": "Срок действия международной аккредитации (дата\nокончания действия свидетельства о международной\nаккредитации)",
+      "item_prop": "dateEnd",
+      "show_position": 3,
+      "value_position": 3,
+      "parent": 41
+    }
+  }
+]

@@ -1,0 +1,256 @@
+[
+  {
+    "model": "devind_core.Profile",
+    "pk": 1,
+    "fields": {
+      "name": "Общая информация",
+      "code": "general",
+      "position": 0
+    }
+  },
+  {
+    "model": "devind_core.Profile",
+    "pk": 2,
+    "fields": {
+      "name": "Дата рождения",
+      "code": "birthday",
+      "position": 0,
+      "kind": 1,
+      "parent": 1
+    }
+  },
+  {
+    "model": "devind_core.Profile",
+    "pk": 3,
+    "fields": {
+      "name": "Пол",
+      "code": "gender",
+      "position": 1,
+      "kind": 4,
+      "parent": 1
+    }
+  },
+  {
+    "model": "devind_core.Profile",
+    "pk": 4,
+    "fields": {
+      "name": "Уровень образования",
+      "code": "education_level",
+      "position": 2,
+      "parent": 1
+    }
+  },
+  {
+    "model": "devind_core.Profile",
+    "pk": 5,
+    "fields": {
+      "name": "Квалификация",
+      "code": "qualification",
+      "position": 3,
+      "parent": 1
+    }
+  },
+  {
+    "model": "devind_core.Profile",
+    "pk": 6,
+    "fields": {
+      "name": "Ученая степень",
+      "code": "degree",
+      "position": 4,
+      "parent": 1
+    }
+  },
+  {
+    "model": "devind_core.Profile",
+    "pk": 7,
+    "fields": {
+      "name": "Ученое звание",
+      "code": "rank",
+      "position": 5,
+      "parent": 1
+    }
+  },
+  {
+    "model": "devind_core.Profile",
+    "pk": 8,
+    "fields": {
+      "name": "Специальность или направление подготовки",
+      "code": "speciality",
+      "position": 6,
+      "parent": 1
+    }
+  },
+  {
+    "model": "devind_core.Profile",
+    "pk": 9,
+    "fields": {
+      "name": "Стажировка",
+      "code": "internship",
+      "position": 7,
+      "parent": 1
+    }
+  },
+  {
+    "model": "devind_core.Profile",
+    "pk": 10,
+    "fields": {
+      "name": "Дата начала общего стажа работы",
+      "code": "general_experience",
+      "kind": 1,
+      "position": 8,
+      "parent": 1
+    }
+  },
+  {
+    "model": "devind_core.Profile",
+    "pk": 11,
+    "fields": {
+      "name": "Дата начала стажа работы по специальности",
+      "code": "specialty_experience",
+      "kind": 1,
+      "position": 9,
+      "parent": 1
+    }
+  },
+  {
+    "model": "devind_core.Profile",
+    "pk": 12,
+    "fields": {
+      "name": "Дополнительная информация",
+      "code": "additional",
+      "position": 1
+    }
+  },
+  {
+    "model": "devind_core.Profile",
+    "pk": 13,
+    "fields": {
+      "name": "Нуждаюсь в общежитии",
+      "code": "hostel",
+      "kind": 2,
+      "position": 0,
+      "parent": 12
+    }
+  },
+  {
+    "model": "devind_core.Profile",
+    "pk": 14,
+    "fields": {
+      "name": "Бюджетная форма обучения",
+      "code": "budget",
+      "kind": 2,
+      "position": 1,
+      "parent": 12
+    }
+  },
+  {
+    "model": "devind_core.Profile",
+    "pk": 15,
+    "fields": {
+      "name": "Целевая форма обучения",
+      "code": "target",
+      "kind": 2,
+      "position": 2,
+      "parent": 12
+    }
+  },
+  {
+    "model": "devind_core.Profile",
+    "pk": 16,
+    "fields": {
+      "name": "Телефон",
+      "code": "phones",
+      "position": 3,
+      "parent": 12
+    }
+  },
+  {
+    "model": "devind_core.Profile",
+    "pk": 17,
+    "fields": {
+      "name": "Адрес",
+      "code": "address",
+      "position": 4,
+      "parent": 12
+    }
+  },
+  {
+    "model": "devind_core.Profile",
+    "pk": 18,
+    "fields": {
+      "name": "Гражданство",
+      "code": "citizenship",
+      "position": 5,
+      "parent": 12
+    }
+  },
+  {
+    "model": "devind_core.Profile",
+    "pk": 19,
+    "fields": {
+      "name": "Социальные сети",
+      "code": "socialNetworks",
+      "position": 2
+    }
+  },
+  {
+    "model": "devind_core.Profile",
+    "pk": 20,
+    "fields": {
+      "name": "ВКонтакте",
+      "code": "vk",
+      "position": 0,
+      "parent": 19
+    }
+  },
+  {
+    "model": "devind_core.Profile",
+    "pk": 21,
+    "fields": {
+      "name": "Facebook",
+      "code": "fb",
+      "position": 1,
+      "parent": 19
+    }
+  },
+  {
+    "model": "devind_core.Profile",
+    "pk": 22,
+    "fields": {
+      "name": "Одноклассники",
+      "code": "ok",
+      "position": 2,
+      "parent": 19
+    }
+  },
+  {
+    "model": "devind_core.Profile",
+    "pk": 23,
+    "fields": {
+      "name": "Skype",
+      "code": "skype",
+      "position": 3,
+      "parent": 19
+    }
+  },
+  {
+    "model": "devind_core.Profile",
+    "pk": 24,
+    "fields": {
+      "name": "Instagram",
+      "code": "instagram",
+      "position": 4,
+      "parent": 19
+    }
+  },
+  {
+    "model": "devind_core.Profile",
+    "pk": 25,
+    "fields": {
+      "name": "LinkedIn",
+      "code": "li",
+      "position": 5,
+      "parent": 19
+    }
+  }
+]

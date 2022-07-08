@@ -1,0 +1,13 @@
+# Модуль schema_services
+
+
+
+### Функции
+
+| Сигнатура                                                                                                                                                                  | Декораторы | Описание                                                                                                                                                                                    |
+| :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| create_schema( subsection_id: str, item_prop_container: apps.sveden.schema.types.ItemPropContainerInputType) -&#62; apps.sveden.models.models.ItemPropContainer            | -          | Создание структуры данных:param subsection_id: подраздел:param item_prop_container: структура                                                                                               |
+| create_child_item_prop( item_prop_obj: apps.sveden.models.models.ItemProp, item_prop: str, header: str, show_position: int) -&#62; apps.sveden.models.models.ChildItemProp | -          | Добавление дочернего тега:param item_prop_obj: главный тег:param item_prop: дочерний тег:param header: название столбца(описание тега):param show_position: позиция при выводе              |
+| change_child_item_prop( child_item_prop: apps.sveden.models.models.ChildItemProp, item_prop: str, header: str, show_position: int) -&#62; None                             | -          | Изменение дочернего тега:param child_item_prop: дочерний тег:param item_prop: новое значение itemProp:param header: название столбца(описание тега):param show_position: позиция при выводе |
+| change_item_prop_container( item_prop_container: apps.sveden.models.models.ItemPropContainer, header: str, is_generated: int) -&#62; None                                  | -          | Изменение контейнера тега:param item_prop_container: контейнер:param header: новое значение заголовка:param is_generated: флаг генерируемых данных                                          |
+| change_item_prop( item_prop_obj: apps.sveden.models.models.ItemProp, item_prop: str) -&#62; None                                                                           | -          | Изменение контейнера тега:param item_prop_obj: Главный тег:param item_prop: новое itemProp                                                                                                  |

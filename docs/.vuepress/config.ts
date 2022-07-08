@@ -1,0 +1,52 @@
+import { defineUserConfig } from '@vuepress/cli'
+import { defaultTheme } from '@vuepress/theme-default'
+import { registerComponentsPlugin } from '@vuepress/plugin-register-components'
+import { path } from '@vuepress/utils'
+import { navbarEn, navbarRu, sidebarEn, sidebarRu } from './configs'
+
+export default defineUserConfig({
+  base: '/eleden/',
+
+  locales: {
+    '/': {
+      lang: 'ru-RU',
+      title: 'Главная',
+      description: 'Обычная документация',
+    },
+    '/en/': {
+      lang: 'en-US',
+      title: 'Home',
+      description: 'Just playing around',
+    },
+  },
+
+  theme: defaultTheme({
+    repo: 'devind-team/eleden',
+    docsDir: '/docs',
+
+    locales: {
+      '/': {
+        navbar: navbarRu,
+        selectLanguageName: 'Russian',
+        selectLanguageText: 'Russian',
+        selectLanguageAriaLabel: 'Russian',
+        sidebar: sidebarRu,
+        editLinkText: 'Изменить эту страницу на GitHub',
+        lastUpdatedText: 'Последнее обновление',
+        contributorsText: 'Авторы',
+      },
+      '/en/': {
+        navbar: navbarEn,
+        selectLanguageName: 'English',
+        sidebar: sidebarEn
+      }
+    }
+
+  }),
+
+  plugins: [
+    registerComponentsPlugin({
+      componentsDir: path.resolve(__dirname, './components')
+    })
+  ]
+})

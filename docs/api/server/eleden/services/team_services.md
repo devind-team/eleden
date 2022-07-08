@@ -1,0 +1,14 @@
+# Модуль team_services
+
+
+
+### Функции
+
+| Сигнатура                                                                                                                                                           | Декораторы | Описание                                                                                                                                                               |
+| :------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :--------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| get_children_teams( user: Union[apps.core.models.User, apps.eleden.services.team_services._WithTeams]) -&#62; list[int]                                             | -          | Получение идентификаторов иерархии групп пользователя.:param user: пользователь:return: идентификаторы иерархии групп пользователя                                     |
+| get_relative_teams( user: Union[apps.core.models.User, apps.eleden.services.team_services._WithTeams]) -&#62; list[int]                                             | -          | Получение идентификаторов групп, с которыми связан пользователь.:param user: пользователь:return: идентификаторы групп, с которыми связан пользователь                 |
+| is_member(team: apps.eleden.models.team.Team, user: apps.core.models.User) -&#62; bool                                                                              | -          | Проверяет, является ли пользователь членом группы.:param team: группа:param user: пользователь:return: результат проверки                                              |
+| is_related(team: apps.eleden.models.team.Team, user: apps.core.models.User) -&#62; bool                                                                             | -          | Проверяет, связан ли пользователь с группой.:param team: группа:param user: пользователь:return: результат проверки                                                    |
+| is_responsible_user(team: apps.eleden.models.team.Team, user: apps.core.models.User) -&#62; bool                                                                    | -          | Проверяет, является ли пользователь ответственным за группу.:param team: группа:param user: пользователь:return: результат проверки                                    |
+| change_edu_program( team: apps.eleden.models.team.Team, edu_program: Optional[apps.eleden.models.education.EduProgram], transfer_courses: bool = False) -&#62; None | -          | Изменение образовательной программы.:param team: группа:param edu_program: образовательная программа,:param transfer_courses: переносить курсы с удалением ненайденных |

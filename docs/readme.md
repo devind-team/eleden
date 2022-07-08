@@ -1,7 +1,7 @@
-# Документация по проекту DCIS (Data collection information system)
+# Документация по проекту ELEDEN (Электронная образовательная среда)
 
-1. [Правила вывода, формирования и прав доступа к собираемому документу](docs/document_rules.md)
-2. [Правила расчета ячеек](docs/evaluate_rules.md)
+1. [Для разработчиков](docs/develop.md)
+2. [Для системных администраторов](docs/system_administrator.md)
 
 # API
 

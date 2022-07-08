@@ -1,0 +1,49 @@
+# Модуль edu_program_parser
+
+
+
+## Класс EduProgramParser
+
+Парсер файла формата pxl.
+
+### Методы
+
+| Сигнатура                                                                            | Декораторы       | Описание                                                                                                                                  |
+| :----------------------------------------------------------------------------------- | :--------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
+| __init__(self, *args, **kwargs)                                                      | -                | -                                                                                                                                         |
+| get_dict_without_keys(d: dict, keys: list) -&#62; dict                               | ['staticmethod'] | Получение словаря без указанных ключей.:param d: словарь:param keys: исключаемые ключи:return: словарь без указанных ключей               |
+| set_model_to_dicts(model_dicts: List[dict], key: str) -&#62; None                    | ['staticmethod'] | Установка модели в словари вместо другого словаря.:param model_dicts: словари:param key: ключ словаря, по которому устанавливается модель |
+| save( model: Type[django.db.models.base.Model], model_dicts: List[dict]) -&#62; None | ['staticmethod'] | Сохранение словарей в базу данных.:param model: модель для сохранения:param model_dicts: словари                                          |
+| parse_edu_forms(self) -&#62; None                                                    | -                | Парсинг и заполнение словарей для модели EduForm.                                                                                         |
+| parse_edu_services(self) -&#62; None                                                 | -                | Парсинг и заполнение словарей для модели EduService.                                                                                      |
+| parse_edu_program(self) -&#62; None                                                  | -                | Парсинг и заполнение словаря для модели EduProgram.                                                                                       |
+| parse_direction(self) -&#62; None                                                    | -                | Парсинг и заполнение словаря для модели Direction.                                                                                        |
+| parse_discipline_kinds(self) -&#62; None                                             | -                | Парсинг и заполнение словарей для модели DisciplineKind.                                                                                  |
+| parse_discipline_views(self) -&#62; None                                             | -                | Парсинг и заполнение словарей для модели DisciplineView.                                                                                  |
+| parse_teams(self) -&#62; None                                                        | -                | Парсинг и заполнение словарей для модели Team.                                                                                            |
+| parse_disciplines(self) -&#62; None                                                  | -                | Парсинг и заполнение словарей для модели Discipline.                                                                                      |
+| parse_work_forms(self) -&#62; None                                                   | -                | Парсинг и заполнение словарей для модели WorkForm.                                                                                        |
+| parse_work_kinds(self) -&#62; None                                                   | -                | Парсинг и заполнение словарей для модели WorkKind.                                                                                        |
+| parse_hours_kinds(self) -&#62; None                                                  | -                | Парсинг и заполнение словарей для модели HoursKind.                                                                                       |
+| parse_edu_hours(self) -&#62; None                                                    | -                | Парсинг и заполнение словарей для модели EduHours.                                                                                        |
+| parse_block_kinds(self)                                                              | -                | Парсинг и заполнение словарей для модели BlockKind.                                                                                       |
+| parse_edu_cycles(self)                                                               | -                | Парсинг и заполнение словарей для модели EduCycle.                                                                                        |
+| get_competence_disciplines(self, competence_xml_id) -&#62; List[dict]                | -                | Получение дисциплин для модели Competence.:param competence_xml_id: xml_id компетенции:return: словари дисциплин                          |
+| parse_competences(self) -&#62; None                                                  | -                | Парсинг и заполнение словарей для модели Competence.                                                                                      |
+| parse(self) -&#62; None                                                              | -                | Парсинг и заполнение словарей.                                                                                                            |
+| save_edu_forms(self) -&#62; None                                                     | -                | Сохранение моделей EduForm в БД и установка их в словари.                                                                                 |
+| save_edu_services(self) -&#62; None                                                  | -                | Сохранение моделей EduService в БД и установка их в словари.                                                                              |
+| save_direction(self) -&#62; None                                                     | -                | Сохранение модели Direction в БД и установка ее в словари.                                                                                |
+| save_edu_program(self) -&#62; None                                                   | -                | Сохранение модели EduProgram в БД и установка ее в словари.                                                                               |
+| save_discipline_kinds(self) -&#62; None                                              | -                | Сохранение моделей DisciplineKind в БД и установка их в словари.                                                                          |
+| save_discipline_views(self) -&#62; None                                              | -                | Сохранение моделей DisciplineView в БД и установка их в словари.                                                                          |
+| set_teams(self) -&#62; None                                                          | -                | Получение моделей Team и установка их в словари.                                                                                          |
+| save_disciplines(self) -&#62; None                                                   | -                | Сохранение моделей Discipline в БД и установка их в словари.                                                                              |
+| save_work_forms(self) -&#62; None                                                    | -                | Сохранение моделей WorkForm в БД и установка их в словари.                                                                                |
+| save_work_kinds(self) -&#62; None                                                    | -                | Сохранение моделей WorkKind в БД и установка их в словари.                                                                                |
+| save_hours_kind(self) -&#62; None                                                    | -                | Сохранение моделей HoursKind в БД и установка их в словари.                                                                               |
+| save_edu_hours(self) -&#62; None                                                     | -                | Сохранение моделей EduHours в БД.                                                                                                         |
+| save_block_kind(self) -&#62; None                                                    | -                | Сохранение моделей BlockKind в БД и установка их в словари.                                                                               |
+| save_edu_cycles(self) -&#62; None                                                    | -                | Сохранение моделей BlockKind в БД.                                                                                                        |
+| save_competences(self) -&#62; None                                                   | -                | Сохранение моделей Competence в БД.                                                                                                       |
+| __call__(self, *args, **kwargs) -&#62; apps.eleden.models.education.EduProgram       | -                | Сохранение моделей в базу данных.                                                                                                         |

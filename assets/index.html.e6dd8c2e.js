@@ -1,0 +1,1 @@
+const e=JSON.parse('{"key":"v-744497ce","path":"/api/","title":"\u0421\u0442\u0440\u0430\u043D\u0438\u0446\u0430 API","lang":"ru-RU","frontmatter":{},"excerpt":"","headers":[],"git":{"updatedTime":1657267979000,"contributors":[{"name":"MiloslavskiySergey","email":"sergey07061999@gmail.com","commits":1}]},"filePathRelative":"api/readme.md"}');export{e as data};

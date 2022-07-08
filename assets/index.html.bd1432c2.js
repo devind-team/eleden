@@ -1,0 +1,1 @@
+const e=JSON.parse('{"key":"v-ee16e214","path":"/en/api/server/eleden/","title":"Eleden","lang":"en-US","frontmatter":{},"excerpt":"","headers":[],"git":{"updatedTime":1657268731000,"contributors":[{"name":"MiloslavskiySergey","email":"sergey07061999@gmail.com","commits":1}]},"filePathRelative":"en/api/server/eleden/readme.md"}');export{e as data};

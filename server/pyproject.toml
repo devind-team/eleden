@@ -46,6 +46,8 @@ devind-helpers = "^0"
 devind-core = "^0"
 devind-notifications = "^0"
 Scrapy = "2.5.1"
+pdoc = "^12.0.2"
+SnakeMD = "^0.10.1"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"

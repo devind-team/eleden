@@ -1,6 +1,6 @@
 <template lang="pug">
   v-card
-    v-card-title {{ t('name') }}
+    v-card-title {{ $t('ac.teams.portfolio.name') }}
     v-card-text
       //- Блок добавления и фильтрации
       v-row
@@ -9,11 +9,11 @@
             template(#activator="{ on }")
               v-btn.mr-3(v-on="on" color="primary")
                 v-icon(left) mdi-plus
-                | {{ t('addMenu.buttons.add') }}
+                | {{ $t('ac.teams.portfolio.addMenu.buttons.add') }}
             v-list
               mutation-modal-form(
-                :header="t('addMenu.addForm.header')"
-                :buttonText="t('addMenu.addForm.buttonText')"
+                :header="$t('ac.teams.portfolio.addMenu.addForm.header')"
+                :buttonText="$t('ac.teams.portfolio.addMenu.addForm.buttonText')"
                 :mutation="require('~/gql/eleden/mutations/portfolio/add_portfolio_files.graphql')"
                 :variables="{ teamId: team.id, describe, typeId, disciplineId, file, confirm }"
                 :update="addPortfolioFilesUpdate"
@@ -25,28 +25,28 @@
                   v-list-item(v-on="on")
                     v-list-item-icon
                       v-icon mdi-form-select
-                    v-list-item-content {{ t('addMenu.buttons.fillForm') }}
+                    v-list-item-content {{ $t('ac.teams.portfolio.addMenu.buttons.fillForm') }}
                     v-list-item-action
                       help-dialog(
                         v-slot="{ on: onHelper }"
-                        :text="t('addMenu.helpDialog.helpInstruction')"
+                        :text="$t('ac.teams.portfolio.addMenu.helpDialog.helpInstruction')"
                         doc="help/add_portfolio_files"
                       )
                         v-tooltip(bottom)
                           template(#activator="{ on: onTooltip}")
                             v-btn(v-on="{ ...onTooltip, ...onHelper}" icon)
                               v-icon mdi-help-circle-outline
-                          span {{ t('addMenu.buttons.helpInstruction') }}
+                          span {{ $t('ac.teams.portfolio.addMenu.buttons.helpInstruction') }}
                 template(#form)
                   //- Описание
                   validation-provider(
                     v-slot="{ errors, valid }"
-                    :name="t('addMenu.form.describe')"
+                    :name="$t('ac.teams.portfolio.addMenu.form.describe')"
                     rules="required|min:2|max:512"
                   )
                     v-textarea(
                       v-model="describe"
-                      :label="t('addMenu.form.describe')"
+                      :label="$t('ac.teams.portfolio.addMenu.form.describe')"
                       :error-messages="errors"
                       :success="valid"
                       rows="1"
@@ -58,8 +58,8 @@
                     v-if="!!team.eduProgram"
                     v-model="disciplineId"
                     :items="disciplines"
-                    :label="t('addMenu.form.disciplineId')"
-                    :loading="$apollo.queries.disciplines.loading"
+                    :label="$t('ac.teams.portfolio.addMenu.form.disciplineId')"
+                    :loading="disciplinesLoading"
                     item-text="name"
                     item-value="id"
                     success
@@ -68,14 +68,14 @@
                   //- Тип файла
                   validation-provider(
                     v-slot="{ errors, valid }"
-                    :name="t('addMenu.form.typeId')"
+                    :name="$t('ac.teams.portfolio.addMenu.form.typeId')"
                     rules="required"
                   )
                     v-autocomplete(
                       v-model="typeId"
                       :items="fileKinds"
-                      :label="t('addMenu.form.typeId')"
-                      :loading="$apollo.queries.fileKinds.loading"
+                      :label="$t('ac.teams.portfolio.addMenu.form.typeId')"
+                      :loading="fileKindsLoading"
                       :error-messages="errors"
                       :success="valid"
                       item-text="name"
@@ -85,19 +85,19 @@
                   //- Прикрепление файла
                   validation-provider(
                     v-slot="{ errors, valid }"
-                    :name="t('addMenu.form.file')"
+                    :name="$t('ac.teams.portfolio.addMenu.form.file')"
                     rules="required"
                   )
                     v-file-input(
                       v-model="file"
-                      :label="t('addMenu.form.file')"
+                      :label="$t('ac.teams.portfolio.addMenu.form.file')"
                       :success="valid"
                       :error-messages="errors"
                       accept=".zip,.rar/*"
                       clearable
                     )
                   //- Подтверждение файлов
-                  v-checkbox(v-if="canChange" v-model="confirm" :label="t('addMenu.form.confirm')" success)
+                  v-checkbox(v-if="canChange" v-model="confirm" :label="$t('ac.teams.portfolio.addMenu.form.confirm')" success)
           users-data-filter(
             v-if="canViewPortfolio"
             v-model="selectedUsers"
@@ -129,9 +129,9 @@
       //- Блок поиска
       v-row(align="center")
         v-col(cols="12" sm="6")
-          v-text-field(v-stream:input="searchStream$" :label="t('search')" prepend-icon="mdi-magnify" clearable)
+          v-text-field(v-model="search" :label="$t('search')" prepend-icon="mdi-magnify" clearable)
         v-col.text-right(cols="12" sm="6")
-          | {{ t('shownOf', { count: portfolioFiles && portfolioFiles.length, totalCount }) }}
+          | {{ $t('shownOf', { count: portfolioFiles && portfolioFiles.length, totalCount }) }}
       //- Таблица
       v-row
         v-col
@@ -139,18 +139,15 @@
             :items="portfolioFiles"
             :headers="portfolioFilesHeaders"
             :can-change="canChange"
-            :loading="$apollo.queries.portfolioFiles.loading"
+            :loading="portfolioFilesLoading"
             :get-sub-item="getPortfolioFileSubItem"
-            :delete-update="deleteUpdate"
+            :delete-update="deletePortfolioFileUpdate"
           )
 </template>
 
 <script lang="ts">
-import { PropType } from 'vue'
-import { Vue, Component, Prop } from 'vue-property-decorator'
-import { mapGetters } from 'vuex'
-import { fromEvent, Subject } from 'rxjs'
-import { debounceTime, distinctUntilChanged, filter, map, pluck, startWith, tap } from 'rxjs/operators'
+import type { PropType } from '#app'
+import { defineComponent, ref, computed, toRefs } from '#app'
 import { DataProxy } from 'apollo-cache'
 import { DataTableHeader } from 'vuetify'
 import {
@@ -164,9 +161,17 @@ import {
   Maybe,
   PortfolioFileType,
   TeamType,
-  UserType
+  UserType,
+  FileKindsQueryVariables,
+  FileKindsQuery,
+  DisciplinesQuery,
+  DisciplinesQueryVariables
 } from '~/types/graphql'
+import { useAuthStore } from '~/store'
+import { useI18n, useCommonQuery, useQueryRelay, useDebounceSearch } from '~/composables'
 import portfolioFilesQuery from '~/gql/eleden/queries/profile/portfolio_files.graphql'
+import disciplinesQuery from '~/gql/eleden/queries/education/disciplines.graphql'
+import fileKindsQuery from '~/gql/eleden/queries/profile/file_kinds.graphql'
 import { FilterMessages } from '~/types/filters'
 import PortfolioFiles from '~/components/eleden/ac/user/PortfolioFiles.vue'
 import HelpDialog from '~/components/common/dialogs/HelpDialog.vue'
@@ -178,12 +183,11 @@ import QueryDataFilter from '~/components/common/filters/QueryDataFilter.vue'
 type AddPortfolioFilesData = { data: { addPortfolioFiles: AddPortfolioFilesMutationPayload } }
 type DeletePortfolioFileData = { data: { deletePortfolioFile: DeletePortfolioFileMutationPayload } }
 
-@Component<AcTeamIdPortfolio>({
+export default defineComponent({
   components: { MutationModalForm, HelpDialog, UsersDataFilter, PortfolioFiles, ItemsDataFilter, QueryDataFilter },
-  middleware: 'auth',
   beforeRouteEnter (_to, _from, next) {
     next((vm) => {
-      if (!(vm.canViewPortfolio || vm.isMember)) {
+      if (!(vm.$props.canViewPortfolio || vm.$props.isMember)) {
         vm.$nuxt.error({
           statusCode: 403,
           message: vm.$t('permissionDenied') as string
@@ -191,270 +195,180 @@ type DeletePortfolioFileData = { data: { deletePortfolioFile: DeletePortfolioFil
       }
     })
   },
-  computed: {
-    ...mapGetters({ user: 'auth/user', hasPerm: 'auth/hasPerm' }),
-    canAdd (): boolean {
-      return this.hasPerm('eleden.add_portfoliofile') || this.team.permissions.canChange
-    },
-    canChange (): boolean {
-      return this.hasPerm('eleden.change_portfoliofile') || this.team.permissions.canChange
-    },
-    canDelete (): boolean {
-      return this.hasPerm('eleden.delete_portfoliofile') || this.team.permissions.canChange
-    },
-    users (): UserType[] {
-      return this.team.jobs.map(job => job.user)
-    },
-    userIds (): string[] {
-      if (!this.canViewPortfolio) {
-        return [this.user.id]
+  middleware: 'auth',
+  props: {
+    team: { type: Object as PropType<TeamType>, required: true },
+    isMember: { type: Boolean, required: true },
+    canViewPortfolio: { type: Boolean, required: true }
+  },
+  setup (props) {
+    const userStore = useAuthStore()
+    const { hasPerm, user } = toRefs(userStore)
+    const { t, tc } = useI18n()
+
+    const active = ref<boolean>(false)
+    const selectedUsers = ref<UserType[]>([])
+    const selectedDiscipline = ref<DisciplineType | null>(null)
+    const selectedFileKind = ref<FileKindType | null>(null)
+    const describe = ref<string>('')
+    const typeId = ref<string | null>('')
+    const disciplineId = ref<string | null>('')
+    const file = ref<File | null>(null)
+    const confirm = ref<boolean>(false)
+
+    const canAdd = computed<boolean>(() => (
+      hasPerm.value('eleden.add_portfoliofile') || props.team.permissions.canChange
+    ))
+
+    const canChange = computed<boolean>(() => (
+      hasPerm.value('eleden.change_portfoliofile') || props.team.permissions.canChange
+    ))
+
+    const canDelete = computed<boolean>(() => (
+      hasPerm.value('eleden.delete_portfoliofile') || props.team.permissions.canChange
+    ))
+
+    const users = computed<UserType[]>(() => (props.team.jobs.map(job => job.user)))
+
+    const userIds = computed<string[]>(() => {
+      if (!props.canViewPortfolio) {
+        return [user.value.id]
       }
-      if (this.selectedUsers.length) {
-        return this.selectedUsers.map((e: UserType) => e.id)
+      if (selectedUsers.value.length) {
+        return selectedUsers.value.map((e: UserType) => e.id)
       }
-      return this.team.jobs!.map((e: Maybe<JobType>) => e!.user.id)
-    },
-    portfolioFilesVariables (): PortfolioFilesQueryVariables {
-      return {
-        first: this.pageSize,
+      return props.team.jobs!.map((e: Maybe<JobType>) => e!.user.id)
+    })
+
+    const portfolioFilesHeaders = computed<DataTableHeader[]>(() => ([
+      { text: t('ac.teams.portfolio.tableHeaders.avatar') as string, value: 'file.user.avatar' },
+      { text: t('ac.teams.portfolio.tableHeaders.user') as string, value: 'file.user.name' },
+      { text: t('ac.teams.portfolio.tableHeaders.discipline') as string, value: 'discipline' },
+      { text: t('ac.teams.portfolio.tableHeaders.kind') as string, value: 'kind.name' }
+    ]))
+
+    const { search, debounceSearch } = useDebounceSearch()
+    const {
+      data: portfolioFiles,
+      loading: portfolioFilesLoading,
+      pagination: { totalCount },
+      update,
+      addUpdate
+    } = useQueryRelay<PortfolioFilesQuery, PortfolioFilesQueryVariables>({
+      document: portfolioFilesQuery,
+      variables: () => ({
+        first: 20,
         offset: 0,
-        usersId: this.userIds,
-        disciplineId: this.selectedDiscipline?.id,
-        search: this.search$,
-        kindId: Number(this.selectedFileKind?.id)
-      }
-    },
-    portfolioFilesHeaders (): DataTableHeader[] {
-      return [
-        { text: this.t('tableHeaders.avatar'), value: 'file.user.avatar' },
-        { text: this.t('tableHeaders.user'), value: 'file.user.name' },
-        { text: this.t('tableHeaders.discipline'), value: 'discipline' },
-        { text: this.t('tableHeaders.kind'), value: 'kind.name' }
-      ]
-    }
-  },
-  domStreams: ['searchStream$'],
-  subscriptions () {
-    const scroll$ = fromEvent(document, 'scroll').pipe(
-      pluck('target', 'documentElement'),
-      debounceTime(100),
-      map((target: any) => ({ top: target.scrollTop + window.innerHeight, height: target.offsetHeight })),
-      filter(({ top, height }: { top: number, height: number }) => (
-        top + 200 >= height &&
-        !this.$apollo.queries.portfolioFiles.loading &&
-        this.page * this.pageSize < this.totalCount)
-      ),
-      tap(async () => {
-        ++this.page
-        await this.fetchMorePortfolioFiles()
+        usersId: userIds.value,
+        disciplineId: selectedDiscipline.value?.id,
+        search: debounceSearch.value,
+        kindId: Number(selectedFileKind.value?.id)
       })
-    )
-    const search$ = this.searchStream$.pipe(
-      pluck('event', 'msg'),
-      debounceTime(700),
-      distinctUntilChanged(),
-      tap(() => { this.page = 1 }),
-      startWith('')
-    )
-    return { scroll$, search$ }
-  },
-  apollo: {
-    portfolioFiles: {
-      query: portfolioFilesQuery,
-      variables () { return this.portfolioFilesVariables },
-      update ({ portfolioFiles }) {
-        this.totalCount = portfolioFiles.totalCount
-        this.page = Math.ceil(portfolioFiles.edges.length / this.pageSize)
-        return portfolioFiles.edges.map((e: any) => e.node)
+    })
+
+    const {
+      data: disciplines,
+      loading: disciplinesLoading
+    } = useQueryRelay<DisciplinesQuery, DisciplinesQueryVariables>({
+      document: disciplinesQuery,
+      variables: () => { return props.team.eduProgram ? { eduProgramId: props.team.eduProgram.id } : null },
+      options: () => ({
+        enabled: props.team.eduProgram
+      })
+    })
+
+    const {
+      data: fileKinds,
+      loading: fileKindsLoading
+    } = useCommonQuery<FileKindsQuery, FileKindsQueryVariables>({ document: fileKindsQuery })
+
+    const getPortfolioFileSubItem = (item: PortfolioFileType): { key: string, value: string | UserType }[] => {
+      const items = [
+        { key: 'describe', value: item.describe },
+        { key: 'createdAt', value: item.createdAt },
+        { key: 'updatedAt', value: item.updatedAt },
+        { key: 'user', value: item.user },
+        { key: 'file', value: `/${item.file.src}` }
+      ]
+      if (canDelete.value || (item.user === null && item.file.user?.id === user.value.id)) {
+        items.push({ key: 'delete', value: item.id })
       }
-    },
-    disciplines: {
-      query: require('~/gql/eleden/queries/education/disciplines.graphql'),
-      variables () { return this.team.eduProgram ? { eduProgramId: this.team.eduProgram.id } : null },
-      skip () {
-        return !this.team.eduProgram
-      },
-      update ({ disciplines }) {
-        return disciplines.edges.map((e: { node?: DisciplineType }) => e.node)
+      return items
+    }
+
+    const getFilterMessages = (filterName: string, multiple: boolean = false): FilterMessages => {
+      return {
+        title: tc(`ac.filters.${filterName}.title`),
+        noFiltrationMessage: tc(`ac.filters.${filterName}.noFiltrationMessage`),
+        multipleMessageFunction: multiple
+          ? (name, restLength) =>
+              tc(`ac.filters.${filterName}.multipleMessage`, restLength, { name, restLength })
+          : undefined
       }
-    },
-    fileKinds: require('~/gql/eleden/queries/profile/file_kinds.graphql')
+    }
+
+    const close = (): void => {
+      describe.value = ''
+      typeId.value = null
+      disciplineId.value = null
+      file.value = null
+      confirm.value = false
+    }
+
+    const addPortfolioFilesUpdate = (cache: DataProxy, result: AddPortfolioFilesData): void => {
+      update(cache, result, (dataCache, { data: { addPortfolioFiles: { success, portfolioFiles } } }) => {
+        if (success) {
+          const dataKey: string = Object.keys(dataCache)[0]
+          dataCache[dataKey].totalCount += portfolioFiles!.length
+          dataCache[dataKey].edges = [
+            ...portfolioFiles!
+              .map((e: Maybe<PortfolioFileType>) => ({ node: e, __typename: 'PortfolioFileTypeEdge' })).reverse(),
+            ...dataCache[dataKey].edges
+          ]
+        }
+      })
+    }
+
+    const deletePortfolioFileUpdate = (cache: DataProxy, result: DeletePortfolioFileData, pf: PortfolioFileType): void => {
+      update(cache, result, (dataCache, { data: { deletePortfolioFile: { success } } }) => {
+        if (success) {
+          const dataKey: string = Object.keys(dataCache)[0]
+          dataCache[dataKey].edges = dataCache[dataKey].edges.filter((e: any) => e.node.id !== pf.id)
+          dataCache[dataKey].totalCount -= 1
+        }
+      })
+    }
+
+    return {
+      active,
+      selectedUsers,
+      selectedDiscipline,
+      selectedFileKind,
+      describe,
+      typeId,
+      disciplineId,
+      file,
+      confirm,
+      canAdd,
+      canChange,
+      canDelete,
+      users,
+      portfolioFilesHeaders,
+      portfolioFiles,
+      portfolioFilesLoading,
+      search,
+      totalCount,
+      addUpdate,
+      disciplines,
+      disciplinesLoading,
+      fileKinds,
+      fileKindsLoading,
+      getPortfolioFileSubItem,
+      getFilterMessages,
+      close,
+      addPortfolioFilesUpdate,
+      deletePortfolioFileUpdate
+    }
   }
 })
-export default class AcTeamIdPortfolio extends Vue {
-  @Prop({ type: Object as PropType<TeamType>, required: true }) readonly team!: TeamType
-  @Prop({ type: Boolean, required: true }) readonly isMember!: boolean
-  @Prop({ type: Boolean, required: true }) readonly canViewPortfolio!: boolean
-
-  readonly user!: UserType
-  readonly hasPerm!: (perm: string | string[]) => boolean
-  readonly canAdd!: boolean
-  readonly canChange!: boolean
-  readonly canDelete!: boolean
-  readonly users!: UserType[]
-  readonly userIds!: string[]
-  readonly portfolioFilesVariables!: PortfolioFilesQueryVariables
-  readonly portfolioFilesHeaders!: DataTableHeader[]
-  readonly portfolioFiles!: PortfolioFileType[] | undefined
-  readonly disciplines!: DisciplineType[] | undefined
-  readonly fileKinds!: FileKindType[] | undefined
-
-  search$: string | null = ''
-  searchStream$: Subject<any> = new Subject<any>()
-
-  active: boolean = false
-  totalCount: number = 0
-  page: number = 0
-  pageSize: number = 20
-  selectedUsers: UserType[] = []
-  selectedDiscipline: DisciplineType | null = null
-  selectedFileKind: FileKindType | null = null
-  describe: string = ''
-  typeId: string | null = ''
-  disciplineId: string | null = null
-  file: File | null = null
-  confirm: boolean = false
-
-  /**
-   * Получение перевода относильно локального пути
-   * @param path
-   * @param values
-   * @return
-   */
-  t (path: string, values: any = undefined): string {
-    return this.$t(`ac.teams.portfolio.${path}`, values) as string
-  }
-
-  /**
-   * Подгрузка файлов портфолио
-   */
-  async fetchMorePortfolioFiles (): Promise<void> {
-    await this.$apollo.queries.portfolioFiles.fetchMore({
-      variables: {
-        first: this.pageSize,
-        offset: (this.page - 1) * this.pageSize,
-        usersId: this.userIds,
-        disciplineId: this.selectedDiscipline?.id,
-        typeId: this.selectedFileKind?.id
-      },
-      updateQuery: (previousResult: any, { fetchMoreResult: { portfolioFiles } }: any) => {
-        return {
-          portfolioFiles: {
-            __typename: previousResult.portfolioFiles.__typename,
-            totalCount: portfolioFiles.totalCount,
-            edges: [...previousResult.portfolioFiles.edges, ...portfolioFiles.edges]
-          }
-        }
-      }
-    })
-  }
-
-  /**
-   * Получение подъэлемента файла портфолио
-   * @param item
-   * @return
-   */
-  getPortfolioFileSubItem (item: PortfolioFileType): { key: string, value: string | UserType }[] {
-    const items = [
-      { key: 'describe', value: item.describe },
-      { key: 'createdAt', value: item.createdAt },
-      { key: 'updatedAt', value: item.updatedAt },
-      { key: 'user', value: item.user },
-      { key: 'file', value: `/${item.file.src}` }
-    ]
-    if (this.canDelete || (item.user === null && item.file.user?.id === this.user.id)) {
-      items.push({ key: 'delete', value: item.id })
-    }
-    return items
-  }
-
-  /**
-   * Обновление после добавления файлов в портфолио
-   * @param store,
-   * @param success,
-   * @param portfolioFiles
-   */
-  addPortfolioFilesUpdate (
-    store: DataProxy,
-    { data: { addPortfolioFiles: { success, portfolioFiles } } }: AddPortfolioFilesData
-  ): void {
-    if (success) {
-      const data: any = store.readQuery<PortfolioFilesQuery, PortfolioFilesQueryVariables>({
-        query: portfolioFilesQuery,
-        variables: this.portfolioFilesVariables
-      })!
-      data.portfolioFiles.totalCount += portfolioFiles!.length
-      data.portfolioFiles.edges = [
-        ...portfolioFiles!
-          .map((e: Maybe<PortfolioFileType>) => ({ node: e, __typename: 'PortfolioFileTypeEdge' })).reverse(),
-        ...data.portfolioFiles.edges
-      ]
-      data.portfolioFiles.edges
-        .splice(this.pageSize * Math.max(Math.floor(data.portfolioFiles.edges.length / this.pageSize), 1))
-      store.writeQuery({ query: portfolioFilesQuery, variables: this.portfolioFilesVariables, data })
-    }
-  }
-
-  /**
-   * Обновление после удаления файла портфолио
-   * @param store,
-   * @param success,
-   * @param pf
-   */
-  deleteUpdate (
-    store: DataProxy,
-    { data: { deletePortfolioFile: { success } } }: DeletePortfolioFileData,
-    pf: PortfolioFileType
-  ): void {
-    if (success) {
-      const data: PortfolioFilesQuery = store.readQuery<PortfolioFilesQuery, PortfolioFilesQueryVariables>({
-        query: portfolioFilesQuery,
-        variables: this.portfolioFilesVariables
-      })!
-      data.portfolioFiles.edges = data.portfolioFiles.edges.filter((e: any) => e.node.id !== pf.id)
-      data.portfolioFiles.totalCount -= 1
-      store.writeQuery({ query: portfolioFilesQuery, variables: this.portfolioFilesVariables, data })
-    }
-  }
-
-  /**
-   * Получение сообщений для фильтра
-   * @param filterName
-   * @param multiple
-   * @return
-   */
-  getFilterMessages (filterName: string, multiple: boolean = false): FilterMessages {
-    return {
-      title: this.$tc(`ac.filters.${filterName}.title`),
-      noFiltrationMessage: this.$tc(`ac.filters.${filterName}.noFiltrationMessage`),
-      multipleMessageFunction: multiple
-        ? (name, restLength) =>
-            this.$tc(`ac.filters.${filterName}.multipleMessage`, restLength, { name, restLength })
-        : undefined
-    }
-  }
-
-  /**
-   * Поиск пользователя
-   * @param user
-   * @param search
-   * @return
-   */
-  searchUser (user: UserType, search: string): boolean {
-    return [this.$getUserName(user), this.$getUserFullName(user)].some(
-      v => v.toLocaleLowerCase().includes(search.toLocaleLowerCase())
-    )
-  }
-
-  /**
-   * Закрытие окна добавления файлов портфолио
-   */
-  close (): void {
-    this.describe = ''
-    this.typeId = null
-    this.disciplineId = null
-    this.file = null
-    this.confirm = false
-  }
-}
 </script>

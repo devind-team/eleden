@@ -214,7 +214,8 @@ export default defineComponent({
       data: portfolioFiles,
       loading: portfolioFilesLoading,
       pagination: { totalCount },
-      addUpdate
+      addUpdate,
+      update: portfolioFilesUpdate
     } = useQueryRelay<PortfolioFilesQuery, PortfolioFilesQueryVariables>({
       document: portfolioFilesQuery,
       variables: () => (portfolioFilesVariables.value)
@@ -273,19 +274,16 @@ export default defineComponent({
     }
 
     const deleteUpdate = (
-      store: DataProxy,
-      { data: { deletePortfolioFile: { success } } }: DeletePortfolioFileData,
+      cache: DataProxy,
+      result: DeletePortfolioFileData,
       pf: PortfolioFileType
-    ) => {
-      if (success) {
-        const data: PortfolioFilesQuery = store.readQuery<PortfolioFilesQuery, PortfolioFilesQueryVariables>({
-          query: portfolioFilesQuery,
-          variables: portfolioFilesVariables.value
-        })!
-        data.portfolioFiles.edges = data.portfolioFiles.edges.filter((e: any) => e.node.id !== pf.id)
-        data.portfolioFiles.totalCount -= 1
-        store.writeQuery({ query: portfolioFilesQuery, variables: portfolioFilesVariables.value, data })
-      }
+    ): void => {
+      portfolioFilesUpdate(cache, result, (dataCache, { data: { deletePortfolioFile: { success } } }) => {
+        if (success) {
+          dataCache.portfolioFiles.edges = dataCache.portfolioFiles.edges.filter((e: any) => e.node.id !== pf.id)
+          dataCache.portfolioFiles.totalCount -= 1
+        }
+      })
     }
 
     return {

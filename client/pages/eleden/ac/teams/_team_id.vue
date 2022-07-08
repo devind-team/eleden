@@ -10,13 +10,14 @@
         :can-view-portfolio="canViewPortfolio"
         :can-view-summary-report="canViewSummaryReport"
         :raw-job-kinds="rawJobKinds"
-        :job-kinds="jobKinds"
+        :job-kinds="jobKinds",
+        :jobs-count="users.length"
       )
 </template>
 
 <script lang="ts">
 import type { ComputedRef, PropType, Ref } from '#app'
-import { computed, defineComponent, useNuxt2Meta, useRoute, ref } from '#app'
+import { computed, defineComponent, useNuxt2Meta, useRoute, ref, provide } from '#app'
 import { BreadCrumbsItem, LinksType } from '~/types/devind'
 import { TeamQuery, TeamQueryVariables } from '~/types/graphql'
 import { useAuthStore } from '~/store'
@@ -44,12 +45,13 @@ export default defineComponent({
 
     const rawJobKinds: Ref<string[]> = ref<string[]>(['MJ', 'IP', 'EP', 'CC'])
 
-    const { data: team, loading } = useCommonQuery<TeamQuery, TeamQueryVariables>({
+    const { data: team, loading, update } = useCommonQuery<TeamQuery, TeamQueryVariables>({
       document: teamQuery,
       variables: () => ({
         teamId: route.params.team_id
       })
     })
+    provide('teamUpdate', update)
 
     const users: ComputedRef<JobUser[]> = computed<JobUser[]>(() => {
       if (!team.value) {

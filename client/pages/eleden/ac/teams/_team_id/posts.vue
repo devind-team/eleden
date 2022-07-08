@@ -1,6 +1,6 @@
 <template lang="pug">
   v-card
-    v-card-title {{ t('name') }}
+    v-card-title {{ $t('ac.teams.posts.name') }}
     v-card-text
       v-row(align="center")
         v-col
@@ -8,14 +8,14 @@
             template(#activator="{ on }")
               v-btn.mr-3(v-on="on" color="primary")
                 v-icon(left) mdi-plus
-                | {{ t('addMenu.buttons.add') }}
+                | {{ $t('ac.teams.posts.addMenu.buttons.add') }}
             v-list
               add-job-post(:team="team" :update="addJobPostUpdate" :job-kinds="jobKinds")
                 template(#activator="{ on }")
                   v-list-item(v-on="on")
                     v-list-item-icon
                       v-icon mdi-form-select
-                    v-list-item-content {{ t('addMenu.buttons.fillForm') }}
+                    v-list-item-content {{ $t('ac.teams.posts.addMenu.buttons.fillForm') }}
           users-data-filter(
             v-model="usersFilter"
             :users="users"
@@ -41,8 +41,8 @@
           )
       v-row(v-if="posts.length > 0" align="center")
         v-col(cols="12" sm="6")
-          v-text-field(v-model="search" :label="t('search')" prepend-icon="mdi-magnify" clearable)
-        v-col.text-right(cols="12" sm="6") {{ t('shownOf', { count: postsCount, totalCount: posts.length }) }}
+          v-text-field(v-model="search" :label="$t('search')" prepend-icon="mdi-magnify" clearable)
+        v-col.text-right(cols="12" sm="6") {{ $t('shownOf', { count: postsCount, totalCount: posts.length }) }}
       v-row
         v-col
           v-data-table(
@@ -65,7 +65,7 @@
                   template(#activator="{ on: onTooltip }")
                     v-btn(v-on="{ ...onDialog, ...onTooltip }" color="success" icon)
                       v-icon mdi-pencil
-                  span {{ t('tooltips.change') }}
+                  span {{ $t('ac.teams.posts.tooltips.change') }}
               status-history(
                 v-if="canViewStatusHistory || item.job.user.id === user.id"
                 :job="item.job"
@@ -78,7 +78,7 @@
                     template(#activator="{ on: onTooltip }")
                       v-btn(v-on="{ ...onDialog, ...onTooltip }" color="primary" icon)
                         v-icon mdi-text-box-outline
-                    span {{ t('tooltips.viewStatusHistory') }}
+                    span {{ $t('ac.teams.posts.tooltips.viewStatusHistory') }}
               add-status-history(
                 v-if="canAddStatusHistory"
                 :job="item.job"
@@ -90,7 +90,7 @@
                     template(#activator="{ on: onTooltip }")
                       v-btn(v-on="{ ...onDialog, ...onTooltip }" color="purple lighten-1" icon)
                         v-icon mdi-text-box-plus-outline
-                    span {{ t('tooltips.addStatus') }}
+                    span {{ $t('ac.teams.posts.tooltips.addStatus') }}
               apollo-mutation(
                 v-if="canDelete"
                 :mutation="require('~/gql/eleden/mutations/job_post/delete_job_post.graphql')"
@@ -99,19 +99,18 @@
                 tag="span"
               )
                 template(v-slot="{ mutate, loading }")
-                  delete-menu(:item-name="t('deleteItemName')" @confirm="mutate")
+                  delete-menu(:item-name="$t('ac.teams.posts.deleteItemName')" @confirm="mutate")
                     template(#default="{ on: onMenu }")
                       v-tooltip(bottom)
                         template(#activator="{ on: onTooltip }")
                           v-btn(v-on="{ ...onMenu, ...onTooltip }" :loading="loading" icon)
                             v-icon(color="error") mdi-delete
-                        span {{ t('tooltips.delete') }}
+                        span {{ $t('ac.teams.posts.tooltips.delete') }}
 </template>
 
 <script lang="ts">
-import { PropType } from 'vue'
-import { Vue, Component, Prop } from 'vue-property-decorator'
-import { mapGetters } from 'vuex'
+import type { PropType } from '#app'
+import { ref, computed, defineComponent, toRefs, inject } from '#app'
 import { DataProxy } from 'apollo-cache'
 import { DataTableHeader } from 'vuetify'
 import {
@@ -120,11 +119,12 @@ import {
   JobType,
   PostType,
   JobPostType,
-  JobPostStatusHistoryType,
-  DeleteJobPostMutationPayload
+  DeleteJobPostMutationPayload,
+  JobPostStatusHistoryType
 } from '~/types/graphql'
+import { useAuthStore } from '~/store'
+import { useI18n, useFilters } from '~/composables'
 import { JobKind } from '~/pages/eleden/ac/teams/_team_id.vue'
-import teamQuery from '~/gql/eleden/queries/team/team.graphql'
 import { FilterMessages } from '~/types/filters'
 import AddJobPost, { AddJobPostData } from '~/components/eleden/ac/team/AddJobPost.vue'
 import AddStatusHistory, { AddJobPostStatusHistoryData } from '~/components/eleden/ac/team/AddStatusHistory.vue'
@@ -140,7 +140,7 @@ import QueryDataFilter from '~/components/common/filters/QueryDataFilter.vue'
 type Post = { job: JobType, jobPost: JobPostType }
 type DeleteJobPostData = { data: { deleteJobPost: DeleteJobPostMutationPayload } }
 
-@Component<AcTeamIdPosts>({
+export default defineComponent({
   components: {
     AddJobPost,
     AddStatusHistory,
@@ -154,74 +154,104 @@ type DeleteJobPostData = { data: { deleteJobPost: DeleteJobPostMutationPayload }
     QueryDataFilter
   },
   middleware: 'auth',
-  computed: {
-    ...mapGetters({ hasPerm: 'auth/hasPerm', user: 'auth/user' }),
-    canView (): boolean {
-      return this.hasPerm('eleden.view_jobpost') ||
-        (!!this.team && this.team.permissions.canViewTeamMembers)
-    },
-    canAdd (): boolean {
-      return this.hasPerm('eleden.add_jobpost') || this.team.permissions.canChange
-    },
-    canChange (): boolean {
-      return this.hasPerm('eleden.change_jobpost') || this.team.permissions.canChange
-    },
-    canDelete (): boolean {
-      return this.hasPerm('eleden.delete_jobpost') || this.team.permissions.canChange
-    },
-    canViewStatusHistory (): boolean {
-      return this.hasPerm('eleden.view_jobpoststatushistory') || this.team.permissions.canChange
-    },
-    canAddStatusHistory (): boolean {
-      return this.hasPerm('eleden.add_jobpoststatushistory') || this.team.permissions.canChange
-    },
-    canChangeStatusHistory (): boolean {
-      return this.hasPerm('eleden.change_jobpoststatushistory') || this.team.permissions.canViewTeamMembers
-    },
-    canDeleteStatusHistory (): boolean {
-      return this.hasPerm('eleden.delete_jobpoststatushistory') || this.team.permissions.canChange
-    },
-    posts (): Post[] {
-      return this.team.jobs.reduce((acc, job) => {
+  props: {
+    team: { type: Object as PropType<TeamType>, required: true },
+    isMember: { type: Boolean, required: true },
+    rawJobKinds: { type: Array as PropType<string[]>, required: true },
+    jobKinds: { type: Array as PropType<JobKind[]>, required: true }
+  },
+  setup (props) {
+    const { t, tc } = useI18n()
+    const { getUserFullName, getUserName } = useFilters()
+    const userStore = useAuthStore()
+    const { hasPerm, user } = toRefs(userStore)
+
+    const usersFilter = ref<UserType[]>([])
+    const postFilter = ref<PostType | null>(null)
+    const jobKindFilter = ref<{ text: string, value: string } | null>(null)
+    const search = ref<string>('')
+
+    const canView = computed<boolean>(() => (
+      hasPerm.value('eleden.view_jobpost') || (!!props.team && props.team.permissions.canViewTeamMembers)
+    ))
+
+    const canAdd = computed<boolean>(() => (
+      hasPerm.value('eleden.add_jobpost') || props.team.permissions.canChange
+    ))
+
+    const canChange = computed<boolean>(() => (
+      hasPerm.value('eleden.change_jobpost') || props.team.permissions.canChange
+    ))
+
+    const canDelete = computed<boolean>(() => (
+      hasPerm.value('eleden.delete_jobpost') || props.team.permissions.canChange
+    ))
+
+    const canViewStatusHistory = computed<boolean>(() => (
+      hasPerm.value('eleden.view_jobpoststatushistory') || props.team.permissions.canChange
+    ))
+
+    const canAddStatusHistory = computed<boolean>(() => (
+      hasPerm.value('eleden.add_jobpoststatushistory') || props.team.permissions.canChange
+    ))
+
+    const canChangeStatusHistory = computed<boolean>(() => (
+      hasPerm.value('eleden.change_jobpoststatushistory') || props.team.permissions.canViewTeamMembers
+    ))
+
+    const canDeleteStatusHistory = computed<boolean>(() => (
+      hasPerm.value('eleden.delete_jobpoststatushistory') || props.team.permissions.canChange
+    ))
+
+    const posts = computed<Post[]>(() => (
+      props.team.jobs.reduce((acc, job) => {
         return [
           ...acc,
           ...job.jobPosts.map(jobPost => ({ job, jobPost }))
         ]
       }, [] as Post[])
-    },
-    filteredPosts (): Post[] {
-      let posts: Post[] = this.usersFilter.length
-        ? this.posts.filter(post => this.usersFilter.find(user => post.job.user.id === user.id))
-        : this.posts
-      posts = this.postFilter
-        ? posts.filter(post => post.jobPost.post.id === this.postFilter!.id)
-        : posts
-      posts = this.jobKindFilter
-        ? posts.filter(post => post.jobPost.kind === this.jobKindFilter!.value)
-        : posts
-      return posts
-    },
-    users (): UserType[] {
-      return this.team.jobs.map(job => job.user)
-    },
-    headers (): DataTableHeader[] {
+    ))
+
+    const postsCount = ref<number>(posts.value.length)
+
+    const filteredPosts = computed<Post[]>(() => {
+      let postsValue: Post[] = usersFilter.value.length
+        ? posts.value.filter(post => usersFilter.value.find(user => post.job.user.id === user.id))
+        : posts.value
+      postsValue = postFilter.value
+        ? postsValue.filter(post => post.jobPost.post.id === postFilter.value!.id)
+        : postsValue
+      postsValue = jobKindFilter.value
+        ? postsValue.filter(post => post.jobPost.kind === jobKindFilter.value!.value)
+        : postsValue
+      return postsValue
+    })
+
+    const users = computed<UserType[]>(() => (props.team.jobs.map(job => job.user)))
+
+    const headers = computed<DataTableHeader[]>(() => {
       const headers: DataTableHeader[] = [
-        { text: this.t('tableHeaders.avatar'), value: 'user.avatar', sortable: false, filterable: false },
-        { text: this.t('tableHeaders.user'), value: 'user' },
-        { text: this.t('tableHeaders.post'), value: 'jobPost.post.name' }
+        {
+          text: t('ac.teams.posts.tableHeaders.avatar') as string,
+          value: 'user.avatar',
+          sortable: false,
+          filterable: false
+        },
+        { text: t('ac.teams.posts.tableHeaders.user') as string, value: 'user' },
+        { text: t('ac.teams.posts.tableHeaders.post') as string, value: 'jobPost.post.name' }
       ]
-      if (this.canView || !this.team.eduProgram) {
+      if (canView.value || !props.team.eduProgram) {
         headers.push(
-          { text: this.t('tableHeaders.kind'), value: 'jobPost.kind' },
-          { text: this.t('tableHeaders.rate'), value: 'jobPost.rate', align: 'center' }
+          { text: t('ac.teams.posts.tableHeaders.kind') as string, value: 'jobPost.kind' },
+          { text: t('ac.teams.posts.tableHeaders.rate') as string, value: 'jobPost.rate', align: 'center' }
         )
       }
-      const canViewAnyStatusHistory = this.canViewStatusHistory ||
-        Boolean(this.team.jobs.find(job => job.user.id === this.user.id))
-      const checks = [this.canChange, canViewAnyStatusHistory, this.canAddStatusHistory, this.canDelete]
+      const canViewAnyStatusHistory = canViewStatusHistory.value ||
+        Boolean(props.team.jobs.find(job => job.user.id === user.value.id))
+      const checks = [canChange.value, canViewAnyStatusHistory, canAddStatusHistory.value, canDelete.value]
       if (checks.some(check => check)) {
         headers.push({
-          text: this.t('tableHeaders.actions'),
+          text: t('ac.teams.posts.tableHeaders.actions') as string,
           value: 'actions',
           align: 'center',
           width: `${Math.max(checks.reduce((acc: number, check: boolean) => check ? acc + 45 : acc, 0), 135)}px`,
@@ -230,193 +260,142 @@ type DeleteJobPostData = { data: { deleteJobPost: DeleteJobPostMutationPayload }
         })
       }
       return headers
+    })
+
+    const getFilterMessages = (filterName: string, multiple: boolean = false): FilterMessages => {
+      return {
+        title: t(`ac.teams.posts.filters.${filterName}.title`) as string,
+        noFiltrationMessage: t(`ac.teams.posts.filters.${filterName}.noFiltrationMessage`) as string,
+        multipleMessageFunction: multiple
+          ? (name, restLength) =>
+              tc(`ac.teams.posts.filters.${filterName}.multipleMessage`, restLength, { name, restLength })
+          : undefined
+      }
+    }
+
+    const searchUser = (user: UserType, search: string): boolean => {
+      return [getUserName(user), getUserFullName(user)].some(
+        v => v.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+      )
+    }
+
+    const filter = (value: string | number | UserType | null, search: string | null): boolean => {
+      if (!search) {
+        return true
+      }
+      if (!value) {
+        return false
+      }
+      if (['string', 'number'].includes(typeof value)) {
+        if (typeof value === 'string' && props.rawJobKinds.includes(value.toLowerCase())) {
+          return (t(
+          `ac.teams.jobKinds.${value.toLowerCase()}`
+          ) as string).toLocaleLowerCase().includes(search.toLocaleLowerCase())
+        } else {
+          return String(value).toLocaleLowerCase().includes(search.toLocaleLowerCase())
+        }
+      } else {
+        return searchUser(value as UserType, search)
+      }
+    }
+
+    const teamUpdate: any = inject('teamUpdate')
+    const addJobPostUpdate = (
+      cache: DataProxy,
+      result: AddJobPostData,
+      job: JobType
+    ): void => {
+      teamUpdate(cache, result, (dataCache, { data: { addJobPost: { success, jobPost, src } } }) => {
+        if (success) {
+          const dataKey: string = Object.keys(dataCache)[0]
+          dataCache[dataKey].jobs.find((existingJob: JobType) => existingJob.id === job.id).jobPosts.push(jobPost)
+          if (src) {
+            window.open(`/${src}`, '_blank')
+          }
+        }
+      })
+    }
+
+    const deleteJobPostUpdate = (
+      cache: DataProxy,
+      result: DeleteJobPostData,
+      job: JobType,
+      jobPost: JobPostType
+    ): void => {
+      teamUpdate(cache, result, (dataCache, { data: { deleteJobPost: { success } } }) => {
+        if (success) {
+          const dataKey: string = Object.keys(dataCache)[0]
+          const existingJob: JobType = dataCache[dataKey].jobs.find((existingJob: JobType) => existingJob.id === job.id)
+          existingJob.jobPosts = existingJob.jobPosts.filter(existingJobPost => existingJobPost.id !== jobPost.id)
+        }
+      })
+    }
+
+    const addStatusHistoryUpdate = (
+      cache: DataProxy,
+      result: AddJobPostStatusHistoryData,
+      job: JobType,
+      jobPost: JobPostType
+    ): void => {
+      teamUpdate(cache, result, (
+        dataCache,
+        {
+          data: {
+            addJobPostStatusHistory: {
+              success,
+              newJobPostStatusHistory,
+              completedJobPostStatusHistory,
+              src
+            }
+          }
+        }
+      ) => {
+        if (success) {
+          const dataKey: string = Object.keys(dataCache)[0]
+          const existingJobPost: JobPostType = dataCache[dataKey].jobs
+            .find((existingJob: JobType) => existingJob.id === job.id).jobPosts
+            .find((existingJobPost: JobPostType) => existingJobPost.id === jobPost.id)
+          existingJobPost.statusHistory.push(newJobPostStatusHistory!)
+          completedJobPostStatusHistory!.forEach((completedStatusHistory: JobPostStatusHistoryType) => {
+            existingJobPost.statusHistory.splice(
+              existingJobPost.statusHistory.findIndex((existingStatusHistory: JobPostStatusHistoryType) =>
+                completedStatusHistory.id === existingStatusHistory.id),
+              1,
+              completedStatusHistory
+            )
+          })
+          if (src) {
+            window.open(`/${src}`, '_blank')
+          }
+        }
+      })
+    }
+
+    return {
+      user,
+      hasPerm,
+      usersFilter,
+      postFilter,
+      jobKindFilter,
+      search,
+      postsCount,
+      canAdd,
+      canChange,
+      canDelete,
+      canAddStatusHistory,
+      canChangeStatusHistory,
+      canDeleteStatusHistory,
+      canViewStatusHistory,
+      posts,
+      filteredPosts,
+      users,
+      headers,
+      getFilterMessages,
+      filter,
+      addJobPostUpdate,
+      deleteJobPostUpdate,
+      addStatusHistoryUpdate
     }
   }
 })
-export default class AcTeamIdPosts extends Vue {
-  @Prop({ type: Object as PropType<TeamType>, required: true }) readonly team!: TeamType
-  @Prop({ type: Boolean, required: true }) readonly isMember!: boolean
-  @Prop({ type: Array as PropType<string[]>, required: true }) readonly rawJobKinds!: string[]
-  @Prop({ type: Array as PropType<JobKind[]>, required: true }) readonly jobKinds!: JobKind[]
-
-  readonly hasPerm!: (permissions: string | string[], or?: boolean) => boolean
-  readonly user!: UserType
-  readonly canView!: boolean
-  readonly canAdd!: boolean
-  readonly canChange!: boolean
-  readonly canDelete!: boolean
-  readonly canViewStatusHistory!: boolean
-  readonly canAddStatusHistory!: boolean
-  readonly canChangeStatusHistory!: boolean
-  readonly canDeleteStatusHistory!: boolean
-  readonly posts!: Post[]
-  readonly filteredPosts!: Post[]
-  readonly users!: UserType[]
-  readonly headers!: DataTableHeader[]
-
-  usersFilter: UserType[] = []
-  postFilter: PostType | null = null
-  jobKindFilter: { text: string, value: string } | null = null
-  search: string = ''
-  postsCount: number = 0
-
-  created () {
-    this.postsCount = this.posts.length
-  }
-
-  /**
-   * Получение перевода относильно локального пути
-   * @param path
-   * @param values
-   * @return
-   */
-  t (path: string, values: any = undefined): string {
-    return this.$t(`ac.teams.posts.${path}`, values) as string
-  }
-
-  /**
-   * Обновление должностей после добавления новой должности
-   * @param store
-   * @param success
-   * @param jobPost
-   * @param src
-   * @param job
-   */
-  addJobPostUpdate (
-    store: DataProxy,
-    { data: { addJobPost: { success, jobPost, src } } }: AddJobPostData,
-    job: JobType
-  ): void {
-    if (success) {
-      const data: any = store.readQuery({ query: teamQuery, variables: { teamId: this.team.id } })
-      data.team.jobs.find((existingJob: JobType) => existingJob.id === job.id).jobPosts.push(jobPost)
-      store.writeQuery({ query: teamQuery, variables: { teamId: this.team.id }, data })
-      if (src) {
-        window.open(`/${src}`, '_blank')
-      }
-    }
-  }
-
-  /**
-   * Обновление должностей после удаления должности
-   * @param store
-   * @param success
-   * @param job
-   * @param jobPost
-   */
-  deleteJobPostUpdate (
-    store: DataProxy,
-    { data: { deleteJobPost: { success } } }: DeleteJobPostData,
-    job: JobType,
-    jobPost: JobPostType
-  ): void {
-    if (success) {
-      const data: any = store.readQuery({ query: teamQuery, variables: { teamId: this.team.id } })
-      const existingJob: JobType = data.team.jobs.find((existingJob: JobType) => existingJob.id === job.id)
-      existingJob.jobPosts = existingJob.jobPosts.filter(existingJobPost => existingJobPost.id !== jobPost.id)
-      store.writeQuery({ query: teamQuery, variables: { teamId: this.team.id }, data })
-    }
-  }
-
-  /**
-   * Обновление истории стасусов должности после добавления нового статуса
-   * @param store
-   * @param success
-   * @param newJobPostStatusHistory
-   * @param completedJobPostStatusHistory
-   * @param src
-   * @param job
-   * @param jobPost
-   */
-  addStatusHistoryUpdate (
-    store: DataProxy,
-    {
-      data: {
-        addJobPostStatusHistory: {
-          success,
-          newJobPostStatusHistory,
-          completedJobPostStatusHistory,
-          src
-        }
-      }
-    }: AddJobPostStatusHistoryData,
-    job: JobType,
-    jobPost: JobPostType
-  ): void {
-    if (success) {
-      const data: any = store.readQuery({ query: teamQuery, variables: { teamId: this.team.id } })
-      const existingJobPost: JobPostType = data.team.jobs
-        .find((existingJob: JobType) => existingJob.id === job.id).jobPosts
-        .find((existingJobPost: JobPostType) => existingJobPost.id === jobPost.id)
-      existingJobPost.statusHistory.push(newJobPostStatusHistory!)
-      completedJobPostStatusHistory!.forEach((completedStatusHistory: JobPostStatusHistoryType) => {
-        existingJobPost.statusHistory.splice(
-          existingJobPost.statusHistory.findIndex((existingStatusHistory: JobPostStatusHistoryType) =>
-            completedStatusHistory.id === existingStatusHistory.id),
-          1,
-          completedStatusHistory
-        )
-      })
-      store.writeQuery({ query: teamQuery, variables: { teamId: this.team.id }, data })
-      if (src) {
-        window.open(`/${src}`, '_blank')
-      }
-    }
-  }
-
-  /**
-   * Получение сообщений для фильтра
-   * @param filterName
-   * @param multiple
-   * @return
-   */
-  getFilterMessages (filterName: string, multiple: boolean = false): FilterMessages {
-    return {
-      title: this.t(`filters.${filterName}.title`),
-      noFiltrationMessage: this.t(`filters.${filterName}.noFiltrationMessage`),
-      multipleMessageFunction: multiple
-        ? (name, restLength) =>
-            this.$tc(`ac.teams.posts.filters.${filterName}.multipleMessage`, restLength, { name, restLength })
-        : undefined
-    }
-  }
-
-  /**
-   * Поиск пользователя
-   * @param user
-   * @param search
-   * @return
-   */
-  searchUser (user: UserType, search: string): boolean {
-    return [this.$getUserName(user), this.$getUserFullName(user)].some(
-      v => v.toLocaleLowerCase().includes(search.toLocaleLowerCase())
-    )
-  }
-
-  /**
-   * Фильтрация должностей в таблице
-   * @param value
-   * @param search
-   * @return
-   */
-  filter (value: string | number | UserType | null, search: string | null): boolean {
-    if (!search) {
-      return true
-    }
-    if (!value) {
-      return false
-    }
-    if (['string', 'number'].includes(typeof value)) {
-      if (typeof value === 'string' && this.rawJobKinds.includes(value.toLowerCase())) {
-        return (this.$t(
-          `ac.teams.jobKinds.${value.toLowerCase()}`
-        ) as string).toLocaleLowerCase().includes(search.toLocaleLowerCase())
-      } else {
-        return String(value).toLocaleLowerCase().includes(search.toLocaleLowerCase())
-      }
-    } else {
-      return this.searchUser(value as UserType, search)
-    }
-  }
-}
 </script>

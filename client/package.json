@@ -21,7 +21,7 @@
     "@pinia/nuxt": "^0.1.9",
     "@vue/apollo-composable": "^4.0.0-alpha.17",
     "@vueuse/core": "^8.6.0",
-    "@vueuse/integrations": "^8.5.0",
+    "@vueuse/integrations": "^8.9.1",
     "accounting": "^0.4.1",
     "apexcharts": "^3.35.3",
     "graphql-tag": "^2.12.6",

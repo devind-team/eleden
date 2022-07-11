@@ -1,30 +1,30 @@
 <template lang="pug">
-  .messages(:style="cssProps")
-    .messages-wrapper(v-for="(cms, date) in messages" :key="date")
-      .messages-wrapper-timeline
-        v-chip(small) {{ date === now ? 'Сегодня' : date }}
-      .messages-wrapper-message(v-for="cm in cms" :key="cm.id")
-        .messages-wrapper-message-avatar(v-if="$vuetify.breakpoint.mdAndUp")
-          v-avatar(size="45")
-            v-img(v-if="cm.message.user.avatar" :src="`/${cm.message.user.avatar}`")
-            v-icon(v-else) mdi-camera
-        .messages-wrapper-message-text
-          .message-text-info
-            nuxt-link.message-text-info(:to="localePath({ name: 'users-user_id', params: { user_id: cm.message.user.id } })")
-              | {{ `${cm.message.user.firstName} ${cm.message.user.lastName}` }}
-            span.caption &nbsp;&mdash; {{ $filters.timeHM(cm.createdAt) }}
-          .message-text
-            .text--primary(v-html="cm.message.text")
-            .message-text-forwarded(v-if="cm.message.forwarded.length")
-              pre {{ cm.message.forwarded }}
-            .message-text-attachments(v-if="cm.message.attachedFiles.length")
-              pre {{ cm.message.attachedFiles }}
-          .message-text-state(v-if="user.id === cm.message.user.id")
-            v-icon(
-              :color="!!cm.read ? 'primary' : undefined"
-            ) mdi-{{ !cm.delivered && !cm.read ? 'check' : 'check-all' }}
-    v-alert(v-if="items.length === 0 && !loading" type="info") В беседе еще нет сообщений
-    v-progress-linear(v-if="loading" color="primary" indeterminate)
+.messages(:style="cssProps")
+  .messages-wrapper(v-for="(cms, date) in messages" :key="date")
+    .messages-wrapper-timeline
+      v-chip(small) {{ date === now ? 'Сегодня' : date }}
+    .messages-wrapper-message(v-for="cm in cms" :key="cm.id")
+      .messages-wrapper-message-avatar(v-if="$vuetify.breakpoint.mdAndUp")
+        v-avatar(size="45")
+          v-img(v-if="cm.message.user.avatar" :src="`/${cm.message.user.avatar}`")
+          v-icon(v-else) mdi-camera
+      .messages-wrapper-message-text
+        .message-text-info
+          nuxt-link.message-text-info(:to="localePath({ name: 'users-user_id', params: { user_id: cm.message.user.id } })")
+            | {{ `${cm.message.user.firstName} ${cm.message.user.lastName}` }}
+          span.caption &nbsp;&mdash; {{ $filters.timeHM(cm.createdAt) }}
+        .message-text
+          .text--primary(v-html="cm.message.text")
+          .message-text-forwarded(v-if="cm.message.forwarded.length")
+            pre {{ cm.message.forwarded }}
+          .message-text-attachments(v-if="cm.message.attachedFiles.length")
+            pre {{ cm.message.attachedFiles }}
+        .message-text-state(v-if="user.id === cm.message.user.id")
+          v-icon(
+            :color="!!cm.read ? 'primary' : undefined"
+          ) mdi-{{ !cm.delivered && !cm.read ? 'check' : 'check-all' }}
+  v-alert(v-if="items.length === 0 && !loading" type="info") В беседе еще нет сообщений
+  v-progress-linear(v-if="loading" color="primary" indeterminate)
 </template>
 
 <script lang="ts">

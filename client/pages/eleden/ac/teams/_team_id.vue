@@ -1,18 +1,18 @@
 <template lang="pug">
-  bread-crumbs(v-if="!loading" :items="bc")
-    .title.mb-2
-      v-app-bar-nav-icon(v-if="$vuetify.breakpoint.smAndDown" @click="$emit('update-drawer')")
-      | {{ team.name }} ({{ team.shortName }})
-    two-columns(:links="links")
-      nuxt-child(
-        :team="team"
-        :is-member="isMember"
-        :can-view-portfolio="canViewPortfolio"
-        :can-view-summary-report="canViewSummaryReport"
-        :raw-job-kinds="rawJobKinds"
-        :job-kinds="jobKinds",
-        :jobs-count="users.length"
-      )
+bread-crumbs(v-if="!loading" :items="bc")
+  .title.mb-2
+    v-app-bar-nav-icon(v-if="$vuetify.breakpoint.smAndDown" @click="$emit('update-drawer')")
+    | {{ team.name }} ({{ team.shortName }})
+  two-columns(:links="links")
+    nuxt-child(
+      :team="team"
+      :is-member="isMember"
+      :can-view-portfolio="canViewPortfolio"
+      :can-view-summary-report="canViewSummaryReport"
+      :raw-job-kinds="rawJobKinds"
+      :job-kinds="jobKinds",
+      :jobs-count="users.length"
+    )
 </template>
 
 <script lang="ts">

@@ -1,15 +1,15 @@
 <template lang="pug">
-  v-data-table(:headers="headers" :items="user.jobs" disable-pagination hide-default-header hide-default-footer)
-    template(#item.team="{ item }")
-      v-tooltip(bottom)
-        template(#activator="{ on }")
-          span(v-on="on") {{ item.team.shortName }}
-        span {{ item.team.name }}
-    template(#item.post="{ item }")
-      template(v-if="item.jobPosts")
-        template(v-for="(jobPost, i) in item.jobPosts") {{ jobPost.post.name }}
-          span(v-if="i !== item.jobPosts.length - 1") ,#{' '}
-      strong(v-else) &mdash;
+v-data-table(:headers="headers" :items="user.jobs" disable-pagination hide-default-header hide-default-footer)
+  template(#item.team="{ item }")
+    v-tooltip(bottom)
+      template(#activator="{ on }")
+        span(v-on="on") {{ item.team.shortName }}
+      span {{ item.team.name }}
+  template(#item.post="{ item }")
+    template(v-if="item.jobPosts")
+      template(v-for="(jobPost, i) in item.jobPosts") {{ jobPost.post.name }}
+        span(v-if="i !== item.jobPosts.length - 1") ,#{' '}
+    strong(v-else) &mdash;
 </template>
 
 <script lang="ts">

@@ -1,30 +1,30 @@
 <template lang="pug">
-  v-card
-    v-card-title {{ $t('eduPrograms.disciplines.name') }}
-    v-card-text
-      v-row
-        v-col(v-if="hasPerm('eleden.add_discipline')")
-          add-disciplines(
-            :edu-program="eduProgram"
-            :add-discipline-update="(store, result) => addUpdate(store, result, 'discipline')"
-          )
-            template(#default="{ on }")
-              v-btn(v-on="on" color="primary")
-                v-icon(left) mdi-plus
-                | {{ $t('eduPrograms.disciplines.buttons.add') }}
-      v-row(align="center")
-        v-col(cols="12" md="6")
-          v-text-field(v-model="search" :label="$t('search')" prepend-icon="mdi-magnify" clearable)
-        v-col.text-right(cols="12" sm="6") {{ $t('shownOf', { count, totalCount }) }}
-      v-row
-        v-col
-          disciplines-table(
-            :edu-program="eduProgram"
-            :disciplines="disciplines"
-            :search="search"
-            :loading="loading"
-            @count-change="countChange"
-          )
+v-card
+  v-card-title {{ $t('eduPrograms.disciplines.name') }}
+  v-card-text
+    v-row
+      v-col(v-if="hasPerm('eleden.add_discipline')")
+        add-disciplines(
+          :edu-program="eduProgram"
+          :add-discipline-update="(store, result) => addUpdate(store, result, 'discipline')"
+        )
+          template(#default="{ on }")
+            v-btn(v-on="on" color="primary")
+              v-icon(left) mdi-plus
+              | {{ $t('eduPrograms.disciplines.buttons.add') }}
+    v-row(align="center")
+      v-col(cols="12" md="6")
+        v-text-field(v-model="search" :label="$t('search')" prepend-icon="mdi-magnify" clearable)
+      v-col.text-right(cols="12" sm="6") {{ $t('shownOf', { count, totalCount }) }}
+    v-row
+      v-col
+        disciplines-table(
+          :edu-program="eduProgram"
+          :disciplines="disciplines"
+          :search="search"
+          :loading="loading"
+          @count-change="countChange"
+        )
 </template>
 
 <script lang="ts">

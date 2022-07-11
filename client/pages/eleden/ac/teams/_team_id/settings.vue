@@ -1,28 +1,28 @@
 <template lang="pug">
-  v-card
-    template(v-if="team.permissions.canChange")
-      v-card-title {{ $t('ac.teams.settings.name') }}
-      v-card-subtitle {{ $t('ac.teams.settings.updatedAt', { updatedAt: $filters.dateTimeHM(team.updatedAt) }) }}
-      v-card-text
-        change-team(:team="team")
-      v-divider
-      v-card-title {{ $t('ac.teams.settings.changeTeamResponsibleUsers.name') }}
-      v-card-text
-        change-team-responsible-users(:team="team")
-      v-divider
-      v-card-title {{ $t('ac.teams.settings.changeTeamEduProgram.name') }}
-      v-card-subtitle {{ eduProgramWarning }}
-      v-card-text
-        .mb-3(v-if="team.eduProgram") {{ $t('ac.teams.settings.changeTeamEduProgram.currentEduProgram') }}
-          nuxt-link(:to="eduProgramPath") {{ eduProgramName }}
-        change-team-edu-program(:team="team")
-    v-divider(v-if="team.permissions.canChange && team.permissions.canDelete")
-    template(v-if="team.permissions.canDelete")
-      v-card-title {{ $t('ac.teams.settings.changeTeamDelete.name') }}
-      v-card-subtitle(v-html="$t('ac.teams.settings.changeTeamDelete.warning')")
-      v-card-text
-        .mb-3 {{ team.delete ? $t('ac.teams.settings.changeTeamDelete.archived') : $t('ac.teams.settings.changeTeamDelete.notArchived') }}
-        delete-team(:team="team")
+v-card
+  template(v-if="team.permissions.canChange")
+    v-card-title {{ $t('ac.teams.settings.name') }}
+    v-card-subtitle {{ $t('ac.teams.settings.updatedAt', { updatedAt: $filters.dateTimeHM(team.updatedAt) }) }}
+    v-card-text
+      change-team(:team="team")
+    v-divider
+    v-card-title {{ $t('ac.teams.settings.changeTeamResponsibleUsers.name') }}
+    v-card-text
+      change-team-responsible-users(:team="team")
+    v-divider
+    v-card-title {{ $t('ac.teams.settings.changeTeamEduProgram.name') }}
+    v-card-subtitle {{ eduProgramWarning }}
+    v-card-text
+      .mb-3(v-if="team.eduProgram") {{ $t('ac.teams.settings.changeTeamEduProgram.currentEduProgram') }}
+        nuxt-link(:to="eduProgramPath") {{ eduProgramName }}
+      change-team-edu-program(:team="team")
+  v-divider(v-if="team.permissions.canChange && team.permissions.canDelete")
+  template(v-if="team.permissions.canDelete")
+    v-card-title {{ $t('ac.teams.settings.changeTeamDelete.name') }}
+    v-card-subtitle(v-html="$t('ac.teams.settings.changeTeamDelete.warning')")
+    v-card-text
+      .mb-3 {{ team.delete ? $t('ac.teams.settings.changeTeamDelete.archived') : $t('ac.teams.settings.changeTeamDelete.notArchived') }}
+      delete-team(:team="team")
 </template>
 
 <script lang="ts">

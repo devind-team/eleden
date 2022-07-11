@@ -1,116 +1,116 @@
 <template lang="pug">
-  mutation-modal-form(
-    :header="String($t('ac.teams.users.addMenu.fromFileForNew.header'))"
-    :subheader="`${team.name} (${team.shortName})`"
-    :buttonText="String($t('ac.teams.users.addMenu.fromFileForNew.buttonText'))"
-    :mutation="require('~/gql/eleden/mutations/job/upload_jobs_user.graphql')"
-    :variables="variables"
-    :update="update"
-    mutation-name="uploadJobsUser"
-    errors-in-alert
-    width="700"
-    @close="close"
-  )
-    template(#activator="{ on }")
-      slot(name="activator" :on="on")
-    template(#form)
-      validation-provider(
-        v-slot="{ errors, valid }"
-        :name="String($t('ac.teams.users.addMenu.form.rate'))"
-        rules="required|rate"
+mutation-modal-form(
+  :header="String($t('ac.teams.users.addMenu.fromFileForNew.header'))"
+  :subheader="`${team.name} (${team.shortName})`"
+  :buttonText="String($t('ac.teams.users.addMenu.fromFileForNew.buttonText'))"
+  :mutation="require('~/gql/eleden/mutations/job/upload_jobs_user.graphql')"
+  :variables="variables"
+  :update="update"
+  mutation-name="uploadJobsUser"
+  errors-in-alert
+  width="700"
+  @close="close"
+)
+  template(#activator="{ on }")
+    slot(name="activator" :on="on")
+  template(#form)
+    validation-provider(
+      v-slot="{ errors, valid }"
+      :name="String($t('ac.teams.users.addMenu.form.rate'))"
+      rules="required|rate"
+    )
+      v-text-field(
+        v-model="rate"
+        :label="$t('ac.teams.users.addMenu.form.rate')"
+        :error-messages="errors"
+        :success="valid"
       )
-        v-text-field(
-          v-model="rate"
-          :label="$t('ac.teams.users.addMenu.form.rate')"
-          :error-messages="errors"
-          :success="valid"
-        )
-      validation-provider(
-        v-slot="{ errors, valid }"
-        :name="String($t('ac.teams.users.addMenu.form.postId'))"
-        rules="required"
+    validation-provider(
+      v-slot="{ errors, valid }"
+      :name="String($t('ac.teams.users.addMenu.form.postId'))"
+      rules="required"
+    )
+      v-autocomplete(
+        v-model="postId"
+        :items="posts"
+        :loading="loading"
+        :label="$t('ac.teams.users.addMenu.form.postId')"
+        :error-messages="errors"
+        :success="valid"
+        item-text="name"
+        item-value="id"
+        @change="resetStatus"
       )
-        v-autocomplete(
-          v-model="postId"
-          :items="posts"
-          :loading="loading"
-          :label="$t('ac.teams.users.addMenu.form.postId')"
-          :error-messages="errors"
-          :success="valid"
-          item-text="name"
-          item-value="id"
-          @change="resetStatus"
-        )
-      validation-provider(
-        ref="statusIdValidationProvider"
-        v-slot="{ errors, valid }"
-        :name="String($t('ac.teams.users.addMenu.form.statusId'))"
-        rules="required"
-      )
-        v-select(
-          v-model="statusId"
-          :disabled="!postId"
-          :items="statuses"
-          :loading="loading"
-          :label="$t('ac.teams.users.addMenu.form.statusId')"
-          :error-messages="errors"
-          :success="valid"
-          item-text="name"
-          item-value="id"
-        )
-          template(#item="{ item }") {{ getStatusText(item) }}
-          template(#selection="{ item }") {{ getStatusText(item) }}
-      v-row(v-if="canGenerateDecree")
-        v-col(cols="6")
-          v-checkbox(v-model="generateDocx" :label="$t('ac.teams.users.addMenu.form.generateDocx')" success)
-        v-col(cols="6")
-          v-checkbox(v-model="generatePdf" :label="$t('ac.teams.users.addMenu.form.generatePdf')" success)
-      v-menu(
-        v-model="statusCreatedAtMenuActive"
-        :close-on-content-click="false"
-        :nudge-right="35"
-        transition="scale-transition"
-        min-width="auto"
-        offset-y
-      )
-        template(#activator="{ on, attrs }")
-          v-text-field(
-            v-bind="attrs"
-            v-on="on"
-            v-model="formattingStatusCreatedAt"
-            :disabled="!postId"
-            :label="$t('ac.teams.users.addMenu.form.statusCreatedAt')"
-            prepend-icon="mdi-calendar"
-            readonly
-            success
-          )
-        v-date-picker(
-          v-model="statusCreatedAt"
-          first-day-of-week="1"
-          no-title
-          @input="statusCreatedAtMenuActive = false"
-        )
+    validation-provider(
+      ref="statusIdValidationProvider"
+      v-slot="{ errors, valid }"
+      :name="String($t('ac.teams.users.addMenu.form.statusId'))"
+      rules="required"
+    )
       v-select(
-        v-model="kind"
-        :items="jobKinds"
-        :label="$t('ac.teams.users.addMenu.form.kind')"
-        :hint="$t('ac.teams.users.addMenu.form.kindHint')"
-        success
-        persistent-hint
+        v-model="statusId"
+        :disabled="!postId"
+        :items="statuses"
+        :loading="loading"
+        :label="$t('ac.teams.users.addMenu.form.statusId')"
+        :error-messages="errors"
+        :success="valid"
+        item-text="name"
+        item-value="id"
       )
-      validation-provider(
-        :name="String($t('ac.teams.users.addMenu.form.file'))"
-        rules="required"
-        v-slot="{ errors, valid }"
-      )
-        v-file-input(
-          v-model="file"
-          :label="$t('ac.teams.users.addMenu.form.file')"
-          :success="valid"
-          :error-messages="errors"
-          accept=".xlsx,.csv,.json"
-          clearable
+        template(#item="{ item }") {{ getStatusText(item) }}
+        template(#selection="{ item }") {{ getStatusText(item) }}
+    v-row(v-if="canGenerateDecree")
+      v-col(cols="6")
+        v-checkbox(v-model="generateDocx" :label="$t('ac.teams.users.addMenu.form.generateDocx')" success)
+      v-col(cols="6")
+        v-checkbox(v-model="generatePdf" :label="$t('ac.teams.users.addMenu.form.generatePdf')" success)
+    v-menu(
+      v-model="statusCreatedAtMenuActive"
+      :close-on-content-click="false"
+      :nudge-right="35"
+      transition="scale-transition"
+      min-width="auto"
+      offset-y
+    )
+      template(#activator="{ on, attrs }")
+        v-text-field(
+          v-bind="attrs"
+          v-on="on"
+          v-model="formattingStatusCreatedAt"
+          :disabled="!postId"
+          :label="$t('ac.teams.users.addMenu.form.statusCreatedAt')"
+          prepend-icon="mdi-calendar"
+          readonly
+          success
         )
+      v-date-picker(
+        v-model="statusCreatedAt"
+        first-day-of-week="1"
+        no-title
+        @input="statusCreatedAtMenuActive = false"
+      )
+    v-select(
+      v-model="kind"
+      :items="jobKinds"
+      :label="$t('ac.teams.users.addMenu.form.kind')"
+      :hint="$t('ac.teams.users.addMenu.form.kindHint')"
+      success
+      persistent-hint
+    )
+    validation-provider(
+      :name="String($t('ac.teams.users.addMenu.form.file'))"
+      rules="required"
+      v-slot="{ errors, valid }"
+    )
+      v-file-input(
+        v-model="file"
+        :label="$t('ac.teams.users.addMenu.form.file')"
+        :success="valid"
+        :error-messages="errors"
+        accept=".xlsx,.csv,.json"
+        clearable
+      )
 </template>
 
 <script lang="ts">

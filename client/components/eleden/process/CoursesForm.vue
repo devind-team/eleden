@@ -1,206 +1,206 @@
 <template lang="pug">
-  .courses-form
-    validation-provider(
-      v-slot="{ errors, valid }"
-      :name="t('team')"
-      rules="required"
-      ref="teamProvider"
+.courses-form
+  validation-provider(
+    v-slot="{ errors, valid }"
+    :name="t('team')"
+    rules="required"
+    ref="teamProvider"
+  )
+    v-autocomplete(
+      v-model="input.team"
+      v-stream:update:search-input="searchStreamTeams$"
+      :disabled="edit"
+      :loading="$apollo.queries.teams.loading"
+      :label="t('team')"
+      :items="teams"
+      :filter="filterTeams"
+      :error-messages="getTeamErrors(errors)"
+      :success="valid"
+      item-value="id"
+      hide-no-data
+      hide-selected
+      return-object
+      @change="clear(false)"
     )
-      v-autocomplete(
-        v-model="input.team"
-        v-stream:update:search-input="searchStreamTeams$"
-        :disabled="edit"
-        :loading="$apollo.queries.teams.loading"
-        :label="t('team')"
-        :items="teams"
-        :filter="filterTeams"
-        :error-messages="getTeamErrors(errors)"
-        :success="valid"
-        item-value="id"
-        hide-no-data
-        hide-selected
-        return-object
-        @change="clear(false)"
+      template(#selection="{ item }") {{ item.name }} ({{ item.shortName }}, {{ item.admission }})
+      template(#item="{ item }") {{ item.name }} ({{ item.shortName }}, {{ item.admission }})
+  v-row.flex-grow-0
+    v-col(cols="6")
+      validation-provider(
+        v-slot="{ errors, valid }"
+        :name="t('courseNumber')"
+        rules="required"
+        ref="courseNumberProvider"
       )
-        template(#selection="{ item }") {{ item.name }} ({{ item.shortName }}, {{ item.admission }})
-        template(#item="{ item }") {{ item.name }} ({{ item.shortName }}, {{ item.admission }})
-    v-row.flex-grow-0
-      v-col(cols="6")
-        validation-provider(
-          v-slot="{ errors, valid }"
-          :name="t('courseNumber')"
-          rules="required"
-          ref="courseNumberProvider"
+        v-select(
+          v-model="courseNumber"
+          :disabled="!hasEduProgram"
+          :loading="$apollo.queries.coursesNumbers.loading"
+          :items="coursesNumbers"
+          :label="t('courseNumber')"
+          :error-messages="errors"
+          :success="valid"
+          @change="clearDiscipline"
         )
-          v-select(
-            v-model="courseNumber"
-            :disabled="!hasEduProgram"
-            :loading="$apollo.queries.coursesNumbers.loading"
-            :items="coursesNumbers"
-            :label="t('courseNumber')"
-            :error-messages="errors"
-            :success="valid"
-            @change="clearDiscipline"
-          )
-      v-col(cols="6")
-        validation-provider(
-          v-slot="{ errors, valid }"
-          :name="t('courseNumber')"
-          rules="required"
-          ref="semesterNumberProvider"
-        )
-          v-select(
-            v-model="semesterNumber"
-            :disabled="!hasEduProgram"
-            :items="[1, 2]"
-            :label="t('semesterNumber')"
-            :error-messages="errors"
-            :success="valid"
-            @change="clearDiscipline"
-          )
-    validation-provider(
-      v-slot="{ errors, valid }"
-      :name="t('discipline')"
-      rules="required"
-      ref="disciplineProvider"
-    )
-      v-autocomplete(
-        v-model="input.discipline"
-        :disabled="!hasEduProgram || !hasSemester"
-        :loading="$apollo.queries.disciplines.loading"
-        :label="t('discipline')"
-        :items="disciplines"
-        :filter="filterDisciplines"
-        :error-messages="getDisciplineErrors(errors)"
-        :success="valid"
-        item-value="id"
-        hide-no-data
-        hide-selected
-        return-object
-        @change="$event && fillCourses()"
+    v-col(cols="6")
+      validation-provider(
+        v-slot="{ errors, valid }"
+        :name="t('courseNumber')"
+        rules="required"
+        ref="semesterNumberProvider"
       )
-        template(#selection="{ item }") {{ item.code }} {{ item.name }}
-        template(#item="{ item }") {{ item.code }} {{ item.name }}
-    v-data-table(
-      :headers="tableHeaders"
-      :items="input.courses"
-      :loading="coursesLoading"
-      disable-pagination
-      hide-default-footer
-      dense
-    )
-      template(#header.status)
-        validation-provider(
-          v-if="input.courses.length"
-          v-slot="{ invalid, errors }"
-          :detectInput="false"
-          vid="coursesProvider"
-          ref="coursesProvider"
+        v-select(
+          v-model="semesterNumber"
+          :disabled="!hasEduProgram"
+          :items="[1, 2]"
+          :label="t('semesterNumber')"
+          :error-messages="errors"
+          :success="valid"
+          @change="clearDiscipline"
         )
-          v-tooltip(v-if="invalid" bottom)
-            template(#activator="{ on }")
-              v-icon(v-on="on" color="error") mdi-alert
-            span {{ errors[0] }}
-          v-icon(v-else color="success") mdi-check-circle
-      template(#header.selectRow)
-        .checkbox-container(v-if="input.courses.length")
-          v-tooltip(bottom)
-            template(#activator="{ on }")
-              .checkbox(v-on="on")
-                v-checkbox(
-                  v-model="allPeriodsPicked"
-                  :ripple="false"
-                  dense
-                  hide-details
-                )
-            span {{ t('tableTooltips.pickAllPeriods') }}
-      template(v-for="header in periodTableHeaders" v-slot:[`header.${header.value}`])
+  validation-provider(
+    v-slot="{ errors, valid }"
+    :name="t('discipline')"
+    rules="required"
+    ref="disciplineProvider"
+  )
+    v-autocomplete(
+      v-model="input.discipline"
+      :disabled="!hasEduProgram || !hasSemester"
+      :loading="$apollo.queries.disciplines.loading"
+      :label="t('discipline')"
+      :items="disciplines"
+      :filter="filterDisciplines"
+      :error-messages="getDisciplineErrors(errors)"
+      :success="valid"
+      item-value="id"
+      hide-no-data
+      hide-selected
+      return-object
+      @change="$event && fillCourses()"
+    )
+      template(#selection="{ item }") {{ item.code }} {{ item.name }}
+      template(#item="{ item }") {{ item.code }} {{ item.name }}
+  v-data-table(
+    :headers="tableHeaders"
+    :items="input.courses"
+    :loading="coursesLoading"
+    disable-pagination
+    hide-default-footer
+    dense
+  )
+    template(#header.status)
+      validation-provider(
+        v-if="input.courses.length"
+        v-slot="{ invalid, errors }"
+        :detectInput="false"
+        vid="coursesProvider"
+        ref="coursesProvider"
+      )
+        v-tooltip(v-if="invalid" bottom)
+          template(#activator="{ on }")
+            v-icon(v-on="on" color="error") mdi-alert
+          span {{ errors[0] }}
+        v-icon(v-else color="success") mdi-check-circle
+    template(#header.selectRow)
+      .checkbox-container(v-if="input.courses.length")
         v-tooltip(bottom)
           template(#activator="{ on }")
-            span(v-on="on") {{ header.text }}
-          span {{ header.fullText }}
-      template(#item="{ item: course }")
-        validation-provider(
-          v-slot="{ invalid, errors }"
-          :detectInput="false"
-          :key="course.eduHours.id"
-          :vid="course.eduHours.id"
-          :ref="course.eduHours.id"
-          slim
-        )
-          tr
-            td.status
-              v-tooltip(v-if="invalid" bottom)
-                template(#activator="{ on }")
-                  v-icon(v-on="on" color="error") mdi-alert
-                span {{ errors[0] }}
-              v-tooltip(v-else-if="course.teachers.length === 0" bottom)
-                template(#activator="{ on }")
-                  v-icon(v-on="on") mdi-minus
-                span {{ t('tableItem.statuses.exclude') }}
-              v-tooltip(v-else bottom)
-                template(#activator="{ on }")
-                  v-icon(v-on="on" color="success") mdi-check-circle
-                span {{ t('tableItem.statuses.add') }}
-            td {{ course.eduHours.workKind.name + ' ' }}
-              | ({{ $tc('process.teams.courseForm.tableItem.hours', course.eduHours.value) }})
-            td.teachers
-              v-autocomplete(
-                v-model="course.teachers"
-                v-stream:update:search-input="searchStreamTeachers$"
-                :loading="$apollo.queries.searchTeachers.loading && focusCourse === course"
-                :items="teachers"
-                :filter="filterTeachers"
-                hide-details="auto"
-                item-value="id"
-                full-width
-                multiple
+            .checkbox(v-on="on")
+              v-checkbox(
+                v-model="allPeriodsPicked"
+                :ripple="false"
                 dense
-                hide-no-data
-                hide-selected
-                clearable
-                return-object
-                @change="validateTable"
-                @focus="focusCourse = course"
-                @blur="focusCourse = null"
+                hide-details
               )
-                template(#selection="{ attrs, selected, select, item: teacher }")
-                  v-chip(
-                    v-bind="attrs"
-                    :input-value="selected"
-                    small
-                    close
-                    @click="select"
-                    @click:close="deleteTeacher(course, teacher)"
-                  )
-                    | {{ teacher.lastName }} {{ teacher.firstName[0] }}. {{ teacher.sirName[0] }}.
-                template(#item="{ item: teacher }")
-                  v-list-item-avatar
-                    avatar-dialog(:item="teacher" :show-dialog="false")
-                  v-list-item-content
-                    v-list-item-title {{ teacher.lastName }} {{ teacher.firstName }} {{ teacher.sirName }}
-                    v-list-item-subtitle {{ teacher.username }}
-            td.checkbox-container
-              v-tooltip(bottom)
-                template(#activator="{ on }")
-                  .checkbox(v-on="on")
-                    v-checkbox(
-                      :input-value="Object.values(course.periods).every(value => value)"
-                      :ripple="false"
-                      dense
-                      hide-details
-                      @change="setRowsPeriods([course], $event)"
-                    )
-                span {{ t('tableTooltips.pickRowPeriods') }}
-            td.checkbox-container(v-for="period in periods")
-              .checkbox
-                v-checkbox(
-                  v-model="course.periods[period.id]"
-                  :ripple="false"
-                  dense
-                  hide-details
-                  @change="validateTable"
+          span {{ t('tableTooltips.pickAllPeriods') }}
+    template(v-for="header in periodTableHeaders" v-slot:[`header.${header.value}`])
+      v-tooltip(bottom)
+        template(#activator="{ on }")
+          span(v-on="on") {{ header.text }}
+        span {{ header.fullText }}
+    template(#item="{ item: course }")
+      validation-provider(
+        v-slot="{ invalid, errors }"
+        :detectInput="false"
+        :key="course.eduHours.id"
+        :vid="course.eduHours.id"
+        :ref="course.eduHours.id"
+        slim
+      )
+        tr
+          td.status
+            v-tooltip(v-if="invalid" bottom)
+              template(#activator="{ on }")
+                v-icon(v-on="on" color="error") mdi-alert
+              span {{ errors[0] }}
+            v-tooltip(v-else-if="course.teachers.length === 0" bottom)
+              template(#activator="{ on }")
+                v-icon(v-on="on") mdi-minus
+              span {{ t('tableItem.statuses.exclude') }}
+            v-tooltip(v-else bottom)
+              template(#activator="{ on }")
+                v-icon(v-on="on" color="success") mdi-check-circle
+              span {{ t('tableItem.statuses.add') }}
+          td {{ course.eduHours.workKind.name + ' ' }}
+            | ({{ $tc('process.teams.courseForm.tableItem.hours', course.eduHours.value) }})
+          td.teachers
+            v-autocomplete(
+              v-model="course.teachers"
+              v-stream:update:search-input="searchStreamTeachers$"
+              :loading="$apollo.queries.searchTeachers.loading && focusCourse === course"
+              :items="teachers"
+              :filter="filterTeachers"
+              hide-details="auto"
+              item-value="id"
+              full-width
+              multiple
+              dense
+              hide-no-data
+              hide-selected
+              clearable
+              return-object
+              @change="validateTable"
+              @focus="focusCourse = course"
+              @blur="focusCourse = null"
+            )
+              template(#selection="{ attrs, selected, select, item: teacher }")
+                v-chip(
+                  v-bind="attrs"
+                  :input-value="selected"
+                  small
+                  close
+                  @click="select"
+                  @click:close="deleteTeacher(course, teacher)"
                 )
+                  | {{ teacher.lastName }} {{ teacher.firstName[0] }}. {{ teacher.sirName[0] }}.
+              template(#item="{ item: teacher }")
+                v-list-item-avatar
+                  avatar-dialog(:item="teacher" :show-dialog="false")
+                v-list-item-content
+                  v-list-item-title {{ teacher.lastName }} {{ teacher.firstName }} {{ teacher.sirName }}
+                  v-list-item-subtitle {{ teacher.username }}
+          td.checkbox-container
+            v-tooltip(bottom)
+              template(#activator="{ on }")
+                .checkbox(v-on="on")
+                  v-checkbox(
+                    :input-value="Object.values(course.periods).every(value => value)"
+                    :ripple="false"
+                    dense
+                    hide-details
+                    @change="setRowsPeriods([course], $event)"
+                  )
+              span {{ t('tableTooltips.pickRowPeriods') }}
+          td.checkbox-container(v-for="period in periods")
+            .checkbox
+              v-checkbox(
+                v-model="course.periods[period.id]"
+                :ripple="false"
+                dense
+                hide-details
+                @change="validateTable"
+              )
 </template>
 
 <script lang="ts">

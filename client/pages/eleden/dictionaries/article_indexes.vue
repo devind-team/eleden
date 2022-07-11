@@ -1,11 +1,11 @@
 <template lang="pug">
-  universal-dictionary(
-    @update-drawer="$emit('update-drawer')"
-    :bread-crumbs="bc"
-    :query="require('~/gql/eleden/queries/article/article_indexes.graphql')"
-    :headers="['id', 'name', 'coefficient']"
-    query-name="articleIndexes"
-  )
+universal-dictionary(
+  @update-drawer="$emit('update-drawer')"
+  :bread-crumbs="bc"
+  :query="require('~/gql/eleden/queries/article/article_indexes.graphql')"
+  :headers="['id', 'name', 'coefficient']"
+  query-name="articleIndexes"
+)
 </template>
 
 <script lang="ts">

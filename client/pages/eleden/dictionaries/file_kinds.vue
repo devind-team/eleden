@@ -1,11 +1,11 @@
 <template lang="pug">
-  universal-dictionary(
-    @update-drawer="$emit('update-drawer')"
-    :bread-crumbs="bc"
-    :query="require('~/gql/eleden/queries/profile/file_kinds.graphql')"
-    :headers="['id', 'name', 'accept']"
-    query-name="fileKinds"
-  )
+universal-dictionary(
+  @update-drawer="$emit('update-drawer')"
+  :bread-crumbs="bc"
+  :query="require('~/gql/eleden/queries/profile/file_kinds.graphql')"
+  :headers="['id', 'name', 'accept']"
+  query-name="fileKinds"
+)
 </template>
 
 <script lang="ts">

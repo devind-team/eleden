@@ -1,129 +1,129 @@
 <template lang="pug">
-  mutation-modal-form(
-    :header="String($t('ac.teams.users.addMenu.fromExisting.header'))"
-    :subheader="team.name + ' (' + team.shortName + ')'"
-    :buttonText="String($t('ac.teams.users.addMenu.fromExisting.buttonText'))"
-    :mutation="require('~/gql/eleden/mutations/job/add_job.graphql')"
-    :variables="variables"
-    :update="update"
-    mutation-name="addJob"
-    i18n-path="ac.teams.users.addMenu.form"
-    width="700"
-    @close="close"
-  )
-    template(#activator="{ on }")
-      slot(name="activator" :on="on")
-    template(#form)
-      validation-provider(
-        v-slot="{ errors, valid }"
-        :name="String($t('ac.teams.users.addMenu.form.userId'))"
-        rules="required"
+mutation-modal-form(
+  :header="String($t('ac.teams.users.addMenu.fromExisting.header'))"
+  :subheader="team.name + ' (' + team.shortName + ')'"
+  :buttonText="String($t('ac.teams.users.addMenu.fromExisting.buttonText'))"
+  :mutation="require('~/gql/eleden/mutations/job/add_job.graphql')"
+  :variables="variables"
+  :update="update"
+  mutation-name="addJob"
+  i18n-path="ac.teams.users.addMenu.form"
+  width="700"
+  @close="close"
+)
+  template(#activator="{ on }")
+    slot(name="activator" :on="on")
+  template(#form)
+    validation-provider(
+      v-slot="{ errors, valid }"
+      :name="String($t('ac.teams.users.addMenu.form.userId'))"
+      rules="required"
+    )
+      v-autocomplete(
+        v-model="userId"
+        :search-input="search"
+        :items="users"
+        :loading="usersLoading"
+        :filter="filterUsers"
+        :label="$t('ac.teams.users.addMenu.form.userId')"
+        :error-messages="errors"
+        :success="valid"
+        item-value="id"
+        clearable
+        hide-no-data
+        hide-selected
       )
-        v-autocomplete(
-          v-model="userId"
-          :search-input="search"
-          :items="users"
-          :loading="usersLoading"
-          :filter="filterUsers"
-          :label="$t('ac.teams.users.addMenu.form.userId')"
-          :error-messages="errors"
-          :success="valid"
-          item-value="id"
-          clearable
-          hide-no-data
-          hide-selected
-        )
-          template(#selection="{ item }") {{ getUserFullName(item) }}
-          template(#item="{ item }")
-            v-list-item-avatar
-              avatar-dialog(:item="item")
-            v-list-item-content
-              v-list-item-title {{ getUserFullName(item) }}
-              v-list-item-subtitle {{ item.username }}
-      validation-provider(
-        v-slot="{ errors, valid }"
-        :name="String($t('ac.teams.users.addMenu.form.rate'))"
-        rules="required|rate"
+        template(#selection="{ item }") {{ getUserFullName(item) }}
+        template(#item="{ item }")
+          v-list-item-avatar
+            avatar-dialog(:item="item")
+          v-list-item-content
+            v-list-item-title {{ getUserFullName(item) }}
+            v-list-item-subtitle {{ item.username }}
+    validation-provider(
+      v-slot="{ errors, valid }"
+      :name="String($t('ac.teams.users.addMenu.form.rate'))"
+      rules="required|rate"
+    )
+      v-text-field(
+        v-model="rate"
+        :label="$t('ac.teams.users.addMenu.form.rate')"
+        :error-messages="errors"
+        :success="valid"
       )
-        v-text-field(
-          v-model="rate"
-          :label="$t('ac.teams.users.addMenu.form.rate')"
-          :error-messages="errors"
-          :success="valid"
-        )
-      validation-provider(
-        v-slot="{ errors, valid }"
-        :name="String($t('ac.teams.users.addMenu.form.postId'))"
-        rules="required"
+    validation-provider(
+      v-slot="{ errors, valid }"
+      :name="String($t('ac.teams.users.addMenu.form.postId'))"
+      rules="required"
+    )
+      v-autocomplete(
+        v-model="postId"
+        :items="posts"
+        :loading="postsLoading"
+        :label="$t('ac.teams.users.addMenu.form.postId')"
+        :error-messages="errors"
+        :success="valid"
+        item-text="name"
+        item-value="id"
+        @change="resetStatus"
       )
-        v-autocomplete(
-          v-model="postId"
-          :items="posts"
-          :loading="postsLoading"
-          :label="$t('ac.teams.users.addMenu.form.postId')"
-          :error-messages="errors"
-          :success="valid"
-          item-text="name"
-          item-value="id"
-          @change="resetStatus"
-        )
-      validation-provider(
-        ref="statusIdValidationProvider"
-        v-slot="{ errors, valid }"
-        :name="String($t('ac.teams.users.addMenu.form.statusId'))"
-        rules="required"
-      )
-        v-select(
-          v-model="statusId"
-          :disabled="!postId"
-          :items="statuses"
-          :loading="postsLoading"
-          :label="$t('ac.teams.users.addMenu.form.statusId')"
-          :error-messages="errors"
-          :success="valid"
-          item-text="name"
-          item-value="id"
-        )
-          template(#item="{ item }") {{ getStatusText(item) }}
-          template(#selection="{ item }") {{ getStatusText(item) }}
-      v-row(v-if="canGenerateDecree")
-        v-col(cols="6")
-          v-checkbox(v-model="generateDocx" :label="$t('ac.teams.users.addMenu.form.generateDocx')" success)
-        v-col(cols="6")
-          v-checkbox(v-model="generatePdf" :label="$t('ac.teams.users.addMenu.form.generatePdf')" success)
-      v-menu(
-        v-model="statusCreatedAtMenuActive"
-        :close-on-content-click="false"
-        :nudge-right="35"
-        transition="scale-transition"
-        min-width="auto"
-        offset-y
-      )
-        template(#activator="{ on, attrs }")
-          v-text-field(
-            v-bind="attrs"
-            v-on="on"
-            v-model="formattingStatusCreatedAt"
-            :disabled="!postId"
-            :label="$t('ac.teams.users.addMenu.form.statusCreatedAt')"
-            prepend-icon="mdi-calendar"
-            readonly
-            success
-          )
-        v-date-picker(
-          v-model="statusCreatedAt"
-          first-day-of-week="1"
-          no-title
-          @input="statusCreatedAtMenuActive = false"
-        )
+    validation-provider(
+      ref="statusIdValidationProvider"
+      v-slot="{ errors, valid }"
+      :name="String($t('ac.teams.users.addMenu.form.statusId'))"
+      rules="required"
+    )
       v-select(
-        v-model="kind"
-        :items="jobKinds"
-        :label="$t('ac.teams.users.addMenu.form.kind')"
-        :hint="$t('ac.teams.users.addMenu.form.kindHint')"
-        success
-        persistent-hint
+        v-model="statusId"
+        :disabled="!postId"
+        :items="statuses"
+        :loading="postsLoading"
+        :label="$t('ac.teams.users.addMenu.form.statusId')"
+        :error-messages="errors"
+        :success="valid"
+        item-text="name"
+        item-value="id"
       )
+        template(#item="{ item }") {{ getStatusText(item) }}
+        template(#selection="{ item }") {{ getStatusText(item) }}
+    v-row(v-if="canGenerateDecree")
+      v-col(cols="6")
+        v-checkbox(v-model="generateDocx" :label="$t('ac.teams.users.addMenu.form.generateDocx')" success)
+      v-col(cols="6")
+        v-checkbox(v-model="generatePdf" :label="$t('ac.teams.users.addMenu.form.generatePdf')" success)
+    v-menu(
+      v-model="statusCreatedAtMenuActive"
+      :close-on-content-click="false"
+      :nudge-right="35"
+      transition="scale-transition"
+      min-width="auto"
+      offset-y
+    )
+      template(#activator="{ on, attrs }")
+        v-text-field(
+          v-bind="attrs"
+          v-on="on"
+          v-model="formattingStatusCreatedAt"
+          :disabled="!postId"
+          :label="$t('ac.teams.users.addMenu.form.statusCreatedAt')"
+          prepend-icon="mdi-calendar"
+          readonly
+          success
+        )
+      v-date-picker(
+        v-model="statusCreatedAt"
+        first-day-of-week="1"
+        no-title
+        @input="statusCreatedAtMenuActive = false"
+      )
+    v-select(
+      v-model="kind"
+      :items="jobKinds"
+      :label="$t('ac.teams.users.addMenu.form.kind')"
+      :hint="$t('ac.teams.users.addMenu.form.kindHint')"
+      success
+      persistent-hint
+    )
 </template>
 
 <script lang="ts">

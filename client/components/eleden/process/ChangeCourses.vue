@@ -1,19 +1,19 @@
 <template lang="pug">
-  mutation-modal-form(
-    :header="t('header')"
-    :button-text="t('buttonText')"
-    :mutation="require('~/gql/eleden/mutations/process/change_courses.graphql')"
-    :variables="changeCoursesVariables"
-    :update="(store, result) => changeCoursesUpdate(store, result, team)"
-    mutation-name="changeCourses"
-    i18n-path="process.courseForm"
-    fullscreen
-    @close="close"
-  )
-    template(#activator="{ on }")
-      slot(:on="on")
-    template(#form)
-      courses-form(:input="input" edit ref="courseForm")
+mutation-modal-form(
+  :header="t('header')"
+  :button-text="t('buttonText')"
+  :mutation="require('~/gql/eleden/mutations/process/change_courses.graphql')"
+  :variables="changeCoursesVariables"
+  :update="(store, result) => changeCoursesUpdate(store, result, team)"
+  mutation-name="changeCourses"
+  i18n-path="process.courseForm"
+  fullscreen
+  @close="close"
+)
+  template(#activator="{ on }")
+    slot(:on="on")
+  template(#form)
+    courses-form(:input="input" edit ref="courseForm")
 </template>
 
 <script lang="ts">

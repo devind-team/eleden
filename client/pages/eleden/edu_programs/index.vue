@@ -1,44 +1,44 @@
 <template lang="pug">
-  bread-crumbs(:items="bc")
-    v-card
-      v-card-title {{ $t('eduPrograms.name') }}
-      v-card-text
-        v-row(align="center")
-          v-col(v-if="hasPerm('eleden.add_eduprogram')" cols="12" md="6")
-            add-edu-programs(
-              v-slot="{ on }"
-              :add-edu-program-update="(cache, result) => addUpdate(cache, result, 'eduProgram')"
-              :add-edu-program-from-plx-update="(cache, result) => addUpdate(cache, result, 'eduProgram')"
-              :add-edu-programs-update="(cache, result) => addUpdate(cache, result, 'eduPrograms')"
-            )
-              v-btn(v-on="on" color="primary")
-                v-icon(left) mdi-plus
-                | {{ $t('eduPrograms.buttons.add') }}
-          v-col.text-right(v-if="hasPerm('eleden.view_eduprogram')" cols="12" md="6")
-            unload-edu-programs(v-slot="{ on }")
-              v-btn(v-on="on" color="success")
-                v-icon(left) mdi-upload
-                | {{ $t('eduPrograms.buttons.unload') }}
-        v-row(align="center")
-          v-col(cols="12" sm="6")
-            v-text-field(v-model="search" :label="$t('search')" prepend-icon="mdi-magnify" clearable)
-          v-col.text-right(cols="12" sm="6")
-            | {{ $t('shownOf', { count: eduPrograms && eduPrograms.length, totalCount }) }}
-        v-row
-          v-col
-            v-data-table(
-              :headers="headers"
-              :items="eduPrograms"
-              :loading="loading"
-              disable-pagination
-              hide-default-footer
-            )
-              template(#item.direction.name="{ item }")
-                nuxt-link(
-                  :to="localePath({ name: 'eleden-edu_programs-edu_program_id', params: { edu_program_id: item.id } })"
-                ) {{ item.direction.name }} ({{ item.eduForm.shortName }})
-              template(#footer v-if="loading")
-                v-progress-linear(color="primary" indeterminate)
+bread-crumbs(:items="bc")
+  v-card
+    v-card-title {{ $t('eduPrograms.name') }}
+    v-card-text
+      v-row(align="center")
+        v-col(v-if="hasPerm('eleden.add_eduprogram')" cols="12" md="6")
+          add-edu-programs(
+            v-slot="{ on }"
+            :add-edu-program-update="(cache, result) => addUpdate(cache, result, 'eduProgram')"
+            :add-edu-program-from-plx-update="(cache, result) => addUpdate(cache, result, 'eduProgram')"
+            :add-edu-programs-update="(cache, result) => addUpdate(cache, result, 'eduPrograms')"
+          )
+            v-btn(v-on="on" color="primary")
+              v-icon(left) mdi-plus
+              | {{ $t('eduPrograms.buttons.add') }}
+        v-col.text-right(v-if="hasPerm('eleden.view_eduprogram')" cols="12" md="6")
+          unload-edu-programs(v-slot="{ on }")
+            v-btn(v-on="on" color="success")
+              v-icon(left) mdi-upload
+              | {{ $t('eduPrograms.buttons.unload') }}
+      v-row(align="center")
+        v-col(cols="12" sm="6")
+          v-text-field(v-model="search" :label="$t('search')" prepend-icon="mdi-magnify" clearable)
+        v-col.text-right(cols="12" sm="6")
+          | {{ $t('shownOf', { count: eduPrograms && eduPrograms.length, totalCount }) }}
+      v-row
+        v-col
+          v-data-table(
+            :headers="headers"
+            :items="eduPrograms"
+            :loading="loading"
+            disable-pagination
+            hide-default-footer
+          )
+            template(#item.direction.name="{ item }")
+              nuxt-link(
+                :to="localePath({ name: 'eleden-edu_programs-edu_program_id', params: { edu_program_id: item.id } })"
+              ) {{ item.direction.name }} ({{ item.eduForm.shortName }})
+            template(#footer v-if="loading")
+              v-progress-linear(color="primary" indeterminate)
 </template>
 
 <script lang="ts">

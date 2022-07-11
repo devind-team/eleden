@@ -1,38 +1,38 @@
 <template lang="pug">
-  mutation-modal-form(
-    :header="$t('ac.teams.teamActions.unloadUsers.header')"
-    :subheader="team.name"
-    :buttonText="$t('ac.teams.teamActions.unloadUsers.buttonText')"
-    :mutation="require('~/gql/core/mutations/user/unload_users.graphql')"
-    :variables="{ extension: 'html', usersId: selectedJobs.map((e) => e.user.id), teamId: team.id }"
-    mutation-name="unloadUsers"
-    width="1000"
-    errors-in-alert
-    @done="unloadUsersDone"
-    @close="close"
-  )
-    template(#activator="{ on }")
-      slot(:on="on")
-    template(#form)
-      v-text-field(v-model="search" :label="$t('ac.teams.search')" prepend-icon="mdi-magnify" clearable)
-      validation-provider(rules="required")
-        v-data-table.mb-3(
-          v-model="selectedJobs"
-          :headers="headers"
-          :items="team.jobs"
-          :search="search"
-          item-key="user.id"
-          disable-pagination
-          hide-default-footer
-          show-select
-        )
-          template(#item.user.avatar="{ item }")
-            avatar-dialog(:item="item.user")
-          template(#item.user.username="{ item }")
-            v-tooltip(bottom)
-              template(#activator="{ on }")
-                span(v-on="on") {{ item.user.username }}
-              span {{ item.user.email }}
+mutation-modal-form(
+  :header="$t('ac.teams.teamActions.unloadUsers.header')"
+  :subheader="team.name"
+  :buttonText="$t('ac.teams.teamActions.unloadUsers.buttonText')"
+  :mutation="require('~/gql/core/mutations/user/unload_users.graphql')"
+  :variables="{ extension: 'html', usersId: selectedJobs.map((e) => e.user.id), teamId: team.id }"
+  mutation-name="unloadUsers"
+  width="1000"
+  errors-in-alert
+  @done="unloadUsersDone"
+  @close="close"
+)
+  template(#activator="{ on }")
+    slot(:on="on")
+  template(#form)
+    v-text-field(v-model="search" :label="$t('ac.teams.search')" prepend-icon="mdi-magnify" clearable)
+    validation-provider(rules="required")
+      v-data-table.mb-3(
+        v-model="selectedJobs"
+        :headers="headers"
+        :items="team.jobs"
+        :search="search"
+        item-key="user.id"
+        disable-pagination
+        hide-default-footer
+        show-select
+      )
+        template(#item.user.avatar="{ item }")
+          avatar-dialog(:item="item.user")
+        template(#item.user.username="{ item }")
+          v-tooltip(bottom)
+            template(#activator="{ on }")
+              span(v-on="on") {{ item.user.username }}
+            span {{ item.user.email }}
 </template>
 
 <script lang="ts">

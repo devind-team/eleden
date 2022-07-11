@@ -1,6 +1,6 @@
 <template lang="pug">
-  bread-crumbs(:items="bc")
-    v-row {{ $t('settings') }}
+bread-crumbs(:items="bc")
+  v-row {{ $t('settings') }}
 </template>
 
 <script lang="ts">

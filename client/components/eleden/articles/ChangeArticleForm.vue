@@ -1,97 +1,97 @@
 <template lang="pug">
-  div
-    validation-provider(
-      v-slot="{ errors, valid }"
-      :name="$t('articles.articleFields.title')"
-      rules="required|min:4|max:1024"
+div
+  validation-provider(
+    v-slot="{ errors, valid }"
+    :name="$t('articles.articleFields.title')"
+    rules="required|min:4|max:1024"
+  )
+    v-text-field(
+      v-model="article.name"
+      :label="$t('articles.articleFields.title')"
+      :error-messages="errors"
+      :success="valid"
     )
-      v-text-field(
-        v-model="article.name"
-        :label="$t('articles.articleFields.title')"
-        :error-messages="errors"
-        :success="valid"
-      )
-    validation-provider(
-      v-slot="{ errors, valid }"
-      :name="$t('articles.articleFields.year')"
-      rules="digits:4"
+  validation-provider(
+    v-slot="{ errors, valid }"
+    :name="$t('articles.articleFields.year')"
+    rules="digits:4"
+  )
+    v-text-field(
+      v-model="article.year"
+      :label="$t('articles.articleFields.year')"
+      :error-messages="errors"
+      :success="valid"
     )
-      v-text-field(
-        v-model="article.year"
-        :label="$t('articles.articleFields.year')"
-        :error-messages="errors"
-        :success="valid"
-      )
-    validation-provider(
-      v-slot="{ errors, valid }"
-      :name="$t('articles.articleFields.kind')"
-      rules="required"
-    )
-      v-autocomplete(
-        v-model="article.kind"
-        :loading="articleKindsLoading"
-        :items="articleKinds"
-        :label="$t('articles.articleFields.kind')"
-        :success="valid"
-        :error-messages="errors"
-        item-value="id"
-        item-text="name"
-        clearable
-      )
-    validation-provider(
-      v-slot="{ errors, valid }"
-      :name="$t('articles.articleFields.authors')"
-      rules="required"
-    )
-      v-combobox(
-        v-model="newAuthors"
-        :search-input.sync="search"
-        :loading="usersLoading"
-        :items="allAuthors"
-        :label="$t('articles.articleFields.authors')"
-        :filter="filterUsers"
-        :success="valid"
-        :error-messages="errors"
-        :hint="$t('articles.addMenu.addForm.hint')"
-        multiple
-        return-object
-        item-text="text"
-        item-value="value"
-        hide-selected
-        clearable
-      )
-        template(#selection="{ item, index }")
-          v-chip.ma-1(
-            v-model="item"
-            :key="item.id"
-            close
-            @click:close="newAuthors.splice(newAuthors.indexOf(item), 1)"
-          ) {{ item.text }}
+  validation-provider(
+    v-slot="{ errors, valid }"
+    :name="$t('articles.articleFields.kind')"
+    rules="required"
+  )
     v-autocomplete(
-      v-model="article.index"
-      :loading="articleIndexesLoading"
-      :items="articleIndexes"
-      :label="$t('articles.articleFields.index')"
+      v-model="article.kind"
+      :loading="articleKindsLoading"
+      :items="articleKinds"
+      :label="$t('articles.articleFields.kind')"
+      :success="valid"
+      :error-messages="errors"
       item-value="id"
       item-text="name"
       clearable
     )
-    v-radio-group(v-model="article.type" row)
-      v-radio(
-        :label="$t('articles.articleFields.typeChoice.printed')"
-        :value="$t('articles.articleFields.typeChoice.printed')"
-      )
-      v-radio(
-        :label="$t('articles.articleFields.typeChoice.handwritten')"
-        :value="$t('articles.articleFields.typeChoice.handwritten')"
-      )
-    v-text-field(v-model="article.workload" :label="$t('articles.articleFields.workload')" success clearable)
-    v-text-field(v-model="article.edition" :label="$t('articles.articleFields.edition')" success clearable)
-    v-text-field(v-model="article.journal" :label="$t('articles.articleFields.journal')" success clearable)
-    v-text-field(v-model="article.volume" :label="$t('articles.articleFields.volume')" success clearable)
-    v-text-field(v-model="article.pages" :label="$t('articles.articleFields.pages')" success clearable)
-    v-text-field(v-model="article.note" :label="$t('articles.articleFields.note')" success clearable)
-    v-text-field(v-model="article.key" :label="$t('articles.articleFields.key')" success clearable)
+  validation-provider(
+    v-slot="{ errors, valid }"
+    :name="$t('articles.articleFields.authors')"
+    rules="required"
+  )
+    v-combobox(
+      v-model="newAuthors"
+      :search-input.sync="search"
+      :loading="usersLoading"
+      :items="allAuthors"
+      :label="$t('articles.articleFields.authors')"
+      :filter="filterUsers"
+      :success="valid"
+      :error-messages="errors"
+      :hint="$t('articles.addMenu.addForm.hint')"
+      multiple
+      return-object
+      item-text="text"
+      item-value="value"
+      hide-selected
+      clearable
+    )
+      template(#selection="{ item, index }")
+        v-chip.ma-1(
+          v-model="item"
+          :key="item.id"
+          close
+          @click:close="newAuthors.splice(newAuthors.indexOf(item), 1)"
+        ) {{ item.text }}
+  v-autocomplete(
+    v-model="article.index"
+    :loading="articleIndexesLoading"
+    :items="articleIndexes"
+    :label="$t('articles.articleFields.index')"
+    item-value="id"
+    item-text="name"
+    clearable
+  )
+  v-radio-group(v-model="article.type" row)
+    v-radio(
+      :label="$t('articles.articleFields.typeChoice.printed')"
+      :value="$t('articles.articleFields.typeChoice.printed')"
+    )
+    v-radio(
+      :label="$t('articles.articleFields.typeChoice.handwritten')"
+      :value="$t('articles.articleFields.typeChoice.handwritten')"
+    )
+  v-text-field(v-model="article.workload" :label="$t('articles.articleFields.workload')" success clearable)
+  v-text-field(v-model="article.edition" :label="$t('articles.articleFields.edition')" success clearable)
+  v-text-field(v-model="article.journal" :label="$t('articles.articleFields.journal')" success clearable)
+  v-text-field(v-model="article.volume" :label="$t('articles.articleFields.volume')" success clearable)
+  v-text-field(v-model="article.pages" :label="$t('articles.articleFields.pages')" success clearable)
+  v-text-field(v-model="article.note" :label="$t('articles.articleFields.note')" success clearable)
+  v-text-field(v-model="article.key" :label="$t('articles.articleFields.key')" success clearable)
 </template>
 <script lang="ts">
 import { VueConstructor } from 'vue'

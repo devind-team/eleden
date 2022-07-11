@@ -1,11 +1,11 @@
 <template lang="pug">
-  universal-dictionary(
-    @update-drawer="$emit('update-drawer')"
-    :bread-crumbs="bc"
-    :query="require('~/gql/eleden/queries/process/periods.graphql')"
-    :headers="['id', 'name', 'shortName']"
-    query-name="periods"
-  )
+universal-dictionary(
+  @update-drawer="$emit('update-drawer')"
+  :bread-crumbs="bc"
+  :query="require('~/gql/eleden/queries/process/periods.graphql')"
+  :headers="['id', 'name', 'shortName']"
+  query-name="periods"
+)
 </template>
 
 <script lang="ts">

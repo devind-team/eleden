@@ -1,12 +1,12 @@
 <template lang="pug">
-  messenger-card-resize(:loading="loading" @scroll="scrollMembers" border-left tile outlined)
-    template(#title)
-      members-control
-    template(#actions)
-      .caption Показано диалогов {{ members.length }} из {{ totalCount }}
-    v-list(v-if="members.length" dense)
-      member(v-for="member in members" :key="member.id" :member="member")
-    v-alert(v-else-if="!loading" type="info" dense) {{ state.search ? 'Поиск не дал результатов' : 'У Вас еще нет сообщений' }}
+messenger-card-resize(:loading="loading" @scroll="scrollMembers" border-left tile outlined)
+  template(#title)
+    members-control
+  template(#actions)
+    .caption Показано диалогов {{ members.length }} из {{ totalCount }}
+  v-list(v-if="members.length" dense)
+    member(v-for="member in members" :key="member.id" :member="member")
+  v-alert(v-else-if="!loading" type="info" dense) {{ state.search ? 'Поиск не дал результатов' : 'У Вас еще нет сообщений' }}
 </template>
 
 <script lang="ts">

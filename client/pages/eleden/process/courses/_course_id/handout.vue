@@ -1,120 +1,120 @@
 <template lang="pug">
-  v-card
-    v-card-title
-      v-app-bar-nav-icon(v-if="$vuetify.breakpoint.smAndDown" @click="$emit('update-drawer')")
-      span {{ t('name') }}
-    v-card-text
-      v-row
-        v-col
-          v-menu(v-if="canChangeHandouts" bottom)
-            template(#activator="{ on }")
-              v-btn.mr-3(v-on="on" color="primary")
-                v-icon(left) mdi-plus
-                | {{ t('buttons.add') }}
-            v-list
-              mutation-modal-form(
-                :header="t('addForm.header')"
-                :button-text="t('addForm.buttonText')"
-                :mutation="require('~/gql/eleden/mutations/process/add_handout.graphql')"
-                :variables="addHandoutVariables"
-                :update="addHandoutUpdate"
-                i18n-path="process.course.handout.addForm"
-                mutation-name="addHandout"
-                @close="period = []; handoutFile = null; description = ''"
+v-card
+  v-card-title
+    v-app-bar-nav-icon(v-if="$vuetify.breakpoint.smAndDown" @click="$emit('update-drawer')")
+    span {{ t('name') }}
+  v-card-text
+    v-row
+      v-col
+        v-menu(v-if="canChangeHandouts" bottom)
+          template(#activator="{ on }")
+            v-btn.mr-3(v-on="on" color="primary")
+              v-icon(left) mdi-plus
+              | {{ t('buttons.add') }}
+          v-list
+            mutation-modal-form(
+              :header="t('addForm.header')"
+              :button-text="t('addForm.buttonText')"
+              :mutation="require('~/gql/eleden/mutations/process/add_handout.graphql')"
+              :variables="addHandoutVariables"
+              :update="addHandoutUpdate"
+              i18n-path="process.course.handout.addForm"
+              mutation-name="addHandout"
+              @close="period = []; handoutFile = null; description = ''"
+            )
+                template(#activator="{ on }")
+                  v-list-item(v-on="on")
+                    v-list-item-icon
+                      v-icon mdi-form-select
+                    v-list-item-content {{ t('buttons.fillForm') }}
+                template(#form)
+                  validation-provider(
+                    v-slot="{ errors, valid }"
+                    :name="t('addForm.period')"
+                    rules="required"
+                  )
+                    v-autocomplete(
+                      v-model="period"
+                      :label="t('addForm.period')"
+                      :items="periods"
+                      :error-messages="errors"
+                      :success="valid"
+                      item-text="name"
+                      hide-no-data
+                      hide-selected
+                      return-object
+                    )
+                  validation-provider(
+                    v-slot="{ errors, valid }"
+                    :name="t('addForm.description')"
+                    rules="required"
+                  )
+                    v-text-field(
+                      v-model="description"
+                      :label="t('addForm.description')"
+                      :error-messages="errors"
+                      :success="valid"
+                    )
+                  validation-provider(
+                    v-slot="{ errors, valid }"
+                    :name="t('addForm.file')"
+                    rules="required"
+                  )
+                    v-file-input(
+                      v-model="handoutFile"
+                      :label="t('addForm.file')"
+                      :error-messages="errors"
+                      :success="valid"
+                    )
+        query-data-filter(
+          v-model="periodFilter"
+          v-bind="getFilterMessages('periodFilter', true)"
+          :query="require('~/gql/eleden/queries/process/periods.graphql')"
+          :update="data => data.periods"
+          :get-name="period => period.name"
+          :search-function="(item, search) => item.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())"
+          search-type="client"
+          message-container-class="mr-1 my-1"
+          multiple
+        )
+    v-row(align="center")
+      v-col(cols="12" sm="6")
+        v-text-field(v-stream:input="searchStreamHandouts$" :label="t('search')" prepend-icon="mdi-magnify" clearable)
+      v-col.text-right(cols="12" sm="6")
+        | {{ t('shownOf', { count: courseHandouts && courseHandouts.length, totalCount }) }}
+    v-row
+      v-col
+        v-data-table(
+          :headers="headers"
+          :items="courseHandouts"
+          :loading="$apollo.queries.courseHandouts.loading"
+          hide-default-footer
+          disable-pagination
+        )
+          template(#item.user="{ item }")
+            user-link(:user="item.user")
+          template(#item.description="{ item }")
+            a(:href="`/${item.file.src}`") {{ item.description }}
+          template(#item.createdAt="{ item }")
+              | {{ $filters.dateTimeHM(item.createdAt) }}
+          template(#item.actions="{ item }")
+            apollo-mutation(
+              v-slot="{ mutate }"
+              :mutation="require('~/gql/eleden/mutations/process/delete_handouts.graphql')"
+              :variables="{ handoutIds: item.id }"
+              :update="(store, result) => deleteHandoutsUpdate(store, result, item)"
+              tag
+            )
+              delete-menu(
+                v-slot="{ on: onDelete }"
+                :item-name="t('deleteItemName')"
+                @confirm="mutate"
               )
-                  template(#activator="{ on }")
-                    v-list-item(v-on="on")
-                      v-list-item-icon
-                        v-icon mdi-form-select
-                      v-list-item-content {{ t('buttons.fillForm') }}
-                  template(#form)
-                    validation-provider(
-                      v-slot="{ errors, valid }"
-                      :name="t('addForm.period')"
-                      rules="required"
-                    )
-                      v-autocomplete(
-                        v-model="period"
-                        :label="t('addForm.period')"
-                        :items="periods"
-                        :error-messages="errors"
-                        :success="valid"
-                        item-text="name"
-                        hide-no-data
-                        hide-selected
-                        return-object
-                      )
-                    validation-provider(
-                      v-slot="{ errors, valid }"
-                      :name="t('addForm.description')"
-                      rules="required"
-                    )
-                      v-text-field(
-                        v-model="description"
-                        :label="t('addForm.description')"
-                        :error-messages="errors"
-                        :success="valid"
-                      )
-                    validation-provider(
-                      v-slot="{ errors, valid }"
-                      :name="t('addForm.file')"
-                      rules="required"
-                    )
-                      v-file-input(
-                        v-model="handoutFile"
-                        :label="t('addForm.file')"
-                        :error-messages="errors"
-                        :success="valid"
-                      )
-          query-data-filter(
-            v-model="periodFilter"
-            v-bind="getFilterMessages('periodFilter', true)"
-            :query="require('~/gql/eleden/queries/process/periods.graphql')"
-            :update="data => data.periods"
-            :get-name="period => period.name"
-            :search-function="(item, search) => item.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())"
-            search-type="client"
-            message-container-class="mr-1 my-1"
-            multiple
-          )
-      v-row(align="center")
-        v-col(cols="12" sm="6")
-          v-text-field(v-stream:input="searchStreamHandouts$" :label="t('search')" prepend-icon="mdi-magnify" clearable)
-        v-col.text-right(cols="12" sm="6")
-          | {{ t('shownOf', { count: courseHandouts && courseHandouts.length, totalCount }) }}
-      v-row
-        v-col
-          v-data-table(
-            :headers="headers"
-            :items="courseHandouts"
-            :loading="$apollo.queries.courseHandouts.loading"
-            hide-default-footer
-            disable-pagination
-          )
-            template(#item.user="{ item }")
-              user-link(:user="item.user")
-            template(#item.description="{ item }")
-              a(:href="`/${item.file.src}`") {{ item.description }}
-            template(#item.createdAt="{ item }")
-                | {{ $filters.dateTimeHM(item.createdAt) }}
-            template(#item.actions="{ item }")
-              apollo-mutation(
-                v-slot="{ mutate }"
-                :mutation="require('~/gql/eleden/mutations/process/delete_handouts.graphql')"
-                :variables="{ handoutIds: item.id }"
-                :update="(store, result) => deleteHandoutsUpdate(store, result, item)"
-                tag
-              )
-                delete-menu(
-                  v-slot="{ on: onDelete }"
-                  :item-name="t('deleteItemName')"
-                  @confirm="mutate"
-                )
-                  v-tooltip(bottom)
-                    template(#activator="{ on: onTooltip }")
-                      v-btn(v-on="{  ...onDelete, ...onTooltip }" color="error" icon)
-                        v-icon mdi-delete
-                    span {{ t('tooltips.delete') }}
+                v-tooltip(bottom)
+                  template(#activator="{ on: onTooltip }")
+                    v-btn(v-on="{  ...onDelete, ...onTooltip }" color="error" icon)
+                      v-icon mdi-delete
+                  span {{ t('tooltips.delete') }}
 </template>
 
 <script lang="ts">

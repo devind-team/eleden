@@ -1,17 +1,17 @@
 <template lang="pug">
-  div
-    user-link(v-if="!!user" :user="user")
-    template(v-else)
-      v-menu(v-if="canChange" v-model="active" bottom)
-        template(#activator="{ on }")
-          v-btn(v-on="on" :loading="loading" text color="primary") {{ $t('ac.users.portfolio.confirmation.confirm') }}
-        v-card(style="width: 400px")
-          v-card-text {{ $t('ac.users.portfolio.confirmation.confirmQuestion') }}
-          v-card-actions
-            v-btn(@click="confirm" color="primary") {{ $t('yes') }}
-            v-spacer
-            v-btn(@click="active = false" color="warning") {{ $t('no') }}
-      .font-italic(v-else) {{ $t('ac.users.portfolio.confirmation.notConfirmed') }}
+div
+  user-link(v-if="!!user" :user="user")
+  template(v-else)
+    v-menu(v-if="canChange" v-model="active" bottom)
+      template(#activator="{ on }")
+        v-btn(v-on="on" :loading="loading" text color="primary") {{ $t('ac.users.portfolio.confirmation.confirm') }}
+      v-card(style="width: 400px")
+        v-card-text {{ $t('ac.users.portfolio.confirmation.confirmQuestion') }}
+        v-card-actions
+          v-btn(@click="confirm" color="primary") {{ $t('yes') }}
+          v-spacer
+          v-btn(@click="active = false" color="warning") {{ $t('no') }}
+    .font-italic(v-else) {{ $t('ac.users.portfolio.confirmation.notConfirmed') }}
 </template>
 
 <script lang="ts">

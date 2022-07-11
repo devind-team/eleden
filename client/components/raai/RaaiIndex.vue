@@ -1,8 +1,8 @@
 <template lang="pug">
-  v-container
-    raai-carousel
-    slot
-    raai-goals
+v-container
+  raai-carousel
+  slot
+  raai-goals
 </template>
 
 <script lang="ts">

@@ -1,18 +1,18 @@
 <template lang="pug">
-  v-container
-    v-card.text-center.py-16(flat)
-        v-row.justify-center
-          v-col(cols="12" md="8")
-            v-card-title.justify-center.display-1 Российская ассоциация искусственного интеллекта (РАИИ)
-            v-card-text.headline Общероссийская общественная организация «Российская ассоциация искусственного интеллекта» является общественным объединением, основанным на членстве лиц, профессиональная деятельность которых связана с теоретическими и прикладными исследованиями и разработками в области искусственного интеллекта.
-    v-card.py-16(flat)
+v-container
+  v-card.text-center.py-16(flat)
       v-row.justify-center
-        v-card-title.display-1 Основные цели РАИИ
-      v-item-group
-        v-row.justify-center
-          v-col.text-center(cols="12" sm="4" v-for="(item, i) in goals" :key="i")
-            v-icon.indigo--text.text--accent-4.outlined(size="100" color="indigo accent-4" center="true") mdi-{{ item.icon }}
-            v-card-text.headline {{ item.text }}
+        v-col(cols="12" md="8")
+          v-card-title.justify-center.display-1 Российская ассоциация искусственного интеллекта (РАИИ)
+          v-card-text.headline Общероссийская общественная организация «Российская ассоциация искусственного интеллекта» является общественным объединением, основанным на членстве лиц, профессиональная деятельность которых связана с теоретическими и прикладными исследованиями и разработками в области искусственного интеллекта.
+  v-card.py-16(flat)
+    v-row.justify-center
+      v-card-title.display-1 Основные цели РАИИ
+    v-item-group
+      v-row.justify-center
+        v-col.text-center(cols="12" sm="4" v-for="(item, i) in goals" :key="i")
+          v-icon.indigo--text.text--accent-4.outlined(size="100" color="indigo accent-4" center="true") mdi-{{ item.icon }}
+          v-card-text.headline {{ item.text }}
 </template>
 
 <script lang="ts">

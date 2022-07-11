@@ -1,23 +1,23 @@
 <template lang="pug">
-  v-card
-    v-card-title {{ $t('articles.name') }}
-    v-card-text
-      v-row(align="center")
-        v-col(cols="6")
-          add-article(
-            v-slot="{ on }"
-            :add-article-update="addArticleUpdate"
-            :add-article-from-bibtex-update="addArticleFromBibtexUpdate"
-          )
-            v-btn(v-on="on" color="primary")
-              v-icon(left) mdi-plus
-              | {{ $t('articles.actions.add') }}
-        v-col(cols="6").text-right
-          unload-articles(v-slot="{ on }")
-            v-btn(v-on="on" color="success")
-              v-icon(left) mdi-upload
-              | {{ $t('articles.actions.unload') }}
-      article-view(:articles="articles" :delete-article-update="deleteArticleUpdate" :totalCount="totalCount")
+v-card
+  v-card-title {{ $t('articles.name') }}
+  v-card-text
+    v-row(align="center")
+      v-col(cols="6")
+        add-article(
+          v-slot="{ on }"
+          :add-article-update="addArticleUpdate"
+          :add-article-from-bibtex-update="addArticleFromBibtexUpdate"
+        )
+          v-btn(v-on="on" color="primary")
+            v-icon(left) mdi-plus
+            | {{ $t('articles.actions.add') }}
+      v-col(cols="6").text-right
+        unload-articles(v-slot="{ on }")
+          v-btn(v-on="on" color="success")
+            v-icon(left) mdi-upload
+            | {{ $t('articles.actions.unload') }}
+    article-view(:articles="articles" :delete-article-update="deleteArticleUpdate" :totalCount="totalCount")
 </template>
 
 <script lang="ts">

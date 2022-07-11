@@ -1,54 +1,54 @@
 <template lang="pug">
-  v-menu(v-model="active" bottom)
-    template(#activator="{ on }")
-      v-btn(v-on="on" color="primary")
-        v-icon(left) mdi-plus
-        | {{ $t('eduPrograms.discipline.competences.buttons.add') }}
-    v-list
-      mutation-modal-form(
-        :header="$t('eduPrograms.discipline.competences.addForm.header')"
-        :button-text="$t('eduPrograms.discipline.competences.addForm.buttonText')"
-        :mutation="require('~/gql/eleden/mutations/edu_programs/add_competences.graphql')"
-        :variables="variables"
-        :update="update"
-        mutation-name="addCompetences"
-        errors-in-alert
-        @close="newCompetences = []"
-      )
-        template(#activator="{ on }")
-          v-list-item(v-on="on")
-            v-list-item-icon
-              v-icon mdi-form-select
-            v-list-item-content {{ $t('eduPrograms.discipline.competences.buttons.fillForm') }}
-        template(#form)
-          validation-provider(
-            v-slot="{ errors, valid }"
-            :name="$t('eduPrograms.discipline.competences.addForm.name')"
-            rules="required"
+v-menu(v-model="active" bottom)
+  template(#activator="{ on }")
+    v-btn(v-on="on" color="primary")
+      v-icon(left) mdi-plus
+      | {{ $t('eduPrograms.discipline.competences.buttons.add') }}
+  v-list
+    mutation-modal-form(
+      :header="$t('eduPrograms.discipline.competences.addForm.header')"
+      :button-text="$t('eduPrograms.discipline.competences.addForm.buttonText')"
+      :mutation="require('~/gql/eleden/mutations/edu_programs/add_competences.graphql')"
+      :variables="variables"
+      :update="update"
+      mutation-name="addCompetences"
+      errors-in-alert
+      @close="newCompetences = []"
+    )
+      template(#activator="{ on }")
+        v-list-item(v-on="on")
+          v-list-item-icon
+            v-icon mdi-form-select
+          v-list-item-content {{ $t('eduPrograms.discipline.competences.buttons.fillForm') }}
+      template(#form)
+        validation-provider(
+          v-slot="{ errors, valid }"
+          :name="$t('eduPrograms.discipline.competences.addForm.name')"
+          rules="required"
+        )
+          v-autocomplete(
+            v-model="newCompetences"
+            :search-input.sync="search"
+            :label="$t('eduPrograms.discipline.competences.addForm.name')"
+            :items="competences"
+            :loading="loading"
+            item-text="name"
+            return-object
+            multiple
+            chips
+            deletable-chips
+            hide-selected
           )
-            v-autocomplete(
-              v-model="newCompetences"
-              :search-input.sync="search"
-              :label="$t('eduPrograms.discipline.competences.addForm.name')"
-              :items="competences"
-              :loading="loading"
-              item-text="name"
-              return-object
-              multiple
-              chips
-              deletable-chips
-              hide-selected
-            )
-              template(#selection="{ item }")
-                v-tooltip(bottom)
-                  template(#activator="{ on }")
-                    v-chip(
-                      v-on="on"
-                      small
-                      close
-                      @click:close="removeCompetence(item)"
-                    ) {{ textLength(item.name, 20) }}
-                  span {{ item.name }}
+            template(#selection="{ item }")
+              v-tooltip(bottom)
+                template(#activator="{ on }")
+                  v-chip(
+                    v-on="on"
+                    small
+                    close
+                    @click:close="removeCompetence(item)"
+                  ) {{ textLength(item.name, 20) }}
+                span {{ item.name }}
 </template>
 
 <script lang="ts">

@@ -1,67 +1,67 @@
 <template lang="pug">
-  mutation-modal-form(
-    :header="String($t( team.eduProgram ? 'ac.teams.settings.changeTeamEduProgram.form.changeHeader' : 'ac.teams.settings.changeTeamEduProgram.form.setHeader'))"
-    :subheader="team.name"
-    :buttonText="String($t(team.eduProgram ? 'ac.teams.settings.changeTeamEduProgram.form.changeButtonText' : 'ac.teams.settings.changeTeamEduProgram.form.setButtonText'))"
-    :mutation="require('~/gql/eleden/mutations/team/change_team_edu_program.graphql')"
-    :variables="{ teamId: team.id, transferCourses: transferCourses, eduProgramId: eduProgram ? eduProgram.id : null }"
-    mutation-name="changeTeamEduProgram"
-    width="1000"
-    errors-in-alert
-    @close="close"
-  )
-    template(#activator="{ on }")
-      .d-flex
-        v-spacer
-        v-btn(v-on="on" color="warning")
-          | {{ team.eduProgram ? $t('ac.teams.settings.changeTeamEduProgram.change') : $t('ac.teams.settings.changeTeamEduProgram.set') }}
-    template(#form)
-      validation-provider(
-        v-slot="{ errors, valid }"
-        :name="String($t('ac.teams.settings.changeTeamEduProgram.form.eduProgram'))"
-        :rules="team.eduProgram ? '' : 'required'"
+mutation-modal-form(
+  :header="String($t( team.eduProgram ? 'ac.teams.settings.changeTeamEduProgram.form.changeHeader' : 'ac.teams.settings.changeTeamEduProgram.form.setHeader'))"
+  :subheader="team.name"
+  :buttonText="String($t(team.eduProgram ? 'ac.teams.settings.changeTeamEduProgram.form.changeButtonText' : 'ac.teams.settings.changeTeamEduProgram.form.setButtonText'))"
+  :mutation="require('~/gql/eleden/mutations/team/change_team_edu_program.graphql')"
+  :variables="{ teamId: team.id, transferCourses: transferCourses, eduProgramId: eduProgram ? eduProgram.id : null }"
+  mutation-name="changeTeamEduProgram"
+  width="1000"
+  errors-in-alert
+  @close="close"
+)
+  template(#activator="{ on }")
+    .d-flex
+      v-spacer
+      v-btn(v-on="on" color="warning")
+        | {{ team.eduProgram ? $t('ac.teams.settings.changeTeamEduProgram.change') : $t('ac.teams.settings.changeTeamEduProgram.set') }}
+  template(#form)
+    validation-provider(
+      v-slot="{ errors, valid }"
+      :name="String($t('ac.teams.settings.changeTeamEduProgram.form.eduProgram'))"
+      :rules="team.eduProgram ? '' : 'required'"
+    )
+      v-autocomplete(
+        v-model="eduProgram"
+        :search-input.sync="eduProgramsSearch"
+        :items="eduPrograms"
+        :loading="eduProgramsLoading"
+        :filter="filterEduPrograms"
+        :label="$t('ac.teams.settings.changeTeamEduProgram.form.eduProgram')"
+        :error-messages="errors"
+        :success="!!team.eduProgram || valid"
+        :menu-props="{ maxWidth: 1000 }"
+        item-value="id"
+        return-object
+        hide-no-data
+        clearable
       )
-        v-autocomplete(
-          v-model="eduProgram"
-          :search-input.sync="eduProgramsSearch"
-          :items="eduPrograms"
-          :loading="eduProgramsLoading"
-          :filter="filterEduPrograms"
-          :label="$t('ac.teams.settings.changeTeamEduProgram.form.eduProgram')"
-          :error-messages="errors"
-          :success="!!team.eduProgram || valid"
-          :menu-props="{ maxWidth: 1000 }"
-          item-value="id"
-          return-object
-          hide-no-data
-          clearable
-        )
-          template(#selection="{ item }") {{ item.name }} ({{ item.admission }})
-          template(#item="{ item }")
-            v-list-item-content
-              v-list-item-title {{ item.name }} ({{ item.admission }})
-              v-list-item-subtitle {{ getEduProgramSubtitle(item) }}
-      v-switch(v-if="canTransferCourses" v-model="transferCourses" :label="transferCoursesMessage" success)
-      template(v-if="eduProgram && disciplines")
-        v-row(align="center")
-          v-col(cols="12" sm="6")
-            v-text-field(
-              v-model="search"
-              :label="$t('ac.teams.settings.changeTeamEduProgram.form.search')"
-              prepend-icon="mdi-magnify"
-              clearable
-            )
-          v-col.text-right(cols="12" sm="6")
-            | {{ $t('ac.teams.settings.changeTeamEduProgram.form.shownOf', { count, totalCount }) }}
-        v-row
-          v-col
-            disciplines-table(
-              :edu-program="eduProgram"
-              :disciplines="disciplines"
-              :search="search"
-              :loading="disciplinesLoading"
-              @count-change="countChange"
-            )
+        template(#selection="{ item }") {{ item.name }} ({{ item.admission }})
+        template(#item="{ item }")
+          v-list-item-content
+            v-list-item-title {{ item.name }} ({{ item.admission }})
+            v-list-item-subtitle {{ getEduProgramSubtitle(item) }}
+    v-switch(v-if="canTransferCourses" v-model="transferCourses" :label="transferCoursesMessage" success)
+    template(v-if="eduProgram && disciplines")
+      v-row(align="center")
+        v-col(cols="12" sm="6")
+          v-text-field(
+            v-model="search"
+            :label="$t('ac.teams.settings.changeTeamEduProgram.form.search')"
+            prepend-icon="mdi-magnify"
+            clearable
+          )
+        v-col.text-right(cols="12" sm="6")
+          | {{ $t('ac.teams.settings.changeTeamEduProgram.form.shownOf', { count, totalCount }) }}
+      v-row
+        v-col
+          disciplines-table(
+            :edu-program="eduProgram"
+            :disciplines="disciplines"
+            :search="search"
+            :loading="disciplinesLoading"
+            @count-change="countChange"
+          )
 </template>
 
 <script lang="ts">

@@ -1,9 +1,9 @@
 <template lang="pug">
-  v-card
-    v-card-title {{ $t('ac.users.profile.name') }}
-    v-card-text
-      additional-information(v-if="hasPerm('core.view_user')" :viewUser="viewUser")
-      profile-information(v-else :viewUser="viewUser")
+v-card
+  v-card-title {{ $t('ac.users.profile.name') }}
+  v-card-text
+    additional-information(v-if="hasPerm('core.view_user')" :viewUser="viewUser")
+    profile-information(v-else :viewUser="viewUser")
 </template>
 
 <script lang="ts">

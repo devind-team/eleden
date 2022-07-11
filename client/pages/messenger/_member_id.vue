@@ -1,27 +1,27 @@
 <template lang="pug">
-  messenger-card-resize(
-    v-touch="{ right: () => $router.push(localePath({ name: 'messenger' })) }"
-    ref="mcr"
-    :loading="$apollo.queries.chatMessages.loading"
-    :border-left="$vuetify.breakpoint.smAndDown"
-    tile outlined
-  )
-    template(#title)
-      v-btn.mr-3(v-if="$vuetify.breakpoint.smAndDown" :to="localePath({ name: 'messenger' })" icon left)
-        v-icon mdi-arrow-left
-      | {{ params.name }}
-      v-spacer
-      v-tooltip(bottom)
-        template(#activator="{ on }")
-          v-btn(v-on="on" icon)
-            v-icon mdi-magnify
-        span Поиск по беседе
-      member-control(v-slot="{ on }" :member="member")
+messenger-card-resize(
+  v-touch="{ right: () => $router.push(localePath({ name: 'messenger' })) }"
+  ref="mcr"
+  :loading="$apollo.queries.chatMessages.loading"
+  :border-left="$vuetify.breakpoint.smAndDown"
+  tile outlined
+)
+  template(#title)
+    v-btn.mr-3(v-if="$vuetify.breakpoint.smAndDown" :to="localePath({ name: 'messenger' })" icon left)
+      v-icon mdi-arrow-left
+    | {{ params.name }}
+    v-spacer
+    v-tooltip(bottom)
+      template(#activator="{ on }")
         v-btn(v-on="on" icon)
-          v-icon mdi-dots-vertical
-    template(#actions)
-      add-message(@add="() => $refs.mcr.scrollDown(true)" :chat-id="$toGlobalId('ChatType', Number(member.chat.id))")
-    chat-messages(:items="chatMessages || []" :loading="$apollo.queries.chatMessages.loading")
+          v-icon mdi-magnify
+      span Поиск по беседе
+    member-control(v-slot="{ on }" :member="member")
+      v-btn(v-on="on" icon)
+        v-icon mdi-dots-vertical
+  template(#actions)
+    add-message(@add="() => $refs.mcr.scrollDown(true)" :chat-id="$toGlobalId('ChatType', Number(member.chat.id))")
+  chat-messages(:items="chatMessages || []" :loading="$apollo.queries.chatMessages.loading")
 </template>
 
 <script lang="ts">

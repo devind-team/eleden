@@ -1,9 +1,9 @@
 <template lang="pug">
-  v-card.content-center(style="border-left: none" tile outlined)
-    v-sheet.text-center
-      v-icon.mb-4(size="100") mdi-chat-plus-outline
-      div Выберите чат или#{' '}
-        a(@click.prevent="state.view = 'add'" :href="localePath({ name: 'messenger' })") создайте новый
+v-card.content-center(style="border-left: none" tile outlined)
+  v-sheet.text-center
+    v-icon.mb-4(size="100") mdi-chat-plus-outline
+    div Выберите чат или#{' '}
+      a(@click.prevent="state.view = 'add'" :href="localePath({ name: 'messenger' })") создайте новый
 </template>
 
 <script lang="ts">

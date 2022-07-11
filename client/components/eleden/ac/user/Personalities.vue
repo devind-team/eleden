@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-data-table(:headers="headers" :items="items" hide-default-header hide-default-footer disable-pagination)
+v-data-table(:headers="headers" :items="items" hide-default-header hide-default-footer disable-pagination)
 </template>
 
 <script lang="ts">

@@ -1,11 +1,11 @@
 <template lang="pug">
-  universal-dictionary(
-    @update-drawer="$emit('update-drawer')"
-    :bread-crumbs="bc"
-    :query="require('~/gql/eleden/queries/education/block_kinds.graphql')"
-    :headers="['id', 'name']"
-    query-name="blockKinds"
-  )
+universal-dictionary(
+  @update-drawer="$emit('update-drawer')"
+  :bread-crumbs="bc"
+  :query="require('~/gql/eleden/queries/education/block_kinds.graphql')"
+  :headers="['id', 'name']"
+  query-name="blockKinds"
+)
 </template>
 
 <script lang="ts">

@@ -1,27 +1,27 @@
 <template lang="pug">
-  v-footer(padless dark)
-    v-container
-      v-row
-        v-col(cols="12" md="9")
-          .body-2 Email:&nbsp;
-            strong {{ $getSettingValue('APP_EMAIL') }}
-        v-col(cols="12" md="3")
-          v-list(width="280" style="background: inherit;" dense)
-            theme-color(v-slot="{ on }")
-              v-list-item(v-on="on")
-                v-list-item-icon
-                  v-icon mdi-theme-light-dark
-                v-list-item-content
-                  v-list-item-title {{ $t('index.theme.change') }}
-      v-row
-        v-col(cols="12" md="9")
-          .body-2.gray-text &copy; {{ $t('index.rights') }}. {{ new Date().getFullYear() }}&nbsp;
-            strong #[a(href="https://devind.ru" style="text-decoration: none") {{ $t('index.support') }}.]
-        v-col.text-right(cols="12" md="3" style="height: 88px")
-          a(href="https://www.liveinternet.ru/click" style="display: block; width: 88px; height: 31px;" target="_blank")
-            img(:src="counterSrc" alt="" width="88" height="31")
-    v-btn(v-show="upVisible" @click="$vuetify.goTo(0)" size="small" fab fixed bottom right color="primary")
-      v-icon mdi-chevron-up
+v-footer(padless dark)
+  v-container
+    v-row
+      v-col(cols="12" md="9")
+        .body-2 Email:&nbsp;
+          strong {{ $getSettingValue('APP_EMAIL') }}
+      v-col(cols="12" md="3")
+        v-list(width="280" style="background: inherit;" dense)
+          theme-color(v-slot="{ on }")
+            v-list-item(v-on="on")
+              v-list-item-icon
+                v-icon mdi-theme-light-dark
+              v-list-item-content
+                v-list-item-title {{ $t('index.theme.change') }}
+    v-row
+      v-col(cols="12" md="9")
+        .body-2.gray-text &copy; {{ $t('index.rights') }}. {{ new Date().getFullYear() }}&nbsp;
+          strong #[a(href="https://devind.ru" style="text-decoration: none") {{ $t('index.support') }}.]
+      v-col.text-right(cols="12" md="3" style="height: 88px")
+        a(href="https://www.liveinternet.ru/click" style="display: block; width: 88px; height: 31px;" target="_blank")
+          img(:src="counterSrc" alt="" width="88" height="31")
+  v-btn(v-show="upVisible" @click="$vuetify.goTo(0)" size="small" fab fixed bottom right color="primary")
+    v-icon mdi-chevron-up
 </template>
 <script lang="ts">
 import { useScroll } from '@vueuse/core'

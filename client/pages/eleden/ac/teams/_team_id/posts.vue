@@ -1,111 +1,111 @@
 <template lang="pug">
-  v-card
-    v-card-title {{ $t('ac.teams.posts.name') }}
-    v-card-text
-      v-row(align="center")
-        v-col
-          v-menu(v-if="canAdd" bottom)
-            template(#activator="{ on }")
-              v-btn.mr-3(v-on="on" color="primary")
-                v-icon(left) mdi-plus
-                | {{ $t('ac.teams.posts.addMenu.buttons.add') }}
-            v-list
-              add-job-post(:team="team" :update="addJobPostUpdate" :job-kinds="jobKinds")
-                template(#activator="{ on }")
-                  v-list-item(v-on="on")
-                    v-list-item-icon
-                      v-icon mdi-form-select
-                    v-list-item-content {{ $t('ac.teams.posts.addMenu.buttons.fillForm') }}
-          users-data-filter(
-            v-model="usersFilter"
-            :users="users"
-            message-container-class="mr-1 my-1"
-            multiple
-          )
-          query-data-filter(
-            v-model="postFilter"
-            v-bind="getFilterMessages('postFilter')"
-            :query="require('~/gql/eleden/queries/team/posts.graphql')"
-            :update="data => data.posts"
-            :get-name="post => post.name"
-            :search-function="(item, search) => item.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())"
-            search-type="client"
-            message-container-class="mr-1 my-1"
-          )
-          items-data-filter(
-            v-model="jobKindFilter"
-            v-bind="getFilterMessages('jobKindFilter')"
-            :items="jobKinds"
-            :get-name="jobKind => jobKind.text"
-            message-container-class="mr-1 my-1"
-          )
-      v-row(v-if="posts.length > 0" align="center")
-        v-col(cols="12" sm="6")
-          v-text-field(v-model="search" :label="$t('search')" prepend-icon="mdi-magnify" clearable)
-        v-col.text-right(cols="12" sm="6") {{ $t('shownOf', { count: postsCount, totalCount: posts.length }) }}
-      v-row
-        v-col
-          v-data-table(
-            :headers="headers"
-            :items="filteredPosts"
-            :search="search"
-            :custom-filter="filter"
-            disable-pagination
-            hide-default-footer
-            @pagination="({ itemsLength }) => postsCount = itemsLength"
-          )
-            template(#item.jobPost.kind="{ item }") {{ $t(`ac.teams.jobKinds.${item.jobPost.kind.toLowerCase()}`) }}
-            template(#item.user.avatar="{ item }")
-              avatar-dialog(:item="item.job.user")
-            template(#item.user="{ item }")
-              user-link(:user="item.job.user" full)
-            template(#item.actions="{ item }")
-              experimental-dialog(v-if="hasPerm('core.view_experimental') && canChange" v-slot="{ on: onDialog }")
+v-card
+  v-card-title {{ $t('ac.teams.posts.name') }}
+  v-card-text
+    v-row(align="center")
+      v-col
+        v-menu(v-if="canAdd" bottom)
+          template(#activator="{ on }")
+            v-btn.mr-3(v-on="on" color="primary")
+              v-icon(left) mdi-plus
+              | {{ $t('ac.teams.posts.addMenu.buttons.add') }}
+          v-list
+            add-job-post(:team="team" :update="addJobPostUpdate" :job-kinds="jobKinds")
+              template(#activator="{ on }")
+                v-list-item(v-on="on")
+                  v-list-item-icon
+                    v-icon mdi-form-select
+                  v-list-item-content {{ $t('ac.teams.posts.addMenu.buttons.fillForm') }}
+        users-data-filter(
+          v-model="usersFilter"
+          :users="users"
+          message-container-class="mr-1 my-1"
+          multiple
+        )
+        query-data-filter(
+          v-model="postFilter"
+          v-bind="getFilterMessages('postFilter')"
+          :query="require('~/gql/eleden/queries/team/posts.graphql')"
+          :update="data => data.posts"
+          :get-name="post => post.name"
+          :search-function="(item, search) => item.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())"
+          search-type="client"
+          message-container-class="mr-1 my-1"
+        )
+        items-data-filter(
+          v-model="jobKindFilter"
+          v-bind="getFilterMessages('jobKindFilter')"
+          :items="jobKinds"
+          :get-name="jobKind => jobKind.text"
+          message-container-class="mr-1 my-1"
+        )
+    v-row(v-if="posts.length > 0" align="center")
+      v-col(cols="12" sm="6")
+        v-text-field(v-model="search" :label="$t('search')" prepend-icon="mdi-magnify" clearable)
+      v-col.text-right(cols="12" sm="6") {{ $t('shownOf', { count: postsCount, totalCount: posts.length }) }}
+    v-row
+      v-col
+        v-data-table(
+          :headers="headers"
+          :items="filteredPosts"
+          :search="search"
+          :custom-filter="filter"
+          disable-pagination
+          hide-default-footer
+          @pagination="({ itemsLength }) => postsCount = itemsLength"
+        )
+          template(#item.jobPost.kind="{ item }") {{ $t(`ac.teams.jobKinds.${item.jobPost.kind.toLowerCase()}`) }}
+          template(#item.user.avatar="{ item }")
+            avatar-dialog(:item="item.job.user")
+          template(#item.user="{ item }")
+            user-link(:user="item.job.user" full)
+          template(#item.actions="{ item }")
+            experimental-dialog(v-if="hasPerm('core.view_experimental') && canChange" v-slot="{ on: onDialog }")
+              v-tooltip(bottom)
+                template(#activator="{ on: onTooltip }")
+                  v-btn(v-on="{ ...onDialog, ...onTooltip }" color="success" icon)
+                    v-icon mdi-pencil
+                span {{ $t('ac.teams.posts.tooltips.change') }}
+            status-history(
+              v-if="canViewStatusHistory || item.job.user.id === user.id"
+              :job="item.job"
+              :job-post="item.jobPost"
+              :can-change="canChangeStatusHistory"
+              :can-delete="canDeleteStatusHistory"
+            )
+              template(#activator="{ on: onDialog }")
                 v-tooltip(bottom)
                   template(#activator="{ on: onTooltip }")
-                    v-btn(v-on="{ ...onDialog, ...onTooltip }" color="success" icon)
-                      v-icon mdi-pencil
-                  span {{ $t('ac.teams.posts.tooltips.change') }}
-              status-history(
-                v-if="canViewStatusHistory || item.job.user.id === user.id"
-                :job="item.job"
-                :job-post="item.jobPost"
-                :can-change="canChangeStatusHistory"
-                :can-delete="canDeleteStatusHistory"
-              )
-                template(#activator="{ on: onDialog }")
-                  v-tooltip(bottom)
-                    template(#activator="{ on: onTooltip }")
-                      v-btn(v-on="{ ...onDialog, ...onTooltip }" color="primary" icon)
-                        v-icon mdi-text-box-outline
-                    span {{ $t('ac.teams.posts.tooltips.viewStatusHistory') }}
-              add-status-history(
-                v-if="canAddStatusHistory"
-                :job="item.job"
-                :job-post="item.jobPost"
-                :update="addStatusHistoryUpdate"
-              )
-                template(#activator="{ on: onDialog }")
-                  v-tooltip(bottom)
-                    template(#activator="{ on: onTooltip }")
-                      v-btn(v-on="{ ...onDialog, ...onTooltip }" color="purple lighten-1" icon)
-                        v-icon mdi-text-box-plus-outline
-                    span {{ $t('ac.teams.posts.tooltips.addStatus') }}
-              apollo-mutation(
-                v-if="canDelete"
-                :mutation="require('~/gql/eleden/mutations/job_post/delete_job_post.graphql')"
-                :variables="{ jobPostId: item.jobPost.id }"
-                :update="(store, result) => deleteJobPostUpdate(store, result, item.job, item.jobPost)"
-                tag="span"
-              )
-                template(v-slot="{ mutate, loading }")
-                  delete-menu(:item-name="$t('ac.teams.posts.deleteItemName')" @confirm="mutate")
-                    template(#default="{ on: onMenu }")
-                      v-tooltip(bottom)
-                        template(#activator="{ on: onTooltip }")
-                          v-btn(v-on="{ ...onMenu, ...onTooltip }" :loading="loading" icon)
-                            v-icon(color="error") mdi-delete
-                        span {{ $t('ac.teams.posts.tooltips.delete') }}
+                    v-btn(v-on="{ ...onDialog, ...onTooltip }" color="primary" icon)
+                      v-icon mdi-text-box-outline
+                  span {{ $t('ac.teams.posts.tooltips.viewStatusHistory') }}
+            add-status-history(
+              v-if="canAddStatusHistory"
+              :job="item.job"
+              :job-post="item.jobPost"
+              :update="addStatusHistoryUpdate"
+            )
+              template(#activator="{ on: onDialog }")
+                v-tooltip(bottom)
+                  template(#activator="{ on: onTooltip }")
+                    v-btn(v-on="{ ...onDialog, ...onTooltip }" color="purple lighten-1" icon)
+                      v-icon mdi-text-box-plus-outline
+                  span {{ $t('ac.teams.posts.tooltips.addStatus') }}
+            apollo-mutation(
+              v-if="canDelete"
+              :mutation="require('~/gql/eleden/mutations/job_post/delete_job_post.graphql')"
+              :variables="{ jobPostId: item.jobPost.id }"
+              :update="(store, result) => deleteJobPostUpdate(store, result, item.job, item.jobPost)"
+              tag="span"
+            )
+              template(v-slot="{ mutate, loading }")
+                delete-menu(:item-name="$t('ac.teams.posts.deleteItemName')" @confirm="mutate")
+                  template(#default="{ on: onMenu }")
+                    v-tooltip(bottom)
+                      template(#activator="{ on: onTooltip }")
+                        v-btn(v-on="{ ...onMenu, ...onTooltip }" :loading="loading" icon)
+                          v-icon(color="error") mdi-delete
+                      span {{ $t('ac.teams.posts.tooltips.delete') }}
 </template>
 
 <script lang="ts">

@@ -1,36 +1,36 @@
 <template lang="pug">
-  mutation-form(
-    :header="$t('eduPrograms.discipline.settings.header')"
-    :subheader="$t('eduPrograms.discipline.settings.subheader', { updatedAt: dateTimeHM(discipline.updatedAt) })"
-    :mutation="require('~/gql/eleden/mutations/edu_programs/change_discipline.graphql')"
-    :variables="changeVariables"
-    :button-text="$t('eduPrograms.discipline.settings.buttonText')"
-    mutation-name="changeDiscipline"
-    @done="changeDisciplineDone"
-  )
-    template(#form)
-      discipline-form(
-        :edu-program="discipline.eduProgram"
-        :discipline="inputDiscipline"
+mutation-form(
+  :header="$t('eduPrograms.discipline.settings.header')"
+  :subheader="$t('eduPrograms.discipline.settings.subheader', { updatedAt: dateTimeHM(discipline.updatedAt) })"
+  :mutation="require('~/gql/eleden/mutations/edu_programs/change_discipline.graphql')"
+  :variables="changeVariables"
+  :button-text="$t('eduPrograms.discipline.settings.buttonText')"
+  mutation-name="changeDiscipline"
+  @done="changeDisciplineDone"
+)
+  template(#form)
+    discipline-form(
+      :edu-program="discipline.eduProgram"
+      :discipline="inputDiscipline"
+    )
+  template(#actions="{ invalid, loading, buttonText, setError }")
+    apollo-mutation(
+      v-if="hasPerm('eleden.delete_discipline')"
+      v-slot="{ mutate }"
+      :mutation="require('~/gql/eleden/mutations/edu_programs/delete_discipline.graphql')"
+      :variables="{ disciplineId: discipline.id }"
+      :update="deleteUpdate"
+      @done="deleteDisciplineDone"
+      @error="setError"
+    )
+      delete-menu(
+        v-slot="{ on }"
+        :item-name="$t('eduPrograms.discipline.settings.deleteItemName')"
+        @confirm="mutate"
       )
-    template(#actions="{ invalid, loading, buttonText, setError }")
-      apollo-mutation(
-        v-if="hasPerm('eleden.delete_discipline')"
-        v-slot="{ mutate }"
-        :mutation="require('~/gql/eleden/mutations/edu_programs/delete_discipline.graphql')"
-        :variables="{ disciplineId: discipline.id }"
-        :update="deleteUpdate"
-        @done="deleteDisciplineDone"
-        @error="setError"
-      )
-        delete-menu(
-          v-slot="{ on }"
-          :item-name="$t('eduPrograms.discipline.settings.deleteItemName')"
-          @confirm="mutate"
-        )
-          v-btn(v-on="on" color="error") {{ $t('eduPrograms.discipline.settings.deleteButtonText') }}
-      v-spacer
-      v-btn(:disabled="invalid" :loading="loading" type="submit" color="primary") {{ buttonText }}
+        v-btn(v-on="on" color="error") {{ $t('eduPrograms.discipline.settings.deleteButtonText') }}
+    v-spacer
+    v-btn(:disabled="invalid" :loading="loading" type="submit" color="primary") {{ buttonText }}
 </template>
 
 <script lang="ts">

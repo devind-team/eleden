@@ -1,51 +1,51 @@
 <template lang="pug">
-  v-card
-    v-card-title {{ $getUserName(student) }}
-      v-spacer
-      v-btn(@click="close" icon)
-        v-icon mdi-close
-    v-card-subtitle {{ period.name }}
-    v-card-text(v-if="error || success")
-      v-alert(v-if="error" type="error") {{ t('mutationBusinessLogicError', { error: error.value }) }}
-      v-alert(v-else-if="success" type="success") {{ success.value }}
-    v-card-text.ma-0.pa-0(style="max-height: 600px")
-      template(v-if="showAttendanceBlock")
-        v-divider
-        change-attendance(
-          ref="changeAttendanceVNode"
-          :attendance="attendance"
-          :registrations="attendanceRegistrations"
-          :can-confirm="canEditMark"
-          :can-edit="canEditAttendance"
-          :save-loading="saveAttendanceLoading"
-          :delete-loading="deleteAttendanceLoading"
-          @save="saveAttendance"
-          @delete="deleteAttendance"
-        )
-      template(v-if="showMarkBlock")
-        v-divider
-        change-mark(
-          ref="changeMarkVNode"
-          :mark="mark"
-          :registrations="markRegistrations"
-          :can-edit="canEditMark"
-          :save-loading="saveMarkLoading"
-          :delete-loading="deleteMarkLoading"
-          @save="saveMark"
-          @delete="deleteMark"
-        )
-      template(v-if="showAttachmentsBlock")
-        v-divider
-        change-attachments(
-          ref="changeAttachmentsVNode"
-          :course="course"
-          :student="student"
-          :attachments="attachments"
-          :can-edit="canEditAttachment"
-          :can-confirm="canEditMark"
-          :save-loading="saveAttachmentsLoading"
-          @save="saveAttachments"
-        )
+v-card
+  v-card-title {{ $getUserName(student) }}
+    v-spacer
+    v-btn(@click="close" icon)
+      v-icon mdi-close
+  v-card-subtitle {{ period.name }}
+  v-card-text(v-if="error || success")
+    v-alert(v-if="error" type="error") {{ t('mutationBusinessLogicError', { error: error.value }) }}
+    v-alert(v-else-if="success" type="success") {{ success.value }}
+  v-card-text.ma-0.pa-0(style="max-height: 600px")
+    template(v-if="showAttendanceBlock")
+      v-divider
+      change-attendance(
+        ref="changeAttendanceVNode"
+        :attendance="attendance"
+        :registrations="attendanceRegistrations"
+        :can-confirm="canEditMark"
+        :can-edit="canEditAttendance"
+        :save-loading="saveAttendanceLoading"
+        :delete-loading="deleteAttendanceLoading"
+        @save="saveAttendance"
+        @delete="deleteAttendance"
+      )
+    template(v-if="showMarkBlock")
+      v-divider
+      change-mark(
+        ref="changeMarkVNode"
+        :mark="mark"
+        :registrations="markRegistrations"
+        :can-edit="canEditMark"
+        :save-loading="saveMarkLoading"
+        :delete-loading="deleteMarkLoading"
+        @save="saveMark"
+        @delete="deleteMark"
+      )
+    template(v-if="showAttachmentsBlock")
+      v-divider
+      change-attachments(
+        ref="changeAttachmentsVNode"
+        :course="course"
+        :student="student"
+        :attachments="attachments"
+        :can-edit="canEditAttachment"
+        :can-confirm="canEditMark"
+        :save-loading="saveAttachmentsLoading"
+        @save="saveAttachments"
+      )
 </template>
 
 <script lang="ts">

@@ -1,23 +1,23 @@
 <template lang="pug">
-  mutation-form(
-    :header="$t('sveden.changeRow')"
-    :button-text="$t('save')"
-    :mutation="require('~/gql/sveden/mutations/item_prop_mutations/change_row.graphql')"
-    :variables="{ input: { itemPropContainerId, index, values: fieldsArr } }"
-    mutation-name="changeRow"
-    @done="onDone"
-  )
-    template(#header="{ header }")
-      span {{ header }}
-      v-spacer
-      v-btn(@click="onClose" icon)
-        v-icon mdi-close
-    template(#form)
-      template(v-for="field in fields")
-        v-textarea(v-model="field.value" :label="field.header" auto-grow clearable)
-    template(#actions="{ invalid, loading, buttonText }")
-      v-spacer
-      v-btn(:disabled="invalid" :loading="loading" @click="() => fieldsArr=fields.map(x=>x.value)" type="submit" color="primary") {{ buttonText }}
+mutation-form(
+  :header="$t('sveden.changeRow')"
+  :button-text="$t('save')"
+  :mutation="require('~/gql/sveden/mutations/item_prop_mutations/change_row.graphql')"
+  :variables="{ input: { itemPropContainerId, index, values: fieldsArr } }"
+  mutation-name="changeRow"
+  @done="onDone"
+)
+  template(#header="{ header }")
+    span {{ header }}
+    v-spacer
+    v-btn(@click="onClose" icon)
+      v-icon mdi-close
+  template(#form)
+    template(v-for="field in fields")
+      v-textarea(v-model="field.value" :label="field.header" auto-grow clearable)
+  template(#actions="{ invalid, loading, buttonText }")
+    v-spacer
+    v-btn(:disabled="invalid" :loading="loading" @click="() => fieldsArr=fields.map(x=>x.value)" type="submit" color="primary") {{ buttonText }}
 </template>
 
 <script lang="ts">

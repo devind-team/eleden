@@ -1,23 +1,23 @@
 <template lang="pug">
-  v-card
-    v-card-title {{ $t('eduPrograms.description.name')  }}
-    v-card-subtitle {{ $t('updatedAt', { updatedAt: dateTimeHM(eduProgram.updatedAt) }) }}
-    v-card-text.text--primary
-      v-data-table(:headers="headers" :items="items" hide-default-header hide-default-footer disable-pagination)
-        template(#item.text="{ item }") {{ $t(`eduPrograms.description.form.${item.text}`)}}
-        template(#item.value="{ item }")
-          template(v-if="item.text === 'adaptive'") {{ item.value ? $t('yes') : $t('no') }}
-          template(v-else-if="item.text === 'expedited'") {{ item.value ? $t('yes') : $t('no') }}
-          template(v-else-if="item.text === 'eduForm'") {{ item.value.name }}
-          template(v-else-if="item.text === 'direction'") {{ item.value.name }}
-          template(v-else-if="['description', 'syllabus', 'calendar'].includes(item.text)")
-            v-tooltip(v-if="item.value" bottom)
-              template(#activator="{ on }")
-                v-btn(v-on="on" :href="`/${item.value}`" target="_blank" icon color="success" text)
-                  v-icon mdi-download
-              span {{ $t('open') }}
-            strong(v-else) &mdash;
-          span(v-else) {{ item.value }}
+v-card
+  v-card-title {{ $t('eduPrograms.description.name')  }}
+  v-card-subtitle {{ $t('updatedAt', { updatedAt: dateTimeHM(eduProgram.updatedAt) }) }}
+  v-card-text.text--primary
+    v-data-table(:headers="headers" :items="items" hide-default-header hide-default-footer disable-pagination)
+      template(#item.text="{ item }") {{ $t(`eduPrograms.description.form.${item.text}`)}}
+      template(#item.value="{ item }")
+        template(v-if="item.text === 'adaptive'") {{ item.value ? $t('yes') : $t('no') }}
+        template(v-else-if="item.text === 'expedited'") {{ item.value ? $t('yes') : $t('no') }}
+        template(v-else-if="item.text === 'eduForm'") {{ item.value.name }}
+        template(v-else-if="item.text === 'direction'") {{ item.value.name }}
+        template(v-else-if="['description', 'syllabus', 'calendar'].includes(item.text)")
+          v-tooltip(v-if="item.value" bottom)
+            template(#activator="{ on }")
+              v-btn(v-on="on" :href="`/${item.value}`" target="_blank" icon color="success" text)
+                v-icon mdi-download
+            span {{ $t('open') }}
+          strong(v-else) &mdash;
+        span(v-else) {{ item.value }}
 </template>
 
 <script lang="ts">

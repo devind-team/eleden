@@ -24,6 +24,7 @@
     "@vueuse/integrations": "^8.5.0",
     "accounting": "^0.4.1",
     "apexcharts": "^3.35.3",
+    "caniuse-lite": "^1.0.30001364",
     "graphql-tag": "^2.12.6",
     "moment": "^2.29.3",
     "nuxt-edge": "latest",

@@ -1,89 +1,89 @@
 <template lang="pug">
-  form
-    v-card
-      v-card-title {{ t('title') }}
-        v-spacer
-        v-btn(@click="close" icon)
-          v-icon mdi-close
-      v-card-text(v-if="error || success")
-        v-alert(v-if="error" type="error") {{ t('mutationBusinessLogicError', { error: error.value }) }}
-        v-alert(v-else-if="success" type="success") {{ success.value }}
-      v-divider
-      v-card-text.ma-0.pa-0(style="max-height: 600px")
-        validation-observer(v-if="edit" v-slot="{ invalid }" slim)
-          v-list-item(dense)
-            v-list-item-content
-              v-list-item-action-text.overflow-x-auto
-                v-chip.my-1.overflow-visible.max-w-none(
-                  v-for="(handout, index) in editHandouts"
-                  :key="handout.id"
-                  :href="`/${handout.file.src}`"
-                  :class="{ 'mr-1': index !== handouts.length - 1 }"
-                  target="_blank"
-                  close
-                  @click:close="deleteHandout(handout)"
-                ) {{ handout.description }}
-              v-file-input.mt-2.mb-2(
-                v-model="newFile"
-                :label="t('newFile')"
-                small-chips
-                hide-selected
-                hide-details
-                success
+form
+  v-card
+    v-card-title {{ t('title') }}
+      v-spacer
+      v-btn(@click="close" icon)
+        v-icon mdi-close
+    v-card-text(v-if="error || success")
+      v-alert(v-if="error" type="error") {{ t('mutationBusinessLogicError', { error: error.value }) }}
+      v-alert(v-else-if="success" type="success") {{ success.value }}
+    v-divider
+    v-card-text.ma-0.pa-0(style="max-height: 600px")
+      validation-observer(v-if="edit" v-slot="{ invalid }" slim)
+        v-list-item(dense)
+          v-list-item-content
+            v-list-item-action-text.overflow-x-auto
+              v-chip.my-1.overflow-visible.max-w-none(
+                v-for="(handout, index) in editHandouts"
+                :key="handout.id"
+                :href="`/${handout.file.src}`"
+                :class="{ 'mr-1': index !== handouts.length - 1 }"
+                target="_blank"
+                close
+                @click:close="deleteHandout(handout)"
+              ) {{ handout.description }}
+            v-file-input.mt-2.mb-2(
+              v-model="newFile"
+              :label="t('newFile')"
+              small-chips
+              hide-selected
+              hide-details
+              success
+            )
+            validation-provider(
+              v-if="newFile"
+              v-slot="{ errors, valid }"
+              :name="t('description')"
+              rules="required|min:2|max:512"
+            )
+              v-textarea(
+                v-model="description"
+                :label="t('description')"
+                :error-messages="errors"
+                :success="valid"
+                rows="3"
+                clearable
+                auto-grow
               )
-              validation-provider(
-                v-if="newFile"
-                v-slot="{ errors, valid }"
-                :name="t('description')"
-                rules="required|min:2|max:512"
-              )
-                v-textarea(
-                  v-model="description"
-                  :label="t('description')"
-                  :error-messages="errors"
-                  :success="valid"
-                  rows="3"
-                  clearable
-                  auto-grow
+          v-list-item-action.justify-center
+            v-tooltip(right)
+              template(#activator="{ on }")
+                v-btn(v-on="on" icon @click="cancelEdit")
+                  v-icon mdi-minus
+              span {{ t('cancel') }}
+            v-tooltip(right :disabled="invalid")
+              template(#activator="{ on }")
+                v-btn(
+                  v-on="on"
+                  :disabled="invalid"
+                  :loading="saveLoading"
+                  color="success"
+                  icon
+                  @click="save"
                 )
-            v-list-item-action.justify-center
-              v-tooltip(right)
+                  v-icon mdi-check-circle
+              span {{ t('save') }}
+      v-list(v-else)
+        v-list-item(dense)
+          v-list-item-content
+            v-list-item-title(v-if="!handouts.length") {{ t('zeroHandouts') }}
+            v-list-item-action-text.overflow-x-auto
+              v-tooltip(v-for="(handout, index) in handouts" :key="handout.id" bottom)
                 template(#activator="{ on }")
-                  v-btn(v-on="on" icon @click="cancelEdit")
-                    v-icon mdi-minus
-                span {{ t('cancel') }}
-              v-tooltip(right :disabled="invalid")
-                template(#activator="{ on }")
-                  v-btn(
+                  v-chip.my-1.overflow-visible.max-w-none(
                     v-on="on"
-                    :disabled="invalid"
-                    :loading="saveLoading"
-                    color="success"
-                    icon
-                    @click="save"
-                  )
-                    v-icon mdi-check-circle
-                span {{ t('save') }}
-        v-list(v-else)
-          v-list-item(dense)
-            v-list-item-content
-              v-list-item-title(v-if="!handouts.length") {{ t('zeroHandouts') }}
-              v-list-item-action-text.overflow-x-auto
-                v-tooltip(v-for="(handout, index) in handouts" :key="handout.id" bottom)
-                  template(#activator="{ on }")
-                    v-chip.my-1.overflow-visible.max-w-none(
-                      v-on="on"
-                      :href="`/${handout.file.src}`"
-                      :class="{ 'mr-1': index !== handouts.length - 1 }"
-                      target="_blank"
-                    ) {{ handout.description }}
-                  span {{ t('open') }}
-            v-list-item-action(v-if="canEdit")
-              v-tooltip(right)
-                template(#activator="{ on }")
-                  v-btn(v-on="on" color="success" icon @click="edit = true")
-                    v-icon mdi-pencil
-                span {{ t('change') }}
+                    :href="`/${handout.file.src}`"
+                    :class="{ 'mr-1': index !== handouts.length - 1 }"
+                    target="_blank"
+                  ) {{ handout.description }}
+                span {{ t('open') }}
+          v-list-item-action(v-if="canEdit")
+            v-tooltip(right)
+              template(#activator="{ on }")
+                v-btn(v-on="on" color="success" icon @click="edit = true")
+                  v-icon mdi-pencil
+              span {{ t('change') }}
 </template>
 
 <script lang="ts">

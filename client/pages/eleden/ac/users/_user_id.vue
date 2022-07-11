@@ -1,10 +1,10 @@
 <template lang="pug">
-  bread-crumbs(v-if="!loading" :items="bc")
-    .title
-      v-app-bar-nav-icon(v-if="$vuetify.breakpoint.smAndDown" @click="$emit('update-drawer')")
-      | {{ fullName }}
-    two-columns(:links="links")
-      nuxt-child(:viewUser="user")
+bread-crumbs(v-if="!loading" :items="bc")
+  .title
+    v-app-bar-nav-icon(v-if="$vuetify.breakpoint.smAndDown" @click="$emit('update-drawer')")
+    | {{ fullName }}
+  two-columns(:links="links")
+    nuxt-child(:viewUser="user")
 </template>
 
 <script lang="ts">

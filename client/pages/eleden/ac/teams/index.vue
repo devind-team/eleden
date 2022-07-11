@@ -1,47 +1,47 @@
 <template lang="pug">
-  left-navigator-container(:bread-crumbs="bc" @update-drawer="$emit('update-drawer')")
-    template(#header) {{ $t('ac.teams.name') }}
-    v-row(v-if="hasPerm('eleden.add_team')" align="center")
-      v-col(cols="12" sm="6")
-        add-teams(
-          v-if="hasPerm('eleden.add_team')"
-          v-slot="{ on }"
-          :add-team-update="((cache, result) => addUpdate(cache, result, 'team'))"
-          :add-teams-update="(cache, result) => addUpdate(cache, result, 'teams')"
-        )
-          v-btn(v-on="on" color="primary")
-            v-icon(left) mdi-plus
-            | {{ $t('ac.teams.buttons.add') }}
-      v-col.text-right(v-if="hasPerm('core.view_experimental')" cols="12" sm="6")
-        unload-teams(v-slot="{ on }")
-          v-btn(v-on="on" color="success" @click="")
-            v-icon(left) mdi-upload
-            | {{ $t('ac.teams.buttons.upload') }}
-    v-row(align="center")
-      v-col(cols="12" sm="6")
-        v-text-field(v-model="search" :label="$t('search')" prepend-icon="mdi-magnify" clearable)
-      v-col.text-right(cols="12" sm="6")
-        | {{ $t('shownOf', { count: teams && teams.length, totalCount }) }}
-    v-row
-      v-col
-        v-data-table(
-          :headers="teamHeaders"
-          :items="teams"
-          :loading="loading"
-          disable-pagination
-          hide-default-footer
-        )
-          template(#item.name="{ item }")
-            nuxt-link(:to="localePath({ name: 'eleden-ac-teams-team_id', params: { team_id: item.id } })")
-              | {{ item.name }}
-          template(#item.responsibleUsers="{ item }")
-            .font-italic(v-if="item.responsibleUsers.length === 0") {{ $t('ac.teams.noSet') }}
-            template(v-else)
-              span(v-for="(user, i) in item.responsibleUsers" :key="user.id")
-                | {{ `${user.lastName} ${user.firstName[0]}. ${user.sirName[0]}.` }}
-                | {{ item.responsibleUsers.length - 1 === i ? '' : ', '  }}
-          template(#footer v-if="loading")
-            v-progress-linear(color="primary" indeterminate)
+left-navigator-container(:bread-crumbs="bc" @update-drawer="$emit('update-drawer')")
+  template(#header) {{ $t('ac.teams.name') }}
+  v-row(v-if="hasPerm('eleden.add_team')" align="center")
+    v-col(cols="12" sm="6")
+      add-teams(
+        v-if="hasPerm('eleden.add_team')"
+        v-slot="{ on }"
+        :add-team-update="((cache, result) => addUpdate(cache, result, 'team'))"
+        :add-teams-update="(cache, result) => addUpdate(cache, result, 'teams')"
+      )
+        v-btn(v-on="on" color="primary")
+          v-icon(left) mdi-plus
+          | {{ $t('ac.teams.buttons.add') }}
+    v-col.text-right(v-if="hasPerm('core.view_experimental')" cols="12" sm="6")
+      unload-teams(v-slot="{ on }")
+        v-btn(v-on="on" color="success" @click="")
+          v-icon(left) mdi-upload
+          | {{ $t('ac.teams.buttons.upload') }}
+  v-row(align="center")
+    v-col(cols="12" sm="6")
+      v-text-field(v-model="search" :label="$t('search')" prepend-icon="mdi-magnify" clearable)
+    v-col.text-right(cols="12" sm="6")
+      | {{ $t('shownOf', { count: teams && teams.length, totalCount }) }}
+  v-row
+    v-col
+      v-data-table(
+        :headers="teamHeaders"
+        :items="teams"
+        :loading="loading"
+        disable-pagination
+        hide-default-footer
+      )
+        template(#item.name="{ item }")
+          nuxt-link(:to="localePath({ name: 'eleden-ac-teams-team_id', params: { team_id: item.id } })")
+            | {{ item.name }}
+        template(#item.responsibleUsers="{ item }")
+          .font-italic(v-if="item.responsibleUsers.length === 0") {{ $t('ac.teams.noSet') }}
+          template(v-else)
+            span(v-for="(user, i) in item.responsibleUsers" :key="user.id")
+              | {{ `${user.lastName} ${user.firstName[0]}. ${user.sirName[0]}.` }}
+              | {{ item.responsibleUsers.length - 1 === i ? '' : ', '  }}
+        template(#footer v-if="loading")
+          v-progress-linear(color="primary" indeterminate)
 </template>
 
 <script lang="ts">

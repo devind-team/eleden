@@ -1,62 +1,62 @@
 <template lang="pug">
-  v-data-table(
-    :headers="headers"
-    :items="items"
-    :loading="loading"
-    show-expand dense
-    disable-pagination
-    hide-default-footer
-  )
-    template(#item.file.user.avatar="{ item }")
-      avatar-dialog(:item="item.file.user")
-    template(#item.file.user.name="{ item }")
-      user-link(:user="item.file.user" full)
-    template(#item.discipline="{ item }")
-      span(v-if="item.discipline") {{ item.discipline.code }} {{ item.discipline.name }}
-      v-icon(v-else) mdi-minus
-    template(#expanded-item="{ item }")
-      td(:colspan="headers.length + 1" style="padding: 6px 0px")
-        v-data-table(
-          :headers="subHeaders"
-          :items="getSubItem(item)"
-          hide-default-header
-          disable-pagination
-          hide-default-footer
-          dense
-        )
-          template(#item.key="{ value }") {{ $t(`ac.users.portfolio.subTableKeys.${value}`) }}
-          template(#item.value="{ item: subItem }")
+v-data-table(
+  :headers="headers"
+  :items="items"
+  :loading="loading"
+  show-expand dense
+  disable-pagination
+  hide-default-footer
+)
+  template(#item.file.user.avatar="{ item }")
+    avatar-dialog(:item="item.file.user")
+  template(#item.file.user.name="{ item }")
+    user-link(:user="item.file.user" full)
+  template(#item.discipline="{ item }")
+    span(v-if="item.discipline") {{ item.discipline.code }} {{ item.discipline.name }}
+    v-icon(v-else) mdi-minus
+  template(#expanded-item="{ item }")
+    td(:colspan="headers.length + 1" style="padding: 6px 0px")
+      v-data-table(
+        :headers="subHeaders"
+        :items="getSubItem(item)"
+        hide-default-header
+        disable-pagination
+        hide-default-footer
+        dense
+      )
+        template(#item.key="{ value }") {{ $t(`ac.users.portfolio.subTableKeys.${value}`) }}
+        template(#item.value="{ item: subItem }")
+          apollo-mutation(
+            v-if="subItem.key === 'user'"
+            v-slot="{ mutate, loading }"
+            :mutation="require('~/gql/eleden/mutations/portfolio/confirm_portfolio_file.graphql')"
+            :variables="{ portfolioFileId: item.id }"
+          )
+            confirmed-by-user(:loading="loading" :user="item.user" :can-change="canChange" @confirm="mutate")
+          template(v-else-if="['createdAt', 'updatedAt'].includes(subItem.key)")
+            | {{ dateTimeHM(subItem.value) }}
+          template(v-else-if="subItem.key === 'file'")
+            v-btn(
+              :href="`/${item.file.src}`"
+              target="_blank"
+              color="primary"
+              text
+            ) {{ $t('ac.users.portfolio.buttons.open') }}
+          template(v-else-if="subItem.key === 'delete'")
             apollo-mutation(
-              v-if="subItem.key === 'user'"
               v-slot="{ mutate, loading }"
-              :mutation="require('~/gql/eleden/mutations/portfolio/confirm_portfolio_file.graphql')"
+              :mutation="require('~/gql/eleden/mutations/portfolio/delete_portfolio_file.graphql')"
               :variables="{ portfolioFileId: item.id }"
+              :update="(store, result) => deleteUpdate(store, result, item)"
             )
-              confirmed-by-user(:loading="loading" :user="item.user" :can-change="canChange" @confirm="mutate")
-            template(v-else-if="['createdAt', 'updatedAt'].includes(subItem.key)")
-              | {{ dateTimeHM(subItem.value) }}
-            template(v-else-if="subItem.key === 'file'")
-              v-btn(
-                :href="`/${item.file.src}`"
-                target="_blank"
-                color="primary"
-                text
-              ) {{ $t('ac.users.portfolio.buttons.open') }}
-            template(v-else-if="subItem.key === 'delete'")
-              apollo-mutation(
-                v-slot="{ mutate, loading }"
-                :mutation="require('~/gql/eleden/mutations/portfolio/delete_portfolio_file.graphql')"
-                :variables="{ portfolioFileId: item.id }"
-                :update="(store, result) => deleteUpdate(store, result, item)"
-              )
-                delete-menu(v-slot="{ on: onDelete }" @confirm="mutate")
-                  v-btn(
-                    v-on="onDelete"
-                    :loading="loading"
-                    color="error"
-                    text
-                  ) {{ $t('ac.users.portfolio.buttons.delete') }}
-            template(v-else) {{ subItem.value }}
+              delete-menu(v-slot="{ on: onDelete }" @confirm="mutate")
+                v-btn(
+                  v-on="onDelete"
+                  :loading="loading"
+                  color="error"
+                  text
+                ) {{ $t('ac.users.portfolio.buttons.delete') }}
+          template(v-else) {{ subItem.value }}
 </template>
 
 <script lang="ts">

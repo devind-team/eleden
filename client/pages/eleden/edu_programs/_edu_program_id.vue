@@ -1,11 +1,11 @@
 <template lang="pug">
-  bread-crumbs(v-if="!loading" :items="bc")
-    .title.mb-2
-      v-app-bar-nav-icon(v-if="$vuetify.breakpoint.smAndDown" @click="$emit('update-drawer')")
-      | {{ eduProgram.name }} ({{ eduProgram.admission }})
-    two-columns(:links="links")
-      nuxt-child(:edu-program="eduProgram")
-  v-progress-circular(v-else color="primary" indeterminate)
+bread-crumbs(v-if="!loading" :items="bc")
+  .title.mb-2
+    v-app-bar-nav-icon(v-if="$vuetify.breakpoint.smAndDown" @click="$emit('update-drawer')")
+    | {{ eduProgram.name }} ({{ eduProgram.admission }})
+  two-columns(:links="links")
+    nuxt-child(:edu-program="eduProgram")
+v-progress-circular(v-else color="primary" indeterminate)
 </template>
 
 <script lang="ts">

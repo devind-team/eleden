@@ -1,98 +1,98 @@
 <template lang="pug">
-  v-card
-    v-card-title
-      v-app-bar-nav-icon(v-if="$vuetify.breakpoint.smAndDown" @click="$emit('update-drawer')")
-      span {{t('name')}}
-    v-card-text.process-register
-      v-row
-        v-col(cols="12")
-          template(v-if="course.teachers.length")
-            span {{ t('teachers') + ': ' }}
-            user-link(
-              v-for="(teacher, index) in course.teachers"
-              :key="teacher.id"
-              :user="teacher"
-              :link-class="['my-1', { 'mr-1': index !== course.teachers.length - 1 }]"
-              chip
-            )
-          template(v-if="course.team.responsibleUsers.length")
-            span.ml-2 {{ t('responsibleUsers') + ': ' }}
-            user-link(
-              v-for="(user, index) in course.team.responsibleUsers"
-              :key="user.id"
-              :user="user"
-              :link-class="['my-1', { 'mr-1': index !== course.team.responsibleUsers.length - 1 }]"
-              chip
-            )
-      v-row
-        v-col(cols="12")
-          v-dialog(v-if="currentItemIndex !== null" v-model="active" width="500" scrollable)
-            change-attestations(
-              v-if="dialogType === DialogTypes.Attestations"
-              :role="role"
-              :course="course"
-              :attestations="rows[currentItemIndex].attestations[currentHeaderValue]"
-              :attachments="rows[currentItemIndex].attachments[currentHeaderValue]"
-              :student="rows[currentItemIndex].student"
-              :period="course.periods.find(period => period.id === currentHeaderValue)"
-              @close="active = false"
-            )
-            change-handouts(
-              v-else-if="dialogType === DialogTypes.Handouts"
-              :role="role"
-              :course="course"
-              :period="course.periods.find(period => period.id === currentHeaderValue)"
-              :handouts="rows[currentItemIndex][currentHeaderValue]"
-              @close="active = false"
-            )
-          v-data-table(
-            :headers="tableHeaders"
-            :items="rows"
-            disable-pagination
-            hide-default-footer
-            dense
+v-card
+  v-card-title
+    v-app-bar-nav-icon(v-if="$vuetify.breakpoint.smAndDown" @click="$emit('update-drawer')")
+    span {{t('name')}}
+  v-card-text.process-register
+    v-row
+      v-col(cols="12")
+        template(v-if="course.teachers.length")
+          span {{ t('teachers') + ': ' }}
+          user-link(
+            v-for="(teacher, index) in course.teachers"
+            :key="teacher.id"
+            :user="teacher"
+            :link-class="['my-1', { 'mr-1': index !== course.teachers.length - 1 }]"
+            chip
           )
-            template(v-for="header in periodTableHeaders" v-slot:[`header.${header.value}`])
-              v-tooltip(bottom)
-                template(#activator="{ on }")
-                  span(v-on="on") {{ header.text }}
-                span {{ header.fullText }}
-            template(#item="{ item, index, isMobile, headers }")
-              tr(v-if="'student' in item" :class="isMobile ? 'v-data-table__mobile-table-row' : null")
-                td.pl-1(:class="isMobile ? 'v-data-table__mobile-row' : null")
-                  div(v-if="isMobile" class="v-data-table__mobile-row__header") {{ headers[0].text }}
-                  user-link(:user="item.student" :class="isMobile ? 'v-data-table__mobile-row__cell' : null")
-                td(
-                  v-for="header in periodTableHeaders"
-                  :class="`${header.cellClass} ${isMobile ? 'v-data-table__mobile-row': ''}`"
-                )
-                  div(v-if="isMobile" class="v-data-table__mobile-row__header") {{ header.text }}
-                  v-hover(v-slot="{ hover }" :disabled="!canViewDialog(item.student)")
-                    button.cell-button(
-                      :disabled="!canViewDialog"
-                      :class="{ 'cell-button-edit': hover }"
-                      @click="onDialogButtonClicked(index, header.value, DialogTypes.Attestations)"
-                    )
-                      span(v-if="attestationsString(item.attestations[header.value])")
-                        | {{ attestationsString(item.attestations[header.value]) }}
-                      v-icon(v-else-if="item.attachments[header.value].length && canViewAllItems(item.student)" small)
-                        | mdi-file-alert
-                      strong(v-else) &mdash;
-              tr(v-else :class="isMobile ? 'v-data-table__mobile-table-row' : null")
-                td(:class="isMobile ? 'v-data-table__mobile-row' : null") {{ t('handout') }}
-                td(
-                  v-for="header in periodTableHeaders"
-                  :class="`${header.cellClass} ${isMobile ? 'v-data-table__mobile-row': ''}`"
-                )
-                  div(v-if="isMobile" class="v-data-table__mobile-row__header") {{ header.text }}
-                  v-hover(v-slot="{ hover }")
-                    button.cell-button(
-                      :disabled="!canOpenHandoutsDialog(item[header.value])"
-                      :class="{ 'cell-button-edit': hover }"
-                      @click="onDialogButtonClicked(index, header.value, DialogTypes.Handouts)"
-                    )
-                      v-icon(v-if="item[header.value].length" small) mdi-file
-                      strong(v-else) &mdash;
+        template(v-if="course.team.responsibleUsers.length")
+          span.ml-2 {{ t('responsibleUsers') + ': ' }}
+          user-link(
+            v-for="(user, index) in course.team.responsibleUsers"
+            :key="user.id"
+            :user="user"
+            :link-class="['my-1', { 'mr-1': index !== course.team.responsibleUsers.length - 1 }]"
+            chip
+          )
+    v-row
+      v-col(cols="12")
+        v-dialog(v-if="currentItemIndex !== null" v-model="active" width="500" scrollable)
+          change-attestations(
+            v-if="dialogType === DialogTypes.Attestations"
+            :role="role"
+            :course="course"
+            :attestations="rows[currentItemIndex].attestations[currentHeaderValue]"
+            :attachments="rows[currentItemIndex].attachments[currentHeaderValue]"
+            :student="rows[currentItemIndex].student"
+            :period="course.periods.find(period => period.id === currentHeaderValue)"
+            @close="active = false"
+          )
+          change-handouts(
+            v-else-if="dialogType === DialogTypes.Handouts"
+            :role="role"
+            :course="course"
+            :period="course.periods.find(period => period.id === currentHeaderValue)"
+            :handouts="rows[currentItemIndex][currentHeaderValue]"
+            @close="active = false"
+          )
+        v-data-table(
+          :headers="tableHeaders"
+          :items="rows"
+          disable-pagination
+          hide-default-footer
+          dense
+        )
+          template(v-for="header in periodTableHeaders" v-slot:[`header.${header.value}`])
+            v-tooltip(bottom)
+              template(#activator="{ on }")
+                span(v-on="on") {{ header.text }}
+              span {{ header.fullText }}
+          template(#item="{ item, index, isMobile, headers }")
+            tr(v-if="'student' in item" :class="isMobile ? 'v-data-table__mobile-table-row' : null")
+              td.pl-1(:class="isMobile ? 'v-data-table__mobile-row' : null")
+                div(v-if="isMobile" class="v-data-table__mobile-row__header") {{ headers[0].text }}
+                user-link(:user="item.student" :class="isMobile ? 'v-data-table__mobile-row__cell' : null")
+              td(
+                v-for="header in periodTableHeaders"
+                :class="`${header.cellClass} ${isMobile ? 'v-data-table__mobile-row': ''}`"
+              )
+                div(v-if="isMobile" class="v-data-table__mobile-row__header") {{ header.text }}
+                v-hover(v-slot="{ hover }" :disabled="!canViewDialog(item.student)")
+                  button.cell-button(
+                    :disabled="!canViewDialog"
+                    :class="{ 'cell-button-edit': hover }"
+                    @click="onDialogButtonClicked(index, header.value, DialogTypes.Attestations)"
+                  )
+                    span(v-if="attestationsString(item.attestations[header.value])")
+                      | {{ attestationsString(item.attestations[header.value]) }}
+                    v-icon(v-else-if="item.attachments[header.value].length && canViewAllItems(item.student)" small)
+                      | mdi-file-alert
+                    strong(v-else) &mdash;
+            tr(v-else :class="isMobile ? 'v-data-table__mobile-table-row' : null")
+              td(:class="isMobile ? 'v-data-table__mobile-row' : null") {{ t('handout') }}
+              td(
+                v-for="header in periodTableHeaders"
+                :class="`${header.cellClass} ${isMobile ? 'v-data-table__mobile-row': ''}`"
+              )
+                div(v-if="isMobile" class="v-data-table__mobile-row__header") {{ header.text }}
+                v-hover(v-slot="{ hover }")
+                  button.cell-button(
+                    :disabled="!canOpenHandoutsDialog(item[header.value])"
+                    :class="{ 'cell-button-edit': hover }"
+                    @click="onDialogButtonClicked(index, header.value, DialogTypes.Handouts)"
+                  )
+                    v-icon(v-if="item[header.value].length" small) mdi-file
+                    strong(v-else) &mdash;
 </template>
 
 <script lang="ts">

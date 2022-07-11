@@ -1,17 +1,17 @@
 <template lang="pug">
-  mutation-modal-form(
-    :header="$t('articles.editForm.header')"
-    :button-text="$t('articles.editForm.buttonText')"
-    :mutation="require('~/gql/eleden/mutations/articles/change_article.graphql')"
-    :variables="formVariables"
-    :errors-in-alert="true"
-    mutation-name="changeArticle"
-    @done="done"
-  )
-    template(#activator="{ on }")
-      v-btn.ml-2(v-on="on" color="success") {{ $t('articles.actions.edit') }}
-    template(#form)
-      change-article-form(:article="inputChangeArticle")
+mutation-modal-form(
+  :header="$t('articles.editForm.header')"
+  :button-text="$t('articles.editForm.buttonText')"
+  :mutation="require('~/gql/eleden/mutations/articles/change_article.graphql')"
+  :variables="formVariables"
+  :errors-in-alert="true"
+  mutation-name="changeArticle"
+  @done="done"
+)
+  template(#activator="{ on }")
+    v-btn.ml-2(v-on="on" color="success") {{ $t('articles.actions.edit') }}
+  template(#form)
+    change-article-form(:article="inputChangeArticle")
 </template>
 <script lang="ts">
 import type { ComputedRef, PropType } from '#app'

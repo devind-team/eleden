@@ -1,17 +1,17 @@
 <template lang="pug">
-  bread-crumbs(:items="breadCrumbs" fluid)
-    v-row(no-gutters)
-      v-col(v-if="$vuetify.breakpoint.mdAndUp || !('member_id' in $route.params)" cols="12" md="5" lg="4")
-        add-member(v-if="state.view === 'add'")
-        members(
-          v-else
-          :loading="$apollo.queries.members.loading"
-          :fetch-more-members="fetchMoreMembers"
-          :members="members || []"
-          :totalCount="totalCount"
-        )
-      v-col(v-if="$vuetify.breakpoint.mdAndUp || 'member_id' in $route.params" cols="12" md="7" lg="8")
-        nuxt-child(@change-title="chatName = $event" :key="$route.fullPath" :keep-alive="'member_id' in $route.params")
+bread-crumbs(:items="breadCrumbs" fluid)
+  v-row(no-gutters)
+    v-col(v-if="$vuetify.breakpoint.mdAndUp || !('member_id' in $route.params)" cols="12" md="5" lg="4")
+      add-member(v-if="state.view === 'add'")
+      members(
+        v-else
+        :loading="$apollo.queries.members.loading"
+        :fetch-more-members="fetchMoreMembers"
+        :members="members || []"
+        :totalCount="totalCount"
+      )
+    v-col(v-if="$vuetify.breakpoint.mdAndUp || 'member_id' in $route.params" cols="12" md="7" lg="8")
+      nuxt-child(@change-title="chatName = $event" :key="$route.fullPath" :keep-alive="'member_id' in $route.params")
 </template>
 
 <script lang="ts">

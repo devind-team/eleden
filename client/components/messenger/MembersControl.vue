@@ -1,18 +1,18 @@
 <template lang="pug">
-  .flex.align-center
-    v-text-field(
-      v-stream:input="searchStream$"
-      :label="$t('search')"
-      prepend-inner-icon="mdi-magnify"
-      clearable
-      dense
-      hide-details
-    )
-    v-tooltip(bottom)
-      template(#activator="{ on }")
-        v-btn(v-on="on" @click="state.view = 'add'" icon)
-          v-icon mdi-square-edit-outline
-      span {{ t('addChat.header') }}
+.flex.align-center
+  v-text-field(
+    v-stream:input="searchStream$"
+    :label="$t('search')"
+    prepend-inner-icon="mdi-magnify"
+    clearable
+    dense
+    hide-details
+  )
+  v-tooltip(bottom)
+    template(#activator="{ on }")
+      v-btn(v-on="on" @click="state.view = 'add'" icon)
+        v-icon mdi-square-edit-outline
+    span {{ t('addChat.header') }}
 </template>
 
 <script lang="ts">

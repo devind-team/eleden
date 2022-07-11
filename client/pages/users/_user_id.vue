@@ -1,34 +1,34 @@
 <template lang="pug">
-  v-progress-circular.mx-auto(v-if="$apollo.queries.userInformation.loading" indeterminate color="primary")
-  v-container(v-else)
-    template(v-if="userInformation")
-      v-card
-        v-card-title {{ $getUserFullName(userInformation) }}
-        v-card-subtitle
-          a(:href="`mailto: ${userInformation.email}`") {{ userInformation.email }}
-        v-card-text
-          v-row
-            v-col(cols="12" md="3") {{ $t('profile.me.userAvatar') }}
-            v-col(cols="12" md="9" align="center")
-              avatar-dialog(:item="userInformation" size="300")
-          profile-information(:viewUser="userInformation")
-      v-card.mt-5
-        v-card-title Публикации
-        v-card-text
-          v-row(align="center")
-            v-col(cols="12" md="9")
-              items-data-filter(
-                v-model="selectYears"
-                v-bind="getFilterMessages('yearsFilter')"
-                :items="articlesYears.map(e => ({ id: e }))"
-                message-container-class="mr-1 my-1"
-                multiple
-                has-select-all
-              )
-          articles-view(:articles="articles" :delete-article-update="deleteArticleUpdate" :totalCount="totalCount")
-    v-row(v-else)
-      v-col
-        v-alert(type="warning") Пользователь скрыл информацию о себе.
+v-progress-circular.mx-auto(v-if="$apollo.queries.userInformation.loading" indeterminate color="primary")
+v-container(v-else)
+  template(v-if="userInformation")
+    v-card
+      v-card-title {{ $getUserFullName(userInformation) }}
+      v-card-subtitle
+        a(:href="`mailto: ${userInformation.email}`") {{ userInformation.email }}
+      v-card-text
+        v-row
+          v-col(cols="12" md="3") {{ $t('profile.me.userAvatar') }}
+          v-col(cols="12" md="9" align="center")
+            avatar-dialog(:item="userInformation" size="300")
+        profile-information(:viewUser="userInformation")
+    v-card.mt-5
+      v-card-title Публикации
+      v-card-text
+        v-row(align="center")
+          v-col(cols="12" md="9")
+            items-data-filter(
+              v-model="selectYears"
+              v-bind="getFilterMessages('yearsFilter')"
+              :items="articlesYears.map(e => ({ id: e }))"
+              message-container-class="mr-1 my-1"
+              multiple
+              has-select-all
+            )
+        articles-view(:articles="articles" :delete-article-update="deleteArticleUpdate" :totalCount="totalCount")
+  v-row(v-else)
+    v-col
+      v-alert(type="warning") Пользователь скрыл информацию о себе.
 </template>
 
 <script lang="ts">

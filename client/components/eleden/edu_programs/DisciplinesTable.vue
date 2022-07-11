@@ -1,67 +1,67 @@
 <template lang="pug">
-  tree-data-table(
-    :headers="headers"
-    :search="search"
-    :items="disciplinesTree"
-    :loading="loading"
-    :custom-filter="filter"
-    :flat-filter="item => !item.children.length"
-    :sort-by.sync="sortBy"
-    hide-default-footer
-    disable-pagination
-    @items="itemsHandler"
-  )
-    template(#item.name="{ item }")
-      nuxt-link(v-if="item.children.length === 0" :to="toDiscipline(item)") {{ item.name }}
-      span(v-else) {{ item.name }}
-    template(#item.view.name="{ item }")
-      span(v-if="item.children.length === 0") {{ item.view.name }}
-      strong(v-else) &mdash;
-    template(#item.users="{ item }")
-      template(v-if="item.users.length")
-        template(v-for="(user, i) in item.users")
-          user-link(:key="user.id" :user="user")
-          span(v-if="i !== item.users.length - 1") ,#{' '}
-      strong(v-else) &mdash;
-    template(#item.annotation="{ item }")
-      v-tooltip(v-if="item.annotation" bottom)
-        template(#activator="{ on }")
-          v-btn(v-on="on" :href="`/${item.annotation}`" target="_blank" color="success" icon)
-            v-icon mdi-download
-        span {{ $t('eduPrograms.disciplines.open') }}
-      strong(v-else) &mdash;
-    template(#item.workProgram="{ item }")
-      v-tooltip(v-if="item.workProgram" bottom)
-        template(#activator="{ on }")
-          v-btn(v-on="on" :href="`/${item.workProgram}`" target="_blank" color="success" icon)
-            v-icon mdi-download
-        span {{ $t('eduPrograms.disciplines.open') }}
-      strong(v-else) &mdash;
-    template(#item.actions="{ item }")
-      mutation-modal-form(
-        :header="$t('eduPrograms.disciplines.changeForm.header')"
-        :subheader="$t('eduPrograms.disciplines.changeForm.subheader', { updatedAt: dateTimeHM(item.updatedAt) })"
-        :mutation="require('~/gql/eleden/mutations/edu_programs/change_discipline.graphql')"
-        :variables="changeVariables"
-        :button-text="$t('eduPrograms.disciplines.changeForm.buttonText')"
-        mutation-name="changeDiscipline"
-      )
-        template(#form)
-          discipline-form(
-            :edu-program="item.eduProgram"
-            :discipline="inputDiscipline"
-          )
-        template(#activator="{ on: onChange }")
-          v-tooltip(bottom)
-            template(#activator="{ on: onTooltip}")
-              v-btn(
-                v-on="{ ...onChange, ...onTooltip }"
-                @click="discipline = item; inputDiscipline = getInputDiscipline(discipline ? discipline : undefined)"
-                color="success"
-                icon
-              )
-                v-icon mdi-pencil
-            span {{ $t('eduPrograms.disciplines.tooltips.change') }}
+tree-data-table(
+  :headers="headers"
+  :search="search"
+  :items="disciplinesTree"
+  :loading="loading"
+  :custom-filter="filter"
+  :flat-filter="item => !item.children.length"
+  :sort-by.sync="sortBy"
+  hide-default-footer
+  disable-pagination
+  @items="itemsHandler"
+)
+  template(#item.name="{ item }")
+    nuxt-link(v-if="item.children.length === 0" :to="toDiscipline(item)") {{ item.name }}
+    span(v-else) {{ item.name }}
+  template(#item.view.name="{ item }")
+    span(v-if="item.children.length === 0") {{ item.view.name }}
+    strong(v-else) &mdash;
+  template(#item.users="{ item }")
+    template(v-if="item.users.length")
+      template(v-for="(user, i) in item.users")
+        user-link(:key="user.id" :user="user")
+        span(v-if="i !== item.users.length - 1") ,#{' '}
+    strong(v-else) &mdash;
+  template(#item.annotation="{ item }")
+    v-tooltip(v-if="item.annotation" bottom)
+      template(#activator="{ on }")
+        v-btn(v-on="on" :href="`/${item.annotation}`" target="_blank" color="success" icon)
+          v-icon mdi-download
+      span {{ $t('eduPrograms.disciplines.open') }}
+    strong(v-else) &mdash;
+  template(#item.workProgram="{ item }")
+    v-tooltip(v-if="item.workProgram" bottom)
+      template(#activator="{ on }")
+        v-btn(v-on="on" :href="`/${item.workProgram}`" target="_blank" color="success" icon)
+          v-icon mdi-download
+      span {{ $t('eduPrograms.disciplines.open') }}
+    strong(v-else) &mdash;
+  template(#item.actions="{ item }")
+    mutation-modal-form(
+      :header="$t('eduPrograms.disciplines.changeForm.header')"
+      :subheader="$t('eduPrograms.disciplines.changeForm.subheader', { updatedAt: dateTimeHM(item.updatedAt) })"
+      :mutation="require('~/gql/eleden/mutations/edu_programs/change_discipline.graphql')"
+      :variables="changeVariables"
+      :button-text="$t('eduPrograms.disciplines.changeForm.buttonText')"
+      mutation-name="changeDiscipline"
+    )
+      template(#form)
+        discipline-form(
+          :edu-program="item.eduProgram"
+          :discipline="inputDiscipline"
+        )
+      template(#activator="{ on: onChange }")
+        v-tooltip(bottom)
+          template(#activator="{ on: onTooltip}")
+            v-btn(
+              v-on="{ ...onChange, ...onTooltip }"
+              @click="discipline = item; inputDiscipline = getInputDiscipline(discipline ? discipline : undefined)"
+              color="success"
+              icon
+            )
+              v-icon mdi-pencil
+          span {{ $t('eduPrograms.disciplines.tooltips.change') }}
 </template>
 
 <script lang="ts">

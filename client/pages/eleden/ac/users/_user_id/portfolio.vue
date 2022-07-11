@@ -1,128 +1,128 @@
 <template lang="pug">
-  v-card
-    v-card-title {{ $t('ac.users.portfolio.name') }}
-    v-card-text
-      //- Блок фильтрации и добавления
-      v-row
-        v-col
-          v-menu(v-if="canAdd" bottom)
-            template(#activator="{ on }")
-              v-btn.mr-3(v-on="on" color="primary")
-                v-icon(left) mdi-plus
-                | {{ $t('ac.users.portfolio.addMenu.buttons.add') }}
-            v-list
-              mutation-modal-form(
-                :header="$t('ac.users.portfolio.addMenu.addForm.header')"
-                :button-text="$t('ac.users.portfolio.addMenu.addForm.buttonText')"
-                :mutation="require('~/gql/eleden/mutations/portfolio/add_portfolio_file.graphql')"
-                :variables="{ userId: viewUser.id, describe, typeId, disciplineId, file, confirm }"
-                :update="(store, result) => addUpdate(store, result, 'portfolioFile')"
-                mutation-name="addPortfolioFile"
-                errors-in-alert
-                @close="close"
-              )
-                template(#activator="{ on }")
-                  v-list-item(v-on="on")
-                    v-list-item-icon
-                      v-icon mdi-form-select
-                    v-list-item-content {{ $t('ac.users.portfolio.addMenu.buttons.fillForm') }}
-                template(#form)
-                  validation-provider(
-                    v-slot="{ errors, valid }"
-                    :name="$t('ac.users.portfolio.addMenu.form.describe')"
-                    rules="required|min:2|max:512"
+v-card
+  v-card-title {{ $t('ac.users.portfolio.name') }}
+  v-card-text
+    //- Блок фильтрации и добавления
+    v-row
+      v-col
+        v-menu(v-if="canAdd" bottom)
+          template(#activator="{ on }")
+            v-btn.mr-3(v-on="on" color="primary")
+              v-icon(left) mdi-plus
+              | {{ $t('ac.users.portfolio.addMenu.buttons.add') }}
+          v-list
+            mutation-modal-form(
+              :header="$t('ac.users.portfolio.addMenu.addForm.header')"
+              :button-text="$t('ac.users.portfolio.addMenu.addForm.buttonText')"
+              :mutation="require('~/gql/eleden/mutations/portfolio/add_portfolio_file.graphql')"
+              :variables="{ userId: viewUser.id, describe, typeId, disciplineId, file, confirm }"
+              :update="(store, result) => addUpdate(store, result, 'portfolioFile')"
+              mutation-name="addPortfolioFile"
+              errors-in-alert
+              @close="close"
+            )
+              template(#activator="{ on }")
+                v-list-item(v-on="on")
+                  v-list-item-icon
+                    v-icon mdi-form-select
+                  v-list-item-content {{ $t('ac.users.portfolio.addMenu.buttons.fillForm') }}
+              template(#form)
+                validation-provider(
+                  v-slot="{ errors, valid }"
+                  :name="$t('ac.users.portfolio.addMenu.form.describe')"
+                  rules="required|min:2|max:512"
+                )
+                  v-textarea(
+                    v-model="describe"
+                    :label="$t('ac.users.portfolio.addMenu.form.describe')"
+                    :error-messages="errors"
+                    :success="valid"
+                    rows="1"
+                    auto-grow
+                    counter
                   )
-                    v-textarea(
-                      v-model="describe"
-                      :label="$t('ac.users.portfolio.addMenu.form.describe')"
-                      :error-messages="errors"
-                      :success="valid"
-                      rows="1"
-                      auto-grow
-                      counter
-                    )
-                  //- Дисциплина
+                //- Дисциплина
+                v-autocomplete(
+                  v-if="!!eduProgram"
+                  v-model="disciplineId"
+                  :items="disciplines"
+                  :label="$t('ac.users.portfolio.addMenu.form.disciplineId')"
+                  :loading="disciplinesLoading"
+                  item-text="name"
+                  item-value="id"
+                  success
+                  clearable
+                )
+                //- Тип файла
+                validation-provider(
+                  v-slot="{ errors, valid }"
+                  :name="$t('ac.users.portfolio.addMenu.form.typeId')"
+                  rules="required"
+                )
                   v-autocomplete(
-                    v-if="!!eduProgram"
-                    v-model="disciplineId"
-                    :items="disciplines"
-                    :label="$t('ac.users.portfolio.addMenu.form.disciplineId')"
-                    :loading="disciplinesLoading"
+                    v-model="typeId"
+                    :items="fileKinds"
+                    :label="$t('ac.users.portfolio.addMenu.form.typeId')"
+                    :loading="fileKindsLoading"
+                    :error-messages="errors"
+                    :success="valid"
                     item-text="name"
                     item-value="id"
-                    success
                     clearable
                   )
-                  //- Тип файла
-                  validation-provider(
-                    v-slot="{ errors, valid }"
-                    :name="$t('ac.users.portfolio.addMenu.form.typeId')"
-                    rules="required"
+                //- Прикрепление файла
+                validation-provider(
+                  v-slot="{ errors, valid }"
+                  :name="$t('ac.users.portfolio.addMenu.form.file')"
+                  rules="required"
+                )
+                  v-file-input(
+                    v-model="file"
+                    :label="$t('ac.users.portfolio.addMenu.form.file')"
+                    :success="valid"
+                    :error-messages="errors"
+                    clearable
                   )
-                    v-autocomplete(
-                      v-model="typeId"
-                      :items="fileKinds"
-                      :label="$t('ac.users.portfolio.addMenu.form.typeId')"
-                      :loading="fileKindsLoading"
-                      :error-messages="errors"
-                      :success="valid"
-                      item-text="name"
-                      item-value="id"
-                      clearable
-                    )
-                  //- Прикрепление файла
-                  validation-provider(
-                    v-slot="{ errors, valid }"
-                    :name="$t('ac.users.portfolio.addMenu.form.file')"
-                    rules="required"
-                  )
-                    v-file-input(
-                      v-model="file"
-                      :label="$t('ac.users.portfolio.addMenu.form.file')"
-                      :success="valid"
-                      :error-messages="errors"
-                      clearable
-                    )
-                  //- Подтверждение файла
-                  v-checkbox(v-if="canChange" v-model="confirm" :label="$t('ac.users.portfolio.addMenu.form.confirm')" success)
-          query-data-filter(
-            v-if="eduProgram"
-            v-model="selectedDiscipline"
-            v-bind="getFilterMessages('disciplineFilter')"
-            :query="require('~/gql/eleden/queries/education/disciplines.graphql')"
-            :variables="{ eduProgramId: eduProgram.id }"
-            :update="data => data.disciplines.edges.map(e => e.node)"
-            :get-name="discipline => `${discipline.code} ${discipline.name}`"
-            search-type="server"
-            message-container-class="mr-1 my-1"
-          )
-          query-data-filter(
-            v-model="selectedFileKind"
-            v-bind="getFilterMessages('fileKindFilter')"
-            :query="require('~/gql/eleden/queries/profile/file_kinds.graphql')"
-            :update="data => data.fileKinds"
-            :get-name="selectedFileKind => selectedFileKind.name"
-            :search-function="(item, search) => item.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())"
-            search-type="client"
-            message-container-class="mr-1 my-1"
-          )
-      //- Блок поиска
-      v-row(align="center")
-        v-col(cols="12" sm="6")
-          v-text-field(v-model="search" :label="$t('search')" prepend-icon="mdi-magnify" clearable)
-        v-col.text-right(cols="12" sm="6")
-          | {{ $t('shownOf', { count: portfolioFiles && portfolioFiles.length, totalCount }) }}
-      //- Таблица
-      v-row
-        v-col
-          portfolio-files(
-            :items="portfolioFiles"
-            :headers="portfolioFilesHeaders"
-            :can-change="viewUser.change"
-            :loading="portfolioFilesLoading"
-            :get-sub-item="getPortfolioFileSubItem"
-            :delete-update="deleteUpdate"
-          )
+                //- Подтверждение файла
+                v-checkbox(v-if="canChange" v-model="confirm" :label="$t('ac.users.portfolio.addMenu.form.confirm')" success)
+        query-data-filter(
+          v-if="eduProgram"
+          v-model="selectedDiscipline"
+          v-bind="getFilterMessages('disciplineFilter')"
+          :query="require('~/gql/eleden/queries/education/disciplines.graphql')"
+          :variables="{ eduProgramId: eduProgram.id }"
+          :update="data => data.disciplines.edges.map(e => e.node)"
+          :get-name="discipline => `${discipline.code} ${discipline.name}`"
+          search-type="server"
+          message-container-class="mr-1 my-1"
+        )
+        query-data-filter(
+          v-model="selectedFileKind"
+          v-bind="getFilterMessages('fileKindFilter')"
+          :query="require('~/gql/eleden/queries/profile/file_kinds.graphql')"
+          :update="data => data.fileKinds"
+          :get-name="selectedFileKind => selectedFileKind.name"
+          :search-function="(item, search) => item.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())"
+          search-type="client"
+          message-container-class="mr-1 my-1"
+        )
+    //- Блок поиска
+    v-row(align="center")
+      v-col(cols="12" sm="6")
+        v-text-field(v-model="search" :label="$t('search')" prepend-icon="mdi-magnify" clearable)
+      v-col.text-right(cols="12" sm="6")
+        | {{ $t('shownOf', { count: portfolioFiles && portfolioFiles.length, totalCount }) }}
+    //- Таблица
+    v-row
+      v-col
+        portfolio-files(
+          :items="portfolioFiles"
+          :headers="portfolioFilesHeaders"
+          :can-change="viewUser.change"
+          :loading="portfolioFilesLoading"
+          :get-sub-item="getPortfolioFileSubItem"
+          :delete-update="deleteUpdate"
+        )
 </template>
 
 <script lang="ts">

@@ -1,25 +1,25 @@
 <template lang="pug">
-  v-card
-    v-card-title {{ $t('ac.teams.eduProgram.name') }}
-    template(v-if="team.eduProgram")
-      v-card-subtitle
-        nuxt-link(:to="eduProgramPath") {{ eduProgramName }}
-      v-card-text
-        v-row(align="center")
-          v-col(cols="12" sm="6")
-            v-text-field(v-model="search" :label="$t('search')" prepend-icon="mdi-magnify" clearable)
-          v-col.text-right(cols="12" sm="6") {{ $t('shownOf', { count, totalCount }) }}
-        v-row
-          v-col
-            disciplines-table(
-              :edu-program="team.eduProgram"
-              :disciplines="disciplines"
-              :search="search"
-              :loading="loading"
-              @count-change="countChange"
-            )
-    v-card-text(v-else) {{ $t('ac.teams.eduProgram.eduProgramNotSet') }}&nbsp;
-      nuxt-link(:to="localePath({ name: 'eleden-ac-teams-team_id-settings' })") {{ $t('ac.teams.eduProgram.setEduProgram') }}
+v-card
+  v-card-title {{ $t('ac.teams.eduProgram.name') }}
+  template(v-if="team.eduProgram")
+    v-card-subtitle
+      nuxt-link(:to="eduProgramPath") {{ eduProgramName }}
+    v-card-text
+      v-row(align="center")
+        v-col(cols="12" sm="6")
+          v-text-field(v-model="search" :label="$t('search')" prepend-icon="mdi-magnify" clearable)
+        v-col.text-right(cols="12" sm="6") {{ $t('shownOf', { count, totalCount }) }}
+      v-row
+        v-col
+          disciplines-table(
+            :edu-program="team.eduProgram"
+            :disciplines="disciplines"
+            :search="search"
+            :loading="loading"
+            @count-change="countChange"
+          )
+  v-card-text(v-else) {{ $t('ac.teams.eduProgram.eduProgramNotSet') }}&nbsp;
+    nuxt-link(:to="localePath({ name: 'eleden-ac-teams-team_id-settings' })") {{ $t('ac.teams.eduProgram.setEduProgram') }}
 </template>
 
 <script lang="ts">

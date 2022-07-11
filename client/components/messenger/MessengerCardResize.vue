@@ -1,14 +1,14 @@
 <template lang="pug">
-  .v-dialog--scrollable(style="height: calc(100vh - 145px)")
-    v-card(v-bind="$attrs" :style="`border-left: ${borderLeft ? undefined : 'none'}`")
-      v-card-title
-        slot(name="title")
-      v-divider
-      v-card-text(v-stream:scroll="scrollStream$" ref="area")
-        slot
-      v-divider
-      v-card-actions
-        slot(name="actions")
+.v-dialog--scrollable(style="height: calc(100vh - 145px)")
+  v-card(v-bind="$attrs" :style="`border-left: ${borderLeft ? undefined : 'none'}`")
+    v-card-title
+      slot(name="title")
+    v-divider
+    v-card-text(v-stream:scroll="scrollStream$" ref="area")
+      slot
+    v-divider
+    v-card-actions
+      slot(name="actions")
 </template>
 
 <script lang="ts">

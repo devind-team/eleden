@@ -1,138 +1,138 @@
 <template lang="pug">
-  v-card
-    v-card-title {{ $t('eduPrograms.discipline.eduHours.name') }}
-    v-card-text
-      v-row
-        v-col(v-if="hasPerm('eleden.add_eduhours')")
-          v-menu(bottom)
-            template(#activator="{ on }")
-              v-btn(v-on="on" color="primary")
-                v-icon(left) mdi-plus
-                | {{ $t('eduPrograms.discipline.eduHours.buttons.add') }}
-            v-list
-              mutation-modal-form(
-                :header="$t('eduPrograms.discipline.eduHours.addForm.header')"
-                :button-text="$t('eduPrograms.discipline.eduHours.addForm.buttonText')"
-                :mutation="require('~/gql/eleden/mutations/edu_programs/add_edu_hours.graphql')"
-                :variables="addEduHoursVariables"
-                :update="(cache, result) => addUpdate(cache, result, 'eduHour')"
-                mutation-name="addEduHours"
-                errors-in-alert
-                @close="workKind = []; course = 0; semester = 0; value = 0; hoursKind = []"
+v-card
+  v-card-title {{ $t('eduPrograms.discipline.eduHours.name') }}
+  v-card-text
+    v-row
+      v-col(v-if="hasPerm('eleden.add_eduhours')")
+        v-menu(bottom)
+          template(#activator="{ on }")
+            v-btn(v-on="on" color="primary")
+              v-icon(left) mdi-plus
+              | {{ $t('eduPrograms.discipline.eduHours.buttons.add') }}
+          v-list
+            mutation-modal-form(
+              :header="$t('eduPrograms.discipline.eduHours.addForm.header')"
+              :button-text="$t('eduPrograms.discipline.eduHours.addForm.buttonText')"
+              :mutation="require('~/gql/eleden/mutations/edu_programs/add_edu_hours.graphql')"
+              :variables="addEduHoursVariables"
+              :update="(cache, result) => addUpdate(cache, result, 'eduHour')"
+              mutation-name="addEduHours"
+              errors-in-alert
+              @close="workKind = []; course = 0; semester = 0; value = 0; hoursKind = []"
+            )
+                template(#activator="{ on }")
+                  v-list-item(v-on="on")
+                    v-list-item-icon
+                      v-icon mdi-form-select
+                    v-list-item-content {{ $t('eduPrograms.discipline.eduHours.buttons.fillForm') }}
+                template(#form)
+                  validation-provider(
+                    v-slot="{ errors, valid }"
+                    :name="$t('eduPrograms.discipline.eduHours.addForm.workKind')"
+                    rules="required"
+                  )
+                    v-autocomplete(
+                      v-model="workKind"
+                      :label="$t('eduPrograms.discipline.eduHours.addForm.workKind')"
+                      :items="workKinds"
+                      :error-messages="errors"
+                      :success="valid"
+                      item-text="name"
+                      hide-no-data
+                      hide-selected
+                      return-object
+                    )
+                  validation-provider(
+                    v-slot="{ errors, valid }"
+                    :name="$t('eduPrograms.discipline.eduHours.addForm.courseNumber')"
+                    rules="required"
+                  )
+                    v-select(
+                      v-model="course"
+                      :label="$t('eduPrograms.discipline.eduHours.addForm.courseNumber')"
+                      :items="courses"
+                      :error-messages="errors"
+                      :success="valid"
+                      hide-no-data
+                      hide-selected
+                      return-object
+                    )
+                  validation-provider(
+                    v-slot="{ errors, valid }"
+                    :name="$t('eduPrograms.discipline.eduHours.addForm.semesterNumber')"
+                    rules="required"
+                  )
+                    v-select(
+                      v-model="semester"
+                      :label="$t('eduPrograms.discipline.eduHours.addForm.semesterNumber')"
+                      :items="semesters"
+                      :error-messages="errors"
+                      :success="valid"
+                      hide-no-data
+                      hide-selected
+                      return-object
+                    )
+                  validation-provider(
+                    v-slot="{ errors, valid }"
+                    :name="$t('eduPrograms.discipline.eduHours.addForm.value')"
+                    rules="required|numeric|min:1|max:1024"
+                  )
+                    v-text-field(
+                      v-model="value"
+                      :label="$t('eduPrograms.discipline.eduHours.addForm.value')"
+                      :error-messages="errors"
+                      :success="valid"
+                    )
+                  validation-provider(
+                    v-slot="{ errors, valid }"
+                    :name="$t('eduPrograms.discipline.eduHours.addForm.hoursKind')"
+                    rules="required"
+                  )
+                    v-select(
+                      v-model="hoursKind"
+                      :label="$t('eduPrograms.discipline.eduHours.addForm.hoursKind')"
+                      :items="hoursKinds"
+                      :error-messages="errors"
+                      :success="valid"
+                      item-text="name"
+                      hide-no-data
+                      hide-selected
+                      return-object
+                    )
+    v-row(align="center")
+      v-col(cols="12" sm="6")
+        v-text-field(v-model="search" :label="$t('search')" prepend-icon="mdi-magnify" clearable)
+      v-col.text-right(cols="12" sm="6") {{ $t('shownOf', { count: eduHoursCount, totalCount }) }}
+    v-row
+      v-col
+        v-data-table(
+          :headers="headers"
+          :search="search"
+          :items="disciplineEduHours"
+          :loading="loading"
+          hide-default-footer
+          disable-pagination
+          @pagination="({ itemsLength }) => eduHoursCount = itemsLength"
+        )
+          template(#item.actions="{ item }")
+            apollo-mutation(
+              v-if="hasPerm('eleden.delete_eduhours')"
+              v-slot="{ mutate }"
+              :mutation="require('~/gql/eleden/mutations/edu_programs/delete_edu_hour.graphql')"
+              :variables="{ eduHourId: item.id }"
+              :update="(cache, result) => deleteUpdate(cache, result)"
+              tag="span"
+            )
+              delete-menu(
+                v-slot="{ on: onDelete }"
+                :item-name="$t('eduPrograms.discipline.eduHours.deleteItemName')"
+                @confirm="mutate"
               )
-                  template(#activator="{ on }")
-                    v-list-item(v-on="on")
-                      v-list-item-icon
-                        v-icon mdi-form-select
-                      v-list-item-content {{ $t('eduPrograms.discipline.eduHours.buttons.fillForm') }}
-                  template(#form)
-                    validation-provider(
-                      v-slot="{ errors, valid }"
-                      :name="$t('eduPrograms.discipline.eduHours.addForm.workKind')"
-                      rules="required"
-                    )
-                      v-autocomplete(
-                        v-model="workKind"
-                        :label="$t('eduPrograms.discipline.eduHours.addForm.workKind')"
-                        :items="workKinds"
-                        :error-messages="errors"
-                        :success="valid"
-                        item-text="name"
-                        hide-no-data
-                        hide-selected
-                        return-object
-                      )
-                    validation-provider(
-                      v-slot="{ errors, valid }"
-                      :name="$t('eduPrograms.discipline.eduHours.addForm.courseNumber')"
-                      rules="required"
-                    )
-                      v-select(
-                        v-model="course"
-                        :label="$t('eduPrograms.discipline.eduHours.addForm.courseNumber')"
-                        :items="courses"
-                        :error-messages="errors"
-                        :success="valid"
-                        hide-no-data
-                        hide-selected
-                        return-object
-                      )
-                    validation-provider(
-                      v-slot="{ errors, valid }"
-                      :name="$t('eduPrograms.discipline.eduHours.addForm.semesterNumber')"
-                      rules="required"
-                    )
-                      v-select(
-                        v-model="semester"
-                        :label="$t('eduPrograms.discipline.eduHours.addForm.semesterNumber')"
-                        :items="semesters"
-                        :error-messages="errors"
-                        :success="valid"
-                        hide-no-data
-                        hide-selected
-                        return-object
-                      )
-                    validation-provider(
-                      v-slot="{ errors, valid }"
-                      :name="$t('eduPrograms.discipline.eduHours.addForm.value')"
-                      rules="required|numeric|min:1|max:1024"
-                    )
-                      v-text-field(
-                        v-model="value"
-                        :label="$t('eduPrograms.discipline.eduHours.addForm.value')"
-                        :error-messages="errors"
-                        :success="valid"
-                      )
-                    validation-provider(
-                      v-slot="{ errors, valid }"
-                      :name="$t('eduPrograms.discipline.eduHours.addForm.hoursKind')"
-                      rules="required"
-                    )
-                      v-select(
-                        v-model="hoursKind"
-                        :label="$t('eduPrograms.discipline.eduHours.addForm.hoursKind')"
-                        :items="hoursKinds"
-                        :error-messages="errors"
-                        :success="valid"
-                        item-text="name"
-                        hide-no-data
-                        hide-selected
-                        return-object
-                      )
-      v-row(align="center")
-        v-col(cols="12" sm="6")
-          v-text-field(v-model="search" :label="$t('search')" prepend-icon="mdi-magnify" clearable)
-        v-col.text-right(cols="12" sm="6") {{ $t('shownOf', { count: eduHoursCount, totalCount }) }}
-      v-row
-        v-col
-          v-data-table(
-            :headers="headers"
-            :search="search"
-            :items="disciplineEduHours"
-            :loading="loading"
-            hide-default-footer
-            disable-pagination
-            @pagination="({ itemsLength }) => eduHoursCount = itemsLength"
-          )
-            template(#item.actions="{ item }")
-              apollo-mutation(
-                v-if="hasPerm('eleden.delete_eduhours')"
-                v-slot="{ mutate }"
-                :mutation="require('~/gql/eleden/mutations/edu_programs/delete_edu_hour.graphql')"
-                :variables="{ eduHourId: item.id }"
-                :update="(cache, result) => deleteUpdate(cache, result)"
-                tag="span"
-              )
-                delete-menu(
-                  v-slot="{ on: onDelete }"
-                  :item-name="$t('eduPrograms.discipline.eduHours.deleteItemName')"
-                  @confirm="mutate"
-                )
-                  v-tooltip(bottom)
-                    template(#activator="{ on: onTooltip }")
-                      v-btn(v-on="{  ...onDelete, ...onTooltip }" color="error" icon)
-                        v-icon mdi-delete
-                    span {{ $t('eduPrograms.discipline.eduHours.tooltips.delete') }}
+                v-tooltip(bottom)
+                  template(#activator="{ on: onTooltip }")
+                    v-btn(v-on="{  ...onDelete, ...onTooltip }" color="error" icon)
+                      v-icon mdi-delete
+                  span {{ $t('eduPrograms.discipline.eduHours.tooltips.delete') }}
 </template>
 
 <script lang="ts">

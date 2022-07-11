@@ -1,7 +1,7 @@
 <template lang="pug">
-  bread-crumbs(v-if="!$apollo.queries.course.loading" :items="bc")
-    left-navigator-driver(v-model="active" :items="tabs")
-    nuxt-child(:key="$route.fullPath" @update-drawer="active = !active" :course="course" :role="role")
+bread-crumbs(v-if="!$apollo.queries.course.loading" :items="bc")
+  left-navigator-driver(v-model="active" :items="tabs")
+  nuxt-child(:key="$route.fullPath" @update-drawer="active = !active" :course="course" :role="role")
 </template>
 
 <script lang="ts">

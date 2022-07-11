@@ -1,100 +1,100 @@
 <template lang="pug">
-  bread-crumbs(v-if="!$apollo.queries.team.loading" :items="bc")
-    v-card
-      v-card-title {{ t('name') }}
-      v-card-text
-        v-row(align="center")
-          v-col
-            items-data-filter(
-              v-model="semesterFilter"
-              v-bind="getFilterMessages('semesterFilter')"
-              :items="semesters"
-              :get-name="semester => semester.value"
-              message-container-class="mr-1 my-1"
-            )
-            query-data-filter(
-              v-model="disciplinesFilter"
-              v-bind="getFilterMessages('disciplinesFilter', true)"
-              :query="require('~/gql/eleden/queries/education/disciplines.graphql')"
-              :variables="{ eduProgramId: team.eduProgram.id }"
-              :update="data => data.disciplines.edges.map(e => e.node)"
-              :get-name="discipline => `${discipline.code} ${discipline.name}`"
-              search-type="server"
-              message-container-class="mr-1 my-1"
-              multiple
-            )
-            query-data-filter(
-              v-model="workKindsFilter"
-              v-bind="getFilterMessages('workKindsFilter', true)"
-              :query="require('~/gql/eleden/queries/process/work_kinds.graphql')"
-              :update="data => data.workKinds"
-              :get-name="workKind => workKind.name"
-              :search-function="(item, search) => item.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())"
-              search-type="client"
-              message-container-class="mr-1 my-1"
-              multiple
-            )
-            users-data-filter(
-              v-model="teachersFilter"
-              v-bind="getFilterMessages('teachersFilter', true)"
-              :query="require('~/gql/eleden/queries/core/users.graphql')"
-              :update="(data) => data.users.edges.map(e => e.node)"
-              search-type="server"
-              message-container-class="mr-1 my-1"
-              multiple
-            )
-        v-row(align="center")
-          v-col(cols="12" sm="6")
-            v-text-field(v-stream:input="searchStream$" :label="t('search')" prepend-icon="mdi-magnify" clearable)
-          v-col.text-right(cols="12" sm="6")
-            | {{ t('shownOf', { count: courses && courses.length, totalCount }) }}
-        v-row
-          v-col(cols="12")
-            v-data-table(
-              :headers="coursesHeaders"
-              :items="courses"
-              :loading="$apollo.queries.courses.loading"
-              disable-pagination
-              hide-default-footer
-            )
-              template(#item.name="{ item }")
-                nuxt-link(
-                  :title="getCourseName(item)"
-                  :to="localePath({ name: 'eleden-process-courses-course_id', params: { course_id: item.id } })"
-                ) {{ getCourseName(item) }}
-              template(#item.teachers="{ item }")
-                .font-italic(v-if="item.teachers.length === 0") {{ t('tableItem.noSet') }}
-                template(v-else)
-                  user-link(
-                    v-for="(teacher, index) in item.teachers"
-                    :key="teacher.id"
-                    :user="teacher"
-                    :link-class="['my-1', { 'mr-1': index !== item.teachers.length - 1 }]"
-                    chip
-                  )
-              template(#item.actions="{ item }")
-                experimental-dialog(v-if="hasPerm('eleden.change_course')" v-slot="{ on: onChange }")
+bread-crumbs(v-if="!$apollo.queries.team.loading" :items="bc")
+  v-card
+    v-card-title {{ t('name') }}
+    v-card-text
+      v-row(align="center")
+        v-col
+          items-data-filter(
+            v-model="semesterFilter"
+            v-bind="getFilterMessages('semesterFilter')"
+            :items="semesters"
+            :get-name="semester => semester.value"
+            message-container-class="mr-1 my-1"
+          )
+          query-data-filter(
+            v-model="disciplinesFilter"
+            v-bind="getFilterMessages('disciplinesFilter', true)"
+            :query="require('~/gql/eleden/queries/education/disciplines.graphql')"
+            :variables="{ eduProgramId: team.eduProgram.id }"
+            :update="data => data.disciplines.edges.map(e => e.node)"
+            :get-name="discipline => `${discipline.code} ${discipline.name}`"
+            search-type="server"
+            message-container-class="mr-1 my-1"
+            multiple
+          )
+          query-data-filter(
+            v-model="workKindsFilter"
+            v-bind="getFilterMessages('workKindsFilter', true)"
+            :query="require('~/gql/eleden/queries/process/work_kinds.graphql')"
+            :update="data => data.workKinds"
+            :get-name="workKind => workKind.name"
+            :search-function="(item, search) => item.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())"
+            search-type="client"
+            message-container-class="mr-1 my-1"
+            multiple
+          )
+          users-data-filter(
+            v-model="teachersFilter"
+            v-bind="getFilterMessages('teachersFilter', true)"
+            :query="require('~/gql/eleden/queries/core/users.graphql')"
+            :update="(data) => data.users.edges.map(e => e.node)"
+            search-type="server"
+            message-container-class="mr-1 my-1"
+            multiple
+          )
+      v-row(align="center")
+        v-col(cols="12" sm="6")
+          v-text-field(v-stream:input="searchStream$" :label="t('search')" prepend-icon="mdi-magnify" clearable)
+        v-col.text-right(cols="12" sm="6")
+          | {{ t('shownOf', { count: courses && courses.length, totalCount }) }}
+      v-row
+        v-col(cols="12")
+          v-data-table(
+            :headers="coursesHeaders"
+            :items="courses"
+            :loading="$apollo.queries.courses.loading"
+            disable-pagination
+            hide-default-footer
+          )
+            template(#item.name="{ item }")
+              nuxt-link(
+                :title="getCourseName(item)"
+                :to="localePath({ name: 'eleden-process-courses-course_id', params: { course_id: item.id } })"
+              ) {{ getCourseName(item) }}
+            template(#item.teachers="{ item }")
+              .font-italic(v-if="item.teachers.length === 0") {{ t('tableItem.noSet') }}
+              template(v-else)
+                user-link(
+                  v-for="(teacher, index) in item.teachers"
+                  :key="teacher.id"
+                  :user="teacher"
+                  :link-class="['my-1', { 'mr-1': index !== item.teachers.length - 1 }]"
+                  chip
+                )
+            template(#item.actions="{ item }")
+              experimental-dialog(v-if="hasPerm('eleden.change_course')" v-slot="{ on: onChange }")
+                v-tooltip(bottom)
+                  template(#activator="{ on: onTooltip }")
+                    v-btn(v-on="{ ...onChange, ...onTooltip }" color="success" icon)
+                      v-icon mdi-pencil
+                  span {{ t('tableItem.actions.change') }}
+              apollo-mutation(
+                v-if="hasPerm('eleden.delete_course')"
+                v-slot="{ mutate, loading }"
+                :mutation="require('~/gql/eleden/mutations/process/delete_course.graphql')"
+                :variables="{ courseId: item.id }"
+                :update="(store, result) => deleteCourseUpdate(store, result, item)"
+                tag
+              )
+                delete-menu(v-slot="{ on: onDelete }" :item-name="t('tableItem.deleteItemName')" @confirm="mutate")
                   v-tooltip(bottom)
                     template(#activator="{ on: onTooltip }")
-                      v-btn(v-on="{ ...onChange, ...onTooltip }" color="success" icon)
-                        v-icon mdi-pencil
-                    span {{ t('tableItem.actions.change') }}
-                apollo-mutation(
-                  v-if="hasPerm('eleden.delete_course')"
-                  v-slot="{ mutate, loading }"
-                  :mutation="require('~/gql/eleden/mutations/process/delete_course.graphql')"
-                  :variables="{ courseId: item.id }"
-                  :update="(store, result) => deleteCourseUpdate(store, result, item)"
-                  tag
-                )
-                  delete-menu(v-slot="{ on: onDelete }" :item-name="t('tableItem.deleteItemName')" @confirm="mutate")
-                    v-tooltip(bottom)
-                      template(#activator="{ on: onTooltip }")
-                        v-btn(v-on="{ ...onDelete, ...onTooltip }" :loading="loading" color="error" icon)
-                          v-icon mdi-delete
-                      span {{ t('tableItem.actions.delete') }}
-              template(#footer v-if="$apollo.queries.courses.loading")
-                v-progress-linear(color="primary" indeterminate)
+                      v-btn(v-on="{ ...onDelete, ...onTooltip }" :loading="loading" color="error" icon)
+                        v-icon mdi-delete
+                    span {{ t('tableItem.actions.delete') }}
+            template(#footer v-if="$apollo.queries.courses.loading")
+              v-progress-linear(color="primary" indeterminate)
 </template>
 
 <script lang="ts">

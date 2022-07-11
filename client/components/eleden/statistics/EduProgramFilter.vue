@@ -1,64 +1,64 @@
 <template lang="pug">
-  v-row
-    v-col(cols="12" md="8")
-      query-data-filter(
-        v-model="syncedDirectionsFilter"
-        v-bind="getFilterMessages('directionsFilter', true)"
-        :query="require('~/gql/eleden/queries/education/directions.graphql')"
-        :update="data => data.directions"
-        :get-name="direction => `${direction.code} ${direction.name}`"
-        max-width="600"
-        max-height="600"
-        message-container-class="mr-1 my-1"
-        modal
-        multiple
-      )
-        template(#search="{ searchLabel, loading }")
-          v-card-text.flex-shrink-0
-            v-text-field(
-              v-model="directionsSearch"
-              :label="searchLabel"
-              :loading="loading"
-              prepend-icon="mdi-magnify"
-              hide-details
-              clearable
-            )
-        template(#items="{ items, getSelected, setSelected }")
-          v-treeview(
-            :value="items.filter(getSelected)"
-            :items="buildDirectionsTree(items)"
-            :search="directionsSearch"
-            :filter="(direction, search) => filterDirections(direction, search, getSelected)"
-            selectable
-            return-object
-            @input="selectDirections(items, $event, setSelected)"
+v-row
+  v-col(cols="12" md="8")
+    query-data-filter(
+      v-model="syncedDirectionsFilter"
+      v-bind="getFilterMessages('directionsFilter', true)"
+      :query="require('~/gql/eleden/queries/education/directions.graphql')"
+      :update="data => data.directions"
+      :get-name="direction => `${direction.code} ${direction.name}`"
+      max-width="600"
+      max-height="600"
+      message-container-class="mr-1 my-1"
+      modal
+      multiple
+    )
+      template(#search="{ searchLabel, loading }")
+        v-card-text.flex-shrink-0
+          v-text-field(
+            v-model="directionsSearch"
+            :label="searchLabel"
+            :loading="loading"
+            prepend-icon="mdi-magnify"
+            hide-details
+            clearable
           )
-      items-data-filter(
-        v-model="syncedYearsFilter"
-        v-bind="getFilterMessages('yearsFilter', true)"
-        :items="years"
-        :get-name="year => year.text"
-        message-container-class="mr-1 my-1"
-        multiple
-        has-select-all
-      )
-      query-data-filter(
-        v-model="syncedEduFormsFilter"
-        v-bind="getFilterMessages('eduFormsFilter', true)"
-        :query="require('~/gql/eleden/queries/education/edu_forms.graphql')"
-        :update="data => data.eduForms"
-        :get-name="eduForm => eduForm.name"
-        message-container-class="mr-1 my-1"
-        multiple
-        has-select-all
-      )
-    v-col.text-md-right(cols="12" md="4")
-      v-btn-toggle(v-model="syncedView")
-        v-tooltip(v-for="v in ['chart-arc', 'table']" :key="v" bottom)
-          template(#activator="{ on }")
-            v-btn(v-on="on" :value="v" icon)
-              v-icon mdi-{{ v }}
-          span {{ $t(`statistics.eduProgramsStatistics.view.${v}`) }}
+      template(#items="{ items, getSelected, setSelected }")
+        v-treeview(
+          :value="items.filter(getSelected)"
+          :items="buildDirectionsTree(items)"
+          :search="directionsSearch"
+          :filter="(direction, search) => filterDirections(direction, search, getSelected)"
+          selectable
+          return-object
+          @input="selectDirections(items, $event, setSelected)"
+        )
+    items-data-filter(
+      v-model="syncedYearsFilter"
+      v-bind="getFilterMessages('yearsFilter', true)"
+      :items="years"
+      :get-name="year => year.text"
+      message-container-class="mr-1 my-1"
+      multiple
+      has-select-all
+    )
+    query-data-filter(
+      v-model="syncedEduFormsFilter"
+      v-bind="getFilterMessages('eduFormsFilter', true)"
+      :query="require('~/gql/eleden/queries/education/edu_forms.graphql')"
+      :update="data => data.eduForms"
+      :get-name="eduForm => eduForm.name"
+      message-container-class="mr-1 my-1"
+      multiple
+      has-select-all
+    )
+  v-col.text-md-right(cols="12" md="4")
+    v-btn-toggle(v-model="syncedView")
+      v-tooltip(v-for="v in ['chart-arc', 'table']" :key="v" bottom)
+        template(#activator="{ on }")
+          v-btn(v-on="on" :value="v" icon)
+            v-icon mdi-{{ v }}
+        span {{ $t(`statistics.eduProgramsStatistics.view.${v}`) }}
 </template>
 
 <script lang="ts">

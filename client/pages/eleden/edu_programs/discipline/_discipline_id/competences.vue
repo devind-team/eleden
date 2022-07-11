@@ -1,40 +1,40 @@
 <template lang="pug">
-  v-card
-    v-card-title {{ $t('eduPrograms.discipline.competences.name') }}
-    v-card-text
-      v-row
-        v-col(v-if="hasPerm('eleden.add_competence')")
-          add-competences(:update="(cache, result) => addUpdate(cache, result, 'competences')" :discipline="discipline")
-      v-row(align="center")
-        v-col(cols="12" sm="6")
-          v-text-field(v-model="search" :label="$t('eduPrograms.discipline.competences.search')" prepend-icon="mdi-magnify" clearable)
-        v-col.text-right(cols="12" sm="6") {{ $t('eduPrograms.discipline.competences.shownOf', { count: competencesCount, totalCount }) }}
-      v-row
-        v-col
-          v-data-table(
-            :headers="headers"
-            :search="search"
-            :items="disciplineCompetences"
-            :loading="loading"
-            hide-default-footer
-            disable-pagination
-            @pagination="({ itemsLength }) => competencesCount = itemsLength"
-          )
-            template(#item.category="{ item }")
-              span(v-if="item.category") {{ item.category }}
-              v-icon(v-else) mdi-minus
-            template(#item.actions="{ item }")
-              delete-menu(
-                v-if="hasPerm('eleden.delete_competence')"
-                v-slot="{ on: onDelete }"
-                :item-name="$t('eduPrograms.discipline.competences.deleteItemName')"
-                @confirm="deleteCompetenceMutate({ disciplineId: discipline.id, competenceId: item.id }).then()"
-              )
-                v-tooltip(bottom)
-                  template(#activator="{ on: onTooltip }")
-                    v-btn(v-on="{  ...onDelete, ...onTooltip }" color="error" icon)
-                      v-icon mdi-delete
-                  span {{ $t('eduPrograms.discipline.competences.tooltips.delete') }}
+v-card
+  v-card-title {{ $t('eduPrograms.discipline.competences.name') }}
+  v-card-text
+    v-row
+      v-col(v-if="hasPerm('eleden.add_competence')")
+        add-competences(:update="(cache, result) => addUpdate(cache, result, 'competences')" :discipline="discipline")
+    v-row(align="center")
+      v-col(cols="12" sm="6")
+        v-text-field(v-model="search" :label="$t('eduPrograms.discipline.competences.search')" prepend-icon="mdi-magnify" clearable)
+      v-col.text-right(cols="12" sm="6") {{ $t('eduPrograms.discipline.competences.shownOf', { count: competencesCount, totalCount }) }}
+    v-row
+      v-col
+        v-data-table(
+          :headers="headers"
+          :search="search"
+          :items="disciplineCompetences"
+          :loading="loading"
+          hide-default-footer
+          disable-pagination
+          @pagination="({ itemsLength }) => competencesCount = itemsLength"
+        )
+          template(#item.category="{ item }")
+            span(v-if="item.category") {{ item.category }}
+            v-icon(v-else) mdi-minus
+          template(#item.actions="{ item }")
+            delete-menu(
+              v-if="hasPerm('eleden.delete_competence')"
+              v-slot="{ on: onDelete }"
+              :item-name="$t('eduPrograms.discipline.competences.deleteItemName')"
+              @confirm="deleteCompetenceMutate({ disciplineId: discipline.id, competenceId: item.id }).then()"
+            )
+              v-tooltip(bottom)
+                template(#activator="{ on: onTooltip }")
+                  v-btn(v-on="{  ...onDelete, ...onTooltip }" color="error" icon)
+                    v-icon mdi-delete
+                span {{ $t('eduPrograms.discipline.competences.tooltips.delete') }}
 </template>
 
 <script lang="ts">

@@ -1,29 +1,29 @@
 <template lang="pug">
-  mutation-form(
-    :header="$t('eduPrograms.settings.header')"
-    :subheader="$t('eduPrograms.settings.subheader', { updatedAt: dateTimeHM(eduProgram.updatedAt) })"
-    :mutation="require('~/gql/eleden/mutations/edu_programs/change_edu_program.graphql')"
-    :variables="changeVariables"
-    :button-text="$t('eduPrograms.settings.buttonText')"
-    mutation-name="changeEduProgram"
-    i18n-path="eduPrograms.form"
-    @done="changeEduProgramDone"
-  )
-    template(#form)
-      edu-program-form(:edu-program="inputEduProgram")
-    template(#actions="{ invalid, loading, buttonText, setError, setSuccess }")
-      apollo-mutation(
-        v-if="hasPerm(['eleden.delete_eduprogram'])"
-        v-slot="{ mutate }"
-        :mutation="require('~/gql/eleden/mutations/edu_programs/delete_edu_program.graphql')"
-        :variables="{ eduProgramId: eduProgram.id }"
-        @error="setError"
-        @done="DeleteEduProgramDone"
-      )
-        delete-menu(v-slot="{ on }" :item-name="$t('eduPrograms.settings.deleteItemName')" @confirm="mutate")
-          v-btn(v-on="on" color="error") {{ $t('eduPrograms.settings.deleteButtonText') }}
-      v-spacer
-      v-btn(:disabled="invalid" :loading="loading" type="submit" color="primary") {{ buttonText }}
+mutation-form(
+  :header="$t('eduPrograms.settings.header')"
+  :subheader="$t('eduPrograms.settings.subheader', { updatedAt: dateTimeHM(eduProgram.updatedAt) })"
+  :mutation="require('~/gql/eleden/mutations/edu_programs/change_edu_program.graphql')"
+  :variables="changeVariables"
+  :button-text="$t('eduPrograms.settings.buttonText')"
+  mutation-name="changeEduProgram"
+  i18n-path="eduPrograms.form"
+  @done="changeEduProgramDone"
+)
+  template(#form)
+    edu-program-form(:edu-program="inputEduProgram")
+  template(#actions="{ invalid, loading, buttonText, setError, setSuccess }")
+    apollo-mutation(
+      v-if="hasPerm(['eleden.delete_eduprogram'])"
+      v-slot="{ mutate }"
+      :mutation="require('~/gql/eleden/mutations/edu_programs/delete_edu_program.graphql')"
+      :variables="{ eduProgramId: eduProgram.id }"
+      @error="setError"
+      @done="DeleteEduProgramDone"
+    )
+      delete-menu(v-slot="{ on }" :item-name="$t('eduPrograms.settings.deleteItemName')" @confirm="mutate")
+        v-btn(v-on="on" color="error") {{ $t('eduPrograms.settings.deleteButtonText') }}
+    v-spacer
+    v-btn(:disabled="invalid" :loading="loading" type="submit" color="primary") {{ buttonText }}
 </template>
 
 <script lang="ts">

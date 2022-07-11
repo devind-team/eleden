@@ -1,18 +1,18 @@
 <template lang="pug">
-  left-navigator-container(:bread-crumbs="bc" @update-drawer="$emit('update-drawer')" fluid)
-    template(#header) {{ $t('statistics.eduProgramsStatistics.name') }}
-    edu-program-filter(
-      :directions-filter.sync="directionsFilter"
-      :years-filter.sync="yearsFilter"
-      :edu-forms-filter.sync="eduFormsFilter"
-      :view.sync="view"
-    )
-    template(v-if="!loading")
-      template(v-if="view === 'chart-arc'")
-        edu-program-statistics-chart-arc(:items="eduProgramsStatistics")
-      template(v-else)
-        edu-program-statistics-table(:items="eduProgramsStatistics")
-    v-progress-circular(v-else color="primary" indeterminate)
+left-navigator-container(:bread-crumbs="bc" @update-drawer="$emit('update-drawer')" fluid)
+  template(#header) {{ $t('statistics.eduProgramsStatistics.name') }}
+  edu-program-filter(
+    :directions-filter.sync="directionsFilter"
+    :years-filter.sync="yearsFilter"
+    :edu-forms-filter.sync="eduFormsFilter"
+    :view.sync="view"
+  )
+  template(v-if="!loading")
+    template(v-if="view === 'chart-arc'")
+      edu-program-statistics-chart-arc(:items="eduProgramsStatistics")
+    template(v-else)
+      edu-program-statistics-table(:items="eduProgramsStatistics")
+  v-progress-circular(v-else color="primary" indeterminate)
 </template>
 
 <script lang="ts">

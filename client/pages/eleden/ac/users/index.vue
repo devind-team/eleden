@@ -1,60 +1,60 @@
 <template lang="pug">
-  left-navigator-container(:bread-crumbs="bc" @update-drawer="$emit('update-drawer')")
-    template(#header) {{ $t('ac.users.name') }}
-    v-row(align="center")
-      v-col(cols="12" sm="6")
-        add-users(
-          v-if="hasPerm('core.add_user')"
-          v-slot="{ on }"
-          :update="(cache, result) => addUpdate(cache, result, 'users')"
-        )
-          v-btn(v-on="on" color="primary")
-            v-icon(left) mdi-plus
-            | {{ $t('ac.users.buttons.add') }}
-      v-col.text-right(cols="12" sm="6")
-        unload-teams(v-if="hasPerm('core.view_experimental')" v-slot="{ on }")
-          v-btn(v-on="on" @click="" color="success")
-            v-icon(left) mdi-upload
-            | {{ $t('ac.users.buttons.upload') }}
-    v-row(align="center")
-      v-col(cols="12" sm="6")
-        v-text-field(v-model="search" :label="$t('search')" prepend-icon="mdi-magnify" clearable)
-      v-col.text-right(cols="12" sm="6")
-        | {{ $t('shownOf', { count: users && users.length, totalCount }) }}
-    v-row
-      v-col
-        v-data-table(
-          :headers="headers"
-          :items="users"
-          :loading="loading"
-          hide-default-footer
-          disable-pagination
-        )
-          template(#item.avatar="{ item }")
-            v-avatar(color="primary" size="46")
-              v-dialog(v-if="!!item.avatar" width="520")
-                template(#activator="{ on }")
-                  v-img(v-on="on" :src="`/${item.avatar}`")
-                v-card
-                  v-card-title {{ $t('ac.users.userAvatar') }}: {{ item.lastName }} {{ item.firstName }}
-                  v-card-subtitle {{ item.username }}
-                  v-card-text
-                    v-img(:src="`/${item.avatar}`" width="500")
-              .headline(v-else) {{ item.lastName[0] }}{{ item.firstName[0] }}
-          template(#item.name="{ item }")
-            nuxt-link(
-              :to="localePath({ name: 'eleden-ac-users-user_id-personalities', params: { user_id: item.id }})"
-            ) {{ item.lastName }} {{ item.firstName }} {{ item.sirName }}
-          template(#item.groups="{ item }")
-            template(v-for="(team, index) in item.teams")
-              v-tooltip(bottom)
-                template(#activator="{ on }")
-                  span(v-on="on") {{ team.shortName }}
-                span {{ team.name }}
-              span(v-if="index !== item.teams.length - 1") ,&nbsp;
-          template(#item.createdAt="{ item }") {{ dateTimeHM(item.createdAt) }}
-          template(#footer v-if="loading")
-            v-progress-linear(color="primary" indeterminate)
+left-navigator-container(:bread-crumbs="bc" @update-drawer="$emit('update-drawer')")
+  template(#header) {{ $t('ac.users.name') }}
+  v-row(align="center")
+    v-col(cols="12" sm="6")
+      add-users(
+        v-if="hasPerm('core.add_user')"
+        v-slot="{ on }"
+        :update="(cache, result) => addUpdate(cache, result, 'users')"
+      )
+        v-btn(v-on="on" color="primary")
+          v-icon(left) mdi-plus
+          | {{ $t('ac.users.buttons.add') }}
+    v-col.text-right(cols="12" sm="6")
+      unload-teams(v-if="hasPerm('core.view_experimental')" v-slot="{ on }")
+        v-btn(v-on="on" @click="" color="success")
+          v-icon(left) mdi-upload
+          | {{ $t('ac.users.buttons.upload') }}
+  v-row(align="center")
+    v-col(cols="12" sm="6")
+      v-text-field(v-model="search" :label="$t('search')" prepend-icon="mdi-magnify" clearable)
+    v-col.text-right(cols="12" sm="6")
+      | {{ $t('shownOf', { count: users && users.length, totalCount }) }}
+  v-row
+    v-col
+      v-data-table(
+        :headers="headers"
+        :items="users"
+        :loading="loading"
+        hide-default-footer
+        disable-pagination
+      )
+        template(#item.avatar="{ item }")
+          v-avatar(color="primary" size="46")
+            v-dialog(v-if="!!item.avatar" width="520")
+              template(#activator="{ on }")
+                v-img(v-on="on" :src="`/${item.avatar}`")
+              v-card
+                v-card-title {{ $t('ac.users.userAvatar') }}: {{ item.lastName }} {{ item.firstName }}
+                v-card-subtitle {{ item.username }}
+                v-card-text
+                  v-img(:src="`/${item.avatar}`" width="500")
+            .headline(v-else) {{ item.lastName[0] }}{{ item.firstName[0] }}
+        template(#item.name="{ item }")
+          nuxt-link(
+            :to="localePath({ name: 'eleden-ac-users-user_id-personalities', params: { user_id: item.id }})"
+          ) {{ item.lastName }} {{ item.firstName }} {{ item.sirName }}
+        template(#item.groups="{ item }")
+          template(v-for="(team, index) in item.teams")
+            v-tooltip(bottom)
+              template(#activator="{ on }")
+                span(v-on="on") {{ team.shortName }}
+              span {{ team.name }}
+            span(v-if="index !== item.teams.length - 1") ,&nbsp;
+        template(#item.createdAt="{ item }") {{ dateTimeHM(item.createdAt) }}
+        template(#footer v-if="loading")
+          v-progress-linear(color="primary" indeterminate)
 </template>
 
 <script lang="ts">

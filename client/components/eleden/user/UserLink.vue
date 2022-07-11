@@ -1,9 +1,9 @@
 <template lang="pug">
-  v-tooltip(bottom)
-    template(#activator="{ on }")
-      v-chip(v-if="chip" v-on="on" :class="linkClass" :to="getUserPath(user)" small) {{ getUser(user) }}
-      nuxt-link(v-else :class="linkClass" :to="getUserPath(user)") {{ getUser(user) }}
-    span {{ $t('user.userChip.goToUser') }}
+v-tooltip(bottom)
+  template(#activator="{ on }")
+    v-chip(v-if="chip" v-on="on" :class="linkClass" :to="getUserPath(user)" small) {{ getUser(user) }}
+    nuxt-link(v-else :class="linkClass" :to="getUserPath(user)") {{ getUser(user) }}
+  span {{ $t('user.userChip.goToUser') }}
 </template>
 
 <script lang="ts">

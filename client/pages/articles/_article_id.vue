@@ -1,5 +1,5 @@
 <template lang="pug">
-  bread-crumbs(:items="bc")
+bread-crumbs(:items="bc")
 </template>
 
 <script lang="ts">

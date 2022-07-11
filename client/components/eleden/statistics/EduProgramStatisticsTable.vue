@@ -1,13 +1,13 @@
 <template lang="pug">
-  v-row
-    v-col(cols="12")
-      tree-data-table(:headers="headers" :items="treeItems" disable-pagination hide-default-footer)
-        template(v-for="f in formatColumns" v-slot:[`item.${f}`]="{ item }")
-          v-tooltip(bottom)
-            template(#activator="{ on }")
-              span(v-on="on") {{ (item[f].value / item[f].total * 100).toFixed(2) }}%
-            div {{ $t('statistics.eduProgramsStatistics.filled') }} {{ item[f].value }}
-            div {{ $t('statistics.eduProgramsStatistics.total') }} {{ item[f].total }}
+v-row
+  v-col(cols="12")
+    tree-data-table(:headers="headers" :items="treeItems" disable-pagination hide-default-footer)
+      template(v-for="f in formatColumns" v-slot:[`item.${f}`]="{ item }")
+        v-tooltip(bottom)
+          template(#activator="{ on }")
+            span(v-on="on") {{ (item[f].value / item[f].total * 100).toFixed(2) }}%
+          div {{ $t('statistics.eduProgramsStatistics.filled') }} {{ item[f].value }}
+          div {{ $t('statistics.eduProgramsStatistics.total') }} {{ item[f].total }}
 </template>
 
 <script lang="ts">

@@ -1,99 +1,99 @@
 <template lang="pug">
-  v-card.summary_report
-    v-card-title {{ $t('ac.teams.summaryReport.name') }}
-    v-card-text
-      v-row(align="center")
-        v-col(cols="12" sm="6" md="8")
-          users-data-filter(
-            v-model="usersFilter"
-            :users="users"
-            message-container-class="mr-1 my-1"
-            multiple
-          )
-          items-data-filter(
-            v-model="columnsFilter"
-            v-bind="getFilterMessages('columnsFilter')"
-            :items="columnsFilterItems"
-            :get-name="columnsFilterItem => columnsFilterItem.text"
-            message-container-class="mr-1 my-1"
-          )
-          items-data-filter(
-            v-model="semestersFilter"
-            v-bind="getFilterMessages('semestersFilter', true)"
-            :items="semesters"
-            :get-name="semester => semester.text"
-            message-container-class="mr-1 my-1"
-            multiple
-          )
-          items-data-filter(
-            v-model="workKindsFilter"
-            v-bind="getFilterMessages('workKindsFilter', true)"
-            :items="workKinds"
-            :get-name="workKind => workKind.name"
-            message-container-class="mr-1 my-1"
-            multiple
-          )
-          items-data-filter(
-            v-model="disciplinesFilter"
-            v-bind="getFilterMessages('disciplinesFilter', true)"
-            :items="disciplines"
-            :get-name="discipline => discipline.name"
-            :search-function="searchDiscipline"
-            message-container-class="mr-1 my-1"
-            multiple
-          )
-        v-col.text-right(v-if="hasPerm('core.view_experimental')" sm="6" md="4")
-          experimental-dialog(v-slot="{ on }")
-            v-btn(v-on="on" color="success")
-              v-icon(left) mdi-upload
-              | {{ $t('ac.teams.summaryReport.buttons.upload') }}
-      v-row
-        v-col
-          v-data-table.data-table(
-            :class="dataTableClasses"
-            :headers="headers"
-            :items="rows"
-            :loading="loading"
-            :hide-default-header="!isMobile"
-            disable-pagination
-            hide-default-footer
-            dense
-          )
-            template(#header="{ isMobile }" v-if="!loading")
-              thead(v-if="!isMobile")
-                tr
-                  th(
-                    :class="userHeader.class"
-                    :style="{ minWidth: `${userHeader.width}px` }"
-                    rowspan="3"
-                  ) {{ userHeader.text }}
-                  th(
-                    v-for="semesterHeader in semesterHeaders"
-                    :key="semesterHeader.key"
-                    :colspan="semesterHeader.colspan"
-                    :style="{ textAlign: semesterHeader.align }"
-                  ) {{ semesterHeader.text }}
-                tr
-                  th(
-                    v-for="workKindHeader in workKindHeaders"
-                    :key="workKindHeader.key"
-                    :colspan="workKindHeader.colspan"
-                    :style="{ textAlign: workKindHeader.align }"
-                  ) {{ workKindHeader.text }}
-                tr
-                  th(
-                    v-for="eduHoursHeader in eduHoursHeaders"
-                    :key="eduHoursHeader.key"
-                    :style="{ minWidth: `${eduHoursHeader.width}px`, textAlign: eduHoursHeader.align }"
-                  ) {{ eduHoursHeader.text }}
-            template(#item.user="{ item }")
-              user-link(:user="item.user")
-            template(v-for="eduHours in filteredEduHours" v-slot:[`item.marks.${eduHours.id}`]="{ item }")
-              v-tooltip(v-if="item.marks[eduHours.id]" bottom)
-                template(#activator="{ on }")
-                  span(v-on="on") {{ item.marks[eduHours.id].shortName }}
-                span {{ item.marks[eduHours.id].name }}
-              strong(v-else) &mdash;
+v-card.summary_report
+  v-card-title {{ $t('ac.teams.summaryReport.name') }}
+  v-card-text
+    v-row(align="center")
+      v-col(cols="12" sm="6" md="8")
+        users-data-filter(
+          v-model="usersFilter"
+          :users="users"
+          message-container-class="mr-1 my-1"
+          multiple
+        )
+        items-data-filter(
+          v-model="columnsFilter"
+          v-bind="getFilterMessages('columnsFilter')"
+          :items="columnsFilterItems"
+          :get-name="columnsFilterItem => columnsFilterItem.text"
+          message-container-class="mr-1 my-1"
+        )
+        items-data-filter(
+          v-model="semestersFilter"
+          v-bind="getFilterMessages('semestersFilter', true)"
+          :items="semesters"
+          :get-name="semester => semester.text"
+          message-container-class="mr-1 my-1"
+          multiple
+        )
+        items-data-filter(
+          v-model="workKindsFilter"
+          v-bind="getFilterMessages('workKindsFilter', true)"
+          :items="workKinds"
+          :get-name="workKind => workKind.name"
+          message-container-class="mr-1 my-1"
+          multiple
+        )
+        items-data-filter(
+          v-model="disciplinesFilter"
+          v-bind="getFilterMessages('disciplinesFilter', true)"
+          :items="disciplines"
+          :get-name="discipline => discipline.name"
+          :search-function="searchDiscipline"
+          message-container-class="mr-1 my-1"
+          multiple
+        )
+      v-col.text-right(v-if="hasPerm('core.view_experimental')" sm="6" md="4")
+        experimental-dialog(v-slot="{ on }")
+          v-btn(v-on="on" color="success")
+            v-icon(left) mdi-upload
+            | {{ $t('ac.teams.summaryReport.buttons.upload') }}
+    v-row
+      v-col
+        v-data-table.data-table(
+          :class="dataTableClasses"
+          :headers="headers"
+          :items="rows"
+          :loading="loading"
+          :hide-default-header="!isMobile"
+          disable-pagination
+          hide-default-footer
+          dense
+        )
+          template(#header="{ isMobile }" v-if="!loading")
+            thead(v-if="!isMobile")
+              tr
+                th(
+                  :class="userHeader.class"
+                  :style="{ minWidth: `${userHeader.width}px` }"
+                  rowspan="3"
+                ) {{ userHeader.text }}
+                th(
+                  v-for="semesterHeader in semesterHeaders"
+                  :key="semesterHeader.key"
+                  :colspan="semesterHeader.colspan"
+                  :style="{ textAlign: semesterHeader.align }"
+                ) {{ semesterHeader.text }}
+              tr
+                th(
+                  v-for="workKindHeader in workKindHeaders"
+                  :key="workKindHeader.key"
+                  :colspan="workKindHeader.colspan"
+                  :style="{ textAlign: workKindHeader.align }"
+                ) {{ workKindHeader.text }}
+              tr
+                th(
+                  v-for="eduHoursHeader in eduHoursHeaders"
+                  :key="eduHoursHeader.key"
+                  :style="{ minWidth: `${eduHoursHeader.width}px`, textAlign: eduHoursHeader.align }"
+                ) {{ eduHoursHeader.text }}
+          template(#item.user="{ item }")
+            user-link(:user="item.user")
+          template(v-for="eduHours in filteredEduHours" v-slot:[`item.marks.${eduHours.id}`]="{ item }")
+            v-tooltip(v-if="item.marks[eduHours.id]" bottom)
+              template(#activator="{ on }")
+                span(v-on="on") {{ item.marks[eduHours.id].shortName }}
+              span {{ item.marks[eduHours.id].name }}
+            strong(v-else) &mdash;
 </template>
 
 <script lang="ts">

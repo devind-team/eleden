@@ -1,12 +1,12 @@
 <template lang="pug">
-  v-card
-    v-card-title {{ $t('articles.name') }}
-    v-card-text
-      articles-view(
-        :articles="articles"
-        :delete-article-update="(store, result) => deleteUpdate(store, result)"
-        :total-count="totalCount"
-      )
+v-card
+  v-card-title {{ $t('articles.name') }}
+  v-card-text
+    articles-view(
+      :articles="articles"
+      :delete-article-update="(store, result) => deleteUpdate(store, result)"
+      :total-count="totalCount"
+    )
 </template>
 
 <script lang="ts">

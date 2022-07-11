@@ -1,69 +1,69 @@
 <template lang="pug">
-  bread-crumbs(:items="bc")
-    v-card
-      v-card-title {{ $t('process.name') }}
-      v-card-text
-        v-row(align="center")
-          v-col(v-if="hasPerm('eleden.add_course')" cols="12" md="6")
-            add-courses(v-slot="{ on }" :add-courses-update="addCoursesUpdate")
-              v-btn(v-on="on" color="primary")
-                v-icon(left) mdi-plus
-                | {{ t('buttons.add') }}
-        v-row(align="center")
-          v-col(cols="12" sm="6")
-            v-text-field(v-stream:input="searchStream$" :label="t('search')" prepend-icon="mdi-magnify" clearable)
-          v-col.text-right(cols="12" sm="6")
-            | {{ t('shownOf', { count: processTeams && processTeams.length, totalCount }) }}
-        v-row
-          v-col(cols="12")
-            v-data-table(
-              :headers="processTeamsHeaders"
-              :items="processTeams"
-              :loading="$apollo.queries.processTeams.loading"
-              disable-pagination
-              hide-default-footer
-            )
-              template(#item.name="{ item }")
-                nuxt-link(:to="localePath({ name: 'eleden-process-team_id', params: { team_id: item.id } })")
-                  | {{ item.name }}
-              template(#item.responsibleUsers="{ item }")
-                .font-italic(v-if="item.responsibleUsers.length === 0") {{ t('tableItem.noSet') }}
-                template(v-else)
-                  user-link(
-                    v-for="(user, index) in item.responsibleUsers"
-                    :key="user.id"
-                    :user="user"
-                    :link-class="['my-1', { 'mr-1': index !== item.responsibleUsers.length - 1 }]"
-                    chip
-                  )
-              template(#item.actions="{ item }")
-                change-courses(
-                  v-if="hasPerm('eleden.change_course')"
-                  v-slot="{ on: onChange }"
-                  :team="item"
-                  :change-courses-update="changeCoursesUpdate"
+bread-crumbs(:items="bc")
+  v-card
+    v-card-title {{ $t('process.name') }}
+    v-card-text
+      v-row(align="center")
+        v-col(v-if="hasPerm('eleden.add_course')" cols="12" md="6")
+          add-courses(v-slot="{ on }" :add-courses-update="addCoursesUpdate")
+            v-btn(v-on="on" color="primary")
+              v-icon(left) mdi-plus
+              | {{ t('buttons.add') }}
+      v-row(align="center")
+        v-col(cols="12" sm="6")
+          v-text-field(v-stream:input="searchStream$" :label="t('search')" prepend-icon="mdi-magnify" clearable)
+        v-col.text-right(cols="12" sm="6")
+          | {{ t('shownOf', { count: processTeams && processTeams.length, totalCount }) }}
+      v-row
+        v-col(cols="12")
+          v-data-table(
+            :headers="processTeamsHeaders"
+            :items="processTeams"
+            :loading="$apollo.queries.processTeams.loading"
+            disable-pagination
+            hide-default-footer
+          )
+            template(#item.name="{ item }")
+              nuxt-link(:to="localePath({ name: 'eleden-process-team_id', params: { team_id: item.id } })")
+                | {{ item.name }}
+            template(#item.responsibleUsers="{ item }")
+              .font-italic(v-if="item.responsibleUsers.length === 0") {{ t('tableItem.noSet') }}
+              template(v-else)
+                user-link(
+                  v-for="(user, index) in item.responsibleUsers"
+                  :key="user.id"
+                  :user="user"
+                  :link-class="['my-1', { 'mr-1': index !== item.responsibleUsers.length - 1 }]"
+                  chip
                 )
+            template(#item.actions="{ item }")
+              change-courses(
+                v-if="hasPerm('eleden.change_course')"
+                v-slot="{ on: onChange }"
+                :team="item"
+                :change-courses-update="changeCoursesUpdate"
+              )
+                v-tooltip(bottom)
+                  template(#activator="{ on: onTooltip }")
+                    v-btn(v-on="{ ...onChange, ...onTooltip }" color="success" icon)
+                      v-icon mdi-pencil
+                  span {{ t('tableItem.actions.change') }}
+              apollo-mutation(
+                v-if="hasPerm('eleden.delete_course')"
+                v-slot="{ mutate, loading }"
+                :mutation="require('~/gql/eleden/mutations/process/delete_courses.graphql')"
+                :variables="{ teamId: item.id }"
+                :update="(store, result) => deleteCoursesUpdate(store, result, item)"
+                tag
+              )
+                delete-menu(v-slot="{ on: onDelete }" :item-name="t('tableItem.deleteItemName')" @confirm="mutate")
                   v-tooltip(bottom)
                     template(#activator="{ on: onTooltip }")
-                      v-btn(v-on="{ ...onChange, ...onTooltip }" color="success" icon)
-                        v-icon mdi-pencil
-                    span {{ t('tableItem.actions.change') }}
-                apollo-mutation(
-                  v-if="hasPerm('eleden.delete_course')"
-                  v-slot="{ mutate, loading }"
-                  :mutation="require('~/gql/eleden/mutations/process/delete_courses.graphql')"
-                  :variables="{ teamId: item.id }"
-                  :update="(store, result) => deleteCoursesUpdate(store, result, item)"
-                  tag
-                )
-                  delete-menu(v-slot="{ on: onDelete }" :item-name="t('tableItem.deleteItemName')" @confirm="mutate")
-                    v-tooltip(bottom)
-                      template(#activator="{ on: onTooltip }")
-                        v-btn(v-on="{ ...onDelete, ...onTooltip }" :loading="loading" color="error" icon)
-                          v-icon mdi-delete
-                      span {{ t('tableItem.actions.delete') }}
-              template(#footer v-if="$apollo.queries.processTeams.loading")
-                v-progress-linear(color="primary" indeterminate)
+                      v-btn(v-on="{ ...onDelete, ...onTooltip }" :loading="loading" color="error" icon)
+                        v-icon mdi-delete
+                    span {{ t('tableItem.actions.delete') }}
+            template(#footer v-if="$apollo.queries.processTeams.loading")
+              v-progress-linear(color="primary" indeterminate)
 </template>
 
 <script lang="ts">

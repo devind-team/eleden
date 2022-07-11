@@ -1,101 +1,101 @@
 <template lang="pug">
-  div
-    validation-provider(
-      v-slot="{ errors, valid }"
-      :name="$t('eduPrograms.discipline.form.code')"
-      rules="required|min:4|max:1024"
+div
+  validation-provider(
+    v-slot="{ errors, valid }"
+    :name="$t('eduPrograms.discipline.form.code')"
+    rules="required|min:4|max:1024"
+  )
+    v-text-field(
+      v-model="discipline.code"
+      :label="$t('eduPrograms.discipline.form.code')"
+      :error-messages="errors"
+      :success="valid"
     )
-      v-text-field(
-        v-model="discipline.code"
-        :label="$t('eduPrograms.discipline.form.code')"
-        :error-messages="errors"
-        :success="valid"
-      )
-    validation-provider(
-      v-slot="{ errors, valid }"
-      :name="$t('eduPrograms.discipline.form.name')"
-      rules="required|min:4|max:1024"
+  validation-provider(
+    v-slot="{ errors, valid }"
+    :name="$t('eduPrograms.discipline.form.name')"
+    rules="required|min:4|max:1024"
+  )
+    v-text-field(
+      v-model="discipline.name"
+      :label="$t('eduPrograms.discipline.form.name')"
+      :error-messages="errors"
+      :success="valid"
     )
-      v-text-field(
-        v-model="discipline.name"
-        :label="$t('eduPrograms.discipline.form.name')"
-        :error-messages="errors"
-        :success="valid"
-      )
-    validation-provider(
-      v-if="hasPerm('eleden.change_discipline_additional_fields')"
-      v-slot="{ errors, valid }"
-      :name="$t('eduPrograms.discipline.form.viewId')"
-      rules="required"
-    )
-      v-select(
-        v-model="discipline.view"
-        :loading="disciplineViewsLoading"
-        :items="disciplineViews"
-        :label="$t('eduPrograms.discipline.form.viewId')"
-        :error-messages="errors"
-        :success="valid"
-        item-text="name"
-        item-value="id"
-        return-object
-      )
-    v-autocomplete(
-      v-if="hasPerm('eleden.change_discipline_additional_fields')"
-      v-model="discipline.parent"
-      :search-input.sync="parentDisciplinesSearch"
-      :loading="parentDisciplinesLoading"
-      :label="$t('eduPrograms.discipline.form.parentId')"
-      :items="parentDisciplines"
-      :filter="filterParentDisciplines"
+  validation-provider(
+    v-if="hasPerm('eleden.change_discipline_additional_fields')"
+    v-slot="{ errors, valid }"
+    :name="$t('eduPrograms.discipline.form.viewId')"
+    rules="required"
+  )
+    v-select(
+      v-model="discipline.view"
+      :loading="disciplineViewsLoading"
+      :items="disciplineViews"
+      :label="$t('eduPrograms.discipline.form.viewId')"
+      :error-messages="errors"
+      :success="valid"
+      item-text="name"
       item-value="id"
-      success
-      hide-no-data
-      hide-selected
-      clearable
       return-object
     )
-      template(#selection="{ item }") {{ item.code }} {{ item.name }}
-      template(#item="{ item }") {{ item.code }} {{ item.name }}
-    v-autocomplete(
-      v-model="discipline.users"
-      :search-input.sync="usersSearch"
-      :loading="usersLoading"
-      :label="$t('eduPrograms.discipline.form.userIds')"
-      :items="users"
-      :filter="filterUsers"
-      item-value="id"
-      multiple
-      chips
-      deletable-chips
-      success
-      hide-no-data
-      hide-selected
-      clearable
-      return-object
-    )
-      template(#selection="{ item }")
-        v-chip(close @click:close="discipline.users = discipline.users.filter(user => user !== item)")
-          | {{ getUserFullName(item) }}
-      template(#item="{ item }")
-        v-list-item-avatar
-          avatar-dialog(:item="item")
-        v-list-item-content
-          v-list-item-title {{ getUserFullName(item) }}
-          v-list-item-subtitle {{ item.username }}
-    file-field(
-      v-model="discipline.workProgram"
-      :existing-file="discipline.existingWorkProgram"
-      :label="$t('eduPrograms.discipline.form.workProgram')"
-      success
-      clearable
-    )
-    file-field(
-      v-model="discipline.annotation"
-      :existing-file="discipline.existingAnnotation"
-      :label="$t('eduPrograms.discipline.form.annotation')"
-      success
-      clearable
-    )
+  v-autocomplete(
+    v-if="hasPerm('eleden.change_discipline_additional_fields')"
+    v-model="discipline.parent"
+    :search-input.sync="parentDisciplinesSearch"
+    :loading="parentDisciplinesLoading"
+    :label="$t('eduPrograms.discipline.form.parentId')"
+    :items="parentDisciplines"
+    :filter="filterParentDisciplines"
+    item-value="id"
+    success
+    hide-no-data
+    hide-selected
+    clearable
+    return-object
+  )
+    template(#selection="{ item }") {{ item.code }} {{ item.name }}
+    template(#item="{ item }") {{ item.code }} {{ item.name }}
+  v-autocomplete(
+    v-model="discipline.users"
+    :search-input.sync="usersSearch"
+    :loading="usersLoading"
+    :label="$t('eduPrograms.discipline.form.userIds')"
+    :items="users"
+    :filter="filterUsers"
+    item-value="id"
+    multiple
+    chips
+    deletable-chips
+    success
+    hide-no-data
+    hide-selected
+    clearable
+    return-object
+  )
+    template(#selection="{ item }")
+      v-chip(close @click:close="discipline.users = discipline.users.filter(user => user !== item)")
+        | {{ getUserFullName(item) }}
+    template(#item="{ item }")
+      v-list-item-avatar
+        avatar-dialog(:item="item")
+      v-list-item-content
+        v-list-item-title {{ getUserFullName(item) }}
+        v-list-item-subtitle {{ item.username }}
+  file-field(
+    v-model="discipline.workProgram"
+    :existing-file="discipline.existingWorkProgram"
+    :label="$t('eduPrograms.discipline.form.workProgram')"
+    success
+    clearable
+  )
+  file-field(
+    v-model="discipline.annotation"
+    :existing-file="discipline.existingAnnotation"
+    :label="$t('eduPrograms.discipline.form.annotation')"
+    success
+    clearable
+  )
 </template>
 
 <script lang="ts">

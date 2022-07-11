@@ -1,13 +1,13 @@
 <template lang="pug">
-  universal-dictionary(
-    :bread-crumbs="bc"
-    :query="require('~/gql/eleden/queries/education/directions.graphql')"
-    :headers="['code', 'name', 'secret', 'delete', { name: 'eduServiceName', value: 'eduService.name' }]"
-    :convert-item="{ delete: (value) => !value }"
-    :boolean-headers="['secret', 'delete']"
-    query-name="directions"
-    @update-drawer="$emit('update-drawer')"
-  )
+universal-dictionary(
+  :bread-crumbs="bc"
+  :query="require('~/gql/eleden/queries/education/directions.graphql')"
+  :headers="['code', 'name', 'secret', 'delete', { name: 'eduServiceName', value: 'eduService.name' }]"
+  :convert-item="{ delete: (value) => !value }"
+  :boolean-headers="['secret', 'delete']"
+  query-name="directions"
+  @update-drawer="$emit('update-drawer')"
+)
 </template>
 
 <script lang="ts">

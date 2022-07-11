@@ -1,11 +1,11 @@
 <template lang="pug">
-  universal-dictionary(
-    @update-drawer="$emit('update-drawer')"
-    :bread-crumbs="bc"
-    :query="require('~/gql/eleden/queries/education/work_forms.graphql')"
-    :headers="['id', 'name']"
-    query-name="workForms"
-  )
+universal-dictionary(
+  @update-drawer="$emit('update-drawer')"
+  :bread-crumbs="bc"
+  :query="require('~/gql/eleden/queries/education/work_forms.graphql')"
+  :headers="['id', 'name']"
+  query-name="workForms"
+)
 </template>
 
 <script lang="ts">

@@ -1,34 +1,34 @@
 <template lang="pug">
-  div
-    mutation-result-alert(ref="mutationResultAlert")
-    .d-flex
-      apollo-mutation(
-        :mutation="require('~/gql/eleden/mutations/team/delete_team.graphql')"
-        :variables="{ teamId: team.id }"
-        @error="setApolloError"
-        @done="deleteTeamDone"
-      )
-        template(v-slot="{ mutate, loading }")
-          delete-menu(:item-name="String($t('ac.teams.settings.changeTeamDelete.deleteItemName'))" @confirm="mutate")
-            template(#default="{ on }")
-              v-btn(v-on="on" :loading="loading" color="error") {{ $t('ac.teams.settings.changeTeamDelete.delete') }}
-      v-spacer
-      apollo-mutation(
-        :mutation="require('~/gql/eleden/mutations/team/change_team_delete.graphql')"
-        :variables="{ teamId: team.id, delete: !team.delete }"
-        @error="setApolloError"
-        @done="changeTeamDeleteDone"
-      )
-        template(v-slot="{ mutate, loading }")
-          confirm-menu(
-            :text="String($t(`ac.teams.settings.changeTeamDelete.${team.delete ? 'restoreConfirmText' : 'archiveConfirmText'}`))"
-            yes-color="warning"
-            no-color="success"
-            @confirm="mutate"
-          )
-            template(#default="{ on }")
-              v-btn(v-on="on" :loading="loading" color="warning")
-                | {{ $t(`ac.teams.settings.changeTeamDelete.${team.delete ? 'restore' : 'archive'}`) }}
+div
+  mutation-result-alert(ref="mutationResultAlert")
+  .d-flex
+    apollo-mutation(
+      :mutation="require('~/gql/eleden/mutations/team/delete_team.graphql')"
+      :variables="{ teamId: team.id }"
+      @error="setApolloError"
+      @done="deleteTeamDone"
+    )
+      template(v-slot="{ mutate, loading }")
+        delete-menu(:item-name="String($t('ac.teams.settings.changeTeamDelete.deleteItemName'))" @confirm="mutate")
+          template(#default="{ on }")
+            v-btn(v-on="on" :loading="loading" color="error") {{ $t('ac.teams.settings.changeTeamDelete.delete') }}
+    v-spacer
+    apollo-mutation(
+      :mutation="require('~/gql/eleden/mutations/team/change_team_delete.graphql')"
+      :variables="{ teamId: team.id, delete: !team.delete }"
+      @error="setApolloError"
+      @done="changeTeamDeleteDone"
+    )
+      template(v-slot="{ mutate, loading }")
+        confirm-menu(
+          :text="String($t(`ac.teams.settings.changeTeamDelete.${team.delete ? 'restoreConfirmText' : 'archiveConfirmText'}`))"
+          yes-color="warning"
+          no-color="success"
+          @confirm="mutate"
+        )
+          template(#default="{ on }")
+            v-btn(v-on="on" :loading="loading" color="warning")
+              | {{ $t(`ac.teams.settings.changeTeamDelete.${team.delete ? 'restore' : 'archive'}`) }}
 </template>
 
 <script lang="ts">

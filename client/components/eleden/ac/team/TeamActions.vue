@@ -1,26 +1,26 @@
 <template lang="pug">
-  v-menu(v-model="active")
-    template(#activator="{ on }")
-      slot(:on="on")
-    v-list
-      experimental-dialog(v-if="hasPerm('core.view_experimental')" v-slot="{ on }")
-        v-list-item(v-on="on")
-          v-list-item-icon
-            v-icon mdi-send
-          v-list-item-content
-            v-list-item-title {{ $t('ac.teams.teamActions.sendNotification') }}
-      unload-users-form(v-slot="{ on }" :team="team" @close="active = false")
-        v-list-item(v-on="on")
-          v-list-item-icon
-            v-icon mdi-upload
-          v-list-item-content
-            v-list-item-title {{ $t('ac.teams.teamActions.upload') }}
-      generate-new-passwords(v-if="team.permissions.canChange" v-slot="{ on }" :team="team" @close="active = false")
-        v-list-item(v-on="on")
-          v-list-item-icon
-            v-icon mdi-lock-reset
-          v-list-item-content
-            v-list-item-title {{ $t('ac.teams.teamActions.generateNewPasswords.name') }}
+v-menu(v-model="active")
+  template(#activator="{ on }")
+    slot(:on="on")
+  v-list
+    experimental-dialog(v-if="hasPerm('core.view_experimental')" v-slot="{ on }")
+      v-list-item(v-on="on")
+        v-list-item-icon
+          v-icon mdi-send
+        v-list-item-content
+          v-list-item-title {{ $t('ac.teams.teamActions.sendNotification') }}
+    unload-users-form(v-slot="{ on }" :team="team" @close="active = false")
+      v-list-item(v-on="on")
+        v-list-item-icon
+          v-icon mdi-upload
+        v-list-item-content
+          v-list-item-title {{ $t('ac.teams.teamActions.upload') }}
+    generate-new-passwords(v-if="team.permissions.canChange" v-slot="{ on }" :team="team" @close="active = false")
+      v-list-item(v-on="on")
+        v-list-item-icon
+          v-icon mdi-lock-reset
+        v-list-item-content
+          v-list-item-title {{ $t('ac.teams.teamActions.generateNewPasswords.name') }}
 </template>
 
 <script lang="ts">

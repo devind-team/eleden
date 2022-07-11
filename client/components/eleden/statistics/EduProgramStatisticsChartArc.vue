@@ -1,17 +1,17 @@
 <template lang="pug">
-  v-row
-    v-col(cols="12")
-      .text-h6 {{ $t('statistics.eduProgramsStatistics.eduPrograms') }}
-    v-col(v-for="chart in chartsEduPrograms" :key="chart" cols="12" md="4")
-      div {{ labels[chart] }}
-      client-only
-        apex-chart(type="donut" :options="statistics[chart].options" :series="statistics[chart].series")
-    v-col(cols="12")
-      .text-h6 {{ $t('statistics.eduProgramsStatistics.disciplines') }}
-    v-col(v-for="chart in chartDisciplines" :key="chart" cols="12" md="3")
-      div {{ labels[camelCase(chart)] }}
-      client-only
-        apex-chart(type="donut" :options="statistics[chart].options" :series="statistics[chart].series")
+v-row
+  v-col(cols="12")
+    .text-h6 {{ $t('statistics.eduProgramsStatistics.eduPrograms') }}
+  v-col(v-for="chart in chartsEduPrograms" :key="chart" cols="12" md="4")
+    div {{ labels[chart] }}
+    client-only
+      apex-chart(type="donut" :options="statistics[chart].options" :series="statistics[chart].series")
+  v-col(cols="12")
+    .text-h6 {{ $t('statistics.eduProgramsStatistics.disciplines') }}
+  v-col(v-for="chart in chartDisciplines" :key="chart" cols="12" md="3")
+    div {{ labels[camelCase(chart)] }}
+    client-only
+      apex-chart(type="donut" :options="statistics[chart].options" :series="statistics[chart].series")
 </template>
 
 <script lang="ts">

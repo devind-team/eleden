@@ -1,6 +1,6 @@
 <template lang="pug">
-  bread-crumbs(:items="bc")
-    v-row {{ $t('eleden.reports') }}
+bread-crumbs(:items="bc")
+  v-row {{ $t('eleden.reports') }}
 </template>
 
 <script lang="ts">

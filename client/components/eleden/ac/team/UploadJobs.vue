@@ -1,37 +1,37 @@
 <template lang="pug">
-  mutation-modal-form(
-    :header="String($t('ac.teams.users.addMenu.fromFileForExisting.header'))"
-    :subheader="team.name + ' (' + team.shortName + ')'"
-    :buttonText="String($t('ac.teams.users.addMenu.fromFileForExisting.buttonText'))"
-    :mutation="require('~/gql/eleden/mutations/job/upload_jobs.graphql')"
-    :variables="{ file, teamId: team.id, generateDocx, generatePdf }"
-    :update="update"
-    mutation-name="uploadJobs"
-    errors-in-alert
-    width="700"
-    @close="close"
-  )
-    template(#activator="{ on }")
-      slot(name="activator" :on="on")
-    template(#form)
-      validation-provider(
-        v-slot="{ errors, valid }"
-        :name="String($t('ac.teams.users.addMenu.form.file'))"
-        rules="required"
+mutation-modal-form(
+  :header="String($t('ac.teams.users.addMenu.fromFileForExisting.header'))"
+  :subheader="team.name + ' (' + team.shortName + ')'"
+  :buttonText="String($t('ac.teams.users.addMenu.fromFileForExisting.buttonText'))"
+  :mutation="require('~/gql/eleden/mutations/job/upload_jobs.graphql')"
+  :variables="{ file, teamId: team.id, generateDocx, generatePdf }"
+  :update="update"
+  mutation-name="uploadJobs"
+  errors-in-alert
+  width="700"
+  @close="close"
+)
+  template(#activator="{ on }")
+    slot(name="activator" :on="on")
+  template(#form)
+    validation-provider(
+      v-slot="{ errors, valid }"
+      :name="String($t('ac.teams.users.addMenu.form.file'))"
+      rules="required"
+    )
+      v-file-input(
+        v-model="file"
+        :label="$t('ac.teams.users.addMenu.form.file')"
+        :success="valid"
+        :error-messages="errors"
+        accept=".xlsx,.csv,.json"
+        clearable
       )
-        v-file-input(
-          v-model="file"
-          :label="$t('ac.teams.users.addMenu.form.file')"
-          :success="valid"
-          :error-messages="errors"
-          accept=".xlsx,.csv,.json"
-          clearable
-        )
-      v-row
-        v-col(cols="6")
-          v-checkbox(v-model="generateDocx" :label="$t('ac.teams.users.addMenu.form.generateDocx')" success)
-        v-col(cols="6")
-          v-checkbox(v-model="generatePdf" :label="$t('ac.teams.users.addMenu.form.generatePdf')" success)
+    v-row
+      v-col(cols="6")
+        v-checkbox(v-model="generateDocx" :label="$t('ac.teams.users.addMenu.form.generateDocx')" success)
+      v-col(cols="6")
+        v-checkbox(v-model="generatePdf" :label="$t('ac.teams.users.addMenu.form.generatePdf')" success)
 </template>
 
 <script lang="ts">

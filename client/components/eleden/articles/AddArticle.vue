@@ -1,51 +1,51 @@
 <template lang="pug">
-  v-menu(bottom)
-    template(#activator="{ on }")
-      slot(:on="on")
-    v-list
-      mutation-modal-form(
-        :header="$t('articles.addMenu.addForm.header')"
-        :button-text="$t('articles.addMenu.addForm.buttonText')"
-        :mutation="require('~/gql/eleden/mutations/articles/add_article.graphql')"
-        :variables="formVariables"
-        :update="addArticleUpdate"
-        :errors-in-alert="true"
-        mutation-name="addArticle"
-        @close="close"
-      )
-        template(#activator="{ on }")
-          v-list-item(v-on="on")
-            v-list-item-icon
-              v-icon mdi-form-select
-            v-list-item-content
-              v-list-item-title {{ $t('articles.actions.fillForm') }}
-        template(#form)
-          add-article-form(:article="inputArticle")
-      mutation-modal-form(
-        :header="$t('articles.addMenu.addBibtexForm.header')"
-        :button-text="$t('articles.addMenu.addBibtexForm.buttonText')"
-        :mutation="require('~/gql/eleden/mutations/articles/add_article_from_bibtex.graphql')"
-        :variables="{ file, formVariables }"
-        :update="addArticleFromBibtexUpdate"
-        :errors-in-alert="true"
-        mutation-name="addArticleFromBibtex"
-        @close="file = null"
-      )
-        template(#activator="{ on }")
-          v-list-item(v-on="on")
-            v-list-item-icon
-              v-icon mdi-script-text
-            v-list-item-title {{ $t('articles.actions.addFromBibTex') }}
-        template(#form)
-          validation-provider(v-slot="{ errors, valid }" :name="$t('articles.addBibtexForm.file')" rules="required")
-            v-file-input(
-              v-model="file"
-              :label="$t('articles.addMenu.addBibtexForm.file')"
-              :error-messages="errors"
-              :success="valid"
-              accept=".bib"
-              clearable
-            )
+v-menu(bottom)
+  template(#activator="{ on }")
+    slot(:on="on")
+  v-list
+    mutation-modal-form(
+      :header="$t('articles.addMenu.addForm.header')"
+      :button-text="$t('articles.addMenu.addForm.buttonText')"
+      :mutation="require('~/gql/eleden/mutations/articles/add_article.graphql')"
+      :variables="formVariables"
+      :update="addArticleUpdate"
+      :errors-in-alert="true"
+      mutation-name="addArticle"
+      @close="close"
+    )
+      template(#activator="{ on }")
+        v-list-item(v-on="on")
+          v-list-item-icon
+            v-icon mdi-form-select
+          v-list-item-content
+            v-list-item-title {{ $t('articles.actions.fillForm') }}
+      template(#form)
+        add-article-form(:article="inputArticle")
+    mutation-modal-form(
+      :header="$t('articles.addMenu.addBibtexForm.header')"
+      :button-text="$t('articles.addMenu.addBibtexForm.buttonText')"
+      :mutation="require('~/gql/eleden/mutations/articles/add_article_from_bibtex.graphql')"
+      :variables="{ file, formVariables }"
+      :update="addArticleFromBibtexUpdate"
+      :errors-in-alert="true"
+      mutation-name="addArticleFromBibtex"
+      @close="file = null"
+    )
+      template(#activator="{ on }")
+        v-list-item(v-on="on")
+          v-list-item-icon
+            v-icon mdi-script-text
+          v-list-item-title {{ $t('articles.actions.addFromBibTex') }}
+      template(#form)
+        validation-provider(v-slot="{ errors, valid }" :name="$t('articles.addBibtexForm.file')" rules="required")
+          v-file-input(
+            v-model="file"
+            :label="$t('articles.addMenu.addBibtexForm.file')"
+            :error-messages="errors"
+            :success="valid"
+            accept=".bib"
+            clearable
+          )
 </template>
 <script lang="ts">
 import { DataProxy } from 'apollo-cache'

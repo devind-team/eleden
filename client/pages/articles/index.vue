@@ -1,44 +1,44 @@
 <template lang="pug">
-  bread-crumbs(:items="breadCrumbs")
-    v-card
-      v-card-title {{ t('name') }}
-      v-card-text
-        v-row
-          v-col(v-if="hasPerm('eleden.add_article')" cols="12")
-            add-article(
-              v-slot="{ on }"
-              :add-article-update="addArticleUpdate"
-              :add-article-from-bibtex-update="addArticleFromBibtexUpdate"
-            )
-              v-btn(v-on="on" color="primary")
-                v-icon(left) mdi-plus
-                | {{ t('general.addMenu.buttons.add') }}
-        v-row(align="center")
-          v-col(cols="12" md="9")
-            items-data-filter(
-              v-model="selectYears"
-              v-bind="getFilterMessages('yearsFilter')"
-              :items="articlesYears.map(e => ({ id: e }))"
-              message-container-class="mr-1 my-1"
-              multiple
-              has-select-all
-            )
-            users-data-filter(
-              v-model="selectUsers"
-              :query="require('~/gql/eleden/queries/core/users.graphql')"
-              :update="(data) => data.users.edges.map(e => e.node)"
-              search-type="server"
-              message-container-class="ml-1 my-1"
-              multiple
-            )
-        articles-view(
-          v-model="search"
-          :articles="articles"
-          :loading="$apollo.queries.articles.loading"
-          :totalCount="totalCount"
-          :delete-article-update="deleteArticleUpdate"
-        )
-        v-pagination(v-if="totalCount > pageSize" v-model="page" :length="Math.ceil(totalCount / pageSize)")
+bread-crumbs(:items="breadCrumbs")
+  v-card
+    v-card-title {{ t('name') }}
+    v-card-text
+      v-row
+        v-col(v-if="hasPerm('eleden.add_article')" cols="12")
+          add-article(
+            v-slot="{ on }"
+            :add-article-update="addArticleUpdate"
+            :add-article-from-bibtex-update="addArticleFromBibtexUpdate"
+          )
+            v-btn(v-on="on" color="primary")
+              v-icon(left) mdi-plus
+              | {{ t('general.addMenu.buttons.add') }}
+      v-row(align="center")
+        v-col(cols="12" md="9")
+          items-data-filter(
+            v-model="selectYears"
+            v-bind="getFilterMessages('yearsFilter')"
+            :items="articlesYears.map(e => ({ id: e }))"
+            message-container-class="mr-1 my-1"
+            multiple
+            has-select-all
+          )
+          users-data-filter(
+            v-model="selectUsers"
+            :query="require('~/gql/eleden/queries/core/users.graphql')"
+            :update="(data) => data.users.edges.map(e => e.node)"
+            search-type="server"
+            message-container-class="ml-1 my-1"
+            multiple
+          )
+      articles-view(
+        v-model="search"
+        :articles="articles"
+        :loading="$apollo.queries.articles.loading"
+        :totalCount="totalCount"
+        :delete-article-update="deleteArticleUpdate"
+      )
+      v-pagination(v-if="totalCount > pageSize" v-model="page" :length="Math.ceil(totalCount / pageSize)")
 </template>
 
 <script lang="ts">

@@ -1,148 +1,148 @@
 <template lang="pug">
-  v-card
-    v-card-title {{ $t('ac.teams.portfolio.name') }}
-    v-card-text
-      //- Блок добавления и фильтрации
-      v-row
-        v-col
-          v-menu(v-if="canAdd" bottom)
-            template(#activator="{ on }")
-              v-btn.mr-3(v-on="on" color="primary")
-                v-icon(left) mdi-plus
-                | {{ $t('ac.teams.portfolio.addMenu.buttons.add') }}
-            v-list
-              mutation-modal-form(
-                :header="$t('ac.teams.portfolio.addMenu.addForm.header')"
-                :buttonText="$t('ac.teams.portfolio.addMenu.addForm.buttonText')"
-                :mutation="require('~/gql/eleden/mutations/portfolio/add_portfolio_files.graphql')"
-                :variables="{ teamId: team.id, describe, typeId, disciplineId, file, confirm }"
-                :update="addPortfolioFilesUpdate"
-                mutation-name="addPortfolioFiles"
-                errors-in-alert
-                @close="close"
-              )
-                template(#activator="{ on }")
-                  v-list-item(v-on="on")
-                    v-list-item-icon
-                      v-icon mdi-form-select
-                    v-list-item-content {{ $t('ac.teams.portfolio.addMenu.buttons.fillForm') }}
-                    v-list-item-action
-                      help-dialog(
-                        v-slot="{ on: onHelper }"
-                        :text="$t('ac.teams.portfolio.addMenu.helpDialog.helpInstruction')"
-                        doc="help/add_portfolio_files"
-                      )
-                        v-tooltip(bottom)
-                          template(#activator="{ on: onTooltip}")
-                            v-btn(v-on="{ ...onTooltip, ...onHelper}" icon)
-                              v-icon mdi-help-circle-outline
-                          span {{ $t('ac.teams.portfolio.addMenu.buttons.helpInstruction') }}
-                template(#form)
-                  //- Описание
-                  validation-provider(
-                    v-slot="{ errors, valid }"
-                    :name="$t('ac.teams.portfolio.addMenu.form.describe')"
-                    rules="required|min:2|max:512"
-                  )
-                    v-textarea(
-                      v-model="describe"
-                      :label="$t('ac.teams.portfolio.addMenu.form.describe')"
-                      :error-messages="errors"
-                      :success="valid"
-                      rows="1"
-                      auto-grow
-                      counter
+v-card
+  v-card-title {{ $t('ac.teams.portfolio.name') }}
+  v-card-text
+    //- Блок добавления и фильтрации
+    v-row
+      v-col
+        v-menu(v-if="canAdd" bottom)
+          template(#activator="{ on }")
+            v-btn.mr-3(v-on="on" color="primary")
+              v-icon(left) mdi-plus
+              | {{ $t('ac.teams.portfolio.addMenu.buttons.add') }}
+          v-list
+            mutation-modal-form(
+              :header="$t('ac.teams.portfolio.addMenu.addForm.header')"
+              :buttonText="$t('ac.teams.portfolio.addMenu.addForm.buttonText')"
+              :mutation="require('~/gql/eleden/mutations/portfolio/add_portfolio_files.graphql')"
+              :variables="{ teamId: team.id, describe, typeId, disciplineId, file, confirm }"
+              :update="addPortfolioFilesUpdate"
+              mutation-name="addPortfolioFiles"
+              errors-in-alert
+              @close="close"
+            )
+              template(#activator="{ on }")
+                v-list-item(v-on="on")
+                  v-list-item-icon
+                    v-icon mdi-form-select
+                  v-list-item-content {{ $t('ac.teams.portfolio.addMenu.buttons.fillForm') }}
+                  v-list-item-action
+                    help-dialog(
+                      v-slot="{ on: onHelper }"
+                      :text="$t('ac.teams.portfolio.addMenu.helpDialog.helpInstruction')"
+                      doc="help/add_portfolio_files"
                     )
-                  //- Дисциплина
+                      v-tooltip(bottom)
+                        template(#activator="{ on: onTooltip}")
+                          v-btn(v-on="{ ...onTooltip, ...onHelper}" icon)
+                            v-icon mdi-help-circle-outline
+                        span {{ $t('ac.teams.portfolio.addMenu.buttons.helpInstruction') }}
+              template(#form)
+                //- Описание
+                validation-provider(
+                  v-slot="{ errors, valid }"
+                  :name="$t('ac.teams.portfolio.addMenu.form.describe')"
+                  rules="required|min:2|max:512"
+                )
+                  v-textarea(
+                    v-model="describe"
+                    :label="$t('ac.teams.portfolio.addMenu.form.describe')"
+                    :error-messages="errors"
+                    :success="valid"
+                    rows="1"
+                    auto-grow
+                    counter
+                  )
+                //- Дисциплина
+                v-autocomplete(
+                  v-if="!!team.eduProgram"
+                  v-model="disciplineId"
+                  :items="disciplines"
+                  :label="$t('ac.teams.portfolio.addMenu.form.disciplineId')"
+                  :loading="disciplinesLoading"
+                  item-text="name"
+                  item-value="id"
+                  success
+                  clearable
+                )
+                //- Тип файла
+                validation-provider(
+                  v-slot="{ errors, valid }"
+                  :name="$t('ac.teams.portfolio.addMenu.form.typeId')"
+                  rules="required"
+                )
                   v-autocomplete(
-                    v-if="!!team.eduProgram"
-                    v-model="disciplineId"
-                    :items="disciplines"
-                    :label="$t('ac.teams.portfolio.addMenu.form.disciplineId')"
-                    :loading="disciplinesLoading"
+                    v-model="typeId"
+                    :items="fileKinds"
+                    :label="$t('ac.teams.portfolio.addMenu.form.typeId')"
+                    :loading="fileKindsLoading"
+                    :error-messages="errors"
+                    :success="valid"
                     item-text="name"
                     item-value="id"
-                    success
                     clearable
                   )
-                  //- Тип файла
-                  validation-provider(
-                    v-slot="{ errors, valid }"
-                    :name="$t('ac.teams.portfolio.addMenu.form.typeId')"
-                    rules="required"
+                //- Прикрепление файла
+                validation-provider(
+                  v-slot="{ errors, valid }"
+                  :name="$t('ac.teams.portfolio.addMenu.form.file')"
+                  rules="required"
+                )
+                  v-file-input(
+                    v-model="file"
+                    :label="$t('ac.teams.portfolio.addMenu.form.file')"
+                    :success="valid"
+                    :error-messages="errors"
+                    accept=".zip,.rar/*"
+                    clearable
                   )
-                    v-autocomplete(
-                      v-model="typeId"
-                      :items="fileKinds"
-                      :label="$t('ac.teams.portfolio.addMenu.form.typeId')"
-                      :loading="fileKindsLoading"
-                      :error-messages="errors"
-                      :success="valid"
-                      item-text="name"
-                      item-value="id"
-                      clearable
-                    )
-                  //- Прикрепление файла
-                  validation-provider(
-                    v-slot="{ errors, valid }"
-                    :name="$t('ac.teams.portfolio.addMenu.form.file')"
-                    rules="required"
-                  )
-                    v-file-input(
-                      v-model="file"
-                      :label="$t('ac.teams.portfolio.addMenu.form.file')"
-                      :success="valid"
-                      :error-messages="errors"
-                      accept=".zip,.rar/*"
-                      clearable
-                    )
-                  //- Подтверждение файлов
-                  v-checkbox(v-if="canChange" v-model="confirm" :label="$t('ac.teams.portfolio.addMenu.form.confirm')" success)
-          users-data-filter(
-            v-if="canViewPortfolio"
-            v-model="selectedUsers"
-            :users="users"
-            message-container-class="mr-1 my-1"
-            multiple
-          )
-          query-data-filter(
-            v-if="team.eduProgram"
-            v-model="selectedDiscipline"
-            v-bind="getFilterMessages('disciplineFilter')"
-            :query="require('~/gql/eleden/queries/education/disciplines.graphql')"
-            :variables="{ eduProgramId: team.eduProgram.id }"
-            :update="data => data.disciplines.edges.map(e => e.node)"
-            :get-name="discipline => `${discipline.code} ${discipline.name}`"
-            search-type="server"
-            message-container-class="mr-1 my-1"
-          )
-          query-data-filter(
-            v-model="selectedFileKind"
-            v-bind="getFilterMessages('fileKindFilter')"
-            :query="require('~/gql/eleden/queries/profile/file_kinds.graphql')"
-            :update="data => data.fileKinds"
-            :get-name="selectedFileKind => selectedFileKind.name"
-            :search-function="(item, search) => item.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())"
-            search-type="client"
-            message-container-class="mr-1 my-1"
-          )
-      //- Блок поиска
-      v-row(align="center")
-        v-col(cols="12" sm="6")
-          v-text-field(v-model="search" :label="$t('search')" prepend-icon="mdi-magnify" clearable)
-        v-col.text-right(cols="12" sm="6")
-          | {{ $t('shownOf', { count: portfolioFiles && portfolioFiles.length, totalCount }) }}
-      //- Таблица
-      v-row
-        v-col
-          portfolio-files(
-            :items="portfolioFiles"
-            :headers="portfolioFilesHeaders"
-            :can-change="canChange"
-            :loading="portfolioFilesLoading"
-            :get-sub-item="getPortfolioFileSubItem"
-            :delete-update="deletePortfolioFileUpdate"
-          )
+                //- Подтверждение файлов
+                v-checkbox(v-if="canChange" v-model="confirm" :label="$t('ac.teams.portfolio.addMenu.form.confirm')" success)
+        users-data-filter(
+          v-if="canViewPortfolio"
+          v-model="selectedUsers"
+          :users="users"
+          message-container-class="mr-1 my-1"
+          multiple
+        )
+        query-data-filter(
+          v-if="team.eduProgram"
+          v-model="selectedDiscipline"
+          v-bind="getFilterMessages('disciplineFilter')"
+          :query="require('~/gql/eleden/queries/education/disciplines.graphql')"
+          :variables="{ eduProgramId: team.eduProgram.id }"
+          :update="data => data.disciplines.edges.map(e => e.node)"
+          :get-name="discipline => `${discipline.code} ${discipline.name}`"
+          search-type="server"
+          message-container-class="mr-1 my-1"
+        )
+        query-data-filter(
+          v-model="selectedFileKind"
+          v-bind="getFilterMessages('fileKindFilter')"
+          :query="require('~/gql/eleden/queries/profile/file_kinds.graphql')"
+          :update="data => data.fileKinds"
+          :get-name="selectedFileKind => selectedFileKind.name"
+          :search-function="(item, search) => item.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())"
+          search-type="client"
+          message-container-class="mr-1 my-1"
+        )
+    //- Блок поиска
+    v-row(align="center")
+      v-col(cols="12" sm="6")
+        v-text-field(v-model="search" :label="$t('search')" prepend-icon="mdi-magnify" clearable)
+      v-col.text-right(cols="12" sm="6")
+        | {{ $t('shownOf', { count: portfolioFiles && portfolioFiles.length, totalCount }) }}
+    //- Таблица
+    v-row
+      v-col
+        portfolio-files(
+          :items="portfolioFiles"
+          :headers="portfolioFilesHeaders"
+          :can-change="canChange"
+          :loading="portfolioFilesLoading"
+          :get-sub-item="getPortfolioFileSubItem"
+          :delete-update="deletePortfolioFileUpdate"
+        )
 </template>
 
 <script lang="ts">

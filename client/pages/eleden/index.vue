@@ -1,8 +1,8 @@
 <template lang="pug">
-  bread-crumbs(:items="breadCrumbs")
-    v-row
-      v-col(cols="12")
-        cards-navigator(:items="cards")
+bread-crumbs(:items="breadCrumbs")
+  v-row
+    v-col(cols="12")
+      cards-navigator(:items="cards")
 </template>
 
 <script lang="ts">

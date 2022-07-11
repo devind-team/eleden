@@ -1,9 +1,10 @@
 #import '../../fragments/process_team_fields.graphql'
 
-query ProcessTeams($first: Int, $offset: Int, $search: String, $courseCount: Float, $courseCountGt: Float) {
+query ProcessTeams($first: Int, $offset: Int, $after: String, $search: String, $courseCount: Float, $courseCountGt: Float) {
   processTeams(
     first: $first,
     offset: $offset,
+    after: $after,
     name_Icontains: $search,
     shortName_Icontains: $search,
     admission_Icontains: $search,
@@ -11,6 +12,13 @@ query ProcessTeams($first: Int, $offset: Int, $search: String, $courseCount: Flo
     courseCount_Gt: $courseCountGt
   ) {
     totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+      __typename
+    }
     edges {
       node {
         ...ProcessTeamFields

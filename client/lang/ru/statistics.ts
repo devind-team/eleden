@@ -44,6 +44,20 @@ export default {
     indicatorLabels: {
       availability: 'Заполнено',
       lack: 'Отсутствует'
+    },
+    filled: 'Заполнено:',
+    total: 'Всего:',
+    headers: {
+      name: 'Направление подготовки',
+      eduForm: 'Форма обучения',
+      admission: 'Год',
+      description: 'Описание',
+      syllabus: 'Учебный план',
+      calendar: 'Календарный учебный график',
+      users: 'Авторы',
+      annotation: 'Аннотации',
+      work_program: 'Рабочие программы',
+      methodological_support: 'Методическое обеспечение'
     }
   },
   statistics: 'Показатели электронной среды обучения'

@@ -1,8 +1,8 @@
 <template lang="pug">
   v-card
-    v-card-title {{ t('name') }}
-    v-card-subtitle {{ t('responsible') }}&nbsp;
-      span(v-if="team.responsibleUsers.length === 0") {{ t('noResponsible') }}
+    v-card-title {{ $t('ac.teams.users.name') }}
+    v-card-subtitle {{ $t('ac.teams.users.responsible') }}&nbsp;
+      span(v-if="team.responsibleUsers.length === 0") {{ $t('ac.teams.users.noResponsible') }}
       template(v-else)
         user-link(v-for="user in team.responsibleUsers" :key="user.id" :user="user" chip link-class="mr-1")
     v-card-text
@@ -12,56 +12,56 @@
             template(#activator="{ on }")
               v-btn(v-on="on" color="primary")
                 v-icon(left) mdi-plus
-                | {{ t('addMenu.buttons.add') }}
+                | {{ $t('ac.teams.users.addMenu.buttons.add') }}
             v-list
               add-job(ref="addJob" :team="team" :update="addJobUpdate" :job-kinds="jobKinds")
                 template(#activator="{ on }")
                   v-list-item(v-on="on")
                     v-list-item-icon
                       v-icon mdi-account
-                    v-list-item-content {{ t('addMenu.buttons.fromExisting') }}
+                    v-list-item-content {{ $t('ac.teams.users.addMenu.buttons.fromExisting') }}
               upload-jobs(:team="team" :update="uploadJobsUpdate")
                 template(#activator="{ on }")
                   v-list-item(v-on="on")
                     v-list-item-icon
                       v-icon mdi-file
-                    v-list-item-content {{ t('addMenu.buttons.fromFileForExisting') }}
+                    v-list-item-content {{ $t('ac.teams.users.addMenu.buttons.fromFileForExisting') }}
                     v-list-item-action
                       help-dialog(
                         v-slot="{ on: onHelper }"
-                        :text="t('addMenu.helpDialog.helpInstruction')"
+                        :text="$t('ac.teams.users.addMenu.helpDialog.helpInstruction')"
                         doc="help/add_jobs"
                       )
                         v-tooltip(bottom)
                           template(#activator="{ on: onTooltip}")
                             v-btn(v-on="{ ...onTooltip, ...onHelper}" icon)
                               v-icon mdi-help-circle-outline
-                          span {{ t('addMenu.buttons.helpInstruction') }}
+                          span {{ $t('ac.teams.users.addMenu.buttons.helpInstruction') }}
               upload-jobs-user(:team="team" :update="uploadJobsUserUpdate" :job-kinds="jobKinds")
                 template(#activator="{ on }")
                   v-list-item(v-on="on")
                     v-list-item-icon
                       v-icon mdi-account-multiple-plus
-                    v-list-item-content {{ t('addMenu.buttons.fromFileForNew') }}
+                    v-list-item-content {{ $t('ac.teams.users.addMenu.buttons.fromFileForNew') }}
                     v-list-item-action
                       help-dialog(
                         v-slot="{ on: onHelper }"
-                        :text="t('addMenu.helpDialog.helpInstruction')"
+                        :text="$t('ac.teams.users.addMenu.helpDialog.helpInstruction')"
                         doc="help/add_team_users"
                       )
                         v-tooltip(bottom)
                           template(#activator="{ on: onTooltip}")
                             v-btn(v-on="{ ...onTooltip, ...onHelper}" icon)
                               v-icon mdi-help-circle-outline
-                          span {{ t('addMenu.buttons.helpInstruction') }}
+                          span {{ $t('ac.teams.users.addMenu.buttons.helpInstruction') }}
         v-col.text-right(v-if="team.permissions.canChange && team.jobs.length > 0" cols="12" md="6")
           team-actions(v-slot="{ on }" :team="team")
             v-btn(v-on="on" icon)
               v-icon mdi-dots-vertical
       v-row(v-if="team.jobs.length > 0" align="center")
         v-col(cols="12" sm="6")
-          v-text-field(v-model="search" :label="t('search')" prepend-icon="mdi-magnify" clearable)
-        v-col.text-right(cols="12" sm="6") {{ t('shownOf', { count: jobsCount, totalCount: team.jobs.length }) }}
+          v-text-field(v-model="search" :label="$t('search')" prepend-icon="mdi-magnify" clearable)
+        v-col.text-right(cols="12" sm="6") {{ $t('shownOf', { count: jobsCount, totalCount: team.jobs.length }) }}
       v-row
         v-col
           v-data-table(
@@ -86,22 +86,23 @@
                 tag="span"
               )
                 template(v-slot="{ mutate, loading }")
-                  delete-menu(:item-name="t('deleteItemName')" @confirm="mutate")
+                  delete-menu(:item-name="$t('ac.teams.users.deleteItemName')" @confirm="mutate")
                     template(#default="{ on: onMenu }")
                       v-tooltip(bottom)
                         template(#activator="{ on: onTooltip }")
                           v-btn(v-on="{ ...onMenu, ...onTooltip }" :loading="loading" icon)
                             v-icon(color="error") mdi-delete
-                        span {{ t('tooltips.delete') }}
+                        span {{ $t('ac.teams.users.tooltips.delete') }}
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue'
-import { mapGetters } from 'vuex'
+import type { PropType } from '#app'
+import { computed, ref, toRefs, defineComponent, inject } from '#app'
 import { DataTableHeader } from 'vuetify'
 import { DataProxy } from 'apollo-cache'
 import { DeleteJobMutationPayload, JobType, TeamType, UserType } from '~/types/graphql'
-import teamQuery from '~/gql/eleden/queries/team/team.graphql'
+import { useAuthStore } from '~/store'
+import { useFilters, useI18n } from '~/composables'
 import UserLink from '~/components/eleden/user/UserLink.vue'
 import AddJob, { AddJobData } from '~/components/eleden/ac/team/AddJob.vue'
 import UploadJobs, { UploadJobsData } from '~/components/eleden/ac/team/UploadJobs.vue'
@@ -114,8 +115,9 @@ import HelpDialog from '~/components/common/dialogs/HelpDialog.vue'
 import { JobKind } from '~/pages/eleden/ac/teams/_team_id.vue'
 
 type DeleteJobData = { data: { deleteJob: DeleteJobMutationPayload } }
+type AddJobType = InstanceType<typeof AddJob> | null
 
-export default Vue.extend<any, any, any, any>({
+export default defineComponent({
   components: {
     UserLink,
     AddJob,
@@ -130,32 +132,38 @@ export default Vue.extend<any, any, any, any>({
   middleware: 'auth',
   props: {
     team: { type: Object as PropType<TeamType>, required: true },
-    jobKinds: { type: Array as PropType<JobKind[]>, required: true }
+    jobKinds: { type: Array as PropType<JobKind[]>, required: true },
+    jobsCount: { type: Number, required: true }
   },
-  data () {
-    return {
-      search: '',
-      jobsCount: this.team.jobs.length
-    }
-  },
-  computed: {
-    ...mapGetters({ hasPerm: 'auth/hasPerm', user: 'auth/user' }),
-    canAdd (): boolean {
-      return this.hasPerm('eleden.add_job') || this.team.permissions.canChange
-    },
-    canDelete (): boolean {
-      return this.hasPerm('eleden.delete_job') || this.team.permissions.canChange
-    },
-    headers (): DataTableHeader[] {
+  setup (props) {
+    const authStore = useAuthStore()
+    const { hasPerm } = toRefs(authStore)
+    const { getUserName, getUserFullName } = useFilters()
+    const { t } = useI18n()
+
+    const addJob = ref<AddJobType>(null)
+    const search = ref<string>('')
+
+    const canAdd = computed<boolean>(() => (hasPerm.value('eleden.add_job') || props.team.permissions.canChange))
+    const canDelete = computed<boolean>(() => (
+      hasPerm.value('eleden.delete_job') || props.team.permissions.canChange
+    ))
+
+    const headers = computed<DataTableHeader[]>(() => {
       const headers: DataTableHeader[] = [
-        { text: this.t('tableHeaders.avatar'), value: 'user.avatar', sortable: false, filterable: false },
-        { text: this.t('tableHeaders.name'), value: 'user' },
-        { text: this.t('tableHeaders.username'), value: 'user.username' },
-        { text: this.t('tableHeaders.email'), value: 'user.email' }
+        {
+          text: t('ac.teams.users.tableHeaders.avatar') as string,
+          value: 'user.avatar',
+          sortable: false,
+          filterable: false
+        },
+        { text: t('ac.teams.users.tableHeaders.name') as string, value: 'user' },
+        { text: t('ac.teams.users.tableHeaders.username') as string, value: 'user.username' },
+        { text: t('ac.teams.users.tableHeaders.email') as string, value: 'user.email' }
       ]
-      if (this.canDelete) {
+      if (canDelete.value) {
         headers.push({
-          text: this.t('tableHeaders.actions'),
+          text: t('ac.teams.users.tableHeaders.actions') as string,
           value: 'actions',
           align: 'center',
           sortable: false,
@@ -163,100 +171,9 @@ export default Vue.extend<any, any, any, any>({
         })
       }
       return headers
-    }
-  },
-  methods: {
-    /**
-     * Получение перевода относильно локального пути
-     * @param path
-     * @param values
-     * @return
-     */
-    t (path: string, values: any = undefined): string {
-      return this.$t(`ac.teams.users.${path}`, values) as string
-    },
-    /**
-     * Обновление пользователей группы после добавления нового пользователя
-     * @param store
-     * @param success
-     * @param job
-     * @param src
-     */
-    addJobUpdate (store: DataProxy, { data: { addJob: { success, job, src } } }: AddJobData): void {
-      if (success) {
-        const data: any = store.readQuery({ query: teamQuery, variables: { teamId: this.team.id } })
-        data.team.jobs.push(job)
-        data.team.jobs.sort((j1: JobType, j2: JobType) =>
-          this.$getUserFullName(j1.user).localeCompare(this.$getUserFullName(j2.user)))
-        store.writeQuery({ query: teamQuery, variables: { teamId: this.team.id }, data })
-        if (src) {
-          window.open(`/${src}`, '_blank')
-        }
-        this.$refs.addJob.refetchUsers()
-      }
-    },
-    /**
-     * Обновление пользователей группы после загрузки существующих пользователей из файла
-     * @param store
-     * @param success
-     * @param jobs
-     * @param src
-     */
-    uploadJobsUpdate (store: DataProxy, { data: { uploadJobs: { success, jobs, src } } }: UploadJobsData): void {
-      if (success) {
-        const data: any = store.readQuery({ query: teamQuery, variables: { teamId: this.team.id } })
-        data.team.jobs = [...data.team.jobs, ...jobs!].sort((j1: JobType, j2: JobType) =>
-          this.$getUserFullName(j1.user).localeCompare(this.$getUserFullName(j2.user)))
-        store.writeQuery({ query: teamQuery, variables: { teamId: this.team.id }, data })
-        if (src) {
-          window.open(`/${src}`, '_blank')
-        }
-        this.$refs.addJob.refetchUsers()
-      }
-    },
-    /**
-     * Обновление пользователей группы после загрузки новых пользователей из файла
-     * @param store
-     * @param success
-     * @param jobs
-     * @param src
-     */
-    uploadJobsUserUpdate (
-      store: DataProxy,
-      { data: { uploadJobsUser: { success, jobs, src } } }: UploadJobsUserData
-    ): void {
-      if (success) {
-        const data: any = store.readQuery({ query: teamQuery, variables: { teamId: this.team.id } })
-        data.team.jobs = [...data.team.jobs, ...jobs!].sort((j1: JobType, j2: JobType) =>
-          this.$getUserFullName(j1.user).localeCompare(this.$getUserFullName(j2.user)))
-        store.writeQuery({ query: teamQuery, variables: { teamId: this.team.id }, data })
-        if (src) {
-          window.open(`/${src}`, '_blank')
-        }
-        this.$refs.addJob.refetchUsers()
-      }
-    },
-    /**
-     * Обновление пользователей группы после удаления пользователя
-     * @param store
-     * @param success
-     * @param job
-     */
-    deleteJobUpdate (store: DataProxy, { data: { deleteJob: { success } } }: DeleteJobData, job: JobType): void {
-      if (success) {
-        const data: any = store.readQuery({ query: teamQuery, variables: { teamId: this.team.id } })
-        data.team.jobs.splice(data.team.jobs.findIndex((existJob: JobType) => existJob.id === job!.id), 1)
-        store.writeQuery({ query: teamQuery, variables: { teamId: this.team.id }, data })
-        this.$refs.addJob.refetchUsers()
-      }
-    },
-    /**
-     * Фильтрация пользователей
-     * @param value
-     * @param search
-     * @return
-     */
-    filter (value: string | UserType | null, search: string | null): boolean {
+    })
+
+    const filter = (value: string | UserType | null, search: string | null): boolean => {
       if (!search) {
         return true
       }
@@ -266,10 +183,76 @@ export default Vue.extend<any, any, any, any>({
       if (typeof value === 'string') {
         return String(value).toLocaleLowerCase().includes(search.toLocaleLowerCase())
       } else {
-        return [this.$getUserName(value as UserType), this.$getUserFullName(value as UserType)].some(
+        return [getUserName(value as UserType), getUserFullName(value as UserType)].some(
           v => v.toLocaleLowerCase().includes(search.toLocaleLowerCase())
         )
       }
+    }
+    const teamUpdate: any = inject('teamUpdate')
+    const addJobUpdate = (cache: DataProxy, result: AddJobData): void => {
+      teamUpdate(cache, result, (dataCache, { data: { addJob: { success, job, src } } }) => {
+        if (success) {
+          const dataKey: string = Object.keys(dataCache)[0]
+          dataCache[dataKey].jobs.push(job)
+          dataCache[dataKey].jobs.sort((j1: JobType, j2: JobType) =>
+            getUserFullName(j1.user).localeCompare(getUserFullName(j2.user)))
+          if (src) {
+            window.open(`/${src}`, '_blank')
+          }
+          addJob.value.refetchUsers()
+        }
+      })
+    }
+
+    const uploadJobsUpdate = (cache: DataProxy, result: UploadJobsData): void => {
+      teamUpdate(cache, result, (dataCache, { data: { uploadJobs: { success, jobs, src } } }) => {
+        if (success) {
+          const dataKey: string = Object.keys(dataCache)[0]
+          dataCache[dataKey].jobs = [...dataCache[dataKey].jobs, ...jobs!].sort((j1: JobType, j2: JobType) =>
+            getUserFullName(j1.user).localeCompare(getUserFullName(j2.user)))
+          if (src) {
+            window.open(`/${src}`, '_blank')
+          }
+          addJob.value.refetchUsers()
+        }
+      })
+    }
+
+    const uploadJobsUserUpdate = (cache: DataProxy, result: UploadJobsUserData): void => {
+      teamUpdate(cache, result, (dataCache, { data: { uploadJobsUser: { success, jobs, src } } }) => {
+        if (success) {
+          const dataKey: string = Object.keys(dataCache)[0]
+          dataCache[dataKey].jobs = [...dataCache[dataKey].jobs, ...jobs!].sort((j1: JobType, j2: JobType) =>
+            getUserFullName(j1.user).localeCompare(getUserFullName(j2.user)))
+          if (src) {
+            window.open(`/${src}`, '_blank')
+          }
+          addJob.value.refetchUsers()
+        }
+      })
+    }
+
+    const deleteJobUpdate = (cache: DataProxy, result: DeleteJobData, job: JobType): void => {
+      teamUpdate(cache, result, (dataCache, { data: { deleteJob: { success } } }) => {
+        if (success) {
+          const dataKey: string = Object.keys(dataCache)[0]
+          dataCache[dataKey].jobs.splice(dataCache[dataKey].jobs.findIndex((existJob: JobType) => existJob.id === job!.id), 1)
+          addJob.value.refetchUsers()
+        }
+      })
+    }
+
+    return {
+      addJob,
+      search,
+      canAdd,
+      canDelete,
+      headers,
+      filter,
+      addJobUpdate,
+      uploadJobsUpdate,
+      uploadJobsUserUpdate,
+      deleteJobUpdate
     }
   }
 })

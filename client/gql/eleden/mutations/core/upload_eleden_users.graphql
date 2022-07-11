@@ -42,5 +42,6 @@ mutation UploadEledenUser ($groupsId: [Int], $file: Upload!) {
         ...TeamFields
       }
     }
+    __typename
   }
 }

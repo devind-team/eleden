@@ -184,6 +184,8 @@ class DeleteArticleMutation(BaseMutation):
         article_id = graphene.ID(required=True, description='Идентификатор файла публикации')
         user_id = graphene.ID(required=True, description='Пользователь')
 
+    id = graphene.ID(required=True, description='Идентификатор файла публикации')
+
     @staticmethod
     @permission_classes((IsAuthenticated, DeleteArticle,))
     def mutate_and_get_payload(root: None, info: ResolveInfo, article_id: str, user_id: str):
@@ -192,7 +194,7 @@ class DeleteArticleMutation(BaseMutation):
         info.context.check_object_permissions(info.context, user)
         os.remove(article.src.path)
         article.delete()
-        return DeleteArticleMutation()
+        return DeleteArticleMutation(id=article_id)
 
 
 class UnloadArticlesMutation(BaseMutation):

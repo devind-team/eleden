@@ -24,5 +24,6 @@ mutation AddPortfolioFiles(
     portfolioFiles {
       ...PortfolioFileFields
     }
+    __typename
   }
 }

@@ -1,9 +1,10 @@
 #import "../../../core/fragments/user_team_fields.graphql"
 
-query EledenUsers($first: Int, $offset: Int, $search: String) {
+query EledenUsers($first: Int, $offset: Int, $after: String, $search: String) {
   users(
     first: $first,
     offset: $offset,
+    after: $after,
     username_Icontains: $search,
     email_Icontains: $search,
     lastName_Icontains: $search,
@@ -11,10 +12,18 @@ query EledenUsers($first: Int, $offset: Int, $search: String) {
     sirName_Icontains: $search
   ) {
     totalCount
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+      __typename
+    }
     edges {
       node {
         ...UserTeamFields
       }
     }
+    __typename
   }
 }

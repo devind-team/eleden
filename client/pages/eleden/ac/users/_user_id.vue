@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import type { PropType, ComputedRef } from '#app'
-import { defineComponent, useNuxt2Meta, computed, useRoute, useNuxtApp } from '#app'
+import { defineComponent, useNuxt2Meta, computed, useRoute, useNuxtApp, provide } from '#app'
 import { BreadCrumbsItem, LinksType } from '~/types/devind'
 import { UserQuery, UserQueryVariables } from '~/types/graphql'
 import { useI18n, useCommonQuery } from '~/composables'
@@ -52,12 +52,13 @@ export default defineComponent({
       }
     ]))
 
-    const { data: user, loading } = useCommonQuery<UserQuery, UserQueryVariables>({
+    const { data: user, loading, update } = useCommonQuery<UserQuery, UserQueryVariables>({
       document: userQuery,
       variables: () => ({
         userId: route.params.user_id
       })
     })
+    provide('userUpdate', update)
 
     return { links, fullName, bc, user, loading }
   }

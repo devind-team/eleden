@@ -1,6 +1,6 @@
 <template lang="pug">
   v-card.summary_report
-    v-card-title {{ t('name') }}
+    v-card-title {{ $t('ac.teams.summaryReport.name') }}
     v-card-text
       v-row(align="center")
         v-col(cols="12" sm="6" md="8")
@@ -46,7 +46,7 @@
           experimental-dialog(v-slot="{ on }")
             v-btn(v-on="on" color="success")
               v-icon(left) mdi-upload
-              | {{ t('buttons.upload') }}
+              | {{ $t('ac.teams.summaryReport.buttons.upload') }}
       v-row
         v-col
           v-data-table.data-table(
@@ -97,9 +97,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
-import { PropType } from 'vue'
-import { mapGetters } from 'vuex'
+import type { PropType } from '#app'
 import { DataTableHeader } from 'vuetify'
 import {
   UserType,
@@ -109,27 +107,32 @@ import {
   RegistrationType,
   EduHoursType,
   WorkKindType,
+  TeamsSummaryReportQuery,
   TeamsSummaryReportQueryVariables,
+  UsersSummaryReportQuery,
   UsersSummaryReportQueryVariables,
   TeamSummaryReportType
 } from '~/types/graphql'
 import { FilterMessages } from '~/types/filters'
+import { useAuthStore } from '~/store'
+import { useCommonQuery, useI18n } from '~/composables'
+import teamsSummaryReportQuery from '~/gql/eleden/queries/process/teams_summary_report.graphql'
+import usersSummaryReportQuery from '~/gql/eleden/queries/process/users_summary_report.graphql'
 import UsersDataFilter from '~/components/core/filters/UsersDataFilter.vue'
 import ItemsDataFilter from '~/components/common/filters/ItemsDataFilter.vue'
 import ExperimentalDialog from '~/components/common/dialogs/ExperimentalDialog.vue'
 import UserLink from '~/components/eleden/user/UserLink.vue'
 
-type ColumnsFilterValue = 'noMarks' | 'anyMark' | 'allMarks'
-type ColumnsFilterItem = { id: string, value: ColumnsFilterValue, text: string }
-type Classes = (string | { [key: string]: boolean })[]
-type Semester = { id: number, text: string }
-type TopHeader = Omit<DataTableHeader, 'value'> & { key: string, colspan: number }
-type EduHoursHeader = DataTableHeader & { key: string }
-type Row = { user: UserType, marks: { [eduHoursId: string]: RegistrationType | null } }
+type ColumnsFilterValueType = 'noMarks' | 'anyMark' | 'allMarks'
+type ColumnsFilterItemType = { id: string, value: ColumnsFilterValueType, text: string }
+type ClassesType = (string | { [key: string]: boolean })[]
+type SemesterType = { id: number, text: string }
+type TopHeaderType = Omit<DataTableHeader, 'value'> & { key: string, colspan: number }
+type EduHoursHeaderType = DataTableHeader & { key: string }
+type RowType = { user: UserType, marks: { [eduHoursId: string]: RegistrationType | null } }
 
-@Component<SummaryReport>({
+export default defineComponent({
   components: { UsersDataFilter, ItemsDataFilter, ExperimentalDialog, UserLink },
-  middleware: 'auth',
   beforeRouteEnter (_to, _from, next) {
     next((vm) => {
       if (!(vm.canViewSummaryReport || vm.isMember)) {
@@ -140,122 +143,143 @@ type Row = { user: UserType, marks: { [eduHoursId: string]: RegistrationType | n
       }
     })
   },
-  computed: {
-    ...mapGetters({ user: 'auth/user', hasPerm: 'auth/hasPerm' }),
-    isMobile (): boolean {
-      return this.$vuetify.breakpoint.mobile
-    },
-    loading (): boolean {
-      return this.canViewSummaryReport
-        ? this.$apollo.queries.teamsSummaryReport.loading
-        : this.$apollo.queries.usersSummaryReport.loading
-    },
-    summaryReport (): TeamSummaryReportType[] {
-      return (this.canViewSummaryReport ? this.teamsSummaryReport : this.usersSummaryReport) || []
-    },
-    users (): UserType[] {
-      return this.canViewSummaryReport ? this.team.jobs.map(job => job.user) : [this.user]
-    },
-    filteredUsers (): UserType[] {
-      if (!this.usersFilter.length) {
-        return this.users
+  middleware: 'auth',
+  props: {
+    team: { type: Object as PropType<TeamType>, required: true },
+    isMember: { type: Boolean, required: true },
+    canViewSummaryReport: { type: Boolean, required: true }
+  },
+  setup (props) {
+    const userStore = useAuthStore()
+    const { hasPerm, user } = toRefs(userStore)
+    const { t, tc } = useI18n()
+
+    const usersFilter = ref<UserType[]>([])
+    const columnsFilter = ref<ColumnsFilterItemType | null>(null)
+    const semestersFilter = ref<SemesterType[]>([])
+    const workKindsFilter = ref<WorkKindType[]>([])
+    const disciplinesFilter = ref<DisciplineType[]>([])
+
+    const isMobile = computed<boolean>(() => (useNuxtApp().$vuetify.breakpoint.mobile))
+
+    const loading = computed<boolean>(() => (
+      props.canViewSummaryReport ? teamsSummaryReportLoading.value : usersSummaryReportLoading.value
+    ))
+
+    const summaryReport = computed<TeamSummaryReportType[]>(() => (
+      (props.canViewSummaryReport ? teamsSummaryReport.value : usersSummaryReport.value) || []
+    ))
+
+    const users = computed<UserType[]>(() => (
+      props.canViewSummaryReport ? props.team.jobs.map(job => job.user) : [user.value]
+    ))
+
+    const filteredUsers = computed<UserType[]>(() => {
+      if (!usersFilter.value.length) {
+        return users.value
       }
-      return this.usersFilter
-    },
-    columnsFilterItems (): ColumnsFilterItem[] {
-      return [
-        { id: '1', value: 'noMarks', text: this.t('filters.columnsFilter.noMarks') },
-        { id: '2', value: 'anyMark', text: this.t('filters.columnsFilter.anyMark') },
-        { id: '3', value: 'allMarks', text: this.t('filters.columnsFilter.allMarks') }
-      ]
-    },
-    eduHours (): EduHoursType[] {
-      if (!this.summaryReport.length) {
+      return usersFilter.value
+    })
+
+    const columnsFilterItems = computed<ColumnsFilterItemType[]>(() => ([
+      { id: '1', value: 'noMarks', text: t('ac.teams.summaryReport.filters.columnsFilter.noMarks') },
+      { id: '2', value: 'anyMark', text: t('ac.teams.summaryReport.filters.columnsFilter.anyMark') },
+      { id: '3', value: 'allMarks', text: t('ac.teams.summaryReport.filters.columnsFilter.allMarks') }
+    ]))
+
+    const eduHours = computed<EduHoursType[]>(() => {
+      if (!summaryReport.value.length) {
         return []
       }
-      return this.summaryReport[0].eduHours
-    },
-    filteredEduHours (): EduHoursType[] {
-      let eduHours = this.eduHours
-      if (this.columnsFilter) {
-        if (this.columnsFilter.value === 'noMarks') {
-          eduHours = this.eduHours.filter(
-            eduHours => !this.attestations.find(mark => mark.course.eduHours.id === eduHours.id))
-        } else if (this.columnsFilter.value === 'anyMark') {
-          eduHours = this.eduHours.filter(
-            eduHours => !!this.attestations.find(mark => mark.course.eduHours.id === eduHours.id))
-        } else if (this.columnsFilter.value === 'allMarks') {
-          eduHours = this.eduHours.filter(
-            eduHours => this.attestations.filter(
-              mark => mark.course.eduHours.id === eduHours.id).length === this.users.length)
+      return summaryReport.value[0].eduHours
+    })
+
+    const filteredEduHours = computed<EduHoursType[]>(() => {
+      let eduHoursValue = eduHours.value
+      if (columnsFilter.value) {
+        if (columnsFilter.value.value === 'noMarks') {
+          eduHoursValue = eduHours.value.filter(
+            eduHours => !attestations.value.find(mark => mark.course.eduHours.id === eduHours.id))
+        } else if (columnsFilter.value.value === 'anyMark') {
+          eduHoursValue = eduHours.value.filter(
+            eduHours => !!attestations.value.find(mark => mark.course.eduHours.id === eduHours.id))
+        } else if (columnsFilter.value.value === 'allMarks') {
+          eduHoursValue = eduHours.value.filter(
+            eduHours => attestations.value.filter(
+              mark => mark.course.eduHours.id === eduHours.id).length === users.value.length)
         }
       }
-      if (this.semestersFilter.length) {
-        eduHours = eduHours.filter(eduHours =>
-          !!this.semestersFilter.find(semester => this.getSemester(eduHours) === semester.id))
+      if (semestersFilter.value.length) {
+        eduHoursValue = eduHours.filter(eduHours =>
+          !!semestersFilter.value.find(semester => getSemester(eduHours) === semester.id))
       }
-      if (this.workKindsFilter.length) {
-        eduHours = eduHours.filter(eduHours =>
-          !!this.workKindsFilter.find(workKind => eduHours.workKind.id === workKind.id))
+      if (workKindsFilter.value.length) {
+        eduHoursValue = eduHours.filter(eduHours =>
+          !!workKindsFilter.value.find(workKind => eduHours.workKind.id === workKind.id))
       }
-      if (this.disciplinesFilter.length) {
-        eduHours = eduHours.filter(eduHours =>
-          !!this.disciplinesFilter.find(discipline => eduHours.discipline.id === discipline.id))
+      if (disciplinesFilter.value.length) {
+        eduHoursValue = eduHours.filter(eduHours =>
+          !!disciplinesFilter.value.find(discipline => eduHours.discipline.id === discipline.id))
       }
-      return eduHours
-    },
-    attestations (): AttestationType[] {
-      if (!this.summaryReport.length) {
+      return eduHoursValue
+    })
+
+    const attestations = computed<AttestationType[]>(() => {
+      if (!summaryReport.value.length) {
         return []
       }
-      return this.summaryReport[0].attestations
-    },
-    semesters (): Semester[] {
-      return [...new Set(this.eduHours.map(this.getSemester))].map((semester: any) => ({
+      return summaryReport.value[0].attestations
+    })
+
+    const semesters = computed<SemesterType[]>(() => (
+      [...new Set(eduHours.value.map(getSemester))].map((semester: any) => ({
         id: semester,
-        text: this.t('semester', { number: semester })
+        text: t('ac.teams.summaryReport.semester', { number: semester })
       }))
-    },
-    filteredSemesters (): Semester[] {
-      return [...new Set(this.filteredEduHours.map(this.getSemester))].map((semester: any) => ({
+    ))
+
+    const filteredSemesters = computed<SemesterType[]>(() => (
+      [...new Set(filteredEduHours.value.map(getSemester))].map((semester: any) => ({
         id: semester,
-        text: this.t('semester', { number: semester })
+        text: t('ac.teams.summaryReport.semester', { number: semester })
       }))
-    },
-    workKinds (): WorkKindType[] {
-      const workKinds = this.eduHours.map(eduHours => eduHours.workKind)
+    ))
+
+    const workKinds = computed<WorkKindType[]>(() => {
+      const workKinds = eduHours.value.map(eduHours => eduHours.workKind)
       return workKinds.filter((w1, index) => workKinds.findIndex(w2 => w1.id === w2.id) === index)
-    },
-    disciplines (): DisciplineType[] {
-      const disciplines = this.eduHours.map(eduHours => eduHours.discipline)
+    })
+
+    const disciplines = computed<DisciplineType[]>(() => {
+      const disciplines = eduHours.value.map(eduHours => eduHours.discipline)
       return disciplines.filter((d1, index) => disciplines.findIndex(d2 => d1.id === d2.id) === index)
-    },
-    dataTableClasses (): Classes {
-      return [
-        this.$vuetify.theme.dark ? 'data-table_dark' : 'data-table_light',
-        { 'data-table_loading': this.loading }
-      ]
-    },
-    userHeader (): DataTableHeader {
-      return {
-        text: this.t('dataTableHeaders.user'),
-        value: 'user',
-        width: 175,
-        class: 'sticky user-column-cell user-column-header-cell',
-        cellClass: 'sticky user-column-cell'
-      }
-    },
-    semesterHeaders (): TopHeader[] {
-      return this.filteredSemesters.map(semester => ({
+    })
+
+    const dataTableClasses = computed<ClassesType>(() => ([
+      useNuxtApp().$vuetify.theme.dark ? 'data-table_dark' : 'data-table_light',
+      { 'data-table_loading': loading.value }
+    ]))
+
+    const userHeader = computed<DataTableHeader>(() => ({
+      text: t('ac.teams.summaryReport.dataTableHeaders.user'),
+      value: 'user',
+      width: 175,
+      class: 'sticky user-column-cell user-column-header-cell',
+      cellClass: 'sticky user-column-cell'
+    }))
+
+    const semesterHeaders = computed<TopHeaderType[]>(() => (
+      filteredSemesters.value.map(semester => ({
         key: String(semester.id),
         text: semester.text,
-        colspan: this.filteredEduHours.filter(eduHours => this.getSemester(eduHours) === semester.id).length,
+        colspan: filteredEduHours.value.filter(eduHours => getSemester(eduHours) === semester.id).length,
         align: 'center'
       }))
-    },
-    workKindHeaders (): TopHeader[] {
-      return this.filteredSemesters.reduce((acc, semester) => {
-        const eduHours = this.filteredEduHours.filter(eduHours => this.getSemester(eduHours) === semester.id)
+    ))
+
+    const workKindHeaders = computed<TopHeaderType[]>(() => (
+      filteredSemesters.value.reduce((acc, semester) => {
+        const eduHours = filteredEduHours.value.filter(eduHours => getSemester(eduHours) === semester.id)
         const workKinds = eduHours.map(eduHours => eduHours.workKind)
         const uniqueWorkKinds = workKinds.filter((w1, index) => workKinds.findIndex(w2 => w1.id === w2.id) === index)
         return [...acc, ...uniqueWorkKinds.map(workKind => ({
@@ -263,15 +287,16 @@ type Row = { user: UserType, marks: { [eduHoursId: string]: RegistrationType | n
           text: workKind.name,
           colspan: eduHours.filter(eduHours => eduHours.workKind.id === workKind.id).length,
           align: 'center'
-        })) as TopHeader[]]
-      }, [] as TopHeader[])
-    },
-    eduHoursHeaders (): EduHoursHeader[] {
-      return this.filteredEduHours.map((eduHours) => {
+        })) as TopHeaderType[]]
+      }, [] as TopHeaderType[])
+    ))
+
+    const eduHoursHeaders = computed<EduHoursHeaderType[]>(() => (
+      filteredEduHours.value.map((eduHours) => {
         return {
           key: eduHours.id,
-          text: this.isMobile
-            ? `${eduHours.discipline.name} (${this.t('semester', { number: this.getSemester(eduHours) })}` +
+          text: isMobile.value
+            ? `${eduHours.discipline.name} (${t('ac.teams.summaryReport.semester', { number: getSemester(eduHours) })}` +
               `, ${eduHours.workKind.shortName})`
             : eduHours.discipline.name,
           value: `marks.${eduHours.id}`,
@@ -279,18 +304,18 @@ type Row = { user: UserType, marks: { [eduHoursId: string]: RegistrationType | n
           align: 'center'
         }
       })
-    },
-    headers (): DataTableHeader[] {
-      return [this.userHeader, ...this.eduHoursHeaders]
-    },
-    rows (): Row[] {
-      if (!this.summaryReport.length) {
+    ))
+
+    const headers = computed<DataTableHeader[]>(() => ([userHeader.value, ...eduHoursHeaders.value]))
+
+    const rows = computed<RowType[]>(() => {
+      if (!summaryReport.value.length) {
         return []
       }
-      return this.filteredUsers.map(user => ({
+      return filteredUsers.value.map(user => ({
         user,
-        marks: this.filteredEduHours.reduce((acc, eduHours) => {
-          const attestation = this.attestations.find(
+        marks: filteredEduHours.value.reduce((acc, eduHours) => {
+          const attestation = attestations.value.find(
             attestation => attestation.user.id === user.id &&
               attestation.course.eduHours.id === eduHours.id
           )
@@ -300,111 +325,76 @@ type Row = { user: UserType, marks: { [eduHoursId: string]: RegistrationType | n
           }
         }, {})
       }))
+    })
+
+    const {
+      data: teamsSummaryReport,
+      loading: teamsSummaryReportLoading
+    } = useCommonQuery<TeamsSummaryReportQuery, TeamsSummaryReportQueryVariables>({
+      document: teamsSummaryReportQuery,
+      variables: () => ({ teamIds: [props.team.id] }),
+      options: () => ({
+        enabled: props.canViewSummaryReport
+      })
+    })
+
+    const {
+      data: usersSummaryReport,
+      loading: usersSummaryReportLoading
+    } = useCommonQuery<UsersSummaryReportQuery, UsersSummaryReportQueryVariables>({
+      document: usersSummaryReportQuery,
+      variables: () => ({ userIds: [String(user.value.id)] }),
+      options: () => ({
+        enabled: !props.canViewSummaryReport
+      })
+    })
+
+    const getSemester = (eduHours: EduHoursType): number => {
+      return (eduHours.courseNumber - 1) * 2 + eduHours.semesterNumber
     }
-  },
-  apollo: {
-    teamsSummaryReport: {
-      query: require('~/gql/eleden/queries/process/teams_summary_report.graphql'),
-      variables (): TeamsSummaryReportQueryVariables {
-        return { teamIds: [this.team.id] }
-      },
-      skip () {
-        return !this.canViewSummaryReport
+
+    const getFilterMessages = (filterName: string, multiple: boolean = false): FilterMessages => {
+      return {
+        title: t(`ac.teams.summaryReport.filters.${filterName}.title`),
+        noFiltrationMessage: t(`ac.teams.summaryReport.filters.${filterName}.noFiltrationMessage`),
+        multipleMessageFunction: multiple
+          ? (name, restLength) =>
+              tc(`ac.teams.summaryReport.filters.${filterName}.multipleMessage`, restLength, { name, restLength })
+          : undefined
       }
-    },
-    usersSummaryReport: {
-      query: require('~/gql/eleden/queries/process/users_summary_report.graphql'),
-      variables (): UsersSummaryReportQueryVariables {
-        return { userIds: [String(this.user.id)] }
-      },
-      skip () {
-        return this.canViewSummaryReport
-      }
+    }
+
+    const searchDiscipline = (discipline: DisciplineType, search: string): boolean => {
+      return discipline.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+    }
+
+    return {
+      hasPerm,
+      usersFilter,
+      columnsFilter,
+      semestersFilter,
+      workKindsFilter,
+      disciplinesFilter,
+      isMobile,
+      loading,
+      users,
+      columnsFilterItems,
+      filteredEduHours,
+      semesters,
+      workKinds,
+      disciplines,
+      dataTableClasses,
+      userHeader,
+      semesterHeaders,
+      workKindHeaders,
+      eduHoursHeaders,
+      headers,
+      rows,
+      getFilterMessages,
+      searchDiscipline
     }
   }
 })
-export default class SummaryReport extends Vue {
-  @Prop({ type: Object as PropType<TeamType>, required: true }) readonly team!: TeamType
-  @Prop({ type: Boolean, required: true }) readonly isMember!: boolean
-  @Prop({ type: Boolean, required: true }) readonly canViewSummaryReport!: boolean
-
-  readonly user!: UserType
-  readonly hasPerm!: (permissions: string | string[], or?: boolean) => boolean
-  readonly isMobile!: boolean
-  readonly loading!: boolean
-  readonly summaryReport!: TeamSummaryReportType[]
-  readonly users!: UserType[]
-  readonly filteredUsers!: UserType[]
-  readonly columnsFilterItems!: ColumnsFilterItem[]
-  readonly eduHours!: EduHoursType[]
-  readonly filteredEduHours!: EduHoursType[]
-  readonly attestations!: AttestationType[]
-  readonly semesters!: Semester[]
-  readonly filteredSemesters!: Semester[]
-  readonly workKinds!: WorkKindType[]
-  readonly disciplines!: DisciplineType[]
-  readonly dataTableClasses!: Classes
-  readonly userHeader!: DataTableHeader
-  readonly semesterHeaders!: TopHeader[]
-  readonly workKindHeaders!: TopHeader[]
-  readonly eduHoursHeaders!: EduHoursHeader[]
-  readonly headers!: DataTableHeader[]
-  readonly rows!: Row[]
-  readonly teamsSummaryReport!: TeamSummaryReportType[] | undefined
-  readonly usersSummaryReport!: TeamSummaryReportType[] | undefined
-
-  usersFilter: UserType[] = []
-  columnsFilter: ColumnsFilterItem | null = null
-  semestersFilter: Semester[] = []
-  workKindsFilter: WorkKindType[] = []
-  disciplinesFilter: DisciplineType[] = []
-
-  /**
-   * Получение перевода относильно локального пути
-   * @param path
-   * @param values
-   * @return
-   */
-  t (path: string, values: any = undefined): string {
-    return this.$t(`ac.teams.summaryReport.${path}`, values) as string
-  }
-
-  /**
-   * Получение номера семестра
-   * @param eduHours
-   * @return
-   */
-  getSemester (eduHours: EduHoursType): number {
-    return (eduHours.courseNumber - 1) * 2 + eduHours.semesterNumber
-  }
-
-  /**
-   * Получение сообщений для фильтра
-   * @param filterName
-   * @param multiple
-   * @return
-   */
-  getFilterMessages (filterName: string, multiple: boolean = false): FilterMessages {
-    return {
-      title: this.t(`filters.${filterName}.title`),
-      noFiltrationMessage: this.t(`filters.${filterName}.noFiltrationMessage`),
-      multipleMessageFunction: multiple
-        ? (name, restLength) =>
-            this.$tc(`ac.teams.summaryReport.filters.${filterName}.multipleMessage`, restLength, { name, restLength })
-        : undefined
-    }
-  }
-
-  /**
-   * Поиск дисциплины
-   * @param discipline
-   * @param search
-   * @return
-   */
-  searchDiscipline (discipline: DisciplineType, search: string): boolean {
-    return discipline.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
-  }
-}
 </script>
 
 <style lang="sass">

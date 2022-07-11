@@ -1,13 +1,13 @@
 <template lang="pug">
   v-row
     v-col(cols="12")
-      .text-h6 {{ t('eduPrograms') }}
+      .text-h6 {{ $t('statistics.eduProgramsStatistics.eduPrograms') }}
     v-col(v-for="chart in chartsEduPrograms" :key="chart" cols="12" md="4")
       div {{ labels[chart] }}
       client-only
         apex-chart(type="donut" :options="statistics[chart].options" :series="statistics[chart].series")
     v-col(cols="12")
-      .text-h6 {{ t('disciplines') }}
+      .text-h6 {{ $t('statistics.eduProgramsStatistics.disciplines') }}
     v-col(v-for="chart in chartDisciplines" :key="chart" cols="12" md="3")
       div {{ labels[camelCase(chart)] }}
       client-only
@@ -15,17 +15,19 @@
 </template>
 
 <script lang="ts">
+import type { PropType } from '#app'
 import { camelCase } from 'scule'
-import { Vue, Component, Prop } from 'vue-property-decorator'
 import { EduProgramStatisticsType, PointTotalStatisticsType } from '~/types/graphql'
+import { useI18n } from '~/composables'
 
-type Labels = {
+type LabelsType = {
   description: string,
   syllabus: string,
   calendar: string,
   user: string,
   annotation: string,
-  workProgram: string
+  workProgram: string,
+  methodologicalSupport: string
 }
 
 type StatisticsItem = {
@@ -34,7 +36,7 @@ type StatisticsItem = {
   },
   series: number[]
 }
-type Statistics = {
+type StatisticsType = {
   description: StatisticsItem,
   syllabus: StatisticsItem,
   calendar: StatisticsItem,
@@ -47,32 +49,36 @@ type PointType = {
   [k: string]: PointTotalStatisticsType
 }
 
-@Component<EduProgramStatisticsChartArc>({
-  computed: {
-    chartsEduPrograms (): string[] {
-      return ['description', 'syllabus', 'calendar']
-    },
-    chartDisciplines (): string[] {
-      return ['users', 'annotation', 'work_program', 'methodological_support']
-    },
-    labels (): { calendar: string; annotation: string; syllabus: string; workProgram: string; description: string; methodologicalSupport: string; users: string } {
-      return {
-        description: this.t('labels.description'),
-        syllabus: this.t('labels.syllabus'),
-        calendar: this.t('labels.calendar'),
-        users: this.t('labels.users'),
-        annotation: this.t('labels.annotation'),
-        workProgram: this.t('labels.workProgram'),
-        methodologicalSupport: this.t('labels.methodologicalSupport')
-      }
-    },
-    statistics (): Statistics {
-      const points: PointType[] = this.items
+export default defineComponent({
+  props: {
+    items: { required: true, type: Array as PropType<EduProgramStatisticsType[]> }
+  },
+  setup (props) {
+    const { t } = useI18n()
+
+    const chartsEduPrograms = computed<string[]>(() => (['description', 'syllabus', 'calendar']))
+
+    const chartDisciplines = computed<string[]>(() => (
+      ['users', 'annotation', 'work_program', 'methodological_support']
+    ))
+
+    const labels = computed<LabelsType>(() => ({
+      description: t('statistics.eduProgramsStatistics.labels.description'),
+      syllabus: t('statistics.eduProgramsStatistics.labels.syllabus'),
+      calendar: t('statistics.eduProgramsStatistics.labels.calendar'),
+      users: t('statistics.eduProgramsStatistics.labels.users'),
+      annotation: t('statistics.eduProgramsStatistics.labels.annotation'),
+      workProgram: t('statistics.eduProgramsStatistics.labels.workProgram'),
+      methodologicalSupport: t('statistics.eduProgramsStatistics.labels.methodologicalSupport')
+    }))
+
+    const statistics = computed<StatisticsType>(() => {
+      const points: PointType[] = props.items
         .map((e: EduProgramStatisticsType) => e.points
           .reduce((a: PointType, c: PointTotalStatisticsType | any) => {
             return { ...a, [c.name]: c }
           }, {}))
-      return [...this.chartsEduPrograms, ...this.chartDisciplines].reduce((a: any, c: string) => {
+      return [...chartsEduPrograms.value, ...chartDisciplines.value].reduce((a: any, c: string) => {
         const rawValues: PointTotalStatisticsType[] = points.map((e: PointType) => e[c])
         const { value, total } = rawValues.reduce((a: any, c: PointTotalStatisticsType) => {
           return { value: a.value + c.value, total: a.total + c.total }
@@ -80,34 +86,18 @@ type PointType = {
         return Object.assign({
           [c]: {
             options: {
-              labels: [this.t('indicatorLabels.availability'), this.t('indicatorLabels.lack')]
+              labels: [
+                t('statistics.eduProgramsStatistics.indicatorLabels.availability'),
+                t('statistics.eduProgramsStatistics.indicatorLabels.lack')
+              ]
             },
             series: [value, total - value]
           }
         }, a)
-      }, {}) as Statistics
-    }
-  },
-  methods: {
-    camelCase
+      }, {}) as StatisticsType
+    })
+
+    return { chartsEduPrograms, chartDisciplines, labels, statistics, camelCase }
   }
 })
-export default class EduProgramStatisticsChartArc extends Vue {
-  @Prop({ required: true, type: Array }) items!: EduProgramStatisticsType[]
-
-  readonly chartsEduPrograms!: string[]
-  readonly chartDisciplines!: string[]
-  readonly label!: Labels
-  readonly statistics!: Statistics
-
-  /**
-   * Получение перевода относильно локального пути
-   * @param path
-   * @param values
-   * @return
-   */
-  t (path: string, values: any = undefined): string {
-    return this.$t(`statistics.eduProgramsStatistics.${path}`, values) as string
-  }
-}
 </script>

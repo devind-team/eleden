@@ -341,7 +341,7 @@ python-versions = "*"
 click = ">=4.0"
 
 [package.extras]
-dev = ["pytest (>=3.6)", "pytest-cov", "wheel", "coveralls"]
+dev = ["coveralls", "wheel", "pytest-cov", "pytest (>=3.6)"]
 
 [[package]]
 name = "click-repl"
@@ -596,8 +596,8 @@ python-versions = ">=3.6"
 Django = ">=2.2"
 
 [package.extras]
-apns = ["apns2 (>=0.3.0)", "pywebpush (>=1.3.0)", "Django (>=2.2)", "importlib-metadata"]
 wp = ["pywebpush (>=1.3.0)"]
+apns = ["importlib-metadata", "Django (>=2.2)", "pywebpush (>=1.3.0)", "apns2 (>=0.3.0)"]
 
 [[package]]
 name = "django-timezone-field"
@@ -866,10 +866,10 @@ python-versions = "*"
 six = ">=1.11.0"
 
 [package.extras]
-all = ["Flask (>=1.0.2)", "graphene (>=2.1.2)", "Flask-Graphql (>=2.0.0)", "graphene-django (>=2.0.0)"]
+tests = ["pytest-django", "pytest-cov", "pytest", "coverage"]
+flask = ["Flask-Graphql (>=2.0.0)", "graphene (>=2.1.2)", "Flask (>=1.0.2)"]
 django = ["graphene-django (>=2.0.0)"]
-flask = ["Flask (>=1.0.2)", "graphene (>=2.1.2)", "Flask-Graphql (>=2.0.0)"]
-tests = ["coverage", "pytest", "pytest-cov", "pytest-django"]
+all = ["graphene-django (>=2.0.0)", "Flask-Graphql (>=2.0.0)", "graphene (>=2.1.2)", "Flask (>=1.0.2)"]
 
 [[package]]
 name = "graphql-core"
@@ -1513,7 +1513,7 @@ w3lib = ">=1.17.0"
 
 [[package]]
 name = "sentry-sdk"
-version = "1.5.12"
+version = "1.9.0"
 description = "Python client for Sentry (https://sentry.io)"
 category = "main"
 optional = false
@@ -1531,6 +1531,7 @@ celery = ["celery (>=3)"]
 chalice = ["chalice (>=1.16.0)"]
 django = ["django (>=1.8)"]
 falcon = ["falcon (>=1.4)"]
+fastapi = ["fastapi (>=0.79.0)"]
 flask = ["flask (>=0.11)", "blinker (>=1.1)"]
 httpx = ["httpx (>=0.16.0)"]
 pure_eval = ["pure-eval", "executing", "asttokens"]
@@ -1539,6 +1540,7 @@ quart = ["quart (>=0.16.1)", "blinker (>=1.1)"]
 rq = ["rq (>=0.6)"]
 sanic = ["sanic (>=0.8)"]
 sqlalchemy = ["sqlalchemy (>=1.2)"]
+starlette = ["starlette (>=0.19.1)"]
 tornado = ["tornado (>=5)"]
 
 [[package]]
@@ -1780,7 +1782,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "4c91ffbd0b06eb8198f3ea832edb96da107451ad8be0d5e6d334753663178d0a"
+content-hash = "a5c3919b09fd31549648f477f41337b6c17c32d89e86cd0b5499e247f1216085"
 
 [metadata.files]
 aiohttp = [
@@ -2761,8 +2763,8 @@ scrapy = [
     {file = "Scrapy-2.5.1.tar.gz", hash = "sha256:13af6032476ab4256158220e530411290b3b934dd602bb6dacacbf6d16141f49"},
 ]
 sentry-sdk = [
-    {file = "sentry-sdk-1.5.12.tar.gz", hash = "sha256:259535ba66933eacf85ab46524188c84dcb4c39f40348455ce15e2c0aca68863"},
-    {file = "sentry_sdk-1.5.12-py2.py3-none-any.whl", hash = "sha256:778b53f0a6c83b1ee43d3b7886318ba86d975e686cb2c7906ccc35b334360be1"},
+    {file = "sentry-sdk-1.9.0.tar.gz", hash = "sha256:f185c53496d79b280fe5d9d21e6572aee1ab802d3354eb12314d216cfbaa8d30"},
+    {file = "sentry_sdk-1.9.0-py2.py3-none-any.whl", hash = "sha256:60b13757d6344a94bf0ccb3c0a006c4de77daab09871b30fbbd05d5ec24e54fb"},
 ]
 service-identity = [
     {file = "service-identity-21.1.0.tar.gz", hash = "sha256:6e6c6086ca271dc11b033d17c3a8bea9f24ebff920c587da090afc9519419d34"},
